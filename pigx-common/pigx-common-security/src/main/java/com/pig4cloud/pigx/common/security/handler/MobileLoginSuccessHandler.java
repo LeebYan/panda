@@ -19,11 +19,11 @@ package com.pig4cloud.pigx.common.security.handler;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
 import com.pig4cloud.pigx.common.security.util.AuthUtils;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,7 +93,7 @@ public class MobileLoginSuccessHandler implements AuthenticationSuccessHandler {
 			log.info("获取token 成功：{}", oAuth2AccessToken.getValue());
 
 			response.setCharacterEncoding(CharsetUtil.UTF_8);
-			response.setContentType(CommonConstant.CONTENT_TYPE);
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			PrintWriter printWriter = response.getWriter();
 			printWriter.append(objectMapper.writeValueAsString(oAuth2AccessToken));
 		} catch (IOException e) {

@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.common.gateway.support;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			RouteDefinitionVo vo = new RouteDefinitionVo();
 			BeanUtils.copyProperties(r, vo);
 			log.info("保存路由信息{}", vo);
-			redisTemplate.opsForHash().put(CommonConstant.ROUTE_KEY, r.getId(), vo);
+			redisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, r.getId(), vo);
 			return Mono.empty();
 		});
 	}
@@ -60,7 +60,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	public Mono<Void> delete(Mono<String> routeId) {
 		routeId.subscribe(id -> {
 			log.info("删除路由信息{}", id);
-			redisTemplate.opsForHash().delete(CommonConstant.ROUTE_KEY, id);
+			redisTemplate.opsForHash().delete(CommonConstants.ROUTE_KEY, id);
 		});
 		return Mono.empty();
 	}
@@ -74,7 +74,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	@Override
 	public Flux<RouteDefinition> getRouteDefinitions() {
 		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-		List<RouteDefinitionVo> values = redisTemplate.opsForHash().values(CommonConstant.ROUTE_KEY);
+		List<RouteDefinitionVo> values = redisTemplate.opsForHash().values(CommonConstants.ROUTE_KEY);
 		List<RouteDefinition> definitionList = new ArrayList<>();
 		values.forEach(vo -> {
 			RouteDefinition routeDefinition = new RouteDefinition();

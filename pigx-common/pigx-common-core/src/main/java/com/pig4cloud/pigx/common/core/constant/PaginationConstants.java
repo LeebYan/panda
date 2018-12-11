@@ -5,7 +5,7 @@ package com.pig4cloud.pigx.common.core.constant;
  * @author lishangbu
  * @date 2018/11/22
  */
-public interface PaginationConstant {
+public interface PaginationConstants {
 	/**
 	 * 当前页
 	 */

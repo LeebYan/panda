@@ -19,7 +19,7 @@
 
 package com.pig4cloud.pigx.common.core.util;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -40,7 +40,7 @@ public class R<T> implements Serializable {
 
 	@Getter
 	@Setter
-	private int code = CommonConstant.SUCCESS;
+	private int code = CommonConstants.SUCCESS;
 
 	@Getter
 	@Setter
@@ -69,6 +69,6 @@ public class R<T> implements Serializable {
 	public R(Throwable e) {
 		super();
 		this.msg = e.getMessage();
-		this.code = CommonConstant.FAIL;
+		this.code = CommonConstants.FAIL;
 	}
 }

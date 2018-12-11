@@ -22,7 +22,7 @@ package com.pig4cloud.pigx.common.log.util;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,7 +45,7 @@ public class SysLogUtils {
 				.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		SysLog sysLog = new SysLog();
 		sysLog.setCreateBy(Objects.requireNonNull(getUsername()));
-		sysLog.setType(CommonConstant.STATUS_NORMAL);
+		sysLog.setType(CommonConstants.STATUS_NORMAL);
 		sysLog.setRemoteAddr(HttpUtil.getClientIP(request));
 		sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
 		sysLog.setMethod(request.getMethod());

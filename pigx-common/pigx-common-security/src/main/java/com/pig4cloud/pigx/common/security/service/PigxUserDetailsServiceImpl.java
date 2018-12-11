@@ -22,7 +22,7 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.admin.api.dto.UserInfo;
 import com.pig4cloud.pigx.admin.api.entity.SysUser;
 import com.pig4cloud.pigx.admin.api.feign.RemoteUserService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
@@ -98,10 +98,10 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 		Collection<? extends GrantedAuthority> authorities
 			= AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
 		SysUser user = info.getSysUser();
-		boolean enabled = StrUtil.equals(user.getDelFlag(), CommonConstant.STATUS_NORMAL);
+		boolean enabled = StrUtil.equals(user.getDelFlag(), CommonConstants.STATUS_NORMAL);
 		// 构造security用户
 
 		return new PigxUser(user.getUserId(), user.getDeptId(), user.getTenantId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(), enabled,
-			true, true, !CommonConstant.STATUS_LOCK.equals(user.getLockFlag()), authorities);
+			true, true, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
 	}
 }

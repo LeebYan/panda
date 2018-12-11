@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -53,7 +53,7 @@ public class GlobalExceptionHandlerResolver {
 		log.error("全局异常信息 ex={}", e.getMessage(), e);
 		return R.builder()
 			.msg(e.getLocalizedMessage())
-			.code(CommonConstant.FAIL)
+			.code(CommonConstants.FAIL)
 			.build();
 	}
 
@@ -72,7 +72,7 @@ public class GlobalExceptionHandlerResolver {
 		log.error("拒绝授权异常信息 ex={}", msg, e);
 		return R.builder()
 			.msg(msg)
-			.code(CommonConstant.FAIL)
+			.code(CommonConstants.FAIL)
 			.build();
 	}
 
@@ -89,7 +89,7 @@ public class GlobalExceptionHandlerResolver {
 		log.error("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
 		return R.builder()
 			.msg(fieldErrors.get(0).getDefaultMessage())
-			.code(CommonConstant.FAIL)
+			.code(CommonConstants.FAIL)
 			.build();
 	}
 }

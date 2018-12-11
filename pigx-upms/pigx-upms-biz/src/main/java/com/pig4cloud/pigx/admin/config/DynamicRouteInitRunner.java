@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.admin.config;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.admin.service.SysRouteConfService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.gateway.support.DynamicRouteInitEvent;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
@@ -57,7 +57,7 @@ public class DynamicRouteInitRunner {
 	@Order
 	@EventListener({WebServerInitializedEvent.class, DynamicRouteInitEvent.class})
 	public void initRoute() {
-		Boolean result = redisTemplate.delete(CommonConstant.ROUTE_KEY);
+		Boolean result = redisTemplate.delete(CommonConstants.ROUTE_KEY);
 		log.info("初始化网关路由 {} ", result);
 
 		routeConfService.routes().forEach(route -> {
@@ -74,7 +74,7 @@ public class DynamicRouteInitRunner {
 
 			log.info("加载路由ID：{},{}", route.getRouteId(), vo);
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-			redisTemplate.opsForHash().put(CommonConstant.ROUTE_KEY, route.getRouteId(), vo);
+			redisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, route.getRouteId(), vo);
 		});
 		log.debug("初始化网关路由结束 ");
 	}

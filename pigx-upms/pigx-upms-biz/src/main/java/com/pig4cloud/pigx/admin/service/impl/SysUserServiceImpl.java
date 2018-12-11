@@ -32,7 +32,7 @@ import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.admin.api.vo.UserVO;
 import com.pig4cloud.pigx.admin.mapper.SysUserMapper;
 import com.pig4cloud.pigx.admin.service.*;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.datascope.DataScope;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -79,7 +79,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	public Boolean saveUser(UserDTO userDto) {
 		SysUser sysUser = new SysUser();
 		BeanUtils.copyProperties(userDto, sysUser);
-		sysUser.setDelFlag(CommonConstant.STATUS_NORMAL);
+		sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
 		sysUser.setPassword(ENCODER.encode(userDto.getPassword()));
 		baseMapper.insert(sysUser);
 		List<SysUserRole> userRoleList = userDto.getRole()

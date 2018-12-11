@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.admin.api.feign;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.feign.factory.RemoteTokenServiceFallbackFactory;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.core.constant.ServiceNameConstant;
+import com.pig4cloud.pigx.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018/9/4
  */
-@FeignClient(value = ServiceNameConstant.AUTH_SERVICE, fallbackFactory = RemoteTokenServiceFallbackFactory.class)
+@FeignClient(value = ServiceNameConstants.AUTH_SERVICE, fallbackFactory = RemoteTokenServiceFallbackFactory.class)
 public interface RemoteTokenService {
 	/**
 	 * 分页查询token 信息

@@ -25,7 +25,7 @@ import com.pig4cloud.pigx.act.dto.ProcessDefDTO;
 import com.pig4cloud.pigx.act.entity.LeaveBill;
 import com.pig4cloud.pigx.act.mapper.LeaveBillMapper;
 import com.pig4cloud.pigx.act.service.ProcessService;
-import com.pig4cloud.pigx.common.core.constant.PaginationConstant;
+import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.ProcessStatusEnum;
 import com.pig4cloud.pigx.common.core.constant.enums.ResourceTypeEnum;
 import com.pig4cloud.pigx.common.core.constant.enums.TaskStatusEnum;
@@ -72,8 +72,8 @@ public class ProcessServiceImpl implements ProcessService {
 			query.processDefinitionCategory(category);
 		}
 
-		int page = MapUtil.getInt(params, PaginationConstant.CURRENT);
-		int limit = MapUtil.getInt(params, PaginationConstant.SIZE);
+		int page = MapUtil.getInt(params, PaginationConstants.CURRENT);
+		int limit = MapUtil.getInt(params, PaginationConstants.SIZE);
 
 		IPage result = new Page(page, limit);
 		result.setTotal(query.count());

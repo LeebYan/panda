@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.gateway.handler;
 
 import com.google.code.kaptcha.Producer;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +59,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 
 		//保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
-		redisTemplate.opsForValue().set(CommonConstant.DEFAULT_CODE_KEY + randomStr, text
+		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, text
 			, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 
 		// 转换流信息写出

@@ -25,7 +25,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -64,7 +64,7 @@ public class MenuController {
 		SecurityUtils.getRoles()
 			.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
 		List<MenuTree> menuTreeList = all.stream()
-			.filter(menuVo -> CommonConstant.MENU.equals(menuVo.getType()))
+			.filter(menuVo -> CommonConstants.MENU.equals(menuVo.getType()))
 			.map(MenuTree::new)
 			.sorted(Comparator.comparingInt(MenuTree::getSort))
 			.collect(Collectors.toList());
