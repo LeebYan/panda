@@ -3,6 +3,7 @@
 如果有个性化的修改，请参考本篇运行起来以后，自行修改。循序渐进
 
 ### 特别说明 
+- flushdb 清空redis ， 2.0 数据结构不同
 - 确保你的IDE 已经安装lombok 
 - 代码git clone ,不要下载 zip 源码包
 - 建议使用 IDEA 2018+ 启动效果会更好
@@ -102,7 +103,7 @@ git clone https://www.gitee.wang/pig/pigx-ui.git
 npm run pre
 
 # 安装依赖
-cnpm install
+npm install
 
 # 启动
 npm run dev
