@@ -40,7 +40,7 @@ public class PigxAuth2ExceptionSerializer extends StdSerializer<PigxAuth2Excepti
 		gen.writeStartObject();
 		gen.writeObjectField("code", 1);
 		gen.writeStringField("message", value.getMessage());
-		gen.writeStringField("data", value.getOAuth2ErrorCode());
+		gen.writeStringField("data", value.getErrorCode());
 		gen.writeEndObject();
 	}
 }
