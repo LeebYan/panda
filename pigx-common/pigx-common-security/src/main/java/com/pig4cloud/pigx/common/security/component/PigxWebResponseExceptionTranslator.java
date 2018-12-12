@@ -51,31 +51,31 @@ public class PigxWebResponseExceptionTranslator implements WebResponseExceptionT
 		Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 
 		Exception ase = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class,
-			causeChain);
+				causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new UnauthorizedException(e.getMessage(), e));
 		}
 
 		ase = (AccessDeniedException) throwableAnalyzer
-			.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
+				.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new ForbiddenException(ase.getMessage(), ase));
 		}
 
 		ase = (InvalidGrantException) throwableAnalyzer
-			.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
+				.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new InvalidException(ase.getMessage(), ase));
 		}
 
 		ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer
-			.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
+				.getFirstThrowableOfType(HttpRequestMethodNotSupportedException.class, causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new MethodNotAllowedException(ase.getMessage(), ase));
 		}
 
 		ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(
-			OAuth2Exception.class, causeChain);
+				OAuth2Exception.class, causeChain);
 
 		if (ase != null) {
 			return handleOAuth2Exception((OAuth2Exception) ase);
@@ -98,11 +98,10 @@ public class PigxWebResponseExceptionTranslator implements WebResponseExceptionT
 		// 客户端异常直接返回客户端,不然无法解析
 		if (e instanceof ClientAuthenticationException) {
 			return new ResponseEntity<>(e, headers,
-				HttpStatus.valueOf(status));
+					HttpStatus.valueOf(status));
 		}
-
-		return new ResponseEntity<>(new PigxAuth2Exception(e.getMessage()), headers,
-			HttpStatus.valueOf(status));
+		return new ResponseEntity<>(new PigxAuth2Exception(e.getMessage(), e.getOAuth2ErrorCode()), headers,
+				HttpStatus.valueOf(status));
 
 	}
 }
