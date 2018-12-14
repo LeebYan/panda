@@ -25,7 +25,7 @@ feign:
     enabled: false
   client:
     config:
-      feignName:
+      default:
         connectTimeout: 10000
         readTimeout: 10000
   compression:
@@ -55,8 +55,6 @@ mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置
   mapper-locations: classpath:/mapper/*Mapper.xml
   global-config:
-    # 自动刷新Mapper对应的XML文件
-    refresh: true
     # 关闭MP3.0自带的banner
     banner: false
     db-config:

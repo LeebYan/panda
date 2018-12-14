@@ -57,14 +57,14 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 			// 不是登录请求，直接向下执行
 			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath()
-				, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL)) {
+					, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
 			// 终端设置不校验， 直接向下执行(1. 从请求参数中获取 2.从header取)
 			String clientId = request.getQueryParams().getFirst("client_id");
 			if (StrUtil.isNotBlank(clientId)
-				&& filterIgnorePropertiesConfig.getClients().contains(clientId)) {
+					&& filterIgnorePropertiesConfig.getClients().contains(clientId)) {
 				return chain.filter(exchange);
 			}
 
@@ -81,7 +81,9 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				try {
 					return response.writeWith(Mono.just(response.bufferFactory()
-						.wrap(objectMapper.writeValueAsBytes(new R<>(e)))));
+							.wrap(objectMapper.writeValueAsBytes(
+									R.builder().msg(e.getMessage())
+											.code(CommonConstant.FAIL).build()))));
 				} catch (JsonProcessingException e1) {
 					log.error("对象输出异常", e1);
 				}
@@ -101,7 +103,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 		String code = request.getQueryParams().getFirst("code");
 
 		if (StrUtil.isBlank(code)) {
-			throw new ValidateCodeException();
+			throw new ValidateCodeException("验证码不能为空");
 		}
 
 		String randomStr = request.getQueryParams().getFirst("randomStr");
@@ -111,24 +113,24 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 		String key = CommonConstant.DEFAULT_CODE_KEY + randomStr;
 		if (!redisTemplate.hasKey(key)) {
-			throw new ValidateCodeException();
+			throw new ValidateCodeException("验证码不合法");
 		}
 
 		Object codeObj = redisTemplate.opsForValue().get(key);
 
 		if (codeObj == null) {
-			throw new ValidateCodeException();
+			throw new ValidateCodeException("验证码不合法");
 		}
 
 		String saveCode = codeObj.toString();
 		if (StrUtil.isBlank(saveCode)) {
 			redisTemplate.delete(key);
-			throw new ValidateCodeException();
+			throw new ValidateCodeException("验证码不合法");
 		}
 
 		if (!StrUtil.equals(saveCode, code)) {
 			redisTemplate.delete(key);
-			throw new ValidateCodeException();
+			throw new ValidateCodeException("验证码不合法");
 		}
 
 		redisTemplate.delete(key);
