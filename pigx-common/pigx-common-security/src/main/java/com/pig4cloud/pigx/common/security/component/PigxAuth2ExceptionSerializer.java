@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.common.security.component;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.security.exception.PigxAuth2Exception;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class PigxAuth2ExceptionSerializer extends StdSerializer<PigxAuth2Excepti
 	@Override
 	public void serialize(PigxAuth2Exception value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 		gen.writeStartObject();
-		gen.writeObjectField("code", CommonConstant.FAIL);
+		gen.writeObjectField("code", CommonConstants.FAIL);
 		gen.writeStringField("msg", value.getMessage());
 		gen.writeStringField("data", value.getErrorCode());
 		gen.writeEndObject();
