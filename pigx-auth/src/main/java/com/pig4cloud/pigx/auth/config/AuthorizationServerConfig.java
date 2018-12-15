@@ -22,6 +22,7 @@ package com.pig4cloud.pigx.auth.config;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
 import com.pig4cloud.pigx.common.security.service.PigxClientDetailsService;
+import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -68,20 +69,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
 		oauthServer
-			.allowFormAuthenticationForClients()
-			.checkTokenAccess("isAuthenticated()");
+				.allowFormAuthenticationForClients()
+				.checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		endpoints
-			.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-			.tokenStore(tokenStore())
-			.tokenEnhancer(tokenEnhancer())
-			.userDetailsService(pigxUserDetailsService)
-			.authenticationManager(authenticationManager)
-			.reuseRefreshTokens(false)
-			.exceptionTranslator(new PigxWebResponseExceptionTranslator());
+				.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+				.tokenStore(tokenStore())
+				.tokenEnhancer(tokenEnhancer())
+				.userDetailsService(pigxUserDetailsService)
+				.authenticationManager(authenticationManager)
+				.reuseRefreshTokens(false)
+				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
 	}
 
 
@@ -95,7 +96,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
 		return (accessToken, authentication) -> {
-			final Map<String, Object> additionalInfo = new HashMap<>(1);
+			final Map<String, Object> additionalInfo = new HashMap<>(4);
+			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
+			additionalInfo.put("user_id", pigxUser.getId());
+			additionalInfo.put("dept_id", pigxUser.getDeptId());
+			additionalInfo.put("tenant_id", pigxUser.getTenantId());
 			additionalInfo.put("license", SecurityConstants.PIGX_LICENSE);
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 			return accessToken;
