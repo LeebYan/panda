@@ -24,7 +24,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.vo.PreLogVo;
 import com.pig4cloud.pigx.admin.mapper.SysLogMapper;
 import com.pig4cloud.pigx.admin.service.SysLogService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -53,7 +53,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 		List<SysLog> sysLogs = preLogVoList.stream()
 			.map(pre -> {
 				SysLog log = new SysLog();
-				log.setType(CommonConstant.STATUS_LOCK);
+				log.setType(CommonConstants.STATUS_LOCK);
 				log.setTitle(pre.getInfo());
 				log.setException(pre.getStack());
 				log.setParams(pre.getMessage());

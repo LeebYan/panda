@@ -24,7 +24,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pig4cloud.pigx.act.service.ModelService;
-import com.pig4cloud.pigx.common.core.constant.PaginationConstant;
+import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
 import lombok.AllArgsConstructor;
@@ -117,8 +117,8 @@ public class ModelServiceImpl implements ModelService {
 			modelQuery.modelCategory(category);
 		}
 
-		int page = MapUtil.getInt(params, PaginationConstant.CURRENT);
-		int limit = MapUtil.getInt(params, PaginationConstant.SIZE);
+		int page = MapUtil.getInt(params, PaginationConstants.CURRENT);
+		int limit = MapUtil.getInt(params, PaginationConstants.SIZE);
 
 		IPage result = new Page(page, limit);
 		result.setTotal(modelQuery.count());

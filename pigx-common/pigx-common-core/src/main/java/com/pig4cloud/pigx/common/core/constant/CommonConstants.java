@@ -23,7 +23,7 @@ package com.pig4cloud.pigx.common.core.constant;
  * @author lengleng
  * @date 2017/10/29
  */
-public interface CommonConstant {
+public interface CommonConstants {
 	/**
 	 * header 中租户ID
 	 */
@@ -51,11 +51,6 @@ public interface CommonConstant {
 	 * 编码
 	 */
 	String UTF8 = "UTF-8";
-
-	/**
-	 * JSON 资源
-	 */
-	String CONTENT_TYPE = "application/json; charset=utf-8";
 
 	/**
 	 * 前端工程名

@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.common.transaction.rewrite;
 
 import com.codingapi.tx.config.service.TxManagerTxUrlService;
-import com.pig4cloud.pigx.common.core.constant.ServiceNameConstant;
+import com.pig4cloud.pigx.common.core.constant.ServiceNameConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -38,7 +38,7 @@ public class TxManagerTxUrlServiceImpl implements TxManagerTxUrlService {
 
 	@Override
 	public String getTxUrl() {
-		ServiceInstance serviceInstance = loadBalancerClient.choose(ServiceNameConstant.TX_MANAGER);
+		ServiceInstance serviceInstance = loadBalancerClient.choose(ServiceNameConstants.TX_MANAGER);
 		String host = serviceInstance.getHost();
 		Integer port = serviceInstance.getPort();
 		String url = String.format("http://%s:%s/tx/manager/", host, port);

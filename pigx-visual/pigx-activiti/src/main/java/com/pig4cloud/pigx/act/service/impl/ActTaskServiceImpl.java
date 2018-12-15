@@ -27,7 +27,7 @@ import com.pig4cloud.pigx.act.dto.TaskDTO;
 import com.pig4cloud.pigx.act.entity.LeaveBill;
 import com.pig4cloud.pigx.act.mapper.LeaveBillMapper;
 import com.pig4cloud.pigx.act.service.ActTaskService;
-import com.pig4cloud.pigx.common.core.constant.PaginationConstant;
+import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.TaskStatusEnum;
 import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -72,8 +72,8 @@ public class ActTaskServiceImpl implements ActTaskService {
 
 	@Override
 	public IPage getTaskByName(Map<String, Object> params, String name) {
-		int page = MapUtil.getInt(params, PaginationConstant.CURRENT);
-		int limit = MapUtil.getInt(params, PaginationConstant.SIZE);
+		int page = MapUtil.getInt(params, PaginationConstants.CURRENT);
+		int limit = MapUtil.getInt(params, PaginationConstants.SIZE);
 
 		TaskQuery taskQuery = taskService.createTaskQuery()
 			.taskCandidateOrAssigned(name)

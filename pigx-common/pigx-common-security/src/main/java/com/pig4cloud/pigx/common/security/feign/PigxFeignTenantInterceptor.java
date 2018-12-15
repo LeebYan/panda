@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.feign;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -35,6 +35,6 @@ public class PigxFeignTenantInterceptor implements RequestInterceptor {
 			log.error("TTL 中的 租户ID为空，feign拦截器 >> 增强失败");
 			return;
 		}
-		requestTemplate.header(CommonConstant.TENANT_ID, TenantContextHolder.getTenantId().toString());
+		requestTemplate.header(CommonConstants.TENANT_ID, TenantContextHolder.getTenantId().toString());
 	}
 }

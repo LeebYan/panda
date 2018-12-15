@@ -19,10 +19,11 @@ package com.pig4cloud.pigx.common.security.component;
 
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -47,8 +48,8 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 						 AuthenticationException authException) throws IOException {
-		response.setCharacterEncoding(CommonConstant.UTF8);
-		response.setContentType(CommonConstant.CONTENT_TYPE);
+		response.setCharacterEncoding(CommonConstants.UTF8);
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		R<String> result = new R<>();
 		result.setCode(HttpStatus.HTTP_UNAUTHORIZED);
 		if (authException != null) {

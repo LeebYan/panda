@@ -25,7 +25,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysRouteConf;
 import com.pig4cloud.pigx.admin.mapper.SysRouteConfMapper;
 import com.pig4cloud.pigx.admin.service.SysRouteConfService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +82,7 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 	@Transactional(rollbackFor = Exception.class)
 	public Mono<Void> updateRoutes(JSONArray routes) {
 		// 清空Redis 缓存
-		Boolean result = redisTemplate.delete(CommonConstant.ROUTE_KEY);
+		Boolean result = redisTemplate.delete(CommonConstants.ROUTE_KEY);
 		log.info("清空网关路由 {} ", result);
 
 		// 遍历修改的routes，保存到Redis
@@ -129,13 +129,13 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 			}
 
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-			redisTemplate.opsForHash().put(CommonConstant.ROUTE_KEY, vo.getId(), vo);
+			redisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, vo.getId(), vo);
 			routeDefinitionVoList.add(vo);
 		});
 
 		// 逻辑删除全部
 		SysRouteConf condition = new SysRouteConf();
-		condition.setDelFlag(CommonConstant.STATUS_NORMAL);
+		condition.setDelFlag(CommonConstants.STATUS_NORMAL);
 		this.remove(new UpdateWrapper<>(condition));
 
 		//插入生效路由

@@ -24,7 +24,7 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
 import com.pig4cloud.pigx.codegen.entity.TableEntity;
-import com.pig4cloud.pigx.common.core.constant.CommonConstant;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -242,7 +242,7 @@ public class GenUtils {
 	 * 获取文件名
 	 */
 	private String getFileName(String template, String className, String packageName, String moduleName) {
-		String packagePath = CommonConstant.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
+		String packagePath = CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
 		}
@@ -268,7 +268,7 @@ public class GenUtils {
 		}
 
 		if (template.contains(MAPPER_XML_VM)) {
-			return CommonConstant.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
+			return CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
 		}
 
 		if (template.contains(MENU_SQL_VM)) {
@@ -276,16 +276,16 @@ public class GenUtils {
 		}
 
 		if (template.contains(INDEX_VUE_VM)) {
-			return CommonConstant.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
 					File.separator + moduleName + File.separator + className.toLowerCase() + File.separator + "index.vue";
 		}
 
 		if (template.contains(API_JS_VM)) {
-			return CommonConstant.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator + className.toLowerCase() + ".js";
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator + className.toLowerCase() + ".js";
 		}
 
 		if (template.contains(CRUD_JS_VM)) {
-			return CommonConstant.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const" +
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const" +
 					File.separator + "crud" + File.separator + className.toLowerCase() + ".js";
 		}
 
