@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -99,12 +98,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	 * @return
 	 */
 	@Override
-	@Cacheable(value = "user_details", key = "#sysUser.username", unless = "#result == null")
 	public UserInfo findUserInfo(SysUser sysUser) {
-		if (sysUser == null) {
-			return null;
-		}
-
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUser);
 		//设置角色列表  （ID）
