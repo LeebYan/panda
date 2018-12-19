@@ -128,8 +128,8 @@ public class MenuController {
 	@SysLog("删除菜单")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_menu_del')")
-	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysMenuService.removeMenuById(id));
+	public R removeById(@PathVariable SysMenu id) {
+		return sysMenuService.removeMenuById(id);
 	}
 
 	/**
