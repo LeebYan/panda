@@ -47,9 +47,8 @@ public interface RemoteTokenService {
 	 * 删除token
 	 *
 	 * @param token token
-	 * @param from  调用标志
 	 * @return
 	 */
 	@DeleteMapping("/token/{token}")
-	R<Boolean> removeTokenById(@PathVariable("token") String token, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Boolean> removeTokenById(@PathVariable("token") String token);
 }

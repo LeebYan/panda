@@ -60,7 +60,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	@CacheEvict(value = "menu_details", allEntries = true)
-	public R removeMenuById(SysMenu id) {
+	public R removeMenuById(Integer id) {
 		// 查询父节点为当前节点的节点
 		List<SysMenu> menuList = this.list(Wrappers.<SysMenu>query()
 				.lambda().eq(SysMenu::getParentId, id));

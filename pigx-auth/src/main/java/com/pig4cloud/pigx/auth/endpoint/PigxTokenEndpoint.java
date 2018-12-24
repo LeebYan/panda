@@ -22,6 +22,7 @@ package com.pig4cloud.pigx.auth.endpoint;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -79,20 +80,26 @@ public class PigxTokenEndpoint {
 	 * @param authHeader Authorization
 	 */
 	@DeleteMapping("/logout")
-	public R<Boolean> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+	public R logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 		if (StrUtil.isBlank(authHeader)) {
-			return new R<>(false, "退出失败，token 为空");
+			return R.builder()
+					.code(CommonConstants.FAIL)
+					.data(Boolean.FALSE)
+					.msg("退出失败，token 为空").build();
 		}
 
 		String tokenValue = authHeader.replace("Bearer", "").trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			return new R<>(false, "退出失败，token 无效");
+			return R.builder()
+					.code(CommonConstants.FAIL)
+					.data(Boolean.FALSE)
+					.msg("退出失败，token 无效").build();
 		}
 
 		OAuth2Authentication auth2Authentication = tokenStore.readAuthentication(accessToken);
 		cacheManager.getCache("user_details")
-			.evict(auth2Authentication.getName());
+				.evict(auth2Authentication.getName());
 		tokenStore.removeAccessToken(accessToken);
 		return new R<>(Boolean.TRUE);
 	}
@@ -101,14 +108,10 @@ public class PigxTokenEndpoint {
 	 * 令牌管理调用
 	 *
 	 * @param token token
-	 * @param from  内部调用标志
 	 * @return
 	 */
 	@DeleteMapping("/{token}")
-	public R<Boolean> delToken(@PathVariable("token") String token, @RequestHeader(required = false) String from) {
-		if (StrUtil.isBlank(from)) {
-			return null;
-		}
+	public R<Boolean> delToken(@PathVariable("token") String token) {
 		return new R<>(redisTemplate.delete(PIGX_OAUTH_ACCESS + token));
 	}
 

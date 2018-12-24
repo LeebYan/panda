@@ -96,7 +96,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
 		return (accessToken, authentication) -> {
-			final Map<String, Object> additionalInfo = new HashMap<>(4);
+			final Map<String, Object> additionalInfo = new HashMap<>(8);
 			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
 			additionalInfo.put("user_id", pigxUser.getId());
 			additionalInfo.put("dept_id", pigxUser.getDeptId());

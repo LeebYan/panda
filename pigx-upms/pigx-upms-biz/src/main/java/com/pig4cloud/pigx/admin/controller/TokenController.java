@@ -61,6 +61,6 @@ public class TokenController {
 	@DeleteMapping("/{token}")
 	@PreAuthorize("@pms.hasPermission('sys_token_del')")
 	public R removeById(@PathVariable String token) {
-		return remoteTokenService.removeTokenById(token, SecurityConstants.FROM_IN);
+		return remoteTokenService.removeTokenById(token);
 	}
 }
