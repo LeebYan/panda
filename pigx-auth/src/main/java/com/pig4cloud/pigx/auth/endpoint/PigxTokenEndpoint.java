@@ -26,7 +26,7 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -120,15 +120,10 @@ public class PigxTokenEndpoint {
 	 * 查询token
 	 *
 	 * @param params 分页参数
-	 * @param from   标志
 	 * @return
 	 */
 	@PostMapping("/page")
-	public R<Page> tokenList(@RequestBody Map<String, Object> params, @RequestHeader(required = false) String from) {
-		if (StrUtil.isBlank(from)) {
-			return null;
-		}
-
+	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
 		List<Map<String, String>> list = new ArrayList<>();
 		//根据分页参数获取对应数据
 		List<String> pages = findKeysForPage(PIGX_OAUTH_ACCESS + "*", MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));

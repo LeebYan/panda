@@ -5,7 +5,7 @@ pigx
 ├── pigx-auth -- 授权服务提供[3000]
 ├── pigx-common -- 系统公共模块 
 ├    ├── pigx-common-core -- 公共工具类核心包
-├    ├── pigx-common-cache -- 缓存
+├    ├── pigx-common-data -- 数据相关
 ├    ├── pigx-common-job -- 定时任务
 ├    ├── pigx-common-log -- 日志服务
 ├    └── pigx-common-security -- 安全工具类

@@ -48,10 +48,10 @@
 			<artifactId>pigx-common-swagger</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-		<!--缓存依赖-->
+		<!--数据库-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-cache</artifactId>
+			<artifactId>pigx-common-data</artifactId>
 			<version>2.0.0</version>
 		</dependency>
 		<!--mybatis-->

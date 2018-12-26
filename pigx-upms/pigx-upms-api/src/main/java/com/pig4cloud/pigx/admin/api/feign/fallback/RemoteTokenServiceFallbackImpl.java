@@ -41,11 +41,10 @@ public class RemoteTokenServiceFallbackImpl implements RemoteTokenService {
 	 * 分页查询token 信息
 	 *
 	 * @param params 分页参数
-	 * @param from   内部调用标志
 	 * @return page
 	 */
 	@Override
-	public R<Page> getTokenPage(Map<String, Object> params, String from) {
+	public R<Page> getTokenPage(Map<String, Object> params) {
 		log.error("调用认证中心查询token 失败", cause);
 		return null;
 	}

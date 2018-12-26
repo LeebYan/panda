@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class RedisEventStore extends InMemoryEventStore {
 		events.forEach(event -> {
 			String key = event.getInstance().getValue() + "_" + event.getTimestamp().toString();
 			log.info("保存实例事件的KEY：{},EVENT: {}", key, event.getType());
+			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(InstanceEvent.class));
 			redisTemplate.opsForHash().put(CommonConstants.EVENT_KEY, key, event);
 		});

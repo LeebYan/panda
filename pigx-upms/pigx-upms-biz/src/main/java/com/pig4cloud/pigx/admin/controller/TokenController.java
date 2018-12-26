@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.admin.controller;
 
 import com.pig4cloud.pigx.admin.api.feign.RemoteTokenService;
-import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -48,7 +47,7 @@ public class TokenController {
 	 */
 	@GetMapping("/page")
 	public R getTokenPage(@RequestParam Map<String, Object> params) {
-		return remoteTokenService.getTokenPage(params, SecurityConstants.FROM_IN);
+		return remoteTokenService.getTokenPage(params);
 	}
 
 	/**
