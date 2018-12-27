@@ -58,6 +58,7 @@
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<ttl.version>2.10.1</ttl.version>
+		<minio.version>3.0.12</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
 		<security.oauth.version>2.3.3.RELEASE</security.oauth.version>

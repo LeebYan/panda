@@ -38,6 +38,7 @@
 		<module>pigx-common-gateway</module>
 		<module>pigx-common-job</module>
 		<module>pigx-common-log</module>
+		<module>pigx-common-minio</module>
 		<module>pigx-common-security</module>
 		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>
