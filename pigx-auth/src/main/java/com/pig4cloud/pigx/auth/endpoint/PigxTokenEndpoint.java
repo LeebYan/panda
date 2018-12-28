@@ -26,7 +26,7 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -110,6 +110,7 @@ public class PigxTokenEndpoint {
 	 * @param token token
 	 * @return
 	 */
+	@Inner
 	@DeleteMapping("/{token}")
 	public R<Boolean> delToken(@PathVariable("token") String token) {
 		return new R<>(redisTemplate.delete(PIGX_OAUTH_ACCESS + token));
@@ -122,6 +123,7 @@ public class PigxTokenEndpoint {
 	 * @param params 分页参数
 	 * @return
 	 */
+	@Inner
 	@PostMapping("/page")
 	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
 		List<Map<String, String>> list = new ArrayList<>();
@@ -169,9 +171,6 @@ public class PigxTokenEndpoint {
 	private boolean extractToken(Map<String, String> map, Object principal) {
 		if (principal instanceof PigxUser) {
 			PigxUser user = (PigxUser) principal;
-			if (!user.getTenantId().equals(TenantContextHolder.getTenantId())) {
-				return true;
-			}
 			map.put("user_id", user.getId() + "");
 			map.put("user_name", user.getUsername() + "");
 		}
