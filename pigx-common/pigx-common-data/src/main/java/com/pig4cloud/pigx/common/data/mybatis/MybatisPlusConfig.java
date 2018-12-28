@@ -25,6 +25,7 @@ import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,6 +47,7 @@ public class MybatisPlusConfig {
 	 * @return PaginationInterceptor
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public PaginationInterceptor paginationInterceptor() {
 		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 		List<ISqlParser> sqlParserList = new ArrayList<>();
@@ -63,6 +65,7 @@ public class MybatisPlusConfig {
 	 * @return DataScopeInterceptor
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public DataScopeInterceptor dataScopeInterceptor(DataSource dataSource) {
 		return new DataScopeInterceptor(dataSource);
 	}
@@ -73,6 +76,7 @@ public class MybatisPlusConfig {
 	 * @return LogicSqlInjector
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public ISqlInjector sqlInjector() {
 		return new LogicSqlInjector();
 	}
