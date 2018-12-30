@@ -8,6 +8,7 @@ pigx
 ├    ├── pigx-common-data -- 数据相关
 ├    ├── pigx-common-job -- 定时任务
 ├    ├── pigx-common-log -- 日志服务
+├    ├── pigx-common-minio -- 文件系统
 ├    └── pigx-common-security -- 安全工具类
 ├    └── pigx-common-swagger -- Swagger Api文档生成
 ├    └── pigx-common-transaction -- 分布式事务工具包
