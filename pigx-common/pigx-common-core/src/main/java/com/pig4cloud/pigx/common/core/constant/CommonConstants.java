@@ -80,9 +80,14 @@ public interface CommonConstants {
 	/**
 	 * 成功标记
 	 */
-	Integer SUCCESS=0;
+	Integer SUCCESS = 0;
 	/**
 	 * 失败标记
 	 */
-	Integer FAIL=1;
+	Integer FAIL = 1;
+
+	/**
+	 * 默认存储bucket
+	 */
+	String BUCKET_NAME = "lengleng";
 }
