@@ -86,7 +86,6 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 			authResult = this.getAuthenticationManager().authenticate(mobileAuthenticationToken);
 
 			logger.debug("Authentication success: " + authResult);
-			eventPublisher.publishAuthenticationSuccess(authResult);
 			SecurityContextHolder.getContext().setAuthentication(authResult);
 
 		} catch (Exception failed) {
