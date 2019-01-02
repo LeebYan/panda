@@ -49,8 +49,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.0.4</spring-boot-admin.version>
-		<hutool.version>4.3.0</hutool.version>
-		<mybatis-plus.version>3.0.6</mybatis-plus.version>
+		<hutool.version>4.3.2</hutool.version>
+		<mybatis-plus.version>3.0.7</mybatis-plus.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.version>2.9.2</swagger.version>
 		<curator.version>2.10.0</curator.version>
