@@ -25,7 +25,6 @@ export const tableOption = {
   editBtn: false,
   delBtn: false,
   addBtn: false,
-  dic: [],
   column: [
 #foreach ($column in $columns)
 	  {
