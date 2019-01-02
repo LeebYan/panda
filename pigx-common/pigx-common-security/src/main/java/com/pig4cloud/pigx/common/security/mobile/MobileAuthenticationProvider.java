@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.mobile;
 
+import com.pig4cloud.pigx.common.security.component.PigxPreAuthenticationChecks;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
 
 /**
  * @author lengleng
@@ -38,6 +40,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Slf4j
 public class MobileAuthenticationProvider implements AuthenticationProvider {
 	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	private UserDetailsChecker detailsChecker = new PigxPreAuthenticationChecks();
+
 	@Getter
 	@Setter
 	private PigxUserDetailsService userDetailsService;
@@ -52,10 +56,12 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
 			log.debug("Authentication failed: no credentials provided");
 
 			throw new BadCredentialsException(messages.getMessage(
-				"AbstractUserDetailsAuthenticationProvider.noopBindAccount",
-				"Noop Bind Account"));
-
+					"AbstractUserDetailsAuthenticationProvider.noopBindAccount",
+					"Noop Bind Account"));
 		}
+
+		// 检查账号状态
+		detailsChecker.check(userDetails);
 
 		MobileAuthenticationToken authenticationToken = new MobileAuthenticationToken(userDetails, userDetails.getAuthorities());
 		authenticationToken.setDetails(mobileAuthenticationToken.getDetails());
