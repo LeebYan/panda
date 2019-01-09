@@ -1,7 +1,9 @@
-## pigx 2.0
-[pigx 2.0 部署文档](doc/md/deploy.md)  
-[pigx 2.0 新特性说明  ](https://www.bilibili.com/video/av37786337)   
-[pigx 2.0 从检出到启动](https://www.bilibili.com/video/av37695530)  
+## 当前版本
+V2.1.0
+## pigx pro
+[pigx pro 部署文档](doc/md/deploy.md)  
+[pigx pro 新特性说明  ](https://www.bilibili.com/video/av37786337)   
+[pigx pro 从检出到启动](https://www.bilibili.com/video/av37695530)  
 [pigx pro新建微服务模块（一）](https://www.bilibili.com/video/av37737139)  
 [pigx pro新建微服务模块（二）](https://www.bilibili.com/video/av37740030)  
 [pigx pro新建微服务模块（三）](https://www.bilibili.com/video/av37743341)  
@@ -11,6 +13,7 @@
 ## 协议和授权
 
 pigX并非一个开源软件，作者保留全部的权利。
+擅自窃用，即属严重侵权行为，与盗窃无异。产生的一切任何后果责任由侵权者自负。
 
 ### 🌹权益
 
@@ -21,6 +24,10 @@ pigX并非一个开源软件，作者保留全部的权利。
 
 1. 将本项目的部分或全部代码和资源进行任何形式的再发行（尤其上传GitHub、Gitee ）
 2. 利用本项目的部分或全部代码和资源进行`任何商业行为`
+
+### 免责声明
+
+PigX 未对任何组织、团队，书面授权商业使用。如若出现任何商业后果、纠纷和本人无关，特此声明
 
 ## 贡献代码
 

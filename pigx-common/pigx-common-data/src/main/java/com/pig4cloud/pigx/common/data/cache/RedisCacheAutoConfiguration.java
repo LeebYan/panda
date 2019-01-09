@@ -75,11 +75,9 @@ public class RedisCacheAutoConfiguration {
 			cacheNames.forEach(it -> cacheConfigMap.put(it, cacheConfiguration));
 			initialCaches.putAll(cacheConfigMap);
 		}
-		boolean allowInFlightCacheCreation = true;
-		boolean enableTransactions = false;
 		RedisAutoCacheManager cacheManager = new RedisAutoCacheManager(redisCacheWriter, cacheConfiguration,
-			initialCaches, allowInFlightCacheCreation);
-		cacheManager.setTransactionAware(enableTransactions);
+			initialCaches, true);
+		cacheManager.setTransactionAware(false);
 		return this.customizerInvoker.customize(cacheManager);
 	}
 

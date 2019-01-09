@@ -79,7 +79,7 @@ public class FileController {
 	 * @return
 	 */
 	@GetMapping("/{fileName}")
-	public R file(@PathVariable String fileName, HttpServletResponse response) {
+	public void file(@PathVariable String fileName, HttpServletResponse response) {
 		String[] nameArray = StrUtil.split(fileName, StrUtil.DASHED);
 
 		try (InputStream inputStream = minioTemplate.getObject(nameArray[0], nameArray[1])) {
@@ -87,10 +87,6 @@ public class FileController {
 			IoUtil.copy(inputStream, response.getOutputStream());
 		} catch (Exception e) {
 			log.error("文件读取异常", e);
-			return R.builder().code(CommonConstants.FAIL)
-					.msg(e.getLocalizedMessage()).build();
 		}
-
-		return R.builder().build();
 	}
 }

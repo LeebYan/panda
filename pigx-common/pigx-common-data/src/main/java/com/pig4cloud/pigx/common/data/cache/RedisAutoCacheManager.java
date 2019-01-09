@@ -53,20 +53,21 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 		if (StrUtil.isBlank(name) || !name.contains(SPLIT_FLAG)) {
 			return super.createRedisCache(name, cacheConfig);
 		}
+
 		String[] cacheArray = name.split(SPLIT_FLAG);
 		if (cacheArray.length < CACHE_LENGTH) {
 			return super.createRedisCache(name, cacheConfig);
 		}
-		String cacheName = cacheArray[0] + ":" + TenantContextHolder.getTenantId();
+
 		if (cacheConfig != null) {
-			long cacheAge = Long.getLong(cacheArray[1], -1);
+			long cacheAge = Long.parseLong(cacheArray[1]);
 			cacheConfig = cacheConfig.entryTtl(Duration.ofSeconds(cacheAge));
 		}
-		return super.createRedisCache(cacheName, cacheConfig);
+		return super.createRedisCache(name, cacheConfig);
 	}
 
 	@Override
 	public Cache getCache(String name) {
-		return super.getCache(name + ":" + TenantContextHolder.getTenantId());
+		return super.getCache(name + SPLIT_FLAG + TenantContextHolder.getTenantId());
 	}
 }

@@ -26,27 +26,25 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
-import com.pig4cloud.pigx.common.security.service.PigxUser;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ConvertingCursor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +57,8 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
-	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
+	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
+	private static final String PIGX__ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
 	private final TokenStore tokenStore;
 	private final RedisTemplate redisTemplate;
 	private final CacheManager cacheManager;
@@ -113,7 +112,9 @@ public class PigxTokenEndpoint {
 	@Inner
 	@DeleteMapping("/{token}")
 	public R<Boolean> delToken(@PathVariable("token") String token) {
-		return new R<>(redisTemplate.delete(PIGX_OAUTH_ACCESS + token));
+		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+		tokenStore.removeAccessToken(oAuth2AccessToken);
+		return new R<>();
 	}
 
 
@@ -126,56 +127,19 @@ public class PigxTokenEndpoint {
 	@Inner
 	@PostMapping("/page")
 	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
-		List<Map<String, String>> list = new ArrayList<>();
 		//根据分页参数获取对应数据
-		List<String> pages = findKeysForPage(PIGX_OAUTH_ACCESS + "*", MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
+		String key = String.format("%s*:%s", PIGX_OAUTH_ACCESS, TenantContextHolder.getTenantId());
+		List<String> pages = findKeysForPage(key, MapUtil.getInt(params, PaginationConstants.CURRENT)
+				, MapUtil.getInt(params, PaginationConstants.SIZE));
 
-		for (String page : pages) {
-			String accessToken = StrUtil.subAfter(page, PIGX_OAUTH_ACCESS, true);
-			OAuth2AccessToken token = tokenStore.readAccessToken(accessToken);
-			Map<String, String> map = new HashMap<>(8);
-
-
-			map.put("token_type", token.getTokenType());
-			map.put("token_value", token.getValue());
-			map.put("expires_in", token.getExpiresIn() + "");
-
-
-			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
-			Authentication authentication = oAuth2Auth.getUserAuthentication();
-
-			map.put("client_id", oAuth2Auth.getOAuth2Request().getClientId());
-			map.put("grant_type", oAuth2Auth.getOAuth2Request().getGrantType());
-
-			if (authentication instanceof UsernamePasswordAuthenticationToken) {
-				UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
-				if (extractToken(map, authenticationToken.getPrincipal())) {
-					continue;
-				}
-			} else if (authentication instanceof PreAuthenticatedAuthenticationToken) {
-				//刷新token方式
-				PreAuthenticatedAuthenticationToken authenticationToken = (PreAuthenticatedAuthenticationToken) authentication;
-				if (extractToken(map, authenticationToken.getPrincipal())) {
-					continue;
-				}
-			}
-			list.add(map);
-		}
-
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
 		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
-		result.setRecords(list);
-		result.setTotal(Long.valueOf(redisTemplate.keys(PIGX_OAUTH_ACCESS + "*").size()));
+		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
+		result.setTotal(Long.valueOf(redisTemplate.keys(key).size()));
 		return new R<>(result);
 	}
 
-	private boolean extractToken(Map<String, String> map, Object principal) {
-		if (principal instanceof PigxUser) {
-			PigxUser user = (PigxUser) principal;
-			map.put("user_id", user.getId() + "");
-			map.put("user_name", user.getUsername() + "");
-		}
-		return false;
-	}
 
 	private List<String> findKeysForPage(String patternKey, int pageNum, int pageSize) {
 		ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
