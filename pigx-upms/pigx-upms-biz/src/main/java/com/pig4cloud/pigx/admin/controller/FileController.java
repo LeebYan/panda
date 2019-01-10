@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
@@ -54,7 +55,7 @@ public class FileController {
 	 */
 	@PostMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file) {
-		String fileName = IdUtil.simpleUUID();
+		String fileName = IdUtil.simpleUUID()+StrUtil.DOT+ FileUtil.extName(file.getOriginalFilename());
 		Map<String, String> resultMap = new HashMap<>(4);
 		resultMap.put("bucketName", CommonConstants.BUCKET_NAME);
 		resultMap.put("fileName", fileName);
