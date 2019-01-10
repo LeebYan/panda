@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.admin.controller;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.common.minio.service.MinioTemplate;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
@@ -48,21 +48,19 @@ public class FileController {
 
 	/**
 	 * 上传文件
-	 *
+	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
 	 * @param file 资源
 	 * @return R(bucketName, filename)
 	 */
 	@PostMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file) {
-		String originalFilename = file.getOriginalFilename();
-		String newName = RandomUtil.randomString(16) + originalFilename;
-
+		String fileName = IdUtil.simpleUUID();
 		Map<String, String> resultMap = new HashMap<>(4);
 		resultMap.put("bucketName", CommonConstants.BUCKET_NAME);
-		resultMap.put("fileName", newName);
+		resultMap.put("fileName", fileName);
 
 		try {
-			minioTemplate.putObject(CommonConstants.BUCKET_NAME, newName, file.getInputStream());
+			minioTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
 		} catch (Exception e) {
 			log.error("上传失败", e);
 			return R.builder().code(CommonConstants.FAIL)
