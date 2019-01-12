@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx</artifactId>
-		<version>2.0.0</version>
+		<version>2.1.0</version>
 	</parent>
 
 	<artifactId>pigx-common</artifactId>
@@ -33,11 +33,12 @@
 	<description>pigx 公共聚合模块</description>
 
 	<modules>
-		<module>pigx-common-cache</module>
 		<module>pigx-common-core</module>
+		<module>pigx-common-data</module>
 		<module>pigx-common-gateway</module>
 		<module>pigx-common-job</module>
 		<module>pigx-common-log</module>
+		<module>pigx-common-minio</module>
 		<module>pigx-common-security</module>
 		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>

@@ -29,7 +29,7 @@ import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.ProcessStatusEnum;
 import com.pig4cloud.pigx.common.core.constant.enums.ResourceTypeEnum;
 import com.pig4cloud.pigx.common.core.constant.enums.TaskStatusEnum;
-import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.AllArgsConstructor;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;

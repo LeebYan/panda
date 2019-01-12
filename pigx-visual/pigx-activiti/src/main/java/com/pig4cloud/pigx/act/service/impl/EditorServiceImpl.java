@@ -21,7 +21,7 @@ import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pig4cloud.pigx.act.service.EditorService;
-import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.ActivitiException;

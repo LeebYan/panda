@@ -31,6 +31,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author lengleng
  * @date 2017/11/5
@@ -63,7 +65,7 @@ public class RoleController {
 	@SysLog("添加角色")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_role_add')")
-	public R save(@RequestBody SysRole sysRole) {
+	public R save(@Valid @RequestBody SysRole sysRole) {
 		return new R<>(sysRoleService.save(sysRole));
 	}
 
@@ -76,7 +78,7 @@ public class RoleController {
 	@SysLog("修改角色")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_role_edit')")
-	public R update(@RequestBody SysRole sysRole) {
+	public R update(@Valid @RequestBody SysRole sysRole) {
 		return new R<>(sysRoleService.updateById(sysRole));
 	}
 

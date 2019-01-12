@@ -61,13 +61,13 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				return chain.filter(exchange);
 			}
 
-			// 终端设置不校验， 直接向下执行(1. 从请求参数中获取 2.从header取)
-			String clientId = request.getQueryParams().getFirst("client_id");
-			if (StrUtil.isNotBlank(clientId)
-					&& filterIgnorePropertiesConfig.getClients().contains(clientId)) {
+			// 刷新token，直接向下执行
+			String grantType = request.getQueryParams().getFirst("grant_type");
+			if (StrUtil.equals(SecurityConstants.REFRESH_TOKEN, grantType)) {
 				return chain.filter(exchange);
 			}
 
+			// 终端设置不校验， 直接向下执行
 			try {
 				String[] clientInfos = WebUtils.getClientId(request);
 				if (filterIgnorePropertiesConfig.getClients().contains(clientInfos[0])) {
@@ -83,7 +83,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 					return response.writeWith(Mono.just(response.bufferFactory()
 							.wrap(objectMapper.writeValueAsBytes(
 									R.builder().msg(e.getMessage())
-											.code(CommonConstant.FAIL).build()))));
+											.code(CommonConstants.FAIL).build()))));
 				} catch (JsonProcessingException e1) {
 					log.error("对象输出异常", e1);
 				}

@@ -62,12 +62,12 @@ public class MenuController {
 		// 获取符合条件的菜单
 		Set<MenuVO> all = new HashSet<>();
 		SecurityUtils.getRoles()
-			.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
+				.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
 		List<MenuTree> menuTreeList = all.stream()
-			.filter(menuVo -> CommonConstants.MENU.equals(menuVo.getType()))
-			.map(MenuTree::new)
-			.sorted(Comparator.comparingInt(MenuTree::getSort))
-			.collect(Collectors.toList());
+				.filter(menuVo -> CommonConstants.MENU.equals(menuVo.getType()))
+				.map(MenuTree::new)
+				.sorted(Comparator.comparingInt(MenuTree::getSort))
+				.collect(Collectors.toList());
 		return new R<>(TreeUtil.bulid(menuTreeList, -1));
 	}
 
@@ -90,9 +90,9 @@ public class MenuController {
 	@GetMapping("/tree/{roleId}")
 	public List getRoleTree(@PathVariable Integer roleId) {
 		return sysMenuService.findMenuByRoleId(roleId)
-			.stream()
-			.map(MenuVO::getMenuId)
-			.collect(Collectors.toList());
+				.stream()
+				.map(MenuVO::getMenuId)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class MenuController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_menu_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysMenuService.removeMenuById(id));
+		return sysMenuService.removeMenuById(id);
 	}
 
 	/**

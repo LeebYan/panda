@@ -1,3 +1,4 @@
+# 忽略匹配下列规则的Git 提交 V2.1.0
 ### gradle ###
 .gradle
 /build/

@@ -19,6 +19,7 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
@@ -27,6 +28,8 @@ import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.admin.mapper.SysMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -58,20 +60,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	@CacheEvict(value = "menu_details", allEntries = true)
-	public Boolean removeMenuById(Integer id) {
+	public R removeMenuById(Integer id) {
 		// 查询父节点为当前节点的节点
-		List<Integer> menuIdList = this.list(Wrappers.<SysMenu>query()
-			.lambda().eq(SysMenu::getParentId, id))
-			.stream().map(SysMenu::getMenuId)
-			.collect(Collectors.toList());
+		List<SysMenu> menuList = this.list(Wrappers.<SysMenu>query()
+				.lambda().eq(SysMenu::getParentId, id));
+		if (CollUtil.isNotEmpty(menuList)) {
+			return R.builder()
+					.code(CommonConstants.FAIL)
+					.msg("菜单含有下级不能删除").build();
+		}
 
-		//删除关联ROLE_MENU 数据
-		menuIdList.add(id);
-		menuIdList.forEach(menu -> sysRoleMenuMapper
-			.delete(Wrappers.<SysRoleMenu>query()
-				.lambda().eq(SysRoleMenu::getMenuId, menu)));
+		sysRoleMenuMapper
+				.delete(Wrappers.<SysRoleMenu>query()
+						.lambda().eq(SysRoleMenu::getMenuId, id));
+
 		//删除当前菜单及其子菜单
-		return this.removeByIds(menuIdList);
+		return new R(this.removeById(id));
 	}
 
 	@Override

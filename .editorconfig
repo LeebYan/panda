@@ -1,3 +1,4 @@
+# 开发组IDE 编辑器标准 V2.1.0
 root = true
 
 [*.{adoc, bat, groovy, html, java, js, jsp, kt, kts, md, properties, py, rb, sh, sql, svg, txt, xml, xsd}]

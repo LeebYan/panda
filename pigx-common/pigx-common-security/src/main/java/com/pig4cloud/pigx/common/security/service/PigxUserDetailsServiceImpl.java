@@ -27,6 +27,8 @@ import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +50,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 	private final RemoteUserService remoteUserService;
+	private final CacheManager cacheManager;
 
 	/**
 	 * 用户密码登录
@@ -58,8 +61,15 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Cache cache = cacheManager.getCache("user_details");
+		if (cache != null && cache.get(username) != null) {
+			return (PigxUser) cache.get(username).get();
+		}
+
 		R<UserInfo> result = remoteUserService.info(username, SecurityConstants.FROM_IN);
-		return getUserDetails(result);
+		UserDetails userDetails = getUserDetails(result);
+		cache.put(username, userDetails);
+		return userDetails;
 	}
 
 
@@ -96,12 +106,12 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 
 		}
 		Collection<? extends GrantedAuthority> authorities
-			= AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
+				= AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
 		SysUser user = info.getSysUser();
-		boolean enabled = StrUtil.equals(user.getDelFlag(), CommonConstants.STATUS_NORMAL);
+		boolean enabled = StrUtil.equals(user.getLockFlag(), CommonConstants.STATUS_NORMAL);
 		// 构造security用户
 
 		return new PigxUser(user.getUserId(), user.getDeptId(), user.getTenantId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(), enabled,
-			true, true, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
+				true, true, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
 	}
 }

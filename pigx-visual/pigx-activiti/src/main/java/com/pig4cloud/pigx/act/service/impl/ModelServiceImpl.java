@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pig4cloud.pigx.act.service.ModelService;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.core.util.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
@@ -82,8 +82,8 @@ public class ModelServiceImpl implements ModelService {
 			model.setName(name);
 			model.setCategory(category);
 			model.setVersion(Integer.parseInt(
-				String.valueOf(repositoryService.createModelQuery()
-					.modelKey(model.getKey()).count() + 1)));
+					String.valueOf(repositoryService.createModelQuery()
+							.modelKey(model.getKey()).count() + 1)));
 
 			ObjectNode modelObjectNode = objectMapper.createObjectNode();
 			modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
@@ -110,8 +110,8 @@ public class ModelServiceImpl implements ModelService {
 	@Override
 	public IPage<Model> getModelPage(Map<String, Object> params) {
 		ModelQuery modelQuery = repositoryService.createModelQuery()
-			.modelTenantId(String.valueOf(TenantContextHolder.getTenantId()))
-			.latestVersion().orderByLastUpdateTime().desc();
+				.modelTenantId(String.valueOf(TenantContextHolder.getTenantId()))
+				.latestVersion().orderByLastUpdateTime().desc();
 		String category = (String) params.get("category");
 		if (StrUtil.isNotBlank(category)) {
 			modelQuery.modelCategory(category);
@@ -158,18 +158,18 @@ public class ModelServiceImpl implements ModelService {
 			}
 			// 部署流程
 			Deployment deployment = repositoryService
-				.createDeployment().name(model.getName())
-				.addBpmnModel(processName, bpmnModel)
-				.tenantId(String.valueOf(TenantContextHolder.getTenantId()))
-				.deploy();
+					.createDeployment().name(model.getName())
+					.addBpmnModel(processName, bpmnModel)
+					.tenantId(String.valueOf(TenantContextHolder.getTenantId()))
+					.deploy();
 
 			// 设置流程分类
 			List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()
-				.deploymentId(deployment.getId())
-				.list();
+					.deploymentId(deployment.getId())
+					.list();
 
 			list.stream().forEach(processDefinition ->
-				repositoryService.setProcessDefinitionCategory(processDefinition.getId(), model.getCategory()));
+					repositoryService.setProcessDefinitionCategory(processDefinition.getId(), model.getCategory()));
 		} catch (Exception e) {
 			log.error("部署失败，异常", e);
 		}

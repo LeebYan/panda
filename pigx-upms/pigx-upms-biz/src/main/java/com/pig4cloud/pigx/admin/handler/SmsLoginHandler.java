@@ -55,14 +55,14 @@ public class SmsLoginHandler extends AbstractLoginHandler {
 	 */
 	@Override
 	public UserInfo info(String identify) {
-		SysUser sysUser = sysUserService
-			.getOne(Wrappers.<SysUser>query()
-				.lambda().eq(SysUser::getPhone, identify));
+		SysUser user = sysUserService
+				.getOne(Wrappers.<SysUser>query()
+						.lambda().eq(SysUser::getPhone, identify));
 
-		if (sysUser == null) {
+		if (user == null) {
 			log.info("手机号未注册:{}", identify);
 			return null;
 		}
-		return sysUserService.findUserInfo(sysUser);
+		return sysUserService.findUserInfo(user);
 	}
 }

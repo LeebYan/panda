@@ -40,7 +40,7 @@ import javax.validation.Valid;
 
 /**
  * @author lengleng
- * @date 2017/10/28
+ * @date 2018/12/16
  */
 @RestController
 @AllArgsConstructor
@@ -57,12 +57,12 @@ public class UserController {
 	@GetMapping(value = {"/info"})
 	public R info() {
 		String username = SecurityUtils.getUser().getUsername();
-		SysUser sysUser = userService.getOne(Wrappers.<SysUser>query()
-			.lambda().eq(SysUser::getUsername, username));
-		if (sysUser == null) {
+		SysUser user = userService.getOne(Wrappers.<SysUser>query()
+				.lambda().eq(SysUser::getUsername, username));
+		if (user == null) {
 			return new R<>(Boolean.FALSE, "获取当前用户信息失败");
 		}
-		return new R<>(userService.findUserInfo(sysUser));
+		return new R<>(userService.findUserInfo(user));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class UserController {
 	@GetMapping("/info/{username}")
 	public R info(@PathVariable String username) {
 		SysUser user = userService.getOne(Wrappers.<SysUser>query()
-			.lambda().eq(SysUser::getUsername, username));
+				.lambda().eq(SysUser::getUsername, username));
 		if (user == null) {
 			return new R<>(Boolean.FALSE, String.format("用户信息为空 %s", username));
 		}

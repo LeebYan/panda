@@ -33,6 +33,13 @@ swagger:
         description: 'read all'
       - scope: 'write'
         description: 'access all'
+
+# 文件系统
+minio:
+  url: http://139.224.200.249:9090
+  access-key: lengleng
+  secret-key: lengleng
+
 # Logger Config
 logging:
   level:

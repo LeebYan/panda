@@ -40,19 +40,19 @@ v 1.4.0 提供了代码图形化生成功能。
 
 1. 代码生成模块
 
-![](http://obq1lvsd9.bkt.clouddn.com/20180803083802.png)
+![](http://a.pigx.top/20180803083802.png)
 
 2. 选择要生成的表
 
    > 以下为空则从**pigx-codegen/generator.properties** 获取
 
-   ![](http://obq1lvsd9.bkt.clouddn.com/20180803084058.png)
+   ![](http://a.pigx.top/20180803084058.png)
 
 3. 解压下载的**pigx_code_gen.zip**
 
    > 生成代码结构，安装前后端 maven 、vue-cli 目录生成，可以覆盖到指定业务模块
 
-   ![](http://obq1lvsd9.bkt.clouddn.com/20180803084524.png)
+   ![](http://a.pigx.top/20180803084524.png)
 
 4. **重点讲解生成的SQL使用**
 
@@ -72,7 +72,7 @@ v 1.4.0 提供了代码图形化生成功能。
    ├── 14
    ```
 
-![](http://obq1lvsd9.bkt.clouddn.com/20180803084905.png)
+![](http://a.pigx.top/20180803084905.png)
 
 5. **配置路由**
 前端 index.js

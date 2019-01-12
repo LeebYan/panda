@@ -21,7 +21,6 @@ package com.pig4cloud.pigx.admin.api.dto;
 
 import com.pig4cloud.pigx.admin.api.entity.SysUser;
 import lombok.Data;
-import lombok.ToString;
 
 import java.io.Serializable;
 

@@ -25,6 +25,10 @@ package com.pig4cloud.pigx.common.core.constant;
  */
 public interface SecurityConstants {
 	/**
+	 * 刷新
+	 */
+	String REFRESH_TOKEN = "refresh_token";
+	/**
 	 * 验证码有效期
 	 */
 	int CODE_TIME = 60;
@@ -82,7 +86,7 @@ public interface SecurityConstants {
 	 * 微信获取OPENID
 	 */
 	String WX_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/oauth2/access_token" +
-		"?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
+			"?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
 
 	/**
 	 * {bcrypt} 加密的特征码
@@ -92,14 +96,14 @@ public interface SecurityConstants {
 	 * sys_oauth_client_details 表的字段，不包括client_id、client_secret
 	 */
 	String CLIENT_FIELDS = "client_id, CONCAT('{noop}',client_secret) as client_secret, resource_ids, scope, "
-		+ "authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, "
-		+ "refresh_token_validity, additional_information, autoapprove";
+			+ "authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, "
+			+ "refresh_token_validity, additional_information, autoapprove";
 
 	/**
 	 * JdbcClientDetailsService 查询语句
 	 */
 	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS
-		+ " from sys_oauth_client_details";
+			+ " from sys_oauth_client_details";
 
 	/**
 	 * 默认的查询语句

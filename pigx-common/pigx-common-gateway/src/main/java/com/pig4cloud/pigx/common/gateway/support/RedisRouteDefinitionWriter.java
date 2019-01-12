@@ -26,6 +26,7 @@ import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,6 +52,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			RouteDefinitionVo vo = new RouteDefinitionVo();
 			BeanUtils.copyProperties(r, vo);
 			log.info("保存路由信息{}", vo);
+			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, r.getId(), vo);
 			return Mono.empty();
 		});
@@ -60,6 +62,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	public Mono<Void> delete(Mono<String> routeId) {
 		routeId.subscribe(id -> {
 			log.info("删除路由信息{}", id);
+			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.opsForHash().delete(CommonConstants.ROUTE_KEY, id);
 		});
 		return Mono.empty();
@@ -73,6 +76,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	 */
 	@Override
 	public Flux<RouteDefinition> getRouteDefinitions() {
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
 		List<RouteDefinitionVo> values = redisTemplate.opsForHash().values(CommonConstants.ROUTE_KEY);
 		List<RouteDefinition> definitionList = new ArrayList<>();

@@ -75,14 +75,14 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 	 */
 	@Override
 	public UserInfo info(String openId) {
-		SysUser sysUser = sysUserService
+		SysUser user = sysUserService
 			.getOne(Wrappers.<SysUser>query()
 				.lambda().eq(SysUser::getWxOpenid, openId));
 
-		if (sysUser == null) {
+		if (user == null) {
 			log.info("微信未绑定:{}", openId);
 			return null;
 		}
-		return sysUserService.findUserInfo(sysUser);
+		return sysUserService.findUserInfo(user);
 	}
 }
