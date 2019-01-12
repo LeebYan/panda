@@ -1,5 +1,5 @@
 ## 当前版本
-V2.1.0
+V2.1.1
 ## pigx pro
 [pigx pro 部署文档](doc/md/deploy.md)  
 [pigx pro 新特性说明  ](https://www.bilibili.com/video/av37786337)   
