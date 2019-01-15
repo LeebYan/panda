@@ -42,7 +42,7 @@
 	</developers>
 
 	<properties>
-		<spring-boot.version>2.0.7.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.8.RELEASE</spring-boot.version>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
 		<spring-platform.version>Cairo-SR6</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -177,13 +177,6 @@
 					<configuration>
 						<finalName>${project.build.finalName}</finalName>
 					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>com.spotify</groupId>

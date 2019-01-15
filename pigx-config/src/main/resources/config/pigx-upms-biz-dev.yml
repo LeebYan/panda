@@ -13,6 +13,7 @@ security:
         - '/social/info/*'
         - '/mobile/*'
         - '/log/save'
+        - '/file/**'
 
 # 数据源
 spring:
@@ -39,8 +40,3 @@ minio:
   url: http://139.224.200.249:9090
   access-key: lengleng
   secret-key: lengleng
-
-# Logger Config
-logging:
-  level:
-    com.pig4cloud.pigx.admin.mapper: debug
