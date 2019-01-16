@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>2.1.1</version>
+	<version>2.2.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -42,13 +42,13 @@
 	</developers>
 
 	<properties>
-		<spring-boot.version>2.0.8.RELEASE</spring-boot.version>
-		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
+		<spring-boot.version>2.1.2.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.RC2</spring-cloud.version>
 		<spring-platform.version>Cairo-SR6</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.0.4</spring-boot-admin.version>
+		<spring-boot-admin.version>2.1.2</spring-boot-admin.version>
 		<hutool.version>4.3.2</hutool.version>
 		<mybatis-plus.version>3.0.6</mybatis-plus.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
@@ -61,7 +61,7 @@
 		<minio.version>3.0.12</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
-		<security.oauth.version>2.3.3.RELEASE</security.oauth.version>
+		<security.oauth.version>2.3.4.RELEASE</security.oauth.version>
 		<jackson.modules>2.9.6</jackson.modules>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.url>http://192.168.0.13:4243</docker.url>
@@ -157,6 +157,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${security.oauth.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -218,55 +223,33 @@
 	</build>
 
 	<repositories>
-		<!--阿里云主仓库，代理了maven central和jcenter仓库-->
 		<repository>
-			<id>aliyun</id>
-			<name>aliyun</name>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		<!--阿里云代理Spring 官方仓库-->
 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
-			<url>https://maven.aliyun.com/repository/spring</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<!--私服厂库-->
-		<repository>
-			<id>pigx</id>
-			<name>pigx repository</name>
-			<url>http://nexus.gitee.wang/repository/maven-public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<url>https://repo.spring.io/milestone</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
-		<!--阿里云代理Spring 插件仓库-->
 		<pluginRepository>
-			<id>spring-plugin</id>
-			<name>spring-plugin</name>
-			<url>https://maven.aliyun.com/repository/spring-plugin</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>

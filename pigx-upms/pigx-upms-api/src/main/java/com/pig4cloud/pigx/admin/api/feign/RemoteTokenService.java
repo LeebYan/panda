@@ -36,18 +36,20 @@ public interface RemoteTokenService {
 	/**
 	 * 分页查询token 信息
 	 *
+	 * @param from   内部调用标志
 	 * @param params 分页参数
 	 * @return page
 	 */
 	@PostMapping("/token/page")
-	R<Page> getTokenPage(@RequestBody Map<String, Object> params,@RequestHeader(SecurityConstants.FROM) String from);
+	R<Page> getTokenPage(@RequestBody Map<String, Object> params, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 * 删除token
 	 *
+	 * @param from  内部调用标志
 	 * @param token token
 	 * @return
 	 */
 	@DeleteMapping("/token/{token}")
-	R<Boolean> removeTokenById(@PathVariable("token") String token,@RequestHeader(SecurityConstants.FROM) String from);
+	R<Boolean> removeTokenById(@PathVariable("token") String token, @RequestHeader(SecurityConstants.FROM) String from);
 }

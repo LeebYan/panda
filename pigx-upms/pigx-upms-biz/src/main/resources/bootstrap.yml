@@ -4,9 +4,6 @@ server:
 spring:
   application:
     name: @artifactId@
-  # dev环境
-  profiles:
-    active: dev
   # 配置中心
   cloud:
     config:
@@ -20,7 +17,8 @@ spring:
     exclude: org.springframework.cloud.gateway.config.GatewayClassPathWarningAutoConfiguration
   main:
     allow-bean-definition-overriding: true
-
+  profiles:
+    active: dev
 # 注册中心配置
 eureka:
   instance:
