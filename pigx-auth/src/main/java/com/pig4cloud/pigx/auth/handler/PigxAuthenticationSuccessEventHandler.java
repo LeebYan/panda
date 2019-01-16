@@ -18,7 +18,10 @@
 package com.pig4cloud.pigx.auth.handler;
 
 import com.pig4cloud.pigx.common.security.handler.AbstractAuthenticationSuccessEventHandler;
+import com.pig4cloud.pigx.common.security.service.PigxUser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +33,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PigxAuthenticationSuccessEventHandler extends AbstractAuthenticationSuccessEventHandler {
 
+	@Autowired
+	SimpMessagingTemplate simpMessagingTemplate;
+
 	/**
 	 * 处理登录成功方法
 	 * <p>
@@ -39,6 +45,9 @@ public class PigxAuthenticationSuccessEventHandler extends AbstractAuthenticatio
 	 */
 	@Override
 	public void handle(Authentication authentication) {
-		log.info("用户：{} 登录成功", authentication.getPrincipal());
+		Object principal = authentication.getPrincipal();
+		log.info("用户：{} 登录成功", principal);
+		PigxUser pigxUser = (PigxUser) principal;
+		simpMessagingTemplate.convertAndSendToUser(pigxUser.getTenantId().toString(),"/loginToAll",pigxUser.getUsername());
 	}
 }

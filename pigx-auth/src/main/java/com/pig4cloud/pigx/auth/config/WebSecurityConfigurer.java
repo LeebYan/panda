@@ -69,7 +69,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 				"/token/**",
 				"/actuator/**",
-				"/mobile/**").permitAll()
+				"/mobile/**","/ws/**").permitAll()
 			.anyRequest().authenticated()
 			.and().csrf().disable()
 			.apply(mobileSecurityConfigurer());
