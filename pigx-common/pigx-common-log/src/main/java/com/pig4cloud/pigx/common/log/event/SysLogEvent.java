@@ -20,15 +20,15 @@
 package com.pig4cloud.pigx.common.log.event;
 
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
-import org.springframework.context.ApplicationEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * @author lengleng
  * 系统日志事件
  */
-public class SysLogEvent extends ApplicationEvent {
-
-	public SysLogEvent(SysLog source) {
-		super(source);
-	}
+@Getter
+@AllArgsConstructor
+public class SysLogEvent {
+	private final SysLog sysLog;
 }
