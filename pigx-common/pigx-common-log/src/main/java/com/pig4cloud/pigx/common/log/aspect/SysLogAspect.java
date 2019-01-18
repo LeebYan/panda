@@ -19,7 +19,6 @@
 
 package com.pig4cloud.pigx.common.log.aspect;
 
-import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.log.event.SysLogEvent;
 import com.pig4cloud.pigx.common.log.util.SysLogUtils;

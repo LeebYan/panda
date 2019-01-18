@@ -23,8 +23,6 @@ import io.minio.ObjectStat;
 import io.minio.Result;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
