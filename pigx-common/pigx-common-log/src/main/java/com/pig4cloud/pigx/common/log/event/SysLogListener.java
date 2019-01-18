@@ -28,7 +28,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 
-
 /**
  * @author lengleng
  * 异步监听日志事件
@@ -42,7 +41,7 @@ public class SysLogListener {
 	@Order
 	@EventListener(SysLogEvent.class)
 	public void saveSysLog(SysLogEvent event) {
-		SysLog sysLog = (SysLog) event.getSource();
+		SysLog sysLog = event.getSysLog();
 		remoteLogService.saveLog(sysLog, SecurityConstants.FROM_IN);
 	}
 }
