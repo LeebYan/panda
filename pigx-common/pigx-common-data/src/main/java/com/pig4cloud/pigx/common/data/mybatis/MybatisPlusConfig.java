@@ -23,7 +23,9 @@ import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
+import com.pig4cloud.pigx.common.data.tenant.PigxTenantConfig;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
+import lombok.AllArgsConstructor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +41,23 @@ import java.util.List;
  */
 @Configuration
 @MapperScan("com.pig4cloud.pigx.*.mapper")
+@AllArgsConstructor
 public class MybatisPlusConfig {
+
+	private final PigxTenantConfig pigxTenantConfig;
+
+	/**
+	 * 创建租户维护处理器对象
+	 *
+	 * @return 处理后的租户维护处理器
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public PigxTenantHandler pigxTenantHandler() {
+		PigxTenantHandler pigxTenantHandler = new PigxTenantHandler();
+		pigxTenantHandler.setTenantTables(pigxTenantConfig.getTenantTables());
+		return pigxTenantHandler;
+	}
 
 	/**
 	 * 分页插件
@@ -52,7 +70,7 @@ public class MybatisPlusConfig {
 		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 		List<ISqlParser> sqlParserList = new ArrayList<>();
 		TenantSqlParser tenantSqlParser = new TenantSqlParser();
-		tenantSqlParser.setTenantHandler(new PigxTenantHandler());
+		tenantSqlParser.setTenantHandler(pigxTenantHandler());
 		sqlParserList.add(tenantSqlParser);
 		paginationInterceptor.setSqlParserList(sqlParserList);
 		return paginationInterceptor;
