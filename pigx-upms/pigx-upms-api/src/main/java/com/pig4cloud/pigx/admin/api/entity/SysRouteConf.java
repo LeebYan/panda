@@ -17,7 +17,10 @@
 
 package com.pig4cloud.pigx.admin.api.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -32,7 +35,6 @@ import java.time.LocalDateTime;
  * @date 2018-11-06 10:17:18
  */
 @Data
-@TableName("sys_route_conf")
 @EqualsAndHashCode(callSuper = true)
 public class SysRouteConf extends Model<SysRouteConf> {
 	private static final long serialVersionUID = 1L;

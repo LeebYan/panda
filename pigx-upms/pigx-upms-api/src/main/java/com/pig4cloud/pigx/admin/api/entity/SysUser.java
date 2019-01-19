@@ -22,7 +22,6 @@ package com.pig4cloud.pigx.admin.api.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -38,7 +37,6 @@ import java.time.LocalDateTime;
  * @since 2017-10-29
  */
 @Data
-@TableName("sys_user")
 public class SysUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
