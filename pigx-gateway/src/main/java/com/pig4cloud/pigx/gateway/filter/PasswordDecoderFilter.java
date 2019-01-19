@@ -22,6 +22,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -51,7 +52,8 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 	@Value("${security.encode.key:1234567812345678}")
 	private String encodeKey;
 
-	private static String decryptAES(String data, String pass) throws Exception {
+	@SneakyThrows
+	private static String decryptAES(String data, String pass) {
 		Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
 		SecretKeySpec keyspec = new SecretKeySpec(pass.getBytes(), KEY_ALGORITHM);
 		IvParameterSpec ivspec = new IvParameterSpec(pass.getBytes());

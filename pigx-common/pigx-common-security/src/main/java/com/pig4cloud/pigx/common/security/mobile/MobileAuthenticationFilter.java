@@ -20,12 +20,12 @@ package com.pig4cloud.pigx.common.security.mobile;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -62,11 +62,12 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 	}
 
 	@Override
+	@SneakyThrows
 	public Authentication attemptAuthentication(HttpServletRequest request,
-												HttpServletResponse response) throws AuthenticationException {
+												HttpServletResponse response) {
 		if (postOnly && !request.getMethod().equals(HttpMethod.POST.name())) {
 			throw new AuthenticationServiceException(
-				"Authentication method not supported: " + request.getMethod());
+					"Authentication method not supported: " + request.getMethod());
 		}
 
 		String mobile = obtainMobile(request);
@@ -93,11 +94,11 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 			logger.debug("Authentication request failed: " + failed);
 
 			eventPublisher.publishAuthenticationFailure(new BadCredentialsException(failed.getMessage(), failed),
-				new PreAuthenticatedAuthenticationToken("access-token", "N/A"));
+					new PreAuthenticatedAuthenticationToken("access-token", "N/A"));
 
 			try {
 				authenticationEntryPoint.commence(request, response,
-					new UsernameNotFoundException(failed.getMessage(), failed));
+						new UsernameNotFoundException(failed.getMessage(), failed));
 			} catch (Exception e) {
 				logger.error("authenticationEntryPoint handle error:{}", failed);
 			}

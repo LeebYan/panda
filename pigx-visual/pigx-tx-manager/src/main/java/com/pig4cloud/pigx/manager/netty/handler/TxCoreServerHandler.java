@@ -32,6 +32,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,15 +63,10 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	}
 
 	@Override
-	public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
+	public void channelRead(final ChannelHandlerContext ctx, Object msg) {
 		final String json = SocketUtils.getJson(msg);
 		logger.debug("request->" + json);
-		threadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				service(json, ctx);
-			}
-		});
+		threadPool.execute(() -> service(json, ctx));
 	}
 
 	private void service(String json, ChannelHandlerContext ctx) {
@@ -95,7 +91,8 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	}
 
 	@Override
-	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+	@SneakyThrows
+	public void channelRegistered(ChannelHandlerContext ctx) {
 
 		//是否到达最大上线连接数
 		if (SocketManager.getInstance().isAllowConnection()) {
@@ -107,7 +104,8 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	}
 
 	@Override
-	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+	@SneakyThrows
+	public void channelUnregistered(ChannelHandlerContext ctx) {
 
 		SocketManager.getInstance().removeClient(ctx.channel());
 		String modelName = ctx.channel().remoteAddress().toString();
@@ -118,18 +116,18 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	}
 
 	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+	public void channelReadComplete(ChannelHandlerContext ctx) {
 		ctx.flush();
 	}
 
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		cause.printStackTrace();
 		//ctx.close();
 	}
 
 	@Override
-	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
 		//心跳配置
 		if (IdleStateEvent.class.isAssignableFrom(evt.getClass())) {
 			IdleStateEvent event = (IdleStateEvent) evt;

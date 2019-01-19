@@ -24,6 +24,7 @@ import io.minio.Result;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
@@ -48,9 +49,9 @@ public class MinioTemplate implements InitializingBean {
 	 * 创建bucket
 	 *
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#makeBucket
 	 */
-	public void createBucket(String bucketName) throws Exception {
+	@SneakyThrows
+	public void createBucket(String bucketName) {
 		if (!client.bucketExists(bucketName)) {
 			client.makeBucket(bucketName);
 		}
@@ -61,23 +62,24 @@ public class MinioTemplate implements InitializingBean {
 	 * <p>
 	 * https://docs.minio.io/cn/java-client-api-reference.html#listBuckets
 	 */
-	public List<Bucket> getAllBuckets() throws Exception {
+	@SneakyThrows
+	public List<Bucket> getAllBuckets() {
 		return client.listBuckets();
 	}
 
 	/**
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#listBuckets
 	 */
-	public Optional<Bucket> getBucket(String bucketName) throws Exception {
+	@SneakyThrows
+	public Optional<Bucket> getBucket(String bucketName) {
 		return client.listBuckets().stream().filter(b -> b.name().equals(bucketName)).findFirst();
 	}
 
 	/**
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#removeBucket
 	 */
-	public void removeBucket(String bucketName) throws Exception {
+	@SneakyThrows
+	public void removeBucket(String bucketName) {
 		client.removeBucket(bucketName);
 	}
 
@@ -88,9 +90,9 @@ public class MinioTemplate implements InitializingBean {
 	 * @param prefix     前缀
 	 * @param recursive  是否递归查询
 	 * @return MinioItem 列表
-	 * @throws Exception
 	 */
-	public List<MinioItem> getAllObjectsByPrefix(String bucketName, String prefix, boolean recursive) throws Exception {
+	@SneakyThrows
+	public List<MinioItem> getAllObjectsByPrefix(String bucketName, String prefix, boolean recursive) {
 		List<MinioItem> objectList = new ArrayList<>();
 		Iterable<Result<Item>> objectsIterator = client
 				.listObjects(bucketName, prefix, recursive);
@@ -108,9 +110,9 @@ public class MinioTemplate implements InitializingBean {
 	 * @param objectName 文件名称
 	 * @param expires    过期时间 <=7
 	 * @return url
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	public String getObjectURL(String bucketName, String objectName, Integer expires) throws Exception {
+	@SneakyThrows
+	public String getObjectURL(String bucketName, String objectName, Integer expires) {
 		return client.presignedGetObject(bucketName, objectName, expires);
 	}
 
@@ -120,9 +122,9 @@ public class MinioTemplate implements InitializingBean {
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @return 二进制流
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	public InputStream getObject(String bucketName, String objectName) throws Exception {
+	@SneakyThrows
+	public InputStream getObject(String bucketName, String objectName) {
 		return client.getObject(bucketName, objectName);
 	}
 

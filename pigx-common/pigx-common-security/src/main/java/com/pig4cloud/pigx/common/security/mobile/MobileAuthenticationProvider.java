@@ -21,12 +21,12 @@ import com.pig4cloud.pigx.common.security.component.PigxPreAuthenticationChecks;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
@@ -47,7 +47,8 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
 	private PigxUserDetailsService userDetailsService;
 
 	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+	@SneakyThrows
+	public Authentication authenticate(Authentication authentication) {
 		MobileAuthenticationToken mobileAuthenticationToken = (MobileAuthenticationToken) authentication;
 
 		String principal = mobileAuthenticationToken.getPrincipal().toString();

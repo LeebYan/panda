@@ -27,6 +27,7 @@ import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
 import com.pig4cloud.pigx.gateway.config.FilterIgnorePropertiesConfig;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -97,9 +98,9 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 	 * 检查code
 	 *
 	 * @param request
-	 * @throws ValidateCodeException 校验异常
 	 */
-	private void checkCode(ServerHttpRequest request) throws ValidateCodeException {
+	@SneakyThrows
+	private void checkCode(ServerHttpRequest request) {
 		String code = request.getQueryParams().getFirst("code");
 
 		if (StrUtil.isBlank(code)) {

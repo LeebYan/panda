@@ -31,8 +31,8 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.pig4cloud.pigx.common.job.properties.ElasticJobProperties;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -59,7 +59,8 @@ public abstract class AbstractJobInitialization implements ApplicationContextAwa
 	protected ApplicationContext applicationContext;
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	@SneakyThrows
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
@@ -166,13 +167,13 @@ public abstract class AbstractJobInitialization implements ApplicationContextAwa
 	private LiteJobConfiguration getLiteJobConfiguration(JobTypeConfiguration jobTypeConfiguration, ElasticJobProperties.JobConfiguration jobConfiguration) {
 		//构建Lite作业
 		return LiteJobConfiguration.newBuilder(Objects.requireNonNull(jobTypeConfiguration))
-			.monitorExecution(jobConfiguration.isMonitorExecution())
-			.monitorPort(jobConfiguration.getMonitorPort())
-			.maxTimeDiffSeconds(jobConfiguration.getMaxTimeDiffSeconds())
-			.jobShardingStrategyClass(jobConfiguration.getJobShardingStrategyClass())
-			.reconcileIntervalMinutes(jobConfiguration.getReconcileIntervalMinutes())
-			.disabled(jobConfiguration.isDisabled())
-			.overwrite(jobConfiguration.isOverwrite()).build();
+				.monitorExecution(jobConfiguration.isMonitorExecution())
+				.monitorPort(jobConfiguration.getMonitorPort())
+				.maxTimeDiffSeconds(jobConfiguration.getMaxTimeDiffSeconds())
+				.jobShardingStrategyClass(jobConfiguration.getJobShardingStrategyClass())
+				.reconcileIntervalMinutes(jobConfiguration.getReconcileIntervalMinutes())
+				.disabled(jobConfiguration.isDisabled())
+				.overwrite(jobConfiguration.isOverwrite()).build();
 	}
 
 	/**
@@ -184,11 +185,11 @@ public abstract class AbstractJobInitialization implements ApplicationContextAwa
 	 */
 	protected JobCoreConfiguration getJobCoreConfiguration(String jobName, ElasticJobProperties.JobConfiguration jobConfiguration) {
 		JobCoreConfiguration.Builder builder = JobCoreConfiguration.newBuilder(jobName, jobConfiguration.getCron(), jobConfiguration.getShardingTotalCount())
-			.shardingItemParameters(jobConfiguration.getShardingItemParameters())
-			.jobParameter(jobConfiguration.getJobParameter())
-			.failover(jobConfiguration.isFailover())
-			.misfire(jobConfiguration.isMisfire())
-			.description(jobConfiguration.getDescription());
+				.shardingItemParameters(jobConfiguration.getShardingItemParameters())
+				.jobParameter(jobConfiguration.getJobParameter())
+				.failover(jobConfiguration.isFailover())
+				.misfire(jobConfiguration.isMisfire())
+				.description(jobConfiguration.getDescription());
 		if (StringUtils.isNotBlank(jobConfiguration.getJobExceptionHandler())) {
 			builder.jobProperties(JobPropertiesEnum.JOB_EXCEPTION_HANDLER.getKey(), jobConfiguration.getJobExceptionHandler());
 		}
@@ -220,7 +221,7 @@ public abstract class AbstractJobInitialization implements ApplicationContextAwa
 
 		//注册分布式监听者
 		AbstractDistributeOnceElasticJobListener distributedListener = registerBean(listener.getDistributedListenerClass(), listener.getDistributedListenerClass(),
-			AbstractDistributeOnceElasticJobListener.class, listener.getStartedTimeoutMilliseconds(), listener.getCompletedTimeoutMilliseconds());
+				AbstractDistributeOnceElasticJobListener.class, listener.getStartedTimeoutMilliseconds(), listener.getCompletedTimeoutMilliseconds());
 		if (null != distributedListener) {
 			elasticJobListeners.add(distributedListener);
 		}

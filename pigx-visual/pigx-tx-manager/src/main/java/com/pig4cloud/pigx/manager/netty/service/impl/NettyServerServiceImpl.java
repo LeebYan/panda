@@ -81,7 +81,7 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 				.handler(new LoggingHandler(LogLevel.INFO))
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
-					public void initChannel(SocketChannel ch) throws Exception {
+					public void initChannel(SocketChannel ch) {
 						ch.pipeline().addLast("timeout", new IdleStateHandler(heartTime, heartTime, heartTime, TimeUnit.SECONDS));
 
 						ch.pipeline().addLast(new LengthFieldPrepender(4, false));
@@ -113,7 +113,7 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 	}
 
 	@Override
-	public void destroy() throws Exception {
+	public void destroy() {
 		close();
 		threadPool.shutdown();
 	}
