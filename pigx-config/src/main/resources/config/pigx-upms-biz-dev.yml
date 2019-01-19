@@ -44,8 +44,11 @@ minio:
 logging:
   level:
     com.pig4cloud.pigx.admin.mapper: debug
+
+# 租户表维护
 pigx:
   tenant:
+    column: tenant_id
     tables:
       - sys_user
       - sys_role

@@ -4,18 +4,26 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 多租户配置类对应属性配置映射
+ * 多租户配置
  *
  * @author oathsign
  */
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "pigx.tenant")
-public class TenantProperties {
+public class PigxTenantConfigProperties {
 
 	/**
-	 * 服务中应用多租户的数据库表名
+	 * 维护租户列名称
 	 */
-	private String[] tables = new String[]{};
+	private String column;
+
+	/**
+	 * 多租户的数据表集合
+	 */
+	private List<String> tables = new ArrayList<>();
 }

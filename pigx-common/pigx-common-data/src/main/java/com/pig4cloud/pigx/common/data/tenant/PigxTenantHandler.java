@@ -17,12 +17,12 @@
 
 package com.pig4cloud.pigx.common.data.tenant;
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author lengleng
@@ -31,9 +31,9 @@ import net.sf.jsqlparser.expression.LongValue;
  * 租户维护处理器
  */
 @Slf4j
-@Data
 public class PigxTenantHandler implements TenantHandler {
-	private String[] tenantTables = new String[]{};
+	@Autowired
+	private PigxTenantConfigProperties properties;
 
 	/**
 	 * 获取租户值
@@ -54,7 +54,8 @@ public class PigxTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public String getTenantIdColumn() {
-		return "tenant_id";
+		return StrUtil.isNotBlank(properties.getColumn())
+				? properties.getColumn() : "tenant_id";
 	}
 
 	/**
@@ -65,6 +66,6 @@ public class PigxTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public boolean doTableFilter(String tableName) {
-		return !ArrayUtil.contains(tenantTables, tableName);
+		return !properties.getTables().contains(tableName);
 	}
 }
