@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -60,7 +61,8 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 	 * @throws UsernameNotFoundException
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	@SneakyThrows
+	public UserDetails loadUserByUsername(String username) {
 		Cache cache = cacheManager.getCache("user_details");
 		if (cache != null && cache.get(username) != null) {
 			return (PigxUser) cache.get(username).get();
@@ -81,7 +83,8 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 	 * @throws UsernameNotFoundException
 	 */
 	@Override
-	public UserDetails loadUserBySocial(String inStr) throws UsernameNotFoundException {
+	@SneakyThrows
+	public UserDetails loadUserBySocial(String inStr) {
 		return getUserDetails(remoteUserService.social(inStr, SecurityConstants.FROM_IN));
 	}
 

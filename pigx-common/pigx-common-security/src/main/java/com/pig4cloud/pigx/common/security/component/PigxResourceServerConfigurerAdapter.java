@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.common.security.component;
 
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -56,10 +57,10 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 	 * 默认的配置，对外暴露
 	 *
 	 * @param httpSecurity
-	 * @throws Exception
 	 */
 	@Override
-	public void configure(HttpSecurity httpSecurity) throws Exception {
+	@SneakyThrows
+	public void configure(HttpSecurity httpSecurity) {
 		//允许使用iframe 嵌套，避免swagger-ui 不被加载的问题
 		httpSecurity.headers().frameOptions().disable();
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>

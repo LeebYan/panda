@@ -21,6 +21,7 @@ import com.lorne.core.framework.exception.ServiceException;
 import com.pig4cloud.pigx.manager.compensate.model.TxModel;
 import com.pig4cloud.pigx.manager.model.ModelName;
 import com.pig4cloud.pigx.manager.model.TxState;
+import lombok.SneakyThrows;
 
 import java.util.List;
 import java.util.Map;

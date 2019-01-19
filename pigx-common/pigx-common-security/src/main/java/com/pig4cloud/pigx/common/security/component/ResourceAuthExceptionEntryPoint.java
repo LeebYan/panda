@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -46,8 +47,9 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 	private final ObjectMapper objectMapper;
 
 	@Override
+	@SneakyThrows
 	public void commence(HttpServletRequest request, HttpServletResponse response,
-						 AuthenticationException authException) throws IOException {
+						 AuthenticationException authException) {
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		R<String> result = new R<>();

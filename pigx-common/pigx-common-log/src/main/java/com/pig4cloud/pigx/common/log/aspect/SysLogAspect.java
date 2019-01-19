@@ -23,6 +23,7 @@ import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.log.event.SysLogEvent;
 import com.pig4cloud.pigx.common.log.util.SysLogUtils;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -40,8 +41,9 @@ import org.springframework.context.ApplicationEventPublisher;
 public class SysLogAspect {
 	private final ApplicationEventPublisher publisher;
 
+	@SneakyThrows
 	@Around("@annotation(sysLog)")
-	public Object around(ProceedingJoinPoint point, SysLog sysLog) throws Throwable {
+	public Object around(ProceedingJoinPoint point, SysLog sysLog) {
 		String strClassName = point.getTarget().getClass().getName();
 		String strMethodName = point.getSignature().getName();
 		log.debug("[类名]:{},[方法]:{}", strClassName, strMethodName);

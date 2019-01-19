@@ -29,6 +29,7 @@ import com.pig4cloud.pigx.common.data.enums.DataScopeTypeEnum;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -58,7 +59,8 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 	private final DataSource dataSource;
 
 	@Override
-	public Object intercept(Invocation invocation) throws Throwable {
+	@SneakyThrows
+	public Object intercept(Invocation invocation) {
 		StatementHandler statementHandler = PluginUtils.realTarget(invocation.getTarget());
 		MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
 		this.sqlParser(metaObject);

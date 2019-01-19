@@ -23,6 +23,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -204,7 +205,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 *
 	 * @return
 	 */
-	public String[] getClientId(ServerHttpRequest request) throws Exception {
+	@SneakyThrows
+	public String[] getClientId(ServerHttpRequest request) {
 		String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
 		if (header == null || !header.startsWith(BASIC_)) {

@@ -64,22 +64,12 @@ public class ChannelSender {
 			final String res = HttpUtils.post(url, "msg=" + msg + "&model=" + modelName);
 			if (StringUtils.isNotEmpty(res)) {
 				if (task != null) {
-					task.setBack(new IBack() {
-						@Override
-						public Object doing(Object... objs) throws Throwable {
-							return res;
-						}
-					});
+					task.setBack(objs -> res);
 					task.signalTask();
 				}
 			} else {
 				if (task != null) {
-					task.setBack(new IBack() {
-						@Override
-						public Object doing(Object... objs) throws Throwable {
-							return "-2";
-						}
-					});
+					task.setBack(objs -> "-2");
 					task.signalTask();
 				}
 			}

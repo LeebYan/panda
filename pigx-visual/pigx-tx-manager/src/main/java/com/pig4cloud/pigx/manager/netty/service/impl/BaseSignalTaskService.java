@@ -32,12 +32,7 @@ public class BaseSignalTaskService {
 		final String data = params.getString("d");
 		Task task = ConditionUtils.getInstance().getTask(key);
 		if (task != null) {
-			task.setBack(new IBack() {
-				@Override
-				public Object doing(Object... objs) throws Throwable {
-					return data;
-				}
-			});
+			task.setBack(objs -> data);
 			task.signalTask();
 		}
 		return res;
