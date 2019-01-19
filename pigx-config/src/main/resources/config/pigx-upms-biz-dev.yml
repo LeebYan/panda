@@ -44,3 +44,13 @@ minio:
 logging:
   level:
     com.pig4cloud.pigx.admin.mapper: debug
+pigx:
+  tenant:
+    tables:
+      - sys_user
+      - sys_role
+      - sys_dept
+      - sys_log
+      - sys_social_details
+      - sys_dict
+      - sys_log
