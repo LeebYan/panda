@@ -20,7 +20,7 @@ public class PigxTenantConfigProperties {
 	/**
 	 * 维护租户列名称
 	 */
-	private String column;
+	private String column="tenant_id";
 
 	/**
 	 * 多租户的数据表集合

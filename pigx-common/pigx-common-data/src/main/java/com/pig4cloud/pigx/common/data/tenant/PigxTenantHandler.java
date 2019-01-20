@@ -54,8 +54,7 @@ public class PigxTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public String getTenantIdColumn() {
-		return StrUtil.isNotBlank(properties.getColumn())
-				? properties.getColumn() : "tenant_id";
+		return properties.getColumn();
 	}
 
 	/**

@@ -178,9 +178,9 @@ public class MinioTemplate implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.hasText(endpoint, "Minio url 为空。");
-		Assert.hasText(accessKey, "Minio accessKey 为空。");
-		Assert.hasText(secretKey, "Minio accessKey 为空。");
+		Assert.hasText(endpoint, "Minio url 为空");
+		Assert.hasText(accessKey, "Minio accessKey为空");
+		Assert.hasText(secretKey, "Minio secretKey为空");
 		this.client = new MinioClient(endpoint, accessKey, secretKey);
 	}
 

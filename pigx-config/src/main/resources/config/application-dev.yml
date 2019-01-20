@@ -99,8 +99,8 @@ security:
     client:
       # 默认放行url,如果子模块重写这里的配置就会被覆盖
       ignore-urls:
-        - '/actuator/**'
-        - '/v2/api-docs'
+        - /actuator/**
+        - /v2/api-docs
     resource:
       loadBalanced: true
       token-info-uri: http://pigx-auth/oauth/check_token
