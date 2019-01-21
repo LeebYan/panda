@@ -104,9 +104,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return tokenStore;
 	}
 
+	/**
+	 * token增强，客户端模式不增强。
+	 *
+	 * @return TokenEnhancer
+	 */
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
 		return (accessToken, authentication) -> {
+			if (SecurityConstants.CLIENT_CREDENTIALS
+					.equals(authentication.getOAuth2Request().getGrantType())) {
+				return accessToken;
+			}
+
 			final Map<String, Object> additionalInfo = new HashMap<>(8);
 			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
 			additionalInfo.put("user_id", pigxUser.getId());
