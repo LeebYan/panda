@@ -137,7 +137,7 @@ public final class PigxHystrixInvocationHandler implements InvocationHandler {
 				Object fallback;
 				try {
 					if (fallbackFactory == null) {
-						fallback = PigxFeginFallbackFactory.INSTANCE.create(target.type(), getExecutionException());
+						fallback = PigxFeignFallbackFactory.INSTANCE.create(target.type(), getExecutionException());
 					} else {
 						fallback = fallbackFactory.create(getExecutionException());
 					}

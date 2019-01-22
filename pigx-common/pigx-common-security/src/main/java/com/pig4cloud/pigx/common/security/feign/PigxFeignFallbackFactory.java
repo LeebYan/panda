@@ -20,38 +20,38 @@
 
 package com.pig4cloud.pigx.common.security.feign;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
-import com.pig4cloud.pigx.common.core.util.R;
-import lombok.Getter;
+import feign.hystrix.FallbackFactory;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.proxy.Enhancer;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
- * Fegin 异常
+ * 默认 Fallback，避免写过多fallback类
  *
+ * @param <T> 泛型标记
  * @author L.cm
  */
-public class PigxFeginException extends RuntimeException {
-	@Getter
-	private final R result;
+@Slf4j
+@NoArgsConstructor
+public final class PigxFeignFallbackFactory<T> implements FallbackFactory<T> {
+	public static final PigxFeignFallbackFactory INSTANCE = new PigxFeignFallbackFactory();
+	private static final ConcurrentMap<Class<?>, Object> FALLBACK_MAP = new ConcurrentHashMap<>();
 
-	public PigxFeginException(R result) {
-		super(result.getMsg());
-		this.result = result;
+	@SuppressWarnings("unchecked")
+	public T create(final Class<?> type, final Throwable cause) {
+		return (T) FALLBACK_MAP.computeIfAbsent(type, key -> {
+			Enhancer enhancer = new Enhancer();
+			enhancer.setSuperclass(key);
+			enhancer.setCallback(new PigxFeignFallbackMethod(type, cause));
+			return enhancer.create();
+		});
 	}
 
-	public PigxFeginException(String message) {
-		super(message);
-		this.result = R.builder()
-				.code(CommonConstants.FAIL)
-				.msg(message).build();
-	}
-
-	/**
-	 * 提高性能
-	 *
-	 * @return {Throwable}
-	 */
 	@Override
-	public Throwable fillInStackTrace() {
-		return this;
+	public T create(Throwable cause) {
+		return null;
 	}
 }

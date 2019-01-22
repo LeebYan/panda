@@ -48,30 +48,30 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  *
  * @author L.cm
  */
-public class PigxFeginErrorDecoder extends ErrorDecoder.Default {
+public class PigxFeignErrorDecoder extends ErrorDecoder.Default {
 	private final RetryAfterDecoder retryAfterDecoder = new RetryAfterDecoder();
 	private static final String REGEX = "^[0-9]+$";
 
 
 	@Override
 	public Exception decode(String methodKey, Response response) {
-		PigxFeginException exception = errorStatus(methodKey, response);
+		PigxFeignException exception = errorStatus(methodKey, response);
 		Date retryAfter = retryAfterDecoder.apply(firstOrNull(response.headers()));
 		return new RetryableException(exception.getMessage(), exception, retryAfter);
 	}
 
-	private static PigxFeginException errorStatus(String methodKey, Response response) {
+	private static PigxFeignException errorStatus(String methodKey, Response response) {
 		try {
 			if (response.body() != null) {
 				Reader reader = response.body().asReader();
-				return new PigxFeginException(R.builder()
+				return new PigxFeignException(R.builder()
 						.msg(IoUtil.read(reader))
 						.code(CommonConstants.FAIL).build());
 			}
 		} catch (IOException ignored) { // NOPMD
 		}
 		String message = format("status %s reading %s", response.status(), methodKey);
-		return new PigxFeginException(message);
+		return new PigxFeignException(message);
 	}
 
 	@Nullable
