@@ -20,13 +20,10 @@
 
 package com.pig4cloud.pigx.common.security.feign;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
-import com.pig4cloud.pigx.common.core.util.R;
 import feign.hystrix.FallbackFactory;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.proxy.Enhancer;
-import org.springframework.cglib.proxy.MethodInterceptor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -45,19 +42,10 @@ public final class PigxFeginFallbackFactory<T> implements FallbackFactory<T> {
 
 	@SuppressWarnings("unchecked")
 	public T create(final Class<?> type, final Throwable cause) {
-		// 重写 fegin ErrorDecoder，message 知己为 body 数据，反序列化为 Result
-		final R result = cause instanceof PigxFeginException ?
-				((PigxFeginException) cause).getResult() : R.builder()
-				.code(CommonConstants.FAIL)
-				.msg(cause.getMessage()).build();
 		return (T) FALLBACK_MAP.computeIfAbsent(type, key -> {
 			Enhancer enhancer = new Enhancer();
 			enhancer.setSuperclass(key);
-			enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
-				log.error("Fallback class:[{}] method:[{}] message:[{}]",
-						type.getName(), method.getName(), cause.getMessage());
-				return result;
-			});
+			enhancer.setCallback(new PigxFeignFallbackMethod(type, cause));
 			return enhancer.create();
 		});
 	}

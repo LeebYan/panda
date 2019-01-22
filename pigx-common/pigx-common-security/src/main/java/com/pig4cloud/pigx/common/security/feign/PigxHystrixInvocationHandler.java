@@ -134,13 +134,12 @@ public final class PigxHystrixInvocationHandler implements InvocationHandler {
 			@Nullable
 			@SuppressWarnings("unchecked")
 			protected Object getFallback() {
-				final FallbackFactory<?> localFallbackFactory = fallbackFactory == null ? PigxFeginFallbackFactory.INSTANCE : fallbackFactory;
 				Object fallback;
 				try {
-					if (localFallbackFactory instanceof PigxFeginFallbackFactory) {
-						fallback = ((PigxFeginFallbackFactory) localFallbackFactory).create(target.type(), getExecutionException());
+					if (fallbackFactory == null) {
+						fallback = PigxFeginFallbackFactory.INSTANCE.create(target.type(), getExecutionException());
 					} else {
-						fallback = localFallbackFactory.create(getExecutionException());
+						fallback = fallbackFactory.create(getExecutionException());
 					}
 					Object result = fallbackMethodMap.get(method).invoke(fallback, args);
 					if (isReturnsHystrixCommand(method)) {
