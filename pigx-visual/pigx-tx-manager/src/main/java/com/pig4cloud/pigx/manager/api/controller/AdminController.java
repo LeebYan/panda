@@ -25,6 +25,7 @@ import com.pig4cloud.pigx.manager.model.ModelInfo;
 import com.pig4cloud.pigx.manager.model.ModelName;
 import com.pig4cloud.pigx.manager.model.TxState;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,18 +90,21 @@ public class AdminController {
 		return apiAdminService.modelInfos(path);
 	}
 
+	@SneakyThrows
 	@RequestMapping(value = "/compensate", method = RequestMethod.GET)
-	public boolean compensate(@RequestParam("path") String path) throws ServiceException {
+	public boolean compensate(@RequestParam("path") String path) {
 		return apiAdminService.compensate(path);
 	}
 
+	@SneakyThrows
 	@RequestMapping(value = "/delCompensate", method = RequestMethod.GET)
-	public boolean delCompensate(@RequestParam("path") String path) throws ServiceException {
+	public boolean delCompensate(@RequestParam("path") String path) {
 		return apiAdminService.delCompensate(path);
 	}
 
+	@SneakyThrows
 	@RequestMapping(value = "/hasCompensate", method = RequestMethod.GET)
-	public boolean hasCompensate() throws ServiceException {
+	public boolean hasCompensate() {
 		return apiAdminService.hasCompensate();
 	}
 }

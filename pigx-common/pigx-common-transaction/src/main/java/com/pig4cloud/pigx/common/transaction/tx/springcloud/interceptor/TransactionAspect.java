@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.transaction.tx.springcloud.interceptor;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -41,17 +42,18 @@ public class TransactionAspect implements Ordered {
 	@Autowired
 	private TxManagerInterceptor txManagerInterceptor;
 
-
+	@SneakyThrows
 	@Around("@annotation(com.codingapi.tx.annotation.TxTransaction)")
-	public Object transactionRunning(ProceedingJoinPoint point) throws Throwable {
+	public Object transactionRunning(ProceedingJoinPoint point) {
 		log.debug("annotation-TransactionRunning-start---->");
 		Object obj = txManagerInterceptor.around(point);
 		log.debug("annotation-TransactionRunning-end---->");
 		return obj;
 	}
 
+	@SneakyThrows
 	@Around("this(com.codingapi.tx.annotation.ITxTransaction) && execution( * *(..))")
-	public Object around(ProceedingJoinPoint point) throws Throwable {
+	public Object around(ProceedingJoinPoint point) {
 		log.debug("interface-ITransactionRunning-start---->");
 		Object obj = txManagerInterceptor.around(point);
 		log.debug("interface-ITransactionRunning-end---->");

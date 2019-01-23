@@ -21,6 +21,7 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -43,8 +44,9 @@ import javax.servlet.http.HttpServletRequest;
 public class PigxSecurityInnerAspect {
 	private final HttpServletRequest request;
 
+	@SneakyThrows
 	@Around("@annotation(inner)")
-	public Object around(ProceedingJoinPoint point, Inner inner) throws Throwable {
+	public Object around(ProceedingJoinPoint point, Inner inner) {
 		String header = request.getHeader(SecurityConstants.FROM);
 		if (inner.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
 			log.warn("访问接口 {} 没有权限", point.getSignature().getName());

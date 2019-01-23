@@ -28,6 +28,7 @@ import com.pig4cloud.pigx.manager.model.ModelName;
 import com.pig4cloud.pigx.manager.model.TxState;
 import com.pig4cloud.pigx.manager.redis.RedisServerService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -108,7 +109,8 @@ public class ApiAdminServiceImpl implements ApiAdminService {
 	}
 
 	@Override
-	public boolean compensate(String path) throws ServiceException {
+	@SneakyThrows
+	public boolean compensate(String path) {
 		return compensateService.executeCompensate(path);
 	}
 

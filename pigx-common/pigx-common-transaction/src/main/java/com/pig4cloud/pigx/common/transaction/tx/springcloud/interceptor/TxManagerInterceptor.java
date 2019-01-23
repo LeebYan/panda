@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.common.transaction.tx.springcloud.interceptor;
 
 import com.codingapi.tx.aop.service.AspectBeforeService;
+import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,8 @@ public class TxManagerInterceptor {
 	@Autowired
 	private AspectBeforeService aspectBeforeService;
 
-	public Object around(ProceedingJoinPoint point) throws Throwable {
+	@SneakyThrows
+	public Object around(ProceedingJoinPoint point) {
 		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 		String groupId = request.getHeader("tx-group");

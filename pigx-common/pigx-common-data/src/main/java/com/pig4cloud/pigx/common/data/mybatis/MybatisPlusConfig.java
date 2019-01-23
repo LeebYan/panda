@@ -42,17 +42,29 @@ import java.util.List;
 public class MybatisPlusConfig {
 
 	/**
+	 * 创建租户维护处理器对象
+	 *
+	 * @return 处理后的租户维护处理器
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public PigxTenantHandler pigxTenantHandler() {
+		return new PigxTenantHandler();
+	}
+
+	/**
 	 * 分页插件
 	 *
+	 * @param tenantHandler 租户处理器
 	 * @return PaginationInterceptor
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public PaginationInterceptor paginationInterceptor() {
+	public PaginationInterceptor paginationInterceptor(PigxTenantHandler tenantHandler) {
 		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 		List<ISqlParser> sqlParserList = new ArrayList<>();
 		TenantSqlParser tenantSqlParser = new TenantSqlParser();
-		tenantSqlParser.setTenantHandler(new PigxTenantHandler());
+		tenantSqlParser.setTenantHandler(tenantHandler);
 		sqlParserList.add(tenantSqlParser);
 		paginationInterceptor.setSqlParserList(sqlParserList);
 		return paginationInterceptor;

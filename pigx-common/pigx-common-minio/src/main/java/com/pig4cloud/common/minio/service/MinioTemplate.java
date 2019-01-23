@@ -23,8 +23,10 @@ import io.minio.ObjectStat;
 import io.minio.Result;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,23 +38,20 @@ import java.util.Optional;
  *
  * @author lengleng
  */
-@NoArgsConstructor
-@AllArgsConstructor
-public class MinioTemplate {
-
-	private String endpoint;
-	private String accessKey;
-	private String secretKey;
-
+@RequiredArgsConstructor
+public class MinioTemplate implements InitializingBean {
+	private final String endpoint;
+	private final String accessKey;
+	private final String secretKey;
+	private MinioClient client;
 
 	/**
 	 * 创建bucket
 	 *
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#makeBucket
 	 */
-	public void createBucket(String bucketName) throws Exception {
-		MinioClient client = getMinioClient();
+	@SneakyThrows
+	public void createBucket(String bucketName) {
 		if (!client.bucketExists(bucketName)) {
 			client.makeBucket(bucketName);
 		}
@@ -63,24 +62,25 @@ public class MinioTemplate {
 	 * <p>
 	 * https://docs.minio.io/cn/java-client-api-reference.html#listBuckets
 	 */
-	public List<Bucket> getAllBuckets() throws Exception {
-		return getMinioClient().listBuckets();
+	@SneakyThrows
+	public List<Bucket> getAllBuckets() {
+		return client.listBuckets();
 	}
 
 	/**
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#listBuckets
 	 */
-	public Optional<Bucket> getBucket(String bucketName) throws Exception {
-		return getMinioClient().listBuckets().stream().filter(b -> b.name().equals(bucketName)).findFirst();
+	@SneakyThrows
+	public Optional<Bucket> getBucket(String bucketName) {
+		return client.listBuckets().stream().filter(b -> b.name().equals(bucketName)).findFirst();
 	}
 
 	/**
 	 * @param bucketName bucket名称
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#removeBucket
 	 */
-	public void removeBucket(String bucketName) throws Exception {
-		getMinioClient().removeBucket(bucketName);
+	@SneakyThrows
+	public void removeBucket(String bucketName) {
+		client.removeBucket(bucketName);
 	}
 
 	/**
@@ -89,16 +89,16 @@ public class MinioTemplate {
 	 * @param bucketName bucket名称
 	 * @param prefix     前缀
 	 * @param recursive  是否递归查询
-	 * @return
-	 * @throws Exception
+	 * @return MinioItem 列表
 	 */
-	public List<MinioItem> getAllObjectsByPrefix(String bucketName, String prefix, boolean recursive) throws Exception {
-		List objectList = new ArrayList();
-		Iterable<Result<Item>> objectsIterator = getMinioClient()
+	@SneakyThrows
+	public List<MinioItem> getAllObjectsByPrefix(String bucketName, String prefix, boolean recursive) {
+		List<MinioItem> objectList = new ArrayList<>();
+		Iterable<Result<Item>> objectsIterator = client
 				.listObjects(bucketName, prefix, recursive);
 
 		while (objectsIterator.iterator().hasNext()) {
-			objectList.add(objectsIterator.iterator().next().get());
+			objectList.add(new MinioItem(objectsIterator.iterator().next().get()));
 		}
 		return objectList;
 	}
@@ -110,10 +110,10 @@ public class MinioTemplate {
 	 * @param objectName 文件名称
 	 * @param expires    过期时间 <=7
 	 * @return url
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	public String getObjectURL(String bucketName, String objectName, Integer expires) throws Exception {
-		return getMinioClient().presignedGetObject(bucketName, objectName, expires);
+	@SneakyThrows
+	public String getObjectURL(String bucketName, String objectName, Integer expires) {
+		return client.presignedGetObject(bucketName, objectName, expires);
 	}
 
 	/**
@@ -122,10 +122,10 @@ public class MinioTemplate {
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @return 二进制流
-	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	public InputStream getObject(String bucketName, String objectName) throws Exception {
-		return getMinioClient().getObject(bucketName, objectName);
+	@SneakyThrows
+	public InputStream getObject(String bucketName, String objectName) {
+		return client.getObject(bucketName, objectName);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class MinioTemplate {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
 	 */
 	public void putObject(String bucketName, String objectName, InputStream stream) throws Exception {
-		getMinioClient().putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
+		client.putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class MinioTemplate {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
 	 */
 	public void putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws Exception {
-		getMinioClient().putObject(bucketName, objectName, stream, size, contextType);
+		client.putObject(bucketName, objectName, stream, size, contextType);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class MinioTemplate {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#statObject
 	 */
 	public ObjectStat getObjectInfo(String bucketName, String objectName) throws Exception {
-		return getMinioClient().statObject(bucketName, objectName);
+		return client.statObject(bucketName, objectName);
 	}
 
 	/**
@@ -173,17 +173,15 @@ public class MinioTemplate {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#removeObject
 	 */
 	public void removeObject(String bucketName, String objectName) throws Exception {
-		getMinioClient().removeObject(bucketName, objectName);
+		client.removeObject(bucketName, objectName);
 	}
 
-
-	/**
-	 * 获取minio 原生客户端
-	 *
-	 * @return
-	 * @throws Exception
-	 */
-	public MinioClient getMinioClient() throws Exception {
-		return new MinioClient(endpoint, accessKey, secretKey);
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		Assert.hasText(endpoint, "Minio url 为空");
+		Assert.hasText(accessKey, "Minio accessKey为空");
+		Assert.hasText(secretKey, "Minio secretKey为空");
+		this.client = new MinioClient(endpoint, accessKey, secretKey);
 	}
+
 }

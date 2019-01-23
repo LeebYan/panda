@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.security.handler.MobileLoginSuccessHandler;
 import com.pig4cloud.pigx.common.security.mobile.MobileSecurityConfigurer;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,7 +60,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@SneakyThrows
+	protected void configure(HttpSecurity http) {
 		http
 			.formLogin()
 			.loginPage("/token/login")
@@ -87,7 +89,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
+	@SneakyThrows
+	public AuthenticationManager authenticationManagerBean() {
 		return super.authenticationManagerBean();
 	}
 

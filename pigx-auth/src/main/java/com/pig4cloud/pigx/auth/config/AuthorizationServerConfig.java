@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.common.security.service.PigxClientDetailsService;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -62,7 +63,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private final RedisConnectionFactory redisConnectionFactory;
 
 	@Override
-	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+	@SneakyThrows
+	public void configure(ClientDetailsServiceConfigurer clients) {
 		PigxClientDetailsService clientDetailsService = new PigxClientDetailsService(dataSource);
 		clientDetailsService.setSelectClientDetailsSql(SecurityConstants.DEFAULT_SELECT_STATEMENT);
 		clientDetailsService.setFindClientDetailsSql(SecurityConstants.DEFAULT_FIND_STATEMENT);
@@ -102,9 +104,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return tokenStore;
 	}
 
+	/**
+	 * token增强，客户端模式不增强。
+	 *
+	 * @return TokenEnhancer
+	 */
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
 		return (accessToken, authentication) -> {
+			if (SecurityConstants.CLIENT_CREDENTIALS
+					.equals(authentication.getOAuth2Request().getGrantType())) {
+				return accessToken;
+			}
+
 			final Map<String, Object> additionalInfo = new HashMap<>(8);
 			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
 			additionalInfo.put("user_id", pigxUser.getId());

@@ -23,6 +23,7 @@ import com.pig4cloud.pigx.codegen.entity.GenConfig;
 import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,13 +56,14 @@ public class SysGeneratorController {
 	/**
 	 * 生成代码
 	 */
+	@SneakyThrows
 	@PostMapping("/code")
-	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) throws IOException {
+	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
 		byte[] data = sysGeneratorService.generatorCode(genConfig);
 
 		response.reset();
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
-		response.addHeader(HttpHeaders.CONTENT_LENGTH,  String.valueOf(data.length));
+		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));
 		response.setContentType("application/octet-stream; charset=UTF-8");
 
 		IoUtil.write(response.getOutputStream(), Boolean.TRUE, data);

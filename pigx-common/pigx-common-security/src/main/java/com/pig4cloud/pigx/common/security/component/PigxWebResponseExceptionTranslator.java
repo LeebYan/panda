@@ -45,7 +45,7 @@ public class PigxWebResponseExceptionTranslator implements WebResponseExceptionT
 	private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
 	@Override
-	public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
+	public ResponseEntity<OAuth2Exception> translate(Exception e) {
 
 		// Try to extract a SpringSecurityException from the stacktrace
 		Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);

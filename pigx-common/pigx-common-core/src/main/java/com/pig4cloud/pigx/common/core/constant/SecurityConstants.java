@@ -120,4 +120,9 @@ public interface SecurityConstants {
 	 */
 	String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
 
+	/**
+	 * 客户端模式
+	 */
+	String CLIENT_CREDENTIALS = "client_credentials";
+
 }

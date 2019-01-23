@@ -7,12 +7,12 @@ security:
       scope: server
       # 默认放行url,子模块重写时application-dev.yml中的公共配置会被覆盖,所以要把公共配置中的放行url再写一次
       ignore-urls:
-        - '/actuator/**'
-        - '/v2/api-docs'
-        - '/user/info/*'
-        - '/social/info/*'
-        - '/mobile/*'
-        - '/log/save'
+        - /actuator/**
+        - /v2/api-docs
+        - /user/info/*
+        - /social/info/*
+        - /mobile/*
+        - /log/save
 
 # 数据源
 spring:
@@ -44,3 +44,16 @@ minio:
 logging:
   level:
     com.pig4cloud.pigx.admin.mapper: debug
+
+# 租户表维护
+pigx:
+  tenant:
+    column: tenant_id
+    tables:
+      - sys_user
+      - sys_role
+      - sys_dept
+      - sys_log
+      - sys_social_details
+      - sys_dict
+      - sys_log

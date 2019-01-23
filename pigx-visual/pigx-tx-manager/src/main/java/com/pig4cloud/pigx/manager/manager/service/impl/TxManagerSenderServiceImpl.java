@@ -301,19 +301,11 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 
 	private ScheduledFuture schedule(final String key, int delayTime) {
-		ScheduledFuture future = executorService.schedule(new Runnable() {
-			@Override
-			public void run() {
-				Task task = ConditionUtils.getInstance().getTask(key);
-				if (task != null && !task.isNotify()) {
-					task.setBack(new IBack() {
-						@Override
-						public Object doing(Object... objs) throws Throwable {
-							return "-2";
-						}
-					});
-					task.signalTask();
-				}
+		ScheduledFuture future = executorService.schedule(() -> {
+			Task task = ConditionUtils.getInstance().getTask(key);
+			if (task != null && !task.isNotify()) {
+				task.setBack(objs -> "-2");
+				task.signalTask();
 			}
 		}, delayTime, TimeUnit.SECONDS);
 

@@ -36,6 +36,7 @@ import com.pig4cloud.pigx.manager.model.ModelInfo;
 import com.pig4cloud.pigx.manager.model.ModelName;
 import com.pig4cloud.pigx.manager.netty.model.TxGroup;
 import com.pig4cloud.pigx.manager.netty.model.TxInfo;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -309,7 +310,8 @@ public class CompensateServiceImpl implements CompensateService {
 
 
 	@Override
-	public boolean executeCompensate(String path) throws ServiceException {
+	@SneakyThrows
+	public boolean executeCompensate(String path) {
 
 		String json = compensateDao.getCompensate(path);
 		if (json == null) {
@@ -326,8 +328,8 @@ public class CompensateServiceImpl implements CompensateService {
 		return false;
 	}
 
-
-	private boolean executeCompensateMethod(String json) throws ServiceException {
+	@SneakyThrows
+	private boolean executeCompensateMethod(String json) {
 		JSONObject jsonObject = JSON.parseObject(json);
 
 		String model = jsonObject.getString("model");
