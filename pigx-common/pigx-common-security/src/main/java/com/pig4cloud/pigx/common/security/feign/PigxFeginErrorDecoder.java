@@ -57,7 +57,7 @@ public class PigxFeginErrorDecoder extends ErrorDecoder.Default {
 	public Exception decode(String methodKey, Response response) {
 		PigxFeginException exception = errorStatus(methodKey, response);
 		Date retryAfter = retryAfterDecoder.apply(firstOrNull(response.headers()));
-		return new RetryableException(exception.getMessage(), exception, retryAfter);
+		return new RetryableException(exception.getMessage(), response.request().httpMethod(), exception, retryAfter);
 	}
 
 	private static PigxFeginException errorStatus(String methodKey, Response response) {
