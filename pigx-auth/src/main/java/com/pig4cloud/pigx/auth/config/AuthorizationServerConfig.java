@@ -59,7 +59,7 @@ import java.util.Map;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 	private final DataSource dataSource;
 	private final PigxUserDetailsService pigxUserDetailsService;
-	private final AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManagerBean;
 	private final RedisConnectionFactory redisConnectionFactory;
 
 	@Override
@@ -85,7 +85,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.tokenStore(tokenStore())
 				.tokenEnhancer(tokenEnhancer())
 				.userDetailsService(pigxUserDetailsService)
-				.authenticationManager(authenticationManager)
+				.authenticationManager(authenticationManagerBean)
 				.reuseRefreshTokens(false)
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
 	}
