@@ -44,13 +44,12 @@
 	<properties>
 		<spring-boot.version>2.1.2.RELEASE</spring-boot.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<spring-platform.version>Cairo-SR6</spring-platform.version>
+		<spring-platform.version>Cairo-SR7</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.1.2</spring-boot-admin.version>
 		<hutool.version>4.3.2</hutool.version>
-		<mybatis-plus.version>3.0.6</mybatis-plus.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.version>2.9.2</swagger.version>
 		<curator.version>2.10.0</curator.version>
@@ -60,9 +59,7 @@
 		<ttl.version>2.10.1</ttl.version>
 		<minio.version>3.0.12</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
-		<mysql.connector.version>8.0.13</mysql.connector.version>
 		<security.oauth.version>2.3.4.RELEASE</security.oauth.version>
-		<jackson.modules>2.9.6</jackson.modules>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.url>http://192.168.0.13:4243</docker.url>
 		<registry.url>192.168.0.13:5000</registry.url>
@@ -149,14 +146,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--jackson模块-->
 			<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-modules-java8</artifactId>
-				<version>${jackson.modules}</version>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>pigx-common-bom</artifactId>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!--稳定版本，替代spring security 内置-->
 			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>

@@ -37,36 +37,25 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-upms-api</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--日志处理-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-log</artifactId>
-			<version>2.2.0</version>
-		</dependency>
-		<!--数据库操作-->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.connector.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-data</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--swagger-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-swagger</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--文件系统-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-minio</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--eureka 客户端-->
 		<dependency>
@@ -82,25 +71,21 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--支持动态路由配置 -->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-gateway</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
-			<version>${mybatis-plus.version}</version>
 		</dependency>
 		<!--数据库-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.connector.version}</version>
 		</dependency>
 		<!--web 模块-->
 		<dependency>

@@ -46,7 +46,6 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-gateway</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--配置中心客户端-->
 		<dependency>
@@ -63,7 +62,6 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-core</artifactId>
-			<version>2.2.0</version>
 		</dependency>
 		<!--缓存-->
 		<dependency>
