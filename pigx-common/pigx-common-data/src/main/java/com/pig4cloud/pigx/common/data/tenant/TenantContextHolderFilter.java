@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.common.data.tenant;
 
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
-import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -50,10 +49,6 @@ public class TenantContextHolderFilter extends GenericFilterBean {
 
 		String tenantId = request.getHeader(CommonConstants.TENANT_ID);
 		log.debug("获取header中的租户ID为:{}", tenantId);
-
-		if (SecurityUtils.getUser() != null) {
-			tenantId = String.valueOf(SecurityUtils.getUser().getTenantId());
-		}
 
 		if (StrUtil.isNotBlank(tenantId)) {
 			TenantContextHolder.setTenantId(Integer.parseInt(tenantId));
