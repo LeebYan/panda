@@ -1,14 +1,7 @@
 ## 当前版本
-V2.1.1
+V2.2.0
 ## pigx pro
 [pigx pro 部署文档](doc/md/deploy.md)  
-[pigx pro 新特性说明  ](https://www.bilibili.com/video/av37786337)   
-[pigx pro 从检出到启动](https://www.bilibili.com/video/av37695530)  
-[pigx pro新建微服务模块（一）](https://www.bilibili.com/video/av37737139)  
-[pigx pro新建微服务模块（二）](https://www.bilibili.com/video/av37740030)  
-[pigx pro新建微服务模块（三）](https://www.bilibili.com/video/av37743341)  
-[pigx pro新建微服务模块（四）](https://www.bilibili.com/video/av37774264)  
-
 
 ## 协议和授权
 
