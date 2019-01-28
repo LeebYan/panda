@@ -64,10 +64,10 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-core</artifactId>
 		</dependency>
-		<!--缓存-->
+		<!--缓存依赖-->
 		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-data</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
