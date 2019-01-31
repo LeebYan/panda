@@ -24,8 +24,6 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.security.exception.PigxAuth2Exception;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
-
 /**
  * @author lengleng
  * @date 2018/11/16

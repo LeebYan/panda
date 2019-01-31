@@ -35,10 +35,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -59,8 +59,8 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 		AES aes = new AES(Mode.CBC,Padding.NoPadding,
 				new SecretKeySpec(pass.getBytes(), KEY_ALGORITHM),
 				new IvParameterSpec(pass.getBytes()));
-		byte[] result = aes.decrypt(Base64.decode(data.getBytes(CharsetUtil.UTF_8)));
-		return new String(result, CharsetUtil.UTF_8);
+		byte[] result = aes.decrypt(Base64.decode(data.getBytes(StandardCharsets.UTF_8)));
+		return new String(result, StandardCharsets.UTF_8);
 	}
 
 	@Override

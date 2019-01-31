@@ -36,7 +36,7 @@ public class TenantContextHolder {
 	 *
 	 * @param tenantId
 	 */
-	public void setTenantId(Integer tenantId) {
+	void setTenantId(Integer tenantId) {
 		THREAD_LOCAL_TENANT.set(tenantId);
 	}
 

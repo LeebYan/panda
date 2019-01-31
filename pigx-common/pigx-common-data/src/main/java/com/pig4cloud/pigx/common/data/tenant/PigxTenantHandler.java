@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.data.tenant;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
