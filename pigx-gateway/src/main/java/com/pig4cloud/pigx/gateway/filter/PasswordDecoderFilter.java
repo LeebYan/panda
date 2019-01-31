@@ -20,6 +20,9 @@ package com.pig4cloud.pigx.gateway.filter;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
+import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.SneakyThrows;
@@ -48,17 +51,15 @@ import java.util.Map;
 public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 	private static final String PASSWORD = "password";
 	private static final String KEY_ALGORITHM = "AES";
-	private static final String DEFAULT_CIPHER_ALGORITHM = "AES/CBC/NOPadding";
 	@Value("${security.encode.key:1234567812345678}")
 	private String encodeKey;
 
 	@SneakyThrows
 	private static String decryptAES(String data, String pass) {
-		Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-		SecretKeySpec keyspec = new SecretKeySpec(pass.getBytes(), KEY_ALGORITHM);
-		IvParameterSpec ivspec = new IvParameterSpec(pass.getBytes());
-		cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
-		byte[] result = cipher.doFinal(Base64.decode(data.getBytes(CharsetUtil.UTF_8)));
+		AES aes = new AES(Mode.CBC,Padding.NoPadding,
+				new SecretKeySpec(pass.getBytes(), KEY_ALGORITHM),
+				new IvParameterSpec(pass.getBytes()));
+		byte[] result = aes.decrypt(Base64.decode(data.getBytes(CharsetUtil.UTF_8)));
 		return new String(result, CharsetUtil.UTF_8);
 	}
 
