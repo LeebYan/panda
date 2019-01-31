@@ -42,7 +42,7 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
  */
 @Configuration
 @ConditionalOnClass(Feign.class)
-public class PigxFeginConfiguration {
+public class PigxFeignConfiguration {
 
 	@Bean
 	@ConditionalOnProperty("security.oauth2.client.client-id")
@@ -61,7 +61,7 @@ public class PigxFeginConfiguration {
 		public Feign.Builder feignHystrixBuilder(FeignContext feignContext) {
 			return PigxHystrixFeign.builder(feignContext)
 					.decode404()
-					.errorDecoder(new PigxFeginErrorDecoder());
+					.errorDecoder(new PigxFeignErrorDecoder());
 		}
 	}
 

@@ -27,8 +27,8 @@ public class PigxFeignFallbackMethod implements MethodInterceptor {
 				type.getName(), method.getName(), cause.getMessage());
 
 		if (R.class == method.getReturnType()) {
-			final R result = cause instanceof PigxFeginException ?
-					((PigxFeginException) cause).getResult() : R.builder()
+			final R result = cause instanceof PigxFeignException ?
+					((PigxFeignException) cause).getResult() : R.builder()
 					.code(CommonConstants.FAIL)
 					.msg(cause.getMessage()).build();
 			return result;
