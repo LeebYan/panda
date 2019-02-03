@@ -25,6 +25,7 @@ spring:
 
 # swagger相关配置,覆盖全局配置
 swagger:
+  enabled: false
   authorization:
     authorization-scope-list:
       - scope: 'server'

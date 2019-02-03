@@ -33,6 +33,10 @@ import java.util.List;
 @ConfigurationProperties("swagger")
 public class SwaggerProperties {
 	/**
+	 * 是否开启swagger
+	 */
+	private Boolean ebabled;
+	/**
 	 * swagger会解析的包路径
 	 **/
 	private String basePackage = "";
