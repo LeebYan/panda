@@ -40,6 +40,7 @@ import org.apache.velocity.app.Velocity;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -200,7 +201,7 @@ public class GenUtils {
 				zip.putNextEntry(new ZipEntry(Objects
 						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
 								, map.get("package").toString(), map.get("moduleName").toString()))));
-				IoUtil.write(zip, CharsetUtil.UTF_8, false, sw.toString());
+				IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
 				IoUtil.close(sw);
 				zip.closeEntry();
 			} catch (IOException e) {

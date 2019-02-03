@@ -20,7 +20,6 @@
 package com.pig4cloud.pigx.common.core.util;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.SneakyThrows;
@@ -41,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -221,7 +221,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 					"Failed to decode basic authentication token");
 		}
 
-		String token = new String(decoded, CharsetUtil.UTF_8);
+		String token = new String(decoded, StandardCharsets.UTF_8);
 
 		int delim = token.indexOf(":");
 

@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.act.service.impl;
 
-import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.pig4cloud.pigx.act.service.EditorService;
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.activiti.editor.constants.ModelDataJsonConstants.*;
 
@@ -56,7 +56,7 @@ public class EditorServiceImpl implements EditorService {
 	public Object getStencilset() {
 		InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
 		try {
-			return IOUtils.toString(stencilsetStream, CharsetUtil.UTF_8);
+			return IOUtils.toString(stencilsetStream, StandardCharsets.UTF_8);
 		} catch (Exception e) {
 			log.error("Error while loading stencil set", e);
 			throw new ActivitiException("Error while loading stencil set", e);
@@ -83,7 +83,7 @@ public class EditorServiceImpl implements EditorService {
 				}
 				byte[] source = repositoryService.getModelEditorSource(model.getId());
 				modelNode.put(MODEL_ID, model.getId());
-				ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(new String(source, CharsetUtil.UTF_8));
+				ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(new String(source, StandardCharsets.UTF_8));
 				modelNode.set("model", editorJsonNode);
 				return modelNode;
 			} catch (Exception e) {
@@ -115,7 +115,7 @@ public class EditorServiceImpl implements EditorService {
 			model.setTenantId(String.valueOf(TenantContextHolder.getTenantId()));
 
 			repositoryService.saveModel(model);
-			repositoryService.addModelEditorSource(model.getId(), jsonXml.getBytes(CharsetUtil.UTF_8));
+			repositoryService.addModelEditorSource(model.getId(), jsonXml.getBytes(StandardCharsets.UTF_8));
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			final byte[] result = outStream.toByteArray();
 			repositoryService.addModelEditorSourceExtra(model.getId(), result);
