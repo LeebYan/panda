@@ -18,13 +18,13 @@
 package com.pig4cloud.pigx.common.security.util;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.util.CharsetUtil;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author lengleng
@@ -55,7 +55,7 @@ public class AuthUtils {
 					"Failed to decode basic authentication token");
 		}
 
-		String token = new String(decoded, CharsetUtil.UTF_8);
+		String token = new String(decoded, StandardCharsets.UTF_8);
 
 		int delim = token.indexOf(":");
 
