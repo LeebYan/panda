@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>2.2.0</version>
+	<version>2.2.1</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -60,8 +60,10 @@
 		<minio.version>3.0.12</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<security.oauth.version>2.3.4.RELEASE</security.oauth.version>
+		<security.oauth.auto.version>2.1.2.RELEASE</security.oauth.auto.version>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.url>http://192.168.0.13:4243</docker.url>
+		<docker.plugin.version>0.4.12</docker.plugin.version>
 		<registry.url>192.168.0.13:5000</registry.url>
 	</properties>
 
@@ -153,11 +155,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--稳定版本，替代spring security 内置-->
+			<!--稳定版本，替代spring security bom内置-->
 			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${security.oauth.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>${security.oauth.auto.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -176,14 +183,18 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot.version}</version>
-					<configuration>
-						<finalName>${project.build.finalName}</finalName>
-					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>com.spotify</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.4.12</version>
+					<version>${docker.plugin.version}</version>
 					<configuration>
 						<imageName>${registry.url}/${project.name}:0.0.1</imageName>
 						<dockerHost>${docker.url}</dockerHost>
@@ -221,32 +232,15 @@
 
 	<repositories>
 		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
+			<id>aliyun</id>
+			<name>aliyun</name>
+			<url>https://maven.aliyun.com/repository/public</url>
+			<releases>
 				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
 		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</pluginRepository>
-	</pluginRepositories>
 </project>
