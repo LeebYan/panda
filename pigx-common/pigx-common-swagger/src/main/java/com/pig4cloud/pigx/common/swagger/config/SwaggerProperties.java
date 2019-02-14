@@ -35,7 +35,7 @@ public class SwaggerProperties {
 	/**
 	 * 是否开启swagger
 	 */
-	private Boolean ebabled;
+	private Boolean enabled;
 	/**
 	 * swagger会解析的包路径
 	 **/
