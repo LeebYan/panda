@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 public class SmsLoginHandler extends AbstractLoginHandler {
 	private final SysUserService sysUserService;
 
+
 	/**
 	 * 验证码登录传入为手机号
 	 * 不用不处理

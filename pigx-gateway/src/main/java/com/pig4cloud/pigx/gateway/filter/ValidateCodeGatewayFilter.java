@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.ValidateCodeException;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
@@ -58,7 +59,8 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 			// 不是登录请求，直接向下执行
 			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath()
-					, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL)) {
+					, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL
+					, SecurityConstants.SOCIAL_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
@@ -73,6 +75,16 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				String[] clientInfos = WebUtils.getClientId(request);
 				if (filterIgnorePropertiesConfig.getClients().contains(clientInfos[0])) {
 					return chain.filter(exchange);
+				}
+
+				// 如果是社交登录，判断是否包含SMS
+				if (StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.SOCIAL_TOKEN_URL)) {
+					String mobile = request.getQueryParams().getFirst("mobile");
+					if (StrUtil.containsAny(mobile, LoginTypeEnum.SMS.getType())) {
+						throw new ValidateCodeException("验证码不合法");
+					} else {
+						return chain.filter(exchange);
+					}
 				}
 
 				//校验验证码

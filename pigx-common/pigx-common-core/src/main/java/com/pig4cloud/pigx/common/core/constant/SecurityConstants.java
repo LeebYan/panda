@@ -73,6 +73,11 @@ public interface SecurityConstants {
 	 * 手机号登录URL
 	 */
 	String SMS_TOKEN_URL = "/mobile/token/sms";
+
+	/**
+	 * 社交登录URL
+	 */
+	String SOCIAL_TOKEN_URL = "/mobile/token/social";
 	/**
 	 * 自定义登录URL
 	 */

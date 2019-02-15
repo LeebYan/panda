@@ -27,6 +27,13 @@ import com.pig4cloud.pigx.admin.api.dto.UserInfo;
  */
 public interface LoginHandler {
 
+	/***
+	 * 数据合法性校验
+	 * @param loginStr 通过用户传入获取唯一标识
+	 * @return
+	 */
+	Boolean check(String loginStr);
+
 	/**
 	 * 通过用户传入获取唯一标识
 	 *
