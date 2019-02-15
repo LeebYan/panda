@@ -1,9 +1,3 @@
-spring:
-  cloud:
-    gateway:
-      locator:
-        enabled: true
-
 security:
   encode:
     # 前端密码密钥，必须16位
