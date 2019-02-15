@@ -12,11 +12,11 @@
 
 	<artifactId>pigx-common-bom</artifactId>
 	<packaging>pom</packaging>
-	<version>2.2.1</version>
+	<version>${pigx.version}</version>
 	<description>pigx 公共版本控制</description>
 
 	<properties>
-		<pigx.version>2.2.1</pigx.version>
+		<pigx.version>2.2.2</pigx.version>
 		<jackson.modules>2.9.6</jackson.modules>
 		<mybatis-plus.version>3.0.6</mybatis-plus.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
