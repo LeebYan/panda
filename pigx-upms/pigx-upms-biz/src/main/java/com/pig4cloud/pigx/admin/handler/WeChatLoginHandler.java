@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.admin.handler;
 
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -60,7 +61,7 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 
 		String url = String.format(SecurityConstants.WX_AUTHORIZATION_CODE_URL
 			, socialDetails.getAppId(), socialDetails.getAppSecret(), code);
-		String result = restTemplate.getForObject(url, String.class);
+		String result = HttpUtil.get(url);
 		log.debug("微信响应报文:{}", result);
 
 		Object obj = JSONUtil.parseObj(result).get("openid");
