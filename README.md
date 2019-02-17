@@ -1,8 +1,3 @@
-## 当前版本
-V2.2.0
-## pigx pro
-[pigx pro 部署文档](doc/md/deploy.md)  
-
 ## 协议和授权
 
 pigX并非一个开源软件，作者保留全部的权利。
