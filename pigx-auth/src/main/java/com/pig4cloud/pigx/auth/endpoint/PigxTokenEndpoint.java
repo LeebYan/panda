@@ -58,7 +58,6 @@ import java.util.Map;
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
 	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
-	private static final String PIGX__ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
 	private final TokenStore tokenStore;
 	private final RedisTemplate redisTemplate;
 	private final CacheManager cacheManager;
@@ -87,7 +86,7 @@ public class PigxTokenEndpoint {
 					.msg("退出失败，token 为空").build();
 		}
 
-		String tokenValue = authHeader.replace("Bearer", "").trim();
+		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
 			return R.builder()
