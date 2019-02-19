@@ -40,7 +40,7 @@ public class TreeUtil {
 	 * @param treeNodes 传入的树节点列表
 	 * @return
 	 */
-	public <T extends TreeNode> List<T> bulid(List<T> treeNodes, Object root) {
+	public <T extends TreeNode> List<T> build(List<T> treeNodes, Object root) {
 
 		List<T> trees = new ArrayList<>();
 
@@ -103,7 +103,7 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public List<MenuTree> bulidTree(List<SysMenu> menus, int root) {
+	public List<MenuTree> buildTree(List<SysMenu> menus, int root) {
 		List<MenuTree> trees = new ArrayList<>();
 		MenuTree node;
 		for (SysMenu menu : menus) {
@@ -119,6 +119,6 @@ public class TreeUtil {
 			node.setKeepAlive(menu.getKeepAlive());
 			trees.add(node);
 		}
-		return TreeUtil.bulid(trees, root);
+		return TreeUtil.build(trees, root);
 	}
 }

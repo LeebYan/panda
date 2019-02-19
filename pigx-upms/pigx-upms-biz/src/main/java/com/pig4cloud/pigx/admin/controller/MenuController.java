@@ -68,7 +68,7 @@ public class MenuController {
 				.map(MenuTree::new)
 				.sorted(Comparator.comparingInt(MenuTree::getSort))
 				.collect(Collectors.toList());
-		return new R<>(TreeUtil.bulid(menuTreeList, -1));
+		return new R<>(TreeUtil.build(menuTreeList, -1));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class MenuController {
 	 */
 	@GetMapping(value = "/tree")
 	public R getTree() {
-		return new R<>(TreeUtil.bulidTree(sysMenuService.list(Wrappers.emptyWrapper()), -1));
+		return new R<>(TreeUtil.buildTree(sysMenuService.list(Wrappers.emptyWrapper()), -1));
 	}
 
 	/**
