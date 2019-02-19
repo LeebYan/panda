@@ -166,6 +166,19 @@
 				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
 				<version>${security.oauth.auto.version}</version>
 			</dependency>
+			<!--web 模块-->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<!--排除tomcat依赖-->
+					<exclusion>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+						<groupId>org.springframework.boot</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -220,6 +233,7 @@
 					<target>${maven.compiler.target}</target>
 					<source>${maven.compiler.source}</source>
 					<encoding>UTF-8</encoding>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
