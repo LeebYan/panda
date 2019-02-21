@@ -20,6 +20,7 @@
 package com.pig4cloud.pigx.common.log.util;
 
 import cn.hutool.core.util.URLUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
@@ -46,7 +47,7 @@ public class SysLogUtils {
 		SysLog sysLog = new SysLog();
 		sysLog.setCreateBy(Objects.requireNonNull(getUsername()));
 		sysLog.setType(CommonConstants.STATUS_NORMAL);
-		sysLog.setRemoteAddr(HttpUtil.getClientIP(request));
+		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
 		sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
 		sysLog.setMethod(request.getMethod());
 		sysLog.setUserAgent(request.getHeader("user-agent"));
