@@ -299,7 +299,7 @@ CREATE TABLE `sys_social_details` (
   `redirect_url` varchar(128) DEFAULT NULL COMMENT '回调地址',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `del_flag` char(50) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  `del_flag` char(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
   `tenant_id` int(11) NOT NULL DEFAULT '0' COMMENT '所属租户',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统社交登录账号表';
