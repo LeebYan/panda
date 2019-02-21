@@ -26,10 +26,10 @@ public class StatusChangeNotifier extends AbstractEventNotifier {
 	protected Mono<Void> doNotify(InstanceEvent event, Instance instance) {
 		return Mono.fromRunnable(() -> {
 			if (event instanceof InstanceStatusChangedEvent) {
-				log.error("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
+				log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
 						((InstanceStatusChangedEvent) event).getStatusInfo().getStatus());
 			} else {
-				log.error("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
+				log.info("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
 						event.getType());
 			}
 		});
