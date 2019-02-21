@@ -22,6 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,6 +41,7 @@ public class MinioObject {
 	private String etag;
 	private String contentType;
 	private String matDesc;
+	private Map<String, List<String>> httpHeaders;
 
 	public MinioObject(ObjectStat os) {
 		this.bucketName = os.bucketName();
@@ -47,7 +50,7 @@ public class MinioObject {
 		this.length = os.length();
 		this.etag = os.etag();
 		this.contentType = os.contentType();
-		this.matDesc = os.matDesc();
+		this.httpHeaders = os.httpHeaders();
 	}
 
 }
