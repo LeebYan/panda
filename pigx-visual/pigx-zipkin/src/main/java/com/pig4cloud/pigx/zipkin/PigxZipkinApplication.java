@@ -9,13 +9,13 @@ import zipkin2.server.internal.EnableZipkinServer;
 import javax.sql.DataSource;
 
 /**
+ * @author 仙(๑ • ㅂ • ́)و✧酱
+ * @date 2019/2/22
+ * <p>
  * 服务链路追踪
- *
- * @author: 仙(๑ • ㅂ • ́)و✧酱
- * @date: 2019/2/22
  */
-@SpringCloudApplication
 @EnableZipkinServer
+@SpringCloudApplication
 public class PigxZipkinApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PigxZipkinApplication.class, args);
