@@ -13,6 +13,7 @@
 
  Date: 22/02/2019 11:44:20
 */
+USE pigxx_zipkin;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
