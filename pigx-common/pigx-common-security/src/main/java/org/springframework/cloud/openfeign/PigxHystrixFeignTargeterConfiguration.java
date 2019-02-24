@@ -15,33 +15,28 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.security.feign;
+package org.springframework.cloud.openfeign;
 
-import feign.Feign;
-import feign.RequestInterceptor;
+import feign.hystrix.HystrixFeign;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.security.oauth2.client.AccessTokenContextRelay;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.context.annotation.Primary;
 
 /**
- * fegin 配置增强
- *
- * @author L.cm
+ * @author lengleng
+ * <p>
+ * HystrixFeignTargeter 配置
  */
 @Configuration
-@ConditionalOnClass(Feign.class)
-public class PigxFeignConfiguration {
+@ConditionalOnClass(HystrixFeign.class)
+@ConditionalOnProperty("feign.hystrix.enabled")
+public class PigxHystrixFeignTargeterConfiguration {
 
 	@Bean
-	@ConditionalOnProperty("security.oauth2.client.client-id")
-	public RequestInterceptor oauth2FeignRequestInterceptor(OAuth2ClientContext oAuth2ClientContext,
-															OAuth2ProtectedResourceDetails resource,
-															AccessTokenContextRelay accessTokenContextRelay) {
-		return new PigxFeignClientInterceptor(oAuth2ClientContext, resource, accessTokenContextRelay);
+	@Primary
+	public Targeter micaFeignTargeter() {
+		return new PigxHystrixTargeter();
 	}
-
 }
