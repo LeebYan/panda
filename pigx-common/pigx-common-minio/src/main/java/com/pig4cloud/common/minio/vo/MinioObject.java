@@ -40,7 +40,6 @@ public class MinioObject {
 	private Long length;
 	private String etag;
 	private String contentType;
-	private String matDesc;
 	private Map<String, List<String>> httpHeaders;
 
 	public MinioObject(ObjectStat os) {
