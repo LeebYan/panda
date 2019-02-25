@@ -47,7 +47,7 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 	@Override
 	public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 		String errorMessage = cause.getMessage();
-		log.error("MicaFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, errorMessage);
+		log.error("PigxFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, errorMessage);
 		Class<?> returnType = method.getReturnType();
 		if (R.class != returnType) {
 			return null;
