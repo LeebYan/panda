@@ -52,8 +52,8 @@ class PigxHystrixTargeter implements Targeter {
 			return targetWithFallbackFactory(factory.getName(), context, target, builder, fallbackFactory);
 		}
 
-		PigxFallbackFactory micaFallbackFactory = new PigxFallbackFactory(target);
-		return (T) builder.target(target, micaFallbackFactory);
+		PigxFallbackFactory pigxFallbackFactory = new PigxFallbackFactory(target);
+		return (T) builder.target(target, pigxFallbackFactory);
 	}
 
 	private <T> T targetWithFallbackFactory(String feignClientName, FeignContext context,

@@ -36,7 +36,7 @@ public class PigxHystrixFeignTargeterConfiguration {
 
 	@Bean
 	@Primary
-	public Targeter micaFeignTargeter() {
+	public Targeter pigxFeignTargeter() {
 		return new PigxHystrixTargeter();
 	}
 }
