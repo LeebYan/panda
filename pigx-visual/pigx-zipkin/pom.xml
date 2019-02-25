@@ -68,6 +68,10 @@
 			<version>${zipkin.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.zipkin.java</groupId>
 			<artifactId>zipkin-storage-mysql</artifactId>
 			<version>${zipkin-storage-mysql.version}</version>

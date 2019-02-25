@@ -223,7 +223,7 @@ public class GenUtils {
 	 */
 	private String tableToJava(String tableName, String tablePrefix) {
 		if (StringUtils.isNotBlank(tablePrefix)) {
-			tableName = tableName.replace(tablePrefix, "");
+			tableName = tableName.replaceFirst(tablePrefix, "");
 		}
 		return columnToJava(tableName);
 	}
