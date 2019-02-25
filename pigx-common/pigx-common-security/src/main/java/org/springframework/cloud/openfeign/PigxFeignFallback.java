@@ -17,7 +17,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -29,6 +28,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -56,7 +56,7 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 
 		byte[] content = exception.content();
 
-		String str = StrUtil.str(content, CharsetUtil.UTF_8);
+		String str = StrUtil.str(content, StandardCharsets.UTF_8);
 
 		return R.builder().code(CommonConstants.FAIL)
 				.msg(str).build();

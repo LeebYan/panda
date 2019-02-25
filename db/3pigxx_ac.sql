@@ -673,7 +673,7 @@ CREATE TABLE `oa_leave_bill` (
   `leave_time` datetime DEFAULT NULL COMMENT '请假时间',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `del_flag` char(50) DEFAULT '0' COMMENT '删除标识',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标识',
   `tenant_id` int(11) NOT NULL COMMENT '所属租户',
   PRIMARY KEY (`leave_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
