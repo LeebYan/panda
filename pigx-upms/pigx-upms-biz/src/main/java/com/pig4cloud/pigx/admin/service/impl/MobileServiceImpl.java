@@ -71,7 +71,7 @@ public class MobileServiceImpl implements MobileService {
 
 		if (codeObj != null) {
 			log.info("手机号验证码未过期:{}，{}", mobile, codeObj);
-			return new R<>(Boolean.FALSE, "手机号未注册");
+			return new R<>(Boolean.FALSE, "验证码发送过频繁");
 		}
 
 		String code = RandomUtil.randomNumbers(Integer.parseInt(SecurityConstants.CODE_SIZE));
