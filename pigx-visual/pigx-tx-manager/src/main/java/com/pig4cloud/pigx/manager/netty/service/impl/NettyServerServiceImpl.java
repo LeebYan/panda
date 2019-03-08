@@ -40,29 +40,22 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
- *@author LCN on 2017/6/30.
+ * @author LCN on 2017/6/30.
  */
 @Service
 public class NettyServerServiceImpl implements NettyServerService, DisposableBean {
-
-
-	@Autowired
-	private NettyService nettyService;
-
 	private Logger logger = LoggerFactory.getLogger(NettyServerServiceImpl.class);
-
 	private EventLoopGroup bossGroup;
 	private EventLoopGroup workerGroup;
-
 	private TxCoreServerHandler txCoreServerHandler;
-
-	private ExecutorService threadPool = Executors.newFixedThreadPool(100);
-
+	@Autowired
+	private NettyService nettyService;
+	@Autowired
+	private Executor threadPool;
 	@Autowired
 	private ConfigReader configReader;
 
@@ -76,20 +69,20 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(bossGroup, workerGroup)
-				.channel(NioServerSocketChannel.class)
-				.option(ChannelOption.SO_BACKLOG, 100)
-				.handler(new LoggingHandler(LogLevel.INFO))
-				.childHandler(new ChannelInitializer<SocketChannel>() {
-					@Override
-					public void initChannel(SocketChannel ch) {
-						ch.pipeline().addLast("timeout", new IdleStateHandler(heartTime, heartTime, heartTime, TimeUnit.SECONDS));
+					.channel(NioServerSocketChannel.class)
+					.option(ChannelOption.SO_BACKLOG, 100)
+					.handler(new LoggingHandler(LogLevel.INFO))
+					.childHandler(new ChannelInitializer<SocketChannel>() {
+						@Override
+						public void initChannel(SocketChannel ch) {
+							ch.pipeline().addLast("timeout", new IdleStateHandler(heartTime, heartTime, heartTime, TimeUnit.SECONDS));
 
-						ch.pipeline().addLast(new LengthFieldPrepender(4, false));
-						ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+							ch.pipeline().addLast(new LengthFieldPrepender(4, false));
+							ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
 
-						ch.pipeline().addLast(txCoreServerHandler);
-					}
-				});
+							ch.pipeline().addLast(txCoreServerHandler);
+						}
+					});
 
 			// Start the server.
 			b.bind(Constants.socketPort);
@@ -115,6 +108,5 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 	@Override
 	public void destroy() {
 		close();
-		threadPool.shutdown();
 	}
 }

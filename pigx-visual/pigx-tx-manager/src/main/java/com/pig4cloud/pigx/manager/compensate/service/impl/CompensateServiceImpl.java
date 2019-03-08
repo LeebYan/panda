@@ -45,7 +45,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * @author LCN on 2017/11/11
@@ -68,8 +67,8 @@ public class CompensateServiceImpl implements CompensateService {
 	@Autowired
 	private TxManagerService managerService;
 
-
-	private Executor threadPool = Executors.newFixedThreadPool(20);
+	@Autowired
+	private Executor threadPool;
 
 	@Override
 	public boolean saveCompensateMsg(final TransactionCompensateMsg transactionCompensateMsg) {

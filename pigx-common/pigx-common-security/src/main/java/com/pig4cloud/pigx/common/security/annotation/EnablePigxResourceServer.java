@@ -31,20 +31,13 @@ import java.lang.annotation.*;
  * <p>
  * 资源服务注解
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @EnableResourceServer
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Import({PigxResourceServerAutoConfiguration.class, PigxSecurityBeanDefinitionRegistrar.class})
 public @interface EnablePigxResourceServer {
 
-	/**
-	 * false：上下文获取用户名
-	 * true： 上下文获取全部用户信息
-	 *
-	 * @return
-	 */
-	boolean details() default false;
 }

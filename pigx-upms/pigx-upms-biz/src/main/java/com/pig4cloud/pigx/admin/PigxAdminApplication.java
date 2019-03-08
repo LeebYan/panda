@@ -34,7 +34,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnablePigxSwagger2
 @SpringCloudApplication
 @EnablePigxFeignClients
-@EnablePigxResourceServer(details = true)
+@EnablePigxResourceServer
 public class PigxAdminApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PigxAdminApplication.class, args);
