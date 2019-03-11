@@ -34,7 +34,7 @@ import java.util.Objects;
 /**
  * @author lengleng
  * <p>
- * fallBack 代理处理
+ * fallback 代理处理
  */
 @Slf4j
 @AllArgsConstructor

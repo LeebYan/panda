@@ -74,7 +74,7 @@ public class LeaveBillController {
 	 */
 	@PostMapping
 	public R save(@RequestBody LeaveBill leaveBill) {
-		leaveBill.setUsername(SecurityUtils.getUsername());
+		leaveBill.setUsername(SecurityUtils.getUser().getUsername());
 		leaveBill.setState(TaskStatusEnum.UNSUBMIT.getStatus());
 		return new R<>(leaveBillService.save(leaveBill));
 	}
