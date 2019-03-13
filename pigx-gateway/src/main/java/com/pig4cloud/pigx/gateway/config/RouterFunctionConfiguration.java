@@ -46,7 +46,7 @@ public class RouterFunctionConfiguration {
 	public RouterFunction routerFunction() {
 		return RouterFunctions.route(
 			RequestPredicates.path("/fallback")
-				.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), hystrixFallbackHandler)
+				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), hystrixFallbackHandler)
 			.andRoute(RequestPredicates.GET("/code")
 				.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
 			.andRoute(RequestPredicates.GET("/swagger-resources")
