@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @AllArgsConstructor
 public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
+	private static final String JPEG = "jpeg";
 	private final Producer producer;
 	private final RedisTemplate redisTemplate;
 
@@ -65,7 +66,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		// 转换流信息写出
 		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
 		try {
-			ImageIO.write(image, MediaType.IMAGE_JPEG.getType(), os);
+			ImageIO.write(image, JPEG, os);
 		} catch (IOException e) {
 			log.error("ImageIO write err", e);
 			return Mono.error(e);
