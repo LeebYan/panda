@@ -15,29 +15,25 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon;
+package com.pig4cloud.pigx.daemon.service.impl;
 
-import com.pig4cloud.pigx.common.job.annotation.EnablePigxJob;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.daemon.entity.SysJob;
+import com.pig4cloud.pigx.daemon.mapper.SysJobMapper;
+import com.pig4cloud.pigx.daemon.service.SysJobService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
- * @author lengleng
- * @date 2018/7/24
- * 分布式任务调度模块
+ * 定时任务调度表
+ *
+ * @author frwcloud
+ * @date 2019-01-27 10:04:42
  */
-@EnablePigxJob
-@EnablePigxSwagger2
-@EnablePigxFeignClients
-@SpringCloudApplication
-@EnablePigxResourceServer
-public class PigxDaemonApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(PigxDaemonApplication.class, args);
-	}
+@Slf4j
+@Service
+@AllArgsConstructor
+public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> implements SysJobService {
 
 }

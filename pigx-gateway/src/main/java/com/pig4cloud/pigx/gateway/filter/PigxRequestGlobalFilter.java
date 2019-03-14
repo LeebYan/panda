@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.gateway.filter;
 
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.gateway.config.SwaggerProvider;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -73,9 +74,16 @@ public class PigxRequestGlobalFilter implements GlobalFilter, Ordered {
 			.build();
 		exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, newRequest.getURI());
 
+		// 3. 支持swagger添加X-Forwarded-Prefix header
+		String path = request.getURI().getPath();
+		if (!StringUtils.endsWithIgnoreCase(path, SwaggerProvider.API_URI)) {
+			return chain.filter(exchange.mutate().request(newRequest).build());
+		}
+		String basePath = path.substring(0, path.lastIndexOf(SwaggerProvider.API_URI));
 		return chain.filter(exchange.mutate()
-			.request(newRequest.mutate()
-				.build()).build());
+				.request(newRequest.mutate()
+						.header(HEADER_NAME, basePath)
+						.build()).build());
 	}
 
 	@Override

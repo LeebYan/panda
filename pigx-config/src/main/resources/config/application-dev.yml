@@ -79,8 +79,10 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 
+
 #swagger公共信息
 swagger:
+  host: pigx-gateway:9999
   title: PigX Swagger API
   description: 全宇宙最牛逼的Spring Cloud微服务开发脚手架
   version: @project.version@

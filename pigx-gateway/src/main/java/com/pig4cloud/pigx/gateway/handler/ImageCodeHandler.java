@@ -65,7 +65,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		// 转换流信息写出
 		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
 		try {
-			ImageIO.write(image, "jpeg", os);
+			ImageIO.write(image, MediaType.IMAGE_JPEG.getType(), os);
 		} catch (IOException e) {
 			log.error("ImageIO write err", e);
 			return Mono.error(e);

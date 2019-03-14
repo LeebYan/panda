@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 @Primary
 @AllArgsConstructor
 public class SwaggerProvider implements SwaggerResourcesProvider {
-	private static final String API_URI = "/v2/api-docs";
+	public static final String API_URI = "/v2/api-docs";
 	private final RouteDefinitionRepository routeDefinitionRepository;
 	private final FilterIgnorePropertiesConfig filterIgnorePropertiesConfig;
 
@@ -50,14 +50,14 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
 		List<RouteDefinition> routes = new ArrayList<>();
 		routeDefinitionRepository.getRouteDefinitions().subscribe(route -> routes.add(route));
 		routes.forEach(routeDefinition -> routeDefinition.getPredicates().stream()
-			.filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
-			.filter(predicateDefinition -> !filterIgnorePropertiesConfig.getSwaggerProviders().contains(routeDefinition.getId()))
-			.forEach(predicateDefinition -> resources.add(swaggerResource(routeDefinition.getId(),
-				predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0")
-					.replace("/**", API_URI)))));
+				.filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
+				.filter(predicateDefinition -> !filterIgnorePropertiesConfig.getSwaggerProviders().contains(routeDefinition.getId()))
+				.forEach(predicateDefinition -> resources.add(swaggerResource(routeDefinition.getId(),
+						predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0")
+								.replace("/**", API_URI)))));
 
 		return resources.stream().sorted(Comparator.comparing(SwaggerResource::getName))
-			.collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
 
 	private SwaggerResource swaggerResource(String name, String location) {
