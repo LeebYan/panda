@@ -8,8 +8,8 @@ RUN mkdir -p /pigx-daemon-quartz
 
 WORKDIR /pigx-daemon-quartz
 
-EXPOSE 5002
+EXPOSE 5007
 
-ADD ./pigx-daemon-quartz/target/pigx-daemon-quartz.jar ./
+ADD ./pigx-visual/pigx-daemon-quartz/target/pigx-daemon-quartz.jar ./
 
 CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-daemon-quartz.jar
