@@ -17,21 +17,14 @@
 package com.pig4cloud.pigx.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.admin.api.entity.SysDict;
+import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
 
 /**
- * 字典表
+ * 字典项
  *
  * @author pigx code generator
- * @date 2019-03-19 09:52:47
+ * @date 2019-03-19 09:46:46
  */
-public interface SysDictService extends IService<SysDict> {
+public interface SysDictItemService extends IService<SysDictItem> {
 
-	/**
-	 * 根据ID 删除字典
-	 *
-	 * @param id
-	 * @return
-	 */
-	Boolean removeDict(Integer id);
 }

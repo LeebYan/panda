@@ -119,11 +119,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 			final Map<String, Object> additionalInfo = new HashMap<>(8);
 			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
-			additionalInfo.put("user_id", pigxUser.getId());
-			additionalInfo.put("username", pigxUser.getUsername());
-			additionalInfo.put("dept_id", pigxUser.getDeptId());
-			additionalInfo.put("tenant_id", pigxUser.getTenantId());
-			additionalInfo.put("license", SecurityConstants.PIGX_LICENSE);
+			additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pigxUser.getId());
+			additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pigxUser.getUsername());
+			additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, pigxUser.getDeptId());
+			additionalInfo.put(SecurityConstants.DETAILS_TENANT_ID, pigxUser.getTenantId());
+			additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.PIGX_LICENSE);
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 			return accessToken;
 		};

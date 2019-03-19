@@ -21,12 +21,16 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pigx.admin.mapper.SysDictMapper">
+<mapper namespace="com.pig4cloud.pigx.admin.mapper.SysDictItemMapper">
 
-	<resultMap id="sysDictMap" type="com.pig4cloud.pigx.admin.api.entity.SysDict">
+	<resultMap id="sysDictItemMap" type="com.pig4cloud.pigx.admin.api.entity.SysDictItem">
 		<id property="id" column="id"/>
+		<result property="dictId" column="dict_id"/>
+		<result property="value" column="value"/>
+		<result property="label" column="label"/>
 		<result property="type" column="type"/>
 		<result property="description" column="description"/>
+		<result property="sort" column="sort"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="remarks" column="remarks"/>

@@ -14,24 +14,17 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.admin.service;
+package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.admin.api.entity.SysDict;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
 
 /**
- * 字典表
+ * 字典项
  *
  * @author pigx code generator
- * @date 2019-03-19 09:52:47
+ * @date 2019-03-19 09:46:46
  */
-public interface SysDictService extends IService<SysDict> {
+public interface SysDictItemMapper extends BaseMapper<SysDictItem> {
 
-	/**
-	 * 根据ID 删除字典
-	 *
-	 * @param id
-	 * @return
-	 */
-	Boolean removeDict(Integer id);
 }

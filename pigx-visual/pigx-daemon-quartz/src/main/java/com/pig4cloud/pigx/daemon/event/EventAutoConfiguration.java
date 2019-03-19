@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.daemon.event;
 import com.pig4cloud.pigx.daemon.config.PigxQuartzInvokeFactory;
 import com.pig4cloud.pigx.daemon.service.SysJobLogService;
 import com.pig4cloud.pigx.daemon.util.TaskInvokUtil;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -35,12 +35,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @EnableAsync
 @Configuration
-@AllArgsConstructor
 @ConditionalOnWebApplication
 public class EventAutoConfiguration {
-
+	@Autowired
 	private TaskInvokUtil taskInvokUtil;
-
+	@Autowired
 	private SysJobLogService sysJobLogService;
 
 	@Bean

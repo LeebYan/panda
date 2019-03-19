@@ -24,6 +24,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysDict;
+import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
+import com.pig4cloud.pigx.admin.service.SysDictItemService;
 import com.pig4cloud.pigx.admin.service.SysDictService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -42,7 +44,7 @@ import javax.validation.Valid;
  * </p>
  *
  * @author lengleng
- * @since 2017-11-19
+ * @since 2019-03-19
  */
 @RestController
 @AllArgsConstructor
@@ -50,6 +52,7 @@ import javax.validation.Valid;
 @Api(value = "dict", description = "字典管理模块")
 public class DictController {
 	private final SysDictService sysDictService;
+	private final SysDictItemService sysDictItemService;
 
 	/**
 	 * 通过ID查询字典信息
@@ -82,9 +85,9 @@ public class DictController {
 	@GetMapping("/type/{type}")
 	@Cacheable(value = "dict_details", key = "#type")
 	public R getDictByType(@PathVariable String type) {
-		return new R<>(sysDictService.list(Wrappers
-			.<SysDict>query().lambda()
-			.eq(SysDict::getType, type)));
+		return new R<>(sysDictItemService.list(Wrappers
+				.<SysDictItem>query().lambda()
+				.eq(SysDictItem::getType, type)));
 	}
 
 	/**
@@ -95,7 +98,6 @@ public class DictController {
 	 */
 	@SysLog("添加字典")
 	@PostMapping
-	@CacheEvict(value = "dict_details", key = "#sysDict.type")
 	@PreAuthorize("@pms.hasPermission('sys_dict_add')")
 	public R save(@Valid @RequestBody SysDict sysDict) {
 		return new R<>(sysDictService.save(sysDict));
@@ -104,16 +106,14 @@ public class DictController {
 	/**
 	 * 删除字典，并且清除字典缓存
 	 *
-	 * @param id   ID
-	 * @param type 类型
+	 * @param id ID
 	 * @return R
 	 */
 	@SysLog("删除字典")
-	@DeleteMapping("/{id}/{type}")
-	@CacheEvict(value = "dict_details", key = "#type")
+	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
-	public R removeById(@PathVariable Integer id, @PathVariable String type) {
-		return new R<>(sysDictService.removeById(id));
+	public R removeById(@PathVariable Integer id) {
+		return new R<>(sysDictService.removeDict(id));
 	}
 
 	/**
@@ -124,9 +124,71 @@ public class DictController {
 	 */
 	@PutMapping
 	@SysLog("修改字典")
-	@CacheEvict(value = "dict_details", key = "#sysDict.type")
 	@PreAuthorize("@pms.hasPermission('sys_dict_edit')")
 	public R updateById(@Valid @RequestBody SysDict sysDict) {
 		return new R<>(sysDictService.updateById(sysDict));
+	}
+
+	/**
+	 * 分页查询
+	 *
+	 * @param page        分页对象
+	 * @param sysDictItem 字典项
+	 * @return
+	 */
+	@GetMapping("/item/page")
+	public R getSysDictItemPage(Page page, SysDictItem sysDictItem) {
+		return new R<>(sysDictItemService.page(page, Wrappers.query(sysDictItem)));
+	}
+
+
+	/**
+	 * 通过id查询字典项
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@GetMapping("/item/{id}")
+	public R getDictItemById(@PathVariable("id") Integer id) {
+		return new R<>(sysDictItemService.getById(id));
+	}
+
+	/**
+	 * 新增字典项
+	 *
+	 * @param sysDictItem 字典项
+	 * @return R
+	 */
+	@SysLog("新增字典项")
+	@PostMapping("/item")
+	@CacheEvict(value = "dict_details", allEntries = true)
+	public R save(@RequestBody SysDictItem sysDictItem) {
+		return new R<>(sysDictItemService.save(sysDictItem));
+	}
+
+	/**
+	 * 修改字典项
+	 *
+	 * @param sysDictItem 字典项
+	 * @return R
+	 */
+	@SysLog("修改字典项")
+	@PutMapping("/item")
+	@CacheEvict(value = "dict_details", allEntries = true)
+	public R updateById(@RequestBody SysDictItem sysDictItem) {
+		return new R<>(sysDictItemService.updateById(sysDictItem));
+	}
+
+	/**
+	 * 通过id删除字典项
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@SysLog("删除字典项")
+	@DeleteMapping("/item/{id}")
+	@CacheEvict(value = "dict_details", allEntries = true)
+	public R removeDictItemById(@PathVariable Integer id) {
+		return new R<>(sysDictItemService.removeById(id));
 	}
 }

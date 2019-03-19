@@ -59,7 +59,7 @@
 		<ttl.version>2.10.2</ttl.version>
 		<minio.version>6.0.2</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
-		<security.oauth.version>2.3.4.RELEASE</security.oauth.version>
+		<security.oauth.version>2.3.5.RELEASE</security.oauth.version>
 		<security.oauth.auto.version>2.1.2.RELEASE</security.oauth.auto.version>
 		<activiti.version>5.22.0</activiti.version>
 		<zipkin.version>2.12.2</zipkin.version>
