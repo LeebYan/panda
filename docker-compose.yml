@@ -90,13 +90,22 @@ services:
     ports:
       - 5006:5006
 
-  pigx-daemon:
+  pigx-daemon-quartz:
     build:
       context: ./
-      dockerfile: ./pigx-visual/pigx-daemon/Dockerfile
+      dockerfile: ./pigx-visual/pigx-daemon-quartz/Dockerfile
     restart: always
-    image: pigx-daemon
-    container_name: pigx-daemon
+    image: pigx-daemon-quartz
+    container_name: pigx-daemon-quartz
+
+  pigx-daemon-elastic:
+    build:
+      context: ./
+      dockerfile: ./pigx-visual/pigx-daemon-elastic/Dockerfile
+    restart: always
+    image: pigx-daemon-elastic
+    container_name: pigx-daemon-elastic
+
 
   pigx-codegen:
     build:
