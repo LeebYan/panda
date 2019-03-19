@@ -63,36 +63,10 @@ public class SecurityUtils {
 	}
 
 	/**
-	 * 获取当前用名
-	 *
-	 * @return String
-	 */
-	public String getUsername() {
-		Object principal = getAuthentication().getPrincipal();
-		if (principal instanceof String) {
-			return principal.toString();
-		}
-		return null;
-	}
-
-
-	public String getClientId() {
-		Authentication authentication = getAuthentication();
-		if (authentication instanceof OAuth2Authentication) {
-			OAuth2Authentication auth2Authentication = (OAuth2Authentication) authentication;
-			return auth2Authentication.getOAuth2Request().getClientId();
-		}
-		return null;
-	}
-
-	/**
 	 * 获取用户
 	 */
 	public PigxUser getUser() {
 		Authentication authentication = getAuthentication();
-		if (authentication == null) {
-			return null;
-		}
 		return getUser(authentication);
 	}
 

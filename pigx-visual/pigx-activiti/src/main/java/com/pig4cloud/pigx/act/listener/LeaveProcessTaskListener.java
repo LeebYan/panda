@@ -51,13 +51,13 @@ public class LeaveProcessTaskListener implements TaskListener {
 		SimpMessagingTemplate simpMessagingTemplate = SpringContextHolder.getBean(SimpMessagingTemplate.class);
 		RemoteUserService userService = SpringContextHolder.getBean(RemoteUserService.class);
 
-		R<List<SysUser>> result = userService.ancestorUsers(SecurityUtils.getUsername());
+		R<List<SysUser>> result = userService.ancestorUsers(SecurityUtils.getUser().getUsername());
 		List<String> remindUserList = new ArrayList<>();
 
 		if (CollUtil.isEmpty(result.getData())) {
-			log.info("用户 {} 不存在上级,任务单由当前用户审批", SecurityUtils.getUsername());
-			delegateTask.addCandidateUser(SecurityUtils.getUsername());
-			remindUserList.add(SecurityUtils.getUsername());
+			log.info("用户 {} 不存在上级,任务单由当前用户审批", SecurityUtils.getUser().getUsername());
+			delegateTask.addCandidateUser(SecurityUtils.getUser().getUsername());
+			remindUserList.add(SecurityUtils.getUser().getUsername());
 		} else {
 			List<String> userList = result.getData().stream().map(SysUser::getUsername).collect(Collectors.toList());
 			log.info("当前任务 {}，由 {}处理", delegateTask.getId(), userList);
@@ -66,7 +66,7 @@ public class LeaveProcessTaskListener implements TaskListener {
 		}
 
 		remindUserList.forEach(user -> {
-			String target = String.format("%s-%s", SecurityUtils.getUsername(), TenantContextHolder.getTenantId());
+			String target = String.format("%s-%s", SecurityUtils.getUser().getUsername(), TenantContextHolder.getTenantId());
 			simpMessagingTemplate.convertAndSendToUser(target, "/remind", delegateTask.getName());
 		});
 	}

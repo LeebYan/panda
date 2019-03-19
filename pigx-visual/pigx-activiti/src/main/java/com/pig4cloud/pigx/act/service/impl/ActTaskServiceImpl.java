@@ -146,7 +146,7 @@ public class ActTaskServiceImpl implements ActTaskService {
 			.singleResult();
 
 		String processInstanceId = task.getProcessInstanceId();
-		Authentication.setAuthenticatedUserId(SecurityUtils.getUsername());
+		Authentication.setAuthenticatedUserId(SecurityUtils.getUser().getUsername());
 		taskService.addComment(taskId, processInstanceId, message);
 
 		Map<String, Object> variables = new HashMap<>(1);

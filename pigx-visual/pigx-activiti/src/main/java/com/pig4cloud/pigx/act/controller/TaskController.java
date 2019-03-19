@@ -44,7 +44,7 @@ public class TaskController {
 
 	@GetMapping("/todo")
 	public R todo(@RequestParam Map<String, Object> params) {
-		return new R<>(actTaskService.getTaskByName(params, SecurityUtils.getUsername()));
+		return new R<>(actTaskService.getTaskByName(params, SecurityUtils.getUser().getUsername()));
 	}
 
 	@GetMapping("/{id}")
