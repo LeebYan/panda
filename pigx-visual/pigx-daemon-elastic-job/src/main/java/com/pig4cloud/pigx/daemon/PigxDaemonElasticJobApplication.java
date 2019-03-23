@@ -34,10 +34,10 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnablePigxFeignClients
 @SpringCloudApplication
 @EnablePigxResourceServer
-public class PigxDaemonElasticApplication {
+public class PigxDaemonElasticJobApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PigxDaemonElasticApplication.class, args);
+		SpringApplication.run(PigxDaemonElasticJobApplication.class, args);
 	}
 
 }

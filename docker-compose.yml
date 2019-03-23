@@ -98,13 +98,13 @@ services:
     image: pigx-daemon-quartz
     container_name: pigx-daemon-quartz
 
-  pigx-daemon-elastic:
+  pigx-daemon-elastic-job:
     build:
       context: ./
-      dockerfile: ./pigx-visual/pigx-daemon-elastic/Dockerfile
+      dockerfile: ./pigx-visual/pigx-daemon-elastic-job/Dockerfile
     restart: always
-    image: pigx-daemon-elastic
-    container_name: pigx-daemon-elastic
+    image: pigx-daemon-elastic-job
+    container_name: pigx-daemon-elastic-job
 
 
   pigx-codegen:

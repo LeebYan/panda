@@ -34,7 +34,7 @@
 	<modules>
 		<module>pigx-activiti</module>
 		<module>pigx-codegen</module>
-		<module>pigx-daemon-elastic</module>
+		<module>pigx-daemon-elastic-job</module>
 		<module>pigx-daemon-quartz</module>
 		<module>pigx-monitor</module>
 		<module>pigx-sso-client-demo</module>
