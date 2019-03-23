@@ -17,7 +17,6 @@
 
 	<properties>
 		<pigx.version>2.6.0</pigx.version>
-		<jackson.modules>2.9.6</jackson.modules>
 		<mybatis-plus.version>3.1.0</mybatis-plus.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
 	</properties>
@@ -74,15 +73,6 @@
 				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-upms-api</artifactId>
 				<version>${pigx.version}</version>
-			</dependency>
-
-			<!--jackson模块-->
-			<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-modules-java8</artifactId>
-				<version>${jackson.modules}</version>
-				<type>pom</type>
-				<scope>import</scope>
 			</dependency>
 			<!--mybatis plus extension,包含了mybatis plus core-->
 			<dependency>
