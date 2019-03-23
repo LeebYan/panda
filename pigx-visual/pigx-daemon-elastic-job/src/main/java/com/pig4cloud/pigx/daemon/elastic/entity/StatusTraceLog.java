@@ -1,4 +1,4 @@
-package com.pig4cloud.pigx.daemon.entity;
+package com.pig4cloud.pigx.daemon.elastic.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -6,19 +6,18 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  *
  * @author lengleng
- * @date 2018-08-03 22:15:56
+ * @date 2018-08-03 22:15:45
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("job_execution_log")
-public class ExecutionLog extends Model<ExecutionLog> {
+@TableName("job_status_trace_log")
+public class StatusTraceLog extends Model<StatusTraceLog> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,45 +32,38 @@ public class ExecutionLog extends Model<ExecutionLog> {
 	/**
 	 *
 	 */
+	private String originalTaskId;
+	/**
+	 *
+	 */
 	private String taskId;
 	/**
 	 *
 	 */
-	private String hostname;
+	private String slaveId;
 	/**
 	 *
 	 */
-	private String ip;
+	private String source;
 	/**
 	 *
 	 */
-	private Integer shardingItem;
+	private String executionType;
 	/**
 	 *
 	 */
-	private String executionSource;
+	private String shardingItem;
 	/**
 	 *
 	 */
-	private String failureCause;
+	private String state;
 	/**
 	 *
 	 */
-	private Integer isSuccess;
+	private String message;
 	/**
 	 *
 	 */
-	private LocalDateTime startTime;
-	/**
-	 *
-	 */
-	private LocalDateTime completeTime;
+	private LocalDateTime creationTime;
 
-  /**
-   * 主键值
-   */
-  @Override
-  protected Serializable pkVal() {
-    return this.id;
-  }
 }

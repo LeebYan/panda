@@ -15,28 +15,25 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.listener;
+package com.pig4cloud.pigx.daemon.elastic.listener;
 
 import com.dangdang.ddframe.job.executor.ShardingContexts;
-import com.dangdang.ddframe.job.lite.api.listener.AbstractDistributeOnceElasticJobListener;
+import com.dangdang.ddframe.job.lite.api.listener.ElasticJobListener;
 
 /**
  * @author lengleng
  * @date 2018/7/24
+ * 任务监听器
  */
-public class PigxDistributeElasticJobListener extends AbstractDistributeOnceElasticJobListener {
+public class PigxElasticJobListener implements ElasticJobListener {
 
-	public PigxDistributeElasticJobListener(long startedTimeoutMilliseconds, long completedTimeoutMilliseconds) {
-		super(startedTimeoutMilliseconds, completedTimeoutMilliseconds);
+	@Override
+	public void beforeJobExecuted(ShardingContexts shardingContexts) {
+		System.out.println(shardingContexts.getJobName() + " | MyElasticJobListener beforeJobExecuted");
 	}
 
 	@Override
-	public void doBeforeJobExecutedAtLastStarted(ShardingContexts shardingContexts) {
-		System.out.println(shardingContexts.getJobName() + " | MyDistributeElasticJobListener doBeforeJobExecutedAtLastStarted...");
-	}
-
-	@Override
-	public void doAfterJobExecutedAtLastCompleted(ShardingContexts shardingContexts) {
-		System.out.println(shardingContexts.getJobName() + " | MyDistributeElasticJobListener doAfterJobExecutedAtLastCompleted...");
+	public void afterJobExecuted(ShardingContexts shardingContexts) {
+		System.out.println(shardingContexts.getJobName() + " | MyElasticJobListener afterJobExecuted");
 	}
 }

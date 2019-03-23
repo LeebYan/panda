@@ -1,9 +1,9 @@
-package com.pig4cloud.pigx.daemon.service.impl;
+package com.pig4cloud.pigx.daemon.elastic.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.daemon.entity.StatusTraceLog;
-import com.pig4cloud.pigx.daemon.mapper.StatusTraceLogMapper;
-import com.pig4cloud.pigx.daemon.service.StatusTraceLogService;
+import com.pig4cloud.pigx.daemon.elastic.entity.StatusTraceLog;
+import com.pig4cloud.pigx.daemon.elastic.mapper.StatusTraceLogMapper;
+import com.pig4cloud.pigx.daemon.elastic.service.StatusTraceLogService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

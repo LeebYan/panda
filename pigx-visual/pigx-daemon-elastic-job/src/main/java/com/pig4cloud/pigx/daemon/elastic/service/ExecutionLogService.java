@@ -1,7 +1,7 @@
-package com.pig4cloud.pigx.daemon.service;
+package com.pig4cloud.pigx.daemon.elastic.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.daemon.entity.ExecutionLog;
+import com.pig4cloud.pigx.daemon.elastic.entity.ExecutionLog;
 
 /**
  * 任务日志处理

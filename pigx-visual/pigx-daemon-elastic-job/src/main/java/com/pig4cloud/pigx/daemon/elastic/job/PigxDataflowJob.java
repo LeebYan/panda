@@ -15,26 +15,26 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.job;
+package com.pig4cloud.pigx.daemon.elastic.job;
 
 import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
-import lombok.extern.slf4j.Slf4j;
+import com.dangdang.ddframe.job.api.dataflow.DataflowJob;
+
+import java.util.List;
 
 /**
  * @author lengleng
- * @date 2018/2/7
- * 测试Job
+ * @date 2018/2/8
  */
-@Slf4j
-public class PigxSimpleJob implements SimpleJob {
-	/**
-	 * 业务执行逻辑
-	 *
-	 * @param shardingContext 分片信息
-	 */
+public class PigxDataflowJob implements DataflowJob<Integer> {
+
 	@Override
-	public void execute(ShardingContext shardingContext) {
-		log.info("第一个任务执行啦:{}", shardingContext);
+	public List<Integer> fetchData(ShardingContext shardingContext) {
+		return null;
+	}
+
+	@Override
+	public void processData(ShardingContext shardingContext, List<Integer> list) {
+
 	}
 }

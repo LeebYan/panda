@@ -15,13 +15,13 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.controller;
+package com.pig4cloud.pigx.daemon.elastic.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.daemon.entity.StatusTraceLog;
-import com.pig4cloud.pigx.daemon.service.StatusTraceLogService;
+import com.pig4cloud.pigx.daemon.elastic.entity.StatusTraceLog;
+import com.pig4cloud.pigx.daemon.elastic.service.StatusTraceLogService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

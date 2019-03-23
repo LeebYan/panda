@@ -15,29 +15,26 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon;
+package com.pig4cloud.pigx.daemon.elastic.job;
 
-import com.pig4cloud.pigx.common.job.annotation.EnablePigxJob;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.dangdang.ddframe.job.api.ShardingContext;
+import com.dangdang.ddframe.job.api.simple.SimpleJob;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lengleng
- * @date 2018/7/24
- * 分布式任务调度模块
+ * @date 2018/2/7
+ * 测试Job
  */
-@EnablePigxJob
-@EnablePigxSwagger2
-@EnablePigxFeignClients
-@SpringCloudApplication
-@EnablePigxResourceServer
-public class PigxDaemonElasticJobApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(PigxDaemonElasticJobApplication.class, args);
+@Slf4j
+public class PigxSimpleJob implements SimpleJob {
+	/**
+	 * 业务执行逻辑
+	 *
+	 * @param shardingContext 分片信息
+	 */
+	@Override
+	public void execute(ShardingContext shardingContext) {
+		log.info("第一个任务执行啦:{}", shardingContext);
 	}
-
 }

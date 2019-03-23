@@ -1,7 +1,7 @@
-package com.pig4cloud.pigx.daemon.mapper;
+package com.pig4cloud.pigx.daemon.elastic.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.daemon.entity.ExecutionLog;
+import com.pig4cloud.pigx.daemon.elastic.entity.ExecutionLog;
 
 /**
  * 任务日志处理

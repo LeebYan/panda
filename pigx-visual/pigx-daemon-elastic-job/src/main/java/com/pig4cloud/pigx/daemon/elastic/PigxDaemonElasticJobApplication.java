@@ -15,26 +15,29 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.job;
+package com.pig4cloud.pigx.daemon.elastic;
 
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.dataflow.DataflowJob;
-
-import java.util.List;
+import com.pig4cloud.pigx.common.job.annotation.EnablePigxJob;
+import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
+import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
+import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
+import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2018/2/8
+ * @date 2018/7/24
+ * 分布式任务调度模块
  */
-public class PigxDataflowJob implements DataflowJob<Integer> {
+@EnablePigxJob
+@EnablePigxSwagger2
+@EnablePigxFeignClients
+@SpringCloudApplication
+@EnablePigxResourceServer
+public class PigxDaemonElasticJobApplication {
 
-	@Override
-	public List<Integer> fetchData(ShardingContext shardingContext) {
-		return null;
+	public static void main(String[] args) {
+		SpringApplication.run(PigxDaemonElasticJobApplication.class, args);
 	}
 
-	@Override
-	public void processData(ShardingContext shardingContext, List<Integer> list) {
-
-	}
 }
