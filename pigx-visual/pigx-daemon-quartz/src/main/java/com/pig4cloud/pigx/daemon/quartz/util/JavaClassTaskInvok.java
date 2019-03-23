@@ -53,7 +53,7 @@ public class JavaClassTaskInvok implements ITaskInvok {
 				method = clazz.getDeclaredMethod(sysJob.getMethodName());
 				returnValue = method.invoke(obj);
 			}
-			if (StrUtil.isEmpty(returnValue.toString()) || PigxQuartzEnum.JOBLOGSTATUFAIL.getType().equals(returnValue.toString())) {
+			if (StrUtil.isEmpty(returnValue.toString()) || PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType().equals(returnValue.toString())) {
 				log.error("定时任务javaClassTaskInvok异常,执行任务：{}", sysJob.getClassName());
 				throw new TaskException("定时任务javaClassTaskInvok业务执行失败,任务：" + sysJob.getClassName());
 			}

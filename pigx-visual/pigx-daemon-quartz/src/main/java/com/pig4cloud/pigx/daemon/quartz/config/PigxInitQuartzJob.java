@@ -44,11 +44,11 @@ public class PigxInitQuartzJob {
 	@Bean
 	public void customize() {
 		sysJobService.list().forEach(sysjob -> {
-			if (PigxQuartzEnum.JOBSTATUSRELEASE.getType().equals(sysjob.getJobStatus())) {
+			if (PigxQuartzEnum.JOB_STATUS_RELEASE.getType().equals(sysjob.getJobStatus())) {
 				taskUtil.removeJob(sysjob, scheduler);
-			} else if (PigxQuartzEnum.JOBSTATUSRUNNING.getType().equals(sysjob.getJobStatus())) {
+			} else if (PigxQuartzEnum.JOB_STATUS_RUNNING.getType().equals(sysjob.getJobStatus())) {
 				taskUtil.resumeJob(sysjob, scheduler);
-			} else if (PigxQuartzEnum.JOBSTATUSNOTRUNNING.getType().equals(sysjob.getJobStatus())) {
+			} else if (PigxQuartzEnum.JOB_STATUS_NOT_RUNNING.getType().equals(sysjob.getJobStatus())) {
 				taskUtil.pauseJob(sysjob, scheduler);
 			} else {
 				taskUtil.removeJob(sysjob, scheduler);

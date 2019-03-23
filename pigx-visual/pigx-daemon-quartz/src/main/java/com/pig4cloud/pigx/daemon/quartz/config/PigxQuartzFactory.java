@@ -43,7 +43,7 @@ public class PigxQuartzFactory implements Job {
 	@Override
 	@SneakyThrows
 	public void execute(JobExecutionContext jobExecutionContext) {
-		SysJob sysJob = (SysJob) jobExecutionContext.getMergedJobDataMap().get(PigxQuartzEnum.SCHEDULEJOBKEY.getType());
+		SysJob sysJob = (SysJob) jobExecutionContext.getMergedJobDataMap().get(PigxQuartzEnum.SCHEDULE_JOB_KEY.getType());
 		pigxQuartzInvokeFactory.init(sysJob, jobExecutionContext.getTrigger());
 	}
 }

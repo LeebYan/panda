@@ -108,11 +108,11 @@ public class TaskInvokUtil {
 			}
 			//获取执行结束时间
 			endTime = System.currentTimeMillis();
-			sysJobLog.setJobMessage(PigxQuartzEnum.JOBLOGSTATUSSUCCESS.getDescription());
-			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOBLOGSTATUSSUCCESS.getType());
+			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getDescription());
+			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType());
 			sysJobLog.setExecuteTime(String.valueOf(endTime - startTime));
 			//任务表信息更新
-			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOBLOGSTATUSSUCCESS.getType());
+			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType());
 			updateSysjob.setStarttime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			updateSysjob.setPrevioustime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			updateSysjob.setNexttime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
@@ -120,12 +120,12 @@ public class TaskInvokUtil {
 			//获取执行结束时间
 			endTime = System.currentTimeMillis();
 			log.error("定时任务执行失败，任务名称：{}；任务组名：{}，cron执行表达式：{}，执行时间：{}", sysJob.getJobName(), sysJob.getJobGroup(), sysJob.getCronExpression(), new Date());
-			sysJobLog.setJobMessage(PigxQuartzEnum.JOBLOGSTATUFAIL.getDescription());
-			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOBLOGSTATUFAIL.getType());
+			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getDescription());
+			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType());
 			sysJobLog.setExecuteTime(String.valueOf(endTime - startTime));
 			sysJobLog.setExceptionInfo(StrUtil.sub(e.getMessage(), 0, 2000));
 			//任务表信息更新
-			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOBLOGSTATUFAIL.getType());
+			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType());
 			updateSysjob.setStarttime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			updateSysjob.setPrevioustime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			updateSysjob.setNexttime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());

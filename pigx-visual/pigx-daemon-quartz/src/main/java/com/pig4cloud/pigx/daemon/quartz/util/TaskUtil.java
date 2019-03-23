@@ -72,7 +72,7 @@ public class TaskUtil {
 				//新建一个工作任务 指定任务类型为串接进行的
 				JobDetail jobDetail = JobBuilder.newJob(PigxQuartzFactory.class).withIdentity(jobKey).build();
 				//将任务信息添加到任务信息中
-				jobDetail.getJobDataMap().put(SCHEDULEJOBKEY.getType(), sysjob);
+				jobDetail.getJobDataMap().put(SCHEDULE_JOB_KEY.getType(), sysjob);
 				//将cron表达式进行转换
 				CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(sysjob.getCronExpression());
 				cronScheduleBuilder = this.handleCronScheduleMisfirePolicy(sysjob, cronScheduleBuilder);
@@ -86,12 +86,12 @@ public class TaskUtil {
 				//按照新的规则进行
 				trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
 				//将任务信息更新到任务信息中
-				trigger.getJobDataMap().put(SCHEDULEJOBKEY.getType(), sysjob);
+				trigger.getJobDataMap().put(SCHEDULE_JOB_KEY.getType(), sysjob);
 				//重启
 				scheduler.rescheduleJob(triggerKey, trigger);
 			}
 			// 如任务状态为暂停
-			if (sysjob.getJobStatus().equals(JOBSTATUSNOTRUNNING.getType())) {
+			if (sysjob.getJobStatus().equals(JOB_STATUS_NOT_RUNNING.getType())) {
 				this.pauseJob(sysjob, scheduler);
 			}
 		} catch (SchedulerException e) {
