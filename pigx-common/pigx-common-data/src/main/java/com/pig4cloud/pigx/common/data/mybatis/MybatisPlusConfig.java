@@ -40,7 +40,7 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnBean(DataSource.class)
-@MapperScan("com.pig4cloud.pigx.*.mapper")
+@MapperScan("com.pig4cloud.pigx.**.mapper")
 public class MybatisPlusConfig {
 
 	/**
