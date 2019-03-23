@@ -28,11 +28,10 @@ import java.time.LocalDateTime;
 /**
  * 字典项
  *
- * @author pigx code generator
- * @date 2019-03-19 09:46:46
+ * @author lengleng
+ * @date 2019/03/19
  */
 @Data
-@TableName("sys_dict_item")
 @EqualsAndHashCode(callSuper = true)
 public class SysDictItem extends Model<SysDictItem> {
 	private static final long serialVersionUID = 1L;

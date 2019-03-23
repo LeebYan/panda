@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 /**
  * 系统社交登录账号表
  *
- * @author pigx code generator
+ * @author lengleng
  * @date 2018-08-16 21:30:41
  */
 @Data
