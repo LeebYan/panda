@@ -55,7 +55,7 @@ public class SpringBeanTaskInvok implements ITaskInvok {
 				ReflectionUtils.makeAccessible(method);
 				returnValue = method.invoke(target);
 			}
-			if (StrUtil.isEmpty(returnValue.toString()) || PigxQuartzEnum.JOBLOGSTATUFAIL.getType()
+			if (StrUtil.isEmpty(returnValue.toString()) || PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType()
 					.equals(returnValue.toString())) {
 				log.error("定时任务springBeanTaskInvok异常,执行任务：{}", sysJob.getClassName());
 				throw new TaskException("定时任务springBeanTaskInvok业务执行失败,任务：" + sysJob.getClassName());

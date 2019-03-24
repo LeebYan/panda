@@ -52,34 +52,33 @@ public enum PigxQuartzEnum {
 	/**
 	 * 任务详细信息的key
 	 */
-	SCHEDULEJOBKEY("scheduleJob", "获取任务详细信息的key"),
+	SCHEDULE_JOB_KEY("scheduleJob", "获取任务详细信息的key"),
 
 	/**
 	 * JOB执行状态：0执行成功
 	 */
-	JOBLOGSTATUSSUCCESS("0", "执行成功"),
+	JOB_LOG_STATUS_SUCCESS("0", "执行成功"),
 	/**
 	 * JOB执行状态：1执行失败
 	 */
-	JOBLOGSTATUFAIL("1", "执行失败"),
+	JOB_LOG_STATUS_FAIL("1", "执行失败"),
 
 	/**
 	 * JOB状态：1已发布
 	 */
-	JOBSTATUSRELEASE("1", "未发布"),
+	JOB_STATUS_RELEASE("1", "已发布"),
 	/**
 	 * JOB状态：2运行中
 	 */
-	JOBSTATUSRUNNING("2", "运行中"),
+	JOB_STATUS_RUNNING("2", "运行中"),
 	/**
 	 * JOB状态：3暂停
 	 */
-	JOBSTATUSNOTRUNNING("3", "暂停"),
+	JOB_STATUS_NOT_RUNNING("3", "暂停"),
 	/**
 	 * JOB状态：4删除
 	 */
-	JOBSTATUSDEL("4", "删除");
-
+	JOB_STATUS_DEL("4", "删除");
 
 	/**
 	 * 类型

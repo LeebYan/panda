@@ -31,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 字典表
  *
- * @author pigx code generator
- * @date 2019-03-19 09:52:47
+ * @author lengleng
+ * @date 2019/03/19
  */
 @Service
 @AllArgsConstructor

@@ -48,7 +48,7 @@ public class EventAutoConfiguration {
 	}
 
 	@Bean
-	public PigxQuartzInvokeFactory frwcloudQuartzInvokeFactory(ApplicationEventPublisher publisher) {
+	public PigxQuartzInvokeFactory pigxQuartzInvokeFactory(ApplicationEventPublisher publisher) {
 		return new PigxQuartzInvokeFactory(publisher);
 	}
 

@@ -22,8 +22,8 @@ import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
 /**
  * 字典项
  *
- * @author pigx code generator
- * @date 2019-03-19 09:46:46
+ * @author lengleng
+ * @date 2019/03/19
  */
 public interface SysDictItemMapper extends BaseMapper<SysDictItem> {
 

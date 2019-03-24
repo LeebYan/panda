@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 /**
  * 字典项
  *
- * @author pigx code generator
- * @date 2019-03-19 09:46:46
+ * @author lengleng
+ * @date 2019/03/19
  */
 @Service
 public class SysDictItemServiceImpl extends ServiceImpl<SysDictItemMapper, SysDictItem> implements SysDictItemService {

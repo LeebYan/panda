@@ -34,6 +34,6 @@ public class Demo1 {
 	@SneakyThrows
 	public String demoMethod(String para) {
 		log.info("demo1测试于:{}，输入参数L{}", new Date(), para);
-		return PigxQuartzEnum.JOBLOGSTATUSSUCCESS.getType();
+		return PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType();
 	}
 }

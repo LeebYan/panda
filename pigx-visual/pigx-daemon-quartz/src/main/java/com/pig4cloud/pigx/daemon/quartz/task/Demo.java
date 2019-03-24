@@ -35,6 +35,6 @@ public class Demo {
 	@SneakyThrows
 	public String demoMethod(String para) {
 		log.info("郑健楠测试于:{}，输入参数L{}", DateUtil.now(), para);
-		return PigxQuartzEnum.JOBLOGSTATUSSUCCESS.getType();
+		return PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType();
 	}
 }

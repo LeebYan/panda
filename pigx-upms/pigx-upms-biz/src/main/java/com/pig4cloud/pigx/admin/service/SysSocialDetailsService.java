@@ -24,7 +24,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysSocialDetails;
 /**
  * 系统社交登录账号表
  *
- * @author pigx code generator
+ * @author lengleng
  * @date 2018-08-16 21:30:41
  */
 public interface SysSocialDetailsService extends IService<SysSocialDetails> {
