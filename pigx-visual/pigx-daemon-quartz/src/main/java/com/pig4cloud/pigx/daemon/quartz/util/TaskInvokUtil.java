@@ -34,7 +34,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
 import java.util.Date;
@@ -46,10 +45,8 @@ import java.util.Date;
  */
 @Slf4j
 @Aspect
-@Component
 @RequiredArgsConstructor
 public class TaskInvokUtil {
-
 	private final ApplicationEventPublisher publisher;
 
 	@Autowired

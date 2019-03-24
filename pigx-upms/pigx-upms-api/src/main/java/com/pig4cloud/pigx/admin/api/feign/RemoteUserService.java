@@ -35,7 +35,7 @@ import java.util.List;
  * @author lengleng
  * @date 2018/6/22
  */
-@FeignClient(value = ServiceNameConstants.UMPS_SERVICE)
+@FeignClient(contextId = "remoteUserService", value = ServiceNameConstants.UMPS_SERVICE)
 public interface RemoteUserService {
 	/**
 	 * 通过用户名查询用户、角色信息

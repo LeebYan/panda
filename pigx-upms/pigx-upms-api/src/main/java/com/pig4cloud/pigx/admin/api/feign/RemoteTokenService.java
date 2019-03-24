@@ -30,7 +30,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018/9/4
  */
-@FeignClient(value = ServiceNameConstants.AUTH_SERVICE)
+@FeignClient(contextId = "remoteTokenService", value = ServiceNameConstants.AUTH_SERVICE)
 public interface RemoteTokenService {
 	/**
 	 * 分页查询token 信息
