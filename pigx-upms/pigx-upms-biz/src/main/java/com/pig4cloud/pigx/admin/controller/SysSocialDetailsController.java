@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,6 +78,7 @@ public class SysSocialDetailsController {
 	 */
 	@SysLog("保存三方信息")
 	@PostMapping
+	@PreAuthorize("@pms.hasPermission('sys_social_details_add')")
 	public R save(@Valid @RequestBody SysSocialDetails sysSocialDetails) {
 		return new R<>(sysSocialDetailsService.save(sysSocialDetails));
 	}
@@ -89,6 +91,7 @@ public class SysSocialDetailsController {
 	 */
 	@SysLog("修改三方信息")
 	@PutMapping
+	@PreAuthorize("@pms.hasPermission('sys_social_details_edit')")
 	public R updateById(@Valid @RequestBody SysSocialDetails sysSocialDetails) {
 		sysSocialDetailsService.updateById(sysSocialDetails);
 		return new R<>(Boolean.TRUE);
@@ -102,6 +105,7 @@ public class SysSocialDetailsController {
 	 */
 	@SysLog("删除三方信息")
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@pms.hasPermission('sys_social_details_del')")
 	public R removeById(@PathVariable Integer id) {
 		return new R<>(sysSocialDetailsService.removeById(id));
 	}

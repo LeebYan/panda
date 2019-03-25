@@ -45,4 +45,5 @@ pigx:
       - sys_log
       - sys_social_details
       - sys_dict
+      - sys_dict_item
       - sys_log
