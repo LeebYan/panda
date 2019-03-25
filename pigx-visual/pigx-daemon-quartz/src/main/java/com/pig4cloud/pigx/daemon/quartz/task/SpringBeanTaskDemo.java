@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component("demo")
-public class Demo {
+public class SpringBeanTaskDemo {
 	/**
 	 * 测试Spring Bean的演示方法
 	 */
