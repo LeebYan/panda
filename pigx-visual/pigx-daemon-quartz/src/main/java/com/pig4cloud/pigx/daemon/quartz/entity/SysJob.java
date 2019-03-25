@@ -117,15 +117,15 @@ public class SysJob extends Model<SysJob> {
 	/**
 	 * 首次执行时间
 	 */
-	private LocalDateTime starttime;
+	private LocalDateTime startTime;
 	/**
 	 * 上次执行时间
 	 */
-	private LocalDateTime previoustime;
+	private LocalDateTime previousTime;
 	/**
 	 * 下次执行时间
 	 */
-	private LocalDateTime nexttime;
+	private LocalDateTime nextTime;
 	/**
 	 * 租户id
 	 */

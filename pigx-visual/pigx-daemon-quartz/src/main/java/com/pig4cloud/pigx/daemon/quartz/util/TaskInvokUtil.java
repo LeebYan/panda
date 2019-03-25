@@ -110,9 +110,9 @@ public class TaskInvokUtil {
 			sysJobLog.setExecuteTime(String.valueOf(endTime - startTime));
 			//任务表信息更新
 			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType());
-			updateSysjob.setStarttime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			updateSysjob.setPrevioustime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			updateSysjob.setNexttime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setStartTime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setPreviousTime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setNextTime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 		} catch (Throwable e) {
 			//获取执行结束时间
 			endTime = System.currentTimeMillis();
@@ -123,9 +123,9 @@ public class TaskInvokUtil {
 			sysJobLog.setExceptionInfo(StrUtil.sub(e.getMessage(), 0, 2000));
 			//任务表信息更新
 			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType());
-			updateSysjob.setStarttime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			updateSysjob.setPrevioustime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			updateSysjob.setNexttime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setStartTime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setPreviousTime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			updateSysjob.setNextTime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 		} finally {
 			publisher.publishEvent(new SysJobLogEvent(sysJobLog));
 			sysJobService.updateById(updateSysjob);
