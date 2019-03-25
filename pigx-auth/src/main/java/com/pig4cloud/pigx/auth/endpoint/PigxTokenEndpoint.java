@@ -58,8 +58,8 @@ import java.util.Map;
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
 	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
+	private final RedisTemplate pigxRedisTemplate;
 	private final TokenStore tokenStore;
-	private final RedisTemplate redisTemplate;
 	private final CacheManager cacheManager;
 
 	/**
@@ -131,19 +131,19 @@ public class PigxTokenEndpoint {
 		List<String> pages = findKeysForPage(key, MapUtil.getInt(params, PaginationConstants.CURRENT)
 				, MapUtil.getInt(params, PaginationConstants.SIZE));
 
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+		pigxRedisTemplate.setKeySerializer(new StringRedisSerializer());
+		pigxRedisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
 		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
-		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
-		result.setTotal(Long.valueOf(redisTemplate.keys(key).size()));
+		result.setRecords(pigxRedisTemplate.opsForValue().multiGet(pages));
+		result.setTotal(Long.valueOf(pigxRedisTemplate.keys(key).size()));
 		return new R<>(result);
 	}
 
 
 	private List<String> findKeysForPage(String patternKey, int pageNum, int pageSize) {
 		ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
-		RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		Cursor cursor = (Cursor) redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
+		RedisSerializer<String> redisSerializer = (RedisSerializer<String>) pigxRedisTemplate.getKeySerializer();
+		Cursor cursor = (Cursor) pigxRedisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
 		List<String> result = new ArrayList<>();
 		int tmpIndex = 0;
 		int startIndex = (pageNum - 1) * pageSize;

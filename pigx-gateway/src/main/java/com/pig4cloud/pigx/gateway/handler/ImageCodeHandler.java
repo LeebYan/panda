@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 
 		//保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, text
 			, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 
