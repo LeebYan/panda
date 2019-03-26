@@ -5,6 +5,11 @@ security:
       client-id: ENC(gPFcUOmJm8WqM3k3eSqS0Q==)
       client-secret: ENC(gPFcUOmJm8WqM3k3eSqS0Q==)
       scope: server
+      ignore-urls:
+        - /actuator/**
+        - /v2/api-docs
+        - /*/portal
+
 # 数据源配置
 spring:
   datasource:
@@ -15,3 +20,12 @@ spring:
     url: jdbc:mysql://pigx-mysql:3306/coffeewx?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
   resources:
     static-locations: classpath:/static/,classpath:/views/
+
+
+# 租户表维护
+pigx:
+  tenant:
+    column: tenant_id
+    tables:
+      - t_wx_account
+      - t_wx_account_fans

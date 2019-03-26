@@ -19,6 +19,7 @@
 		<pigx.version>2.6.0</pigx.version>
 		<mybatis-plus.version>3.1.0</mybatis-plus.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
+		<mp.weixin.version>3.3.0</mp.weixin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -91,6 +92,17 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.connector.version}</version>
+			</dependency>
+			<!--微信依赖-->
+			<dependency>
+				<groupId>com.github.binarywang</groupId>
+				<artifactId>weixin-java-mp</artifactId>
+				<version>${mp.weixin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.binarywang</groupId>
+				<artifactId>weixin-java-common</artifactId>
+				<version>${mp.weixin.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
