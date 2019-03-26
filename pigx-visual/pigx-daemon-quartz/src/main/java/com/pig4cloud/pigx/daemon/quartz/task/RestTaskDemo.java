@@ -1,8 +1,6 @@
 package com.pig4cloud.pigx.daemon.quartz.task;
 
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.daemon.quartz.constant.enums.PigxQuartzEnum;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +15,9 @@ import java.time.LocalDateTime;
  * @author lishangbu
  * @date 2019/3/25
  */
+@Slf4j
 @RestController
 @RequestMapping("/inner-job")
-@Slf4j
 public class RestTaskDemo {
 	/**
 	 * 测试REST风格调用定时任务的演示方法
