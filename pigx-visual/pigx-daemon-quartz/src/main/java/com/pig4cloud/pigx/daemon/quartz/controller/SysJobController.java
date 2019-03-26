@@ -217,7 +217,7 @@ public class SysJobController {
 	 * @return
 	 */
 	@SysLog("启动定时任务")
-	@GetMapping("/start-job/{id}")
+	@PostMapping("/start-job/{id}")
 	@PreAuthorize("@pms.hasPermission('job_sys_job_start_job')")
 	@ApiOperation(value = "启动定时任务")
 	public R startJob(@PathVariable("id") Integer jobId) {
@@ -240,7 +240,7 @@ public class SysJobController {
 	 * @return
 	 */
 	@SysLog("暂停定时任务")
-	@GetMapping("/shutdown-job/{id}")
+	@PostMapping("/shutdown-job/{id}")
 	@PreAuthorize("@pms.hasPermission('job_sys_job_shutdown_job')")
 	@ApiOperation(value = "暂停定时任务")
 	public R shutdownJob(@PathVariable("id") Integer id) {
@@ -264,23 +264,11 @@ public class SysJobController {
 	}
 
 	/**
-	 * 判断cron表达式是否正确
-	 *
-	 * @return
-	 */
-	@PostMapping("/is-valid-cron")
-	@ApiOperation(value = "判断cron是否正确")
-	public R isValidCron(@RequestParam String cronExpression) {
-		return R.builder().data(this.taskUtil.isValidCron(cronExpression)
-				? CommonConstants.SUCCESS : CommonConstants.FAIL).build();
-	}
-
-	/**
 	 * 检验任务名称和任务组联合是否唯一
 	 *
 	 * @return
 	 */
-	@PostMapping("/is-valid-task-name")
+	@GetMapping("/is-valid-task-name")
 	@ApiOperation(value = "检验任务名称和任务组联合是否唯一")
 	public R isValidTaskName(@RequestParam String jobName, @RequestParam String jobGroup) {
 		return R.builder().data(this.sysJobService
