@@ -14,24 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.service;
+package com.pig4cloud.pigx.mp.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.mp.entity.WxMenu;
+import com.pig4cloud.pigx.mp.mapper.WxMenuMapper;
+import com.pig4cloud.pigx.mp.service.WxMenuService;
+import org.springframework.stereotype.Service;
 
 /**
- * 微信公众号粉丝
+ * 微信菜单业务
  *
  * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @date 2019-03-27 20:45:18
  */
-public interface WxAccountFansService extends IService<WxAccountFans> {
+@Service
+public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMenu> implements WxMenuService {
 
-	/**
-	 * 同步指定公众号粉丝
-	 *
-	 * @param appId
-	 * @return
-	 */
-	Boolean syncAccountFans(String appId);
 }

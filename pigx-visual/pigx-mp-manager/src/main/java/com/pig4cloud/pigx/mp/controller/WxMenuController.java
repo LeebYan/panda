@@ -20,98 +20,87 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
-import com.pig4cloud.pigx.mp.service.WxAccountFansService;
+import com.pig4cloud.pigx.mp.entity.WxMenu;
+import com.pig4cloud.pigx.mp.service.WxMenuService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 微信公众号粉丝管理
+ * 微信菜单管理
  *
  * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @date 2019-03-27 20:45:18
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/wxaccountfans")
-public class WxAccountFansController {
+@RequestMapping("/wxmenu")
+public class WxMenuController {
 
-	private final WxAccountFansService wxAccountFansService;
+	private final WxMenuService wxMenuService;
 
 	/**
 	 * 分页查询
 	 *
-	 * @param page          分页对象
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param page   分页对象
+	 * @param wxMenu lengleng
 	 * @return
 	 */
 	@GetMapping("/page")
-	public R getWxAccountFansPage(Page page, WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.page(page, Wrappers.query(wxAccountFans)));
+	public R getWxMenuPage(Page page, WxMenu wxMenu) {
+		return new R<>(wxMenuService.page(page, Wrappers.query(wxMenu)));
 	}
 
 
 	/**
-	 * 通过id查询微信公众号粉丝
+	 * 通过id查询lengleng
 	 *
 	 * @param id id
 	 * @return R
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxAccountFansService.getById(id));
+		return new R<>(wxMenuService.getById(id));
 	}
 
 	/**
-	 * 新增微信公众号粉丝
+	 * 新增lengleng
 	 *
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param wxMenu lengleng
 	 * @return R
 	 */
-	@SysLog("新增微信公众号粉丝")
+	@SysLog("新增lengleng")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_add')")
-	public R save(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.save(wxAccountFans));
+	@PreAuthorize("@pms.hasPermission('mp_wxmenu_add')")
+	public R save(@RequestBody WxMenu wxMenu) {
+		return new R<>(wxMenuService.save(wxMenu));
 	}
 
 	/**
-	 * 修改微信公众号粉丝
+	 * 修改lengleng
 	 *
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param wxMenu lengleng
 	 * @return R
 	 */
-	@SysLog("修改微信公众号粉丝")
+	@SysLog("修改lengleng")
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_edit')")
-	public R updateById(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.updateById(wxAccountFans));
+	@PreAuthorize("@pms.hasPermission('mp_wxmenu_edit')")
+	public R updateById(@RequestBody WxMenu wxMenu) {
+		return new R<>(wxMenuService.updateById(wxMenu));
 	}
 
 	/**
-	 * 通过id删除微信公众号粉丝
+	 * 通过id删除lengleng
 	 *
 	 * @param id id
 	 * @return R
 	 */
-	@SysLog("删除微信公众号粉丝")
+	@SysLog("删除lengleng")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_del')")
+	@PreAuthorize("@pms.hasPermission('mp_wxmenu_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxAccountFansService.removeById(id));
-	}
-
-	/**
-	 * 同步粉丝
-	 *
-	 * @param appId
-	 * @return
-	 */
-	@PostMapping("/sync/{appId}")
-	public R sync(@PathVariable String appId) {
-		return new R(wxAccountFansService.syncAccountFans(appId));
+		return new R<>(wxMenuService.removeById(id));
 	}
 
 }

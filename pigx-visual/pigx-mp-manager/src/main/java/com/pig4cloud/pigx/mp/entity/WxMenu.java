@@ -17,7 +17,6 @@
 package com.pig4cloud.pigx.mp.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -26,15 +25,15 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 /**
- * 公众号账户
+ * 微信菜单表
  *
  * @author lengleng
- * @date 2019-03-26 22:07:53
+ * @date 2019-03-27 20:45:18
  */
 @Data
-@TableName("t_wx_account")
+@TableName("t_wx_menu")
 @EqualsAndHashCode(callSuper = true)
-public class WxAccount extends Model<WxAccount> {
+public class WxMenu extends Model<WxMenu> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -43,37 +42,45 @@ public class WxAccount extends Model<WxAccount> {
 	@TableId
 	private Integer id;
 	/**
-	 * 公众号名称
+	 * 父ID
 	 */
-	private String name;
+	private String parentId;
 	/**
-	 * 公众号账户
+	 * 菜单名称
 	 */
-	private String account;
+	private String menuName;
 	/**
-	 * 公众号appid
+	 * 菜单类型 1文本消息；2图文消息；3网址链接；4小程序
 	 */
-	private String appid;
+	private String menuType;
 	/**
-	 * 公众号密钥
+	 * 菜单等级
 	 */
-	private String appsecret;
+	private String menuLevel;
 	/**
-	 * 公众号url
+	 * 模板ID
 	 */
-	private String url;
+	private String tplId;
 	/**
-	 * 公众号token
+	 * 菜单URL
 	 */
-	private String token;
+	private String menuUrl;
 	/**
-	 * 加密密钥
+	 * 排序
 	 */
-	private String aeskey;
+	private String menuSort;
 	/**
-	 * 二维码图片URL
+	 * 微信账号ID
 	 */
-	private String qrUrl;
+	private String wxAccountId;
+	/**
+	 * 小程序appid
+	 */
+	private String miniprogramAppid;
+	/**
+	 * 小程序页面路径
+	 */
+	private String miniprogramPagepath;
 	/**
 	 * 创建时间
 	 */
@@ -83,14 +90,4 @@ public class WxAccount extends Model<WxAccount> {
 	 */
 	private LocalDateTime updateTime;
 
-	/**
-	 * 是否删除  -1：已删除  0：正常
-	 */
-	@TableLogic
-	private String delFlag;
-
-	/**
-	 * 租户
-	 */
-	private Integer tenantId;
 }

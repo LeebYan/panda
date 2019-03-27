@@ -123,4 +123,14 @@ public class WxAccountController {
 		return wxAccountService.generateQr(appId);
 	}
 
+	/**
+	 * 获取公众号列表
+	 *
+	 * @return
+	 */
+	@GetMapping("/list")
+	public R list() {
+		return new R<>(wxAccountService.list());
+	}
+
 }

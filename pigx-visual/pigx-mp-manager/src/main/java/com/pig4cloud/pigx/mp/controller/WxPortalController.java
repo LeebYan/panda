@@ -3,6 +3,7 @@ package com.pig4cloud.pigx.mp.controller;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
+import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -78,6 +79,8 @@ public class WxPortalController {
 					   @RequestParam("openid") String openid,
 					   @RequestParam(name = "encrypt_type", required = false) String encType,
 					   @RequestParam(name = "msg_signature", required = false) String msgSignature) {
+
+		WxMpContextHolder.setAppId(appId);
 		final WxMpService wxService = WxMpConfiguration.getMpServices().get(appId);
 
 		log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
@@ -113,6 +116,7 @@ public class WxPortalController {
 		}
 
 		log.debug("组装回复信息：{}", out);
+		WxMpContextHolder.clear();
 		return out;
 	}
 

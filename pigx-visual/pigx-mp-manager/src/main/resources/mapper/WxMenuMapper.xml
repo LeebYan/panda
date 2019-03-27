@@ -21,26 +21,21 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pigx.mp.mapper.WxAccountFansMapper">
+<mapper namespace="com.pig4cloud.pigx.mp.mapper.WxMenuMapper">
 
-	<resultMap id="wxAccountFansMap" type="com.pig4cloud.pigx.mp.entity.WxAccountFans">
+	<resultMap id="wxMenuMap" type="com.pig4cloud.pigx.mp.entity.WxMenu">
 		<id property="id" column="id"/>
-		<result property="openid" column="openid"/>
-		<result property="subscribeStatus" column="subscribe_status"/>
-		<result property="subscribeTime" column="subscribe_time"/>
-		<result property="nickname" column="nickname"/>
-		<result property="gender" column="gender"/>
-		<result property="language" column="language"/>
-		<result property="country" column="country"/>
-		<result property="province" column="province"/>
-		<result property="city" column="city"/>
-		<result property="headimgUrl" column="headimg_url"/>
-		<result property="remark" column="remark"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="menuName" column="menu_name"/>
+		<result property="menuType" column="menu_type"/>
+		<result property="menuLevel" column="menu_level"/>
+		<result property="tplId" column="tpl_id"/>
+		<result property="menuUrl" column="menu_url"/>
+		<result property="menuSort" column="menu_sort"/>
 		<result property="wxAccountId" column="wx_account_id"/>
-		<result property="wxAccountAppid" column="wx_account_appid"/>
-		<result property="wxAccountName" column="wx_account_name"/>
+		<result property="miniprogramAppid" column="miniprogram_appid"/>
+		<result property="miniprogramPagepath" column="miniprogram_pagepath"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
 	</resultMap>
 </mapper>

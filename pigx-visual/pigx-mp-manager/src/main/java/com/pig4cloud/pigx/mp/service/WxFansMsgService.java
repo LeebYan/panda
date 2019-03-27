@@ -17,21 +17,14 @@
 package com.pig4cloud.pigx.mp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
+import com.pig4cloud.pigx.mp.entity.WxFansMsg;
 
 /**
- * 微信公众号粉丝
+ * 微信消息业务
  *
  * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @date 2019-03-27 20:45:27
  */
-public interface WxAccountFansService extends IService<WxAccountFans> {
+public interface WxFansMsgService extends IService<WxFansMsg> {
 
-	/**
-	 * 同步指定公众号粉丝
-	 *
-	 * @param appId
-	 * @return
-	 */
-	Boolean syncAccountFans(String appId);
 }

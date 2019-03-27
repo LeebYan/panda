@@ -14,24 +14,17 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.service;
+package com.pig4cloud.pigx.mp.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
 
 /**
- * 微信公众号粉丝
+ * lengleng
  *
- * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @author pigx code generator
+ * @date 2019-03-27 20:45:48
  */
-public interface WxAccountFansService extends IService<WxAccountFans> {
+public interface WxFansMsgResMapper extends BaseMapper<WxFansMsgRes> {
 
-	/**
-	 * 同步指定公众号粉丝
-	 *
-	 * @param appId
-	 * @return
-	 */
-	Boolean syncAccountFans(String appId);
 }

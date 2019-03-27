@@ -14,24 +14,42 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
+package com.pig4cloud.pigx.mp.config;
+
+import com.alibaba.ttl.TransmittableThreadLocal;
+import lombok.experimental.UtilityClass;
 
 /**
- * 微信公众号粉丝
- *
  * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @date 2019/03/27
+ * 微信上下文工具类
  */
-public interface WxAccountFansService extends IService<WxAccountFans> {
+@UtilityClass
+public class WxMpContextHolder {
+
+	private final ThreadLocal<String> THREAD_LOCAL_APPID = new TransmittableThreadLocal<>();
+
 
 	/**
-	 * 同步指定公众号粉丝
+	 * TTL 设置appId
 	 *
 	 * @param appId
+	 */
+	public void setAppId(String appId) {
+		THREAD_LOCAL_APPID.set(appId);
+	}
+
+	/**
+	 * 获取TTL中的appId
+	 *
 	 * @return
 	 */
-	Boolean syncAccountFans(String appId);
+	public String getAppId() {
+		return THREAD_LOCAL_APPID.get();
+	}
+
+	public void clear() {
+		THREAD_LOCAL_APPID.remove();
+	}
 }

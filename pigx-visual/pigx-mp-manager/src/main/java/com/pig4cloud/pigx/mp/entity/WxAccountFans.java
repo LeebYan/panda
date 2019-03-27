@@ -94,6 +94,11 @@ public class WxAccountFans extends Model<WxAccountFans> {
 	 * 微信公众号appid
 	 */
 	private String wxAccountAppid;
+
+	/**
+	 * 微信公众号名
+	 */
+	private String wxAccountName;
 	/**
 	 * 创建时间
 	 */

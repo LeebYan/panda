@@ -17,7 +17,6 @@
 package com.pig4cloud.pigx.mp.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -26,15 +25,15 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 /**
- * 公众号账户
+ * 微信粉丝消息回复表
  *
  * @author lengleng
- * @date 2019-03-26 22:07:53
+ * @date 2019-03-27 20:45:48
  */
 @Data
-@TableName("t_wx_account")
+@TableName("t_wx_fans_msg_res")
 @EqualsAndHashCode(callSuper = true)
-public class WxAccount extends Model<WxAccount> {
+public class WxFansMsgRes extends Model<WxFansMsgRes> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -43,37 +42,21 @@ public class WxAccount extends Model<WxAccount> {
 	@TableId
 	private Integer id;
 	/**
-	 * 公众号名称
+	 * 粉丝消息ID
 	 */
-	private String name;
+	private String fansMsgId;
 	/**
-	 * 公众号账户
+	 * 回复内容
 	 */
-	private String account;
+	private String resContent;
 	/**
-	 * 公众号appid
+	 * 用户ID
 	 */
-	private String appid;
+	private String userId;
 	/**
-	 * 公众号密钥
+	 * 用户名
 	 */
-	private String appsecret;
-	/**
-	 * 公众号url
-	 */
-	private String url;
-	/**
-	 * 公众号token
-	 */
-	private String token;
-	/**
-	 * 加密密钥
-	 */
-	private String aeskey;
-	/**
-	 * 二维码图片URL
-	 */
-	private String qrUrl;
+	private String userName;
 	/**
 	 * 创建时间
 	 */
@@ -83,14 +66,4 @@ public class WxAccount extends Model<WxAccount> {
 	 */
 	private LocalDateTime updateTime;
 
-	/**
-	 * 是否删除  -1：已删除  0：正常
-	 */
-	@TableLogic
-	private String delFlag;
-
-	/**
-	 * 租户
-	 */
-	private Integer tenantId;
 }

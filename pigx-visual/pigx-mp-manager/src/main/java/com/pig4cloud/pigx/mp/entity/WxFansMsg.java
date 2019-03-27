@@ -26,15 +26,15 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 /**
- * 公众号账户
+ * 微信消息
  *
  * @author lengleng
- * @date 2019-03-26 22:07:53
+ * @date 2019-03-27 20:45:27
  */
 @Data
-@TableName("t_wx_account")
+@TableName("t_wx_fans_msg")
 @EqualsAndHashCode(callSuper = true)
-public class WxAccount extends Model<WxAccount> {
+public class WxFansMsg extends Model<WxFansMsg> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -43,37 +43,65 @@ public class WxAccount extends Model<WxAccount> {
 	@TableId
 	private Integer id;
 	/**
-	 * 公众号名称
+	 * 用户标识
 	 */
-	private String name;
+	private String openid;
 	/**
-	 * 公众号账户
+	 * 昵称
 	 */
-	private String account;
+	private String nickname;
 	/**
-	 * 公众号appid
+	 * 头像地址
 	 */
-	private String appid;
+	private String headimgUrl;
 	/**
-	 * 公众号密钥
+	 * 微信账号ID
 	 */
-	private String appsecret;
+	private Integer wxAccountId;
+
 	/**
-	 * 公众号url
+	 * 微信公众号appid
 	 */
-	private String url;
+	private String wxAccountAppid;
+
 	/**
-	 * 公众号token
+	 * 微信公众号名
 	 */
-	private String token;
+	private String wxAccountName;
+
 	/**
-	 * 加密密钥
+	 * 消息ID
 	 */
-	private String aeskey;
+	private Long msgId;
+
 	/**
-	 * 二维码图片URL
+	 * 消息类型
 	 */
-	private String qrUrl;
+	private String msgType;
+	/**
+	 * 内容
+	 */
+	private String content;
+	/**
+	 * 最近一条回复内容
+	 */
+	private String resContent;
+	/**
+	 * 是否已回复
+	 */
+	private String isRes;
+	/**
+	 * 微信素材ID
+	 */
+	private String mediaId;
+	/**
+	 * 微信图片URL
+	 */
+	private String picUrl;
+	/**
+	 * 本地图片路径
+	 */
+	private String picPath;
 	/**
 	 * 创建时间
 	 */
@@ -93,4 +121,5 @@ public class WxAccount extends Model<WxAccount> {
 	 * 租户
 	 */
 	private Integer tenantId;
+
 }

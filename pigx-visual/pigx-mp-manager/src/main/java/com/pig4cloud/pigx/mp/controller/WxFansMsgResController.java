@@ -20,98 +20,87 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.mp.entity.WxAccountFans;
-import com.pig4cloud.pigx.mp.service.WxAccountFansService;
+import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
+import com.pig4cloud.pigx.mp.service.WxFansMsgResService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 微信公众号粉丝管理
+ * 微信粉丝消息回复管理
  *
  * @author lengleng
- * @date 2019-03-26 22:08:08
+ * @date 2019-03-27 20:45:48
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/wxaccountfans")
-public class WxAccountFansController {
+@RequestMapping("/wxfansmsgres")
+public class WxFansMsgResController {
 
-	private final WxAccountFansService wxAccountFansService;
+	private final WxFansMsgResService wxFansMsgResService;
 
 	/**
 	 * 分页查询
 	 *
-	 * @param page          分页对象
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param page         分页对象
+	 * @param wxFansMsgRes lengleng
 	 * @return
 	 */
 	@GetMapping("/page")
-	public R getWxAccountFansPage(Page page, WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.page(page, Wrappers.query(wxAccountFans)));
+	public R getWxFansMsgResPage(Page page, WxFansMsgRes wxFansMsgRes) {
+		return new R<>(wxFansMsgResService.page(page, Wrappers.query(wxFansMsgRes)));
 	}
 
 
 	/**
-	 * 通过id查询微信公众号粉丝
+	 * 通过id查询lengleng
 	 *
 	 * @param id id
 	 * @return R
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxAccountFansService.getById(id));
+		return new R<>(wxFansMsgResService.getById(id));
 	}
 
 	/**
-	 * 新增微信公众号粉丝
+	 * 新增lengleng
 	 *
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param wxFansMsgRes lengleng
 	 * @return R
 	 */
-	@SysLog("新增微信公众号粉丝")
+	@SysLog("新增lengleng")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_add')")
-	public R save(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.save(wxAccountFans));
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_add')")
+	public R save(@RequestBody WxFansMsgRes wxFansMsgRes) {
+		return new R<>(wxFansMsgResService.save(wxFansMsgRes));
 	}
 
 	/**
-	 * 修改微信公众号粉丝
+	 * 修改lengleng
 	 *
-	 * @param wxAccountFans 微信公众号粉丝
+	 * @param wxFansMsgRes lengleng
 	 * @return R
 	 */
-	@SysLog("修改微信公众号粉丝")
+	@SysLog("修改lengleng")
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_edit')")
-	public R updateById(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.updateById(wxAccountFans));
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_edit')")
+	public R updateById(@RequestBody WxFansMsgRes wxFansMsgRes) {
+		return new R<>(wxFansMsgResService.updateById(wxFansMsgRes));
 	}
 
 	/**
-	 * 通过id删除微信公众号粉丝
+	 * 通过id删除lengleng
 	 *
 	 * @param id id
 	 * @return R
 	 */
-	@SysLog("删除微信公众号粉丝")
+	@SysLog("删除lengleng")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_del')")
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxAccountFansService.removeById(id));
-	}
-
-	/**
-	 * 同步粉丝
-	 *
-	 * @param appId
-	 * @return
-	 */
-	@PostMapping("/sync/{appId}")
-	public R sync(@PathVariable String appId) {
-		return new R(wxAccountFansService.syncAccountFans(appId));
+		return new R<>(wxFansMsgResService.removeById(id));
 	}
 
 }
