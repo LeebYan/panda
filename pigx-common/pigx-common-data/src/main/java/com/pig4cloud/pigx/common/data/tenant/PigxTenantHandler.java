@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.expression.NullValue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -43,6 +44,10 @@ public class PigxTenantHandler implements TenantHandler {
 	public Expression getTenantId() {
 		Integer tenantId = TenantContextHolder.getTenantId();
 		log.debug("当前租户为 >> {}", tenantId);
+
+		if (tenantId == null) {
+			return new NullValue();
+		}
 		return new LongValue(tenantId);
 	}
 
@@ -64,6 +69,12 @@ public class PigxTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public boolean doTableFilter(String tableName) {
+		Integer tenantId = TenantContextHolder.getTenantId();
+		// 租户中ID 为空，查询全部，不进行过滤
+		if (tenantId == null) {
+			return Boolean.TRUE;
+		}
+
 		return !properties.getTables().contains(tableName);
 	}
 }
