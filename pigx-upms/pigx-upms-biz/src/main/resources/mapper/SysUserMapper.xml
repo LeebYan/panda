@@ -154,8 +154,8 @@
 		`user`.update_time AS uupdate_time,
 		`user`.del_flag AS udel_flag,
 		`user`.lock_flag AS lock_flag,
-		`user`.dept_id AS deptId,
-		`user`.tenant_id AS tenantId
+		`user`.tenant_id AS tenantId,
+		 d.name AS deptName
 		FROM
 		sys_user AS `user`
 		LEFT JOIN sys_dept AS d ON d.dept_id = `user`.dept_id
