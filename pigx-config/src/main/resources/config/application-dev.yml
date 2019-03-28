@@ -76,9 +76,6 @@ mybatis-plus:
       field-strategy: 1
       # 默认数据库表下划线命名
       table-underline: true
-  configuration:
-    map-underscore-to-camel-case: true
-
 
 #swagger公共信息
 swagger:
