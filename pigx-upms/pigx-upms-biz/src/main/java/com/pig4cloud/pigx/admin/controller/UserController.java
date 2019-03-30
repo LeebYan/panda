@@ -45,7 +45,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user")
-@Api(value = "user", description = "用户管理模块")
+@Api(value = "user", tags = "用户管理模块")
 public class UserController {
 	private final SysUserService userService;
 

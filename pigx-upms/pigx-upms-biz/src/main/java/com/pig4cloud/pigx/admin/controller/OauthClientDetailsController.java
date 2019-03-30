@@ -43,7 +43,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/client")
-@Api(value = "client", description = "客户端管理模块")
+@Api(value = "client", tags = "客户端管理模块")
 public class OauthClientDetailsController {
 	private final SysOauthClientDetailsService sysOauthClientDetailsService;
 

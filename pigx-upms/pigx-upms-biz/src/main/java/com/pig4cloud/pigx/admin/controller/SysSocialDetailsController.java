@@ -41,7 +41,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/social")
 @AllArgsConstructor
-@Api(value = "social", description = "三方账号管理模块")
+@Api(value = "social", tags = "三方账号管理模块")
 public class SysSocialDetailsController {
 	private final SysSocialDetailsService sysSocialDetailsService;
 

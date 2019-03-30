@@ -24,6 +24,7 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.common.minio.service.MinioTemplate;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -44,18 +45,20 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/file")
+@Api(value = "file", tags = "文件管理模块")
 public class FileController {
 	private final MinioTemplate minioTemplate;
 
 	/**
 	 * 上传文件
 	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
+	 *
 	 * @param file 资源
 	 * @return R(bucketName, filename)
 	 */
 	@PostMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file) {
-		String fileName = IdUtil.simpleUUID()+StrUtil.DOT+ FileUtil.extName(file.getOriginalFilename());
+		String fileName = IdUtil.simpleUUID() + StrUtil.DOT + FileUtil.extName(file.getOriginalFilename());
 		Map<String, String> resultMap = new HashMap<>(4);
 		resultMap.put("bucketName", CommonConstants.BUCKET_NAME);
 		resultMap.put("fileName", fileName);

@@ -50,7 +50,7 @@ import static com.pig4cloud.pigx.daemon.quartz.constant.enums.PigxQuartzEnum.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys-job")
-@Api(value = "sys-job", description = "定时任务")
+@Api(value = "sys-job", tags = "定时任务")
 public class SysJobController {
 	private final SysJobService sysJobService;
 	private final SysJobLogService sysJobLogService;

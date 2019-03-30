@@ -40,7 +40,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/role")
-@Api(value = "role", description = "角色管理模块")
+@Api(value = "role", tags = "角色管理模块")
 public class RoleController {
 	private final SysRoleService sysRoleService;
 	private final SysRoleMenuService sysRoleMenuService;

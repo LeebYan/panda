@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/menu")
-@Api(value = "menu", description = "菜单管理模块")
+@Api(value = "menu", tags = "菜单管理模块")
 public class MenuController {
 	private final SysMenuService sysMenuService;
 

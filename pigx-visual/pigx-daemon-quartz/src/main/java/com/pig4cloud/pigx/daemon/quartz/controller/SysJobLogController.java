@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys-job-log")
-@Api(value = "sys-job-log", description = "定时任务日志")
+@Api(value = "sys-job-log", tags = "定时任务日志")
 public class SysJobLogController {
 	private final SysJobLogService sysJobLogService;
 

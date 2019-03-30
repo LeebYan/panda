@@ -36,7 +36,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/token")
-@Api(value = "token", description = "令牌管理模块")
+@Api(value = "token", tags = "令牌管理模块")
 public class TokenController {
 	private final RemoteTokenService remoteTokenService;
 
