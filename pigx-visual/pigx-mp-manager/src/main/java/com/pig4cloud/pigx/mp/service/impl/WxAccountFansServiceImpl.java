@@ -117,7 +117,7 @@ public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, W
 							wxAccountFans.setCity(wxMpUser.getCity());
 							wxAccountFans.setHeadimgUrl(wxMpUser.getHeadImgUrl());
 							wxAccountFans.setRemark(wxMpUser.getRemark());
-							wxAccountFans.setWxAccountId(String.valueOf(wxAccount.getId()));
+							wxAccountFans.setWxAccountId(wxAccount.getId());
 							wxAccountFans.setWxAccountAppid(wxAccount.getAppid());
 							wxAccountFans.setWxAccountName(wxAccount.getName());
 							wxAccountFansList.add(wxAccountFans);

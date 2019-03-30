@@ -44,7 +44,7 @@ public class WxFansMsgRes extends Model<WxFansMsgRes> {
 	/**
 	 * 粉丝消息ID
 	 */
-	private String fansMsgId;
+	private Integer fansMsgId;
 	/**
 	 * 回复内容
 	 */
@@ -52,7 +52,7 @@ public class WxFansMsgRes extends Model<WxFansMsgRes> {
 	/**
 	 * 用户ID
 	 */
-	private String userId;
+	private Integer userId;
 	/**
 	 * 用户名
 	 */

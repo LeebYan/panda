@@ -23,19 +23,4 @@
 
 <mapper namespace="com.pig4cloud.pigx.mp.mapper.WxMenuMapper">
 
-	<resultMap id="wxMenuMap" type="com.pig4cloud.pigx.mp.entity.WxMenu">
-		<id property="id" column="id"/>
-		<result property="parentId" column="parent_id"/>
-		<result property="menuName" column="menu_name"/>
-		<result property="menuType" column="menu_type"/>
-		<result property="menuLevel" column="menu_level"/>
-		<result property="tplId" column="tpl_id"/>
-		<result property="menuUrl" column="menu_url"/>
-		<result property="menuSort" column="menu_sort"/>
-		<result property="wxAccountId" column="wx_account_id"/>
-		<result property="miniprogramAppid" column="miniprogram_appid"/>
-		<result property="miniprogramPagepath" column="miniprogram_pagepath"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateTime" column="update_time"/>
-	</resultMap>
 </mapper>

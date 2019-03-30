@@ -44,7 +44,7 @@ public class WxFansMsgResController {
 	 * 分页查询
 	 *
 	 * @param page         分页对象
-	 * @param wxFansMsgRes lengleng
+	 * @param wxFansMsgRes 回复
 	 * @return
 	 */
 	@GetMapping("/page")
@@ -54,7 +54,7 @@ public class WxFansMsgResController {
 
 
 	/**
-	 * 通过id查询lengleng
+	 * 通过id查询回复
 	 *
 	 * @param id id
 	 * @return R
@@ -65,25 +65,25 @@ public class WxFansMsgResController {
 	}
 
 	/**
-	 * 新增lengleng
+	 * 新增回复
 	 *
-	 * @param wxFansMsgRes lengleng
+	 * @param wxFansMsgRes 回复
 	 * @return R
 	 */
-	@SysLog("新增lengleng")
+	@SysLog("新增回复")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_add')")
 	public R save(@RequestBody WxFansMsgRes wxFansMsgRes) {
-		return new R<>(wxFansMsgResService.save(wxFansMsgRes));
+		return wxFansMsgResService.saveAndSend(wxFansMsgRes);
 	}
 
 	/**
-	 * 修改lengleng
+	 * 修改回复
 	 *
-	 * @param wxFansMsgRes lengleng
+	 * @param wxFansMsgRes 回复
 	 * @return R
 	 */
-	@SysLog("修改lengleng")
+	@SysLog("修改回复")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_edit')")
 	public R updateById(@RequestBody WxFansMsgRes wxFansMsgRes) {
@@ -91,12 +91,12 @@ public class WxFansMsgResController {
 	}
 
 	/**
-	 * 通过id删除lengleng
+	 * 通过id删除回复
 	 *
 	 * @param id id
 	 * @return R
 	 */
-	@SysLog("删除lengleng")
+	@SysLog("删除回复")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_del')")
 	public R removeById(@PathVariable Integer id) {

@@ -89,7 +89,7 @@ public class WxAccountFans extends Model<WxAccountFans> {
 	/**
 	 * 微信公众号ID
 	 */
-	private String wxAccountId;
+	private Integer wxAccountId;
 	/**
 	 * 微信公众号appid
 	 */

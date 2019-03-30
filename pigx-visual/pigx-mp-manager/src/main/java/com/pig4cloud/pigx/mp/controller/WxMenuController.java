@@ -16,11 +16,12 @@
  */
 package com.pig4cloud.pigx.mp.controller;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.mp.entity.WxMenu;
+import com.pig4cloud.pigx.mp.entity.WxMpMenu;
 import com.pig4cloud.pigx.mp.service.WxMenuService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,64 +44,51 @@ public class WxMenuController {
 	/**
 	 * 分页查询
 	 *
-	 * @param page   分页对象
-	 * @param wxMenu lengleng
+	 * @param page     分页对象
+	 * @param WxMpMenu lengleng
 	 * @return
 	 */
 	@GetMapping("/page")
-	public R getWxMenuPage(Page page, WxMenu wxMenu) {
-		return new R<>(wxMenuService.page(page, Wrappers.query(wxMenu)));
+	public R getWxMpMenuPage(Page page, WxMpMenu WxMpMenu) {
+		return new R<>(wxMenuService.page(page, Wrappers.query(WxMpMenu)));
 	}
 
 
 	/**
-	 * 通过id查询lengleng
+	 * 通过appid查询微信菜单
 	 *
-	 * @param id id
+	 * @param appId 公众号
 	 * @return R
 	 */
-	@GetMapping("/{id}")
-	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxMenuService.getById(id));
+	@GetMapping("/{appId}")
+	public R getById(@PathVariable("appId") String appId) {
+		return wxMenuService.getByAppId(appId);
 	}
 
 	/**
-	 * 新增lengleng
+	 * 新增微信菜单
 	 *
-	 * @param wxMenu lengleng
+	 * @param WxMpMenus 微信菜单列表
 	 * @return R
 	 */
-	@SysLog("新增lengleng")
-	@PostMapping
+	@SysLog("新增微信菜单")
+	@PostMapping("/{appId}")
 	@PreAuthorize("@pms.hasPermission('mp_wxmenu_add')")
-	public R save(@RequestBody WxMenu wxMenu) {
-		return new R<>(wxMenuService.save(wxMenu));
+	public R save(@RequestBody JSONObject WxMpMenus, @PathVariable String appId) {
+		return new R(wxMenuService.save(WxMpMenus, appId));
 	}
 
 	/**
-	 * 修改lengleng
+	 * 发布微信菜单
 	 *
-	 * @param wxMenu lengleng
+	 * @param appId 公众号
 	 * @return R
 	 */
-	@SysLog("修改lengleng")
-	@PutMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxmenu_edit')")
-	public R updateById(@RequestBody WxMenu wxMenu) {
-		return new R<>(wxMenuService.updateById(wxMenu));
-	}
-
-	/**
-	 * 通过id删除lengleng
-	 *
-	 * @param id id
-	 * @return R
-	 */
-	@SysLog("删除lengleng")
-	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('mp_wxmenu_del')")
-	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxMenuService.removeById(id));
+	@SysLog("发布微信菜单")
+	@PutMapping("/{appId}")
+	@PreAuthorize("@pms.hasPermission('mp_wxmenu_push')")
+	public R updateById(@PathVariable String appId) {
+		return wxMenuService.push(appId);
 	}
 
 }

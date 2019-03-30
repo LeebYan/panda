@@ -17,6 +17,7 @@
 package com.pig4cloud.pigx.mp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
 
 /**
@@ -27,4 +28,11 @@ import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
  */
 public interface WxFansMsgResService extends IService<WxFansMsgRes> {
 
+	/**
+	 * 保存并发送回复
+	 *
+	 * @param wxFansMsgRes
+	 * @return
+	 */
+	R saveAndSend(WxFansMsgRes wxFansMsgRes);
 }

@@ -17,7 +17,7 @@
 package com.pig4cloud.pigx.mp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.mp.entity.WxMenu;
+import com.pig4cloud.pigx.mp.entity.WxMpMenu;
 
 /**
  * lengleng
@@ -25,6 +25,6 @@ import com.pig4cloud.pigx.mp.entity.WxMenu;
  * @author pigx code generator
  * @date 2019-03-27 20:45:18
  */
-public interface WxMenuMapper extends BaseMapper<WxMenu> {
+public interface WxMenuMapper extends BaseMapper<WxMpMenu> {
 
 }

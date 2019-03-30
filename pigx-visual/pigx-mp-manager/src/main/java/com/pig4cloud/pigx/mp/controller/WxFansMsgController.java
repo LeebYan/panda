@@ -44,7 +44,7 @@ public class WxFansMsgController {
 	 * 分页查询
 	 *
 	 * @param page      分页对象
-	 * @param wxFansMsg lengleng
+	 * @param wxFansMsg 消息
 	 * @return
 	 */
 	@GetMapping("/page")
@@ -54,7 +54,7 @@ public class WxFansMsgController {
 
 
 	/**
-	 * 通过id查询lengleng
+	 * 通过id查询消息
 	 *
 	 * @param id id
 	 * @return R
@@ -65,12 +65,12 @@ public class WxFansMsgController {
 	}
 
 	/**
-	 * 新增lengleng
+	 * 新增消息
 	 *
-	 * @param wxFansMsg lengleng
+	 * @param wxFansMsg 消息
 	 * @return R
 	 */
-	@SysLog("新增lengleng")
+	@SysLog("新增消息")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_add')")
 	public R save(@RequestBody WxFansMsg wxFansMsg) {
@@ -78,12 +78,12 @@ public class WxFansMsgController {
 	}
 
 	/**
-	 * 修改lengleng
+	 * 修改消息
 	 *
-	 * @param wxFansMsg lengleng
+	 * @param wxFansMsg 消息
 	 * @return R
 	 */
-	@SysLog("修改lengleng")
+	@SysLog("修改消息")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_edit')")
 	public R updateById(@RequestBody WxFansMsg wxFansMsg) {
@@ -91,12 +91,12 @@ public class WxFansMsgController {
 	}
 
 	/**
-	 * 通过id删除lengleng
+	 * 通过id删除消息
 	 *
 	 * @param id id
 	 * @return R
 	 */
-	@SysLog("删除lengleng")
+	@SysLog("删除消息")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_del')")
 	public R removeById(@PathVariable Integer id) {
