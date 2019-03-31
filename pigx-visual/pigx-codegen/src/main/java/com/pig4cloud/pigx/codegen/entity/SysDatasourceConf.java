@@ -14,46 +14,66 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-
 package com.pig4cloud.pigx.codegen.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
- * @author lengleng
- * @date 2018/8/2
- * 生成配置
+ * 数据源表
+ *
+ * @author pigx code generator
+ * @date 2019-03-31 16:00:20
  */
 @Data
-public class GenConfig {
+@TableName("sys_datasource_conf")
+@EqualsAndHashCode(callSuper = true)
+public class SysDatasourceConf extends Model<SysDatasourceConf> {
+	private static final long serialVersionUID = 1L;
+
 	/**
-	 * 数据源ID
+	 * 主键
 	 */
+	@TableId
 	private Integer id;
 	/**
-	 * 包名
+	 * 名称
 	 */
-	private String packageName;
+	private String name;
 	/**
-	 * 作者
+	 *
 	 */
-	private String author;
+	private String url;
 	/**
-	 * 模块名称
+	 *
 	 */
-	private String moduleName;
+	private String username;
 	/**
-	 * 表前缀
+	 *
 	 */
-	private String tablePrefix;
+	private String password;
+	/**
+	 * 创建时间
+	 */
+	private LocalDateTime createDate;
+	/**
+	 * 更新
+	 */
+	private LocalDateTime updateDate;
+	/**
+	 * 删除标记
+	 */
+	@TableLogic
+	private String delFlag;
+	/**
+	 * 租户ID
+	 */
+	private Integer tenantId;
 
-	/**
-	 * 表名称
-	 */
-	private String tableName;
-
-	/**
-	 * 表备注
-	 */
-	private String comments;
 }

@@ -28,7 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * 代码生成器
@@ -46,11 +45,12 @@ public class SysGeneratorController {
 	 * 列表
 	 *
 	 * @param tableName 参数集
+	 * @param id        数据源编号
 	 * @return 数据库表
 	 */
 	@GetMapping("/page")
-	public R getPage(Page page, String tableName) {
-		return new R<>(sysGeneratorService.getPage(page, tableName));
+	public R getPage(Page page, String tableName, Integer id) {
+		return new R<>(sysGeneratorService.getPage(page, tableName, id));
 	}
 
 	/**
@@ -60,7 +60,6 @@ public class SysGeneratorController {
 	@PostMapping("/code")
 	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
 		byte[] data = sysGeneratorService.generatorCode(genConfig);
-
 		response.reset();
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));

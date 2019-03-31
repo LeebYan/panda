@@ -39,8 +39,10 @@ public interface SysGeneratorService {
 
 	/**
 	 * 分页查询表
+	 *
 	 * @param tableName 表名
+	 * @param id        数据源ID
 	 * @return
 	 */
-	IPage<List<Map<String, Object>>> getPage(Page page, String tableName);
+	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id);
 }

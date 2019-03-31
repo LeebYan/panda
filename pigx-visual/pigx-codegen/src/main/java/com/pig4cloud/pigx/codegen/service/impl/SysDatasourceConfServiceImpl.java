@@ -14,27 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pigx.codegen.service.impl;
 
-package com.pig4cloud.pigx.codegen;
-
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
+import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
+import com.pig4cloud.pigx.codegen.service.SysDatasourceConfService;
+import org.springframework.stereotype.Service;
 
 /**
- * @author lengleng
- * @date 2018/07/29
- * 代码生成模块
+ * 数据源表
+ *
+ * @author pigx code generator
+ * @date 2019-03-31 16:00:20
  */
-@EnablePigxSwagger2
-@SpringCloudApplication
-@EnablePigxFeignClients
-@EnablePigxResourceServer
-public class PigxCodeGenApplication {
+@Service
+public class SysDatasourceConfServiceImpl extends ServiceImpl<SysDatasourceConfMapper, SysDatasourceConf> implements SysDatasourceConfService {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PigxCodeGenApplication.class, args);
-	}
 }

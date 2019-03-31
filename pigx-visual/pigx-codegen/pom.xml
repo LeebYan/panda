@@ -49,6 +49,10 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-log</artifactId>
+		</dependency>
 		<!--代码生成模板引擎-->
 		<dependency>
 			<artifactId>velocity</artifactId>
