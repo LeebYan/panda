@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/route")
-@Api(value = "route",description = "动态路由管理模块")
+@Api(value = "route",tags = "动态路由管理模块")
 public class SysRouteConfController {
 	private final SysRouteConfService sysRouteConfService;
 

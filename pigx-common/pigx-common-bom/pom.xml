@@ -16,9 +16,10 @@
 	<description>pigx 公共版本控制</description>
 
 	<properties>
-		<pigx.version>2.6.0</pigx.version>
+		<pigx.version>2.7.0</pigx.version>
 		<mybatis-plus.version>3.1.0</mybatis-plus.version>
 		<mysql.connector.version>8.0.13</mysql.connector.version>
+		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.3.0</mp.weixin.version>
 	</properties>
 
@@ -92,6 +93,17 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.connector.version}</version>
+			</dependency>
+			<!--swagger 最新依赖内置版本-->
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-models</artifactId>
+				<version>${swagger.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>${swagger.core.version}</version>
 			</dependency>
 			<!--微信依赖-->
 			<dependency>

@@ -29,7 +29,6 @@ import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysDeptMapper;
 import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
 import com.pig4cloud.pigx.admin.service.SysDeptService;
-import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -79,11 +78,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	public Boolean removeDeptById(Integer id) {
 		//级联删除部门
 		List<Integer> idList = sysDeptRelationService
-			.list(Wrappers.<SysDeptRelation>query().lambda()
-				.eq(SysDeptRelation::getAncestor, id))
-			.stream()
-			.map(SysDeptRelation::getDescendant)
-			.collect(Collectors.toList());
+				.list(Wrappers.<SysDeptRelation>query().lambda()
+						.eq(SysDeptRelation::getAncestor, id))
+				.stream()
+				.map(SysDeptRelation::getDescendant)
+				.collect(Collectors.toList());
 
 		if (CollUtil.isNotEmpty(idList)) {
 			this.removeByIds(idList);
@@ -123,23 +122,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 		return getDeptTree(this.list(Wrappers.emptyWrapper()));
 	}
 
-	/**
-	 * 查询用户部门树
-	 *
-	 * @return
-	 */
-	@Override
-	public List<DeptTree> getUserTree() {
-		Integer deptId = SecurityUtils.getUser().getDeptId();
-		List<Integer> descendantIdList = sysDeptRelationService
-			.list(Wrappers.<SysDeptRelation>query().lambda()
-				.eq(SysDeptRelation::getAncestor, deptId))
-			.stream().map(SysDeptRelation::getDescendant)
-			.collect(Collectors.toList());
-
-		List<SysDept> deptList = baseMapper.selectBatchIds(descendantIdList);
-		return getDeptTree(deptList);
-	}
 
 	/**
 	 * 构建部门树
@@ -149,14 +131,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	private List<DeptTree> getDeptTree(List<SysDept> depts) {
 		List<DeptTree> treeList = depts.stream()
-			.filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
-			.map(dept -> {
-				DeptTree node = new DeptTree();
-				node.setId(dept.getDeptId());
-				node.setParentId(dept.getParentId());
-				node.setName(dept.getName());
-				return node;
-			}).collect(Collectors.toList());
+				.filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
+				.map(dept -> {
+					DeptTree node = new DeptTree();
+					node.setId(dept.getDeptId());
+					node.setParentId(dept.getParentId());
+					node.setName(dept.getName());
+					return node;
+				}).collect(Collectors.toList());
 		return TreeUtil.build(treeList, 0);
 	}
 }

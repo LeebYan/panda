@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mobile")
-@Api(value = "mobile", description = "手机管理模块")
+@Api(value = "mobile", tags = "手机管理模块")
 public class MobileController {
 	private final MobileService mobileService;
 

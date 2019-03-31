@@ -42,7 +42,7 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/dept")
-@Api(value = "dept", description = "部门管理模块")
+@Api(value = "dept", tags = "部门管理模块")
 public class DeptController {
 	private final SysDeptService sysDeptService;
 
@@ -66,16 +66,6 @@ public class DeptController {
 	@GetMapping(value = "/tree")
 	public R getTree() {
 		return new R<>(sysDeptService.selectTree());
-	}
-
-	/**
-	 * 返回当前用户树形菜单集合
-	 *
-	 * @return 树形菜单
-	 */
-	@GetMapping(value = "/user-tree")
-	public R getUserTree() {
-		return new R<>(sysDeptService.getUserTree());
 	}
 
 	/**

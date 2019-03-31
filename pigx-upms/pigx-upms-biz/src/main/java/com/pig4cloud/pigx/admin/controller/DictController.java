@@ -49,7 +49,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/dict")
-@Api(value = "dict", description = "字典管理模块")
+@Api(value = "dict", tags = "字典管理模块")
 public class DictController {
 	private final SysDictService sysDictService;
 	private final SysDictItemService sysDictItemService;
