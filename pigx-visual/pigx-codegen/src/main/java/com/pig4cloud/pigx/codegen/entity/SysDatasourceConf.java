@@ -47,15 +47,15 @@ public class SysDatasourceConf extends Model<SysDatasourceConf> {
 	 */
 	private String name;
 	/**
-	 *
+	 * jdbcurl
 	 */
 	private String url;
 	/**
-	 *
+	 * 用户名
 	 */
 	private String username;
 	/**
-	 *
+	 * 密码
 	 */
 	private String password;
 	/**

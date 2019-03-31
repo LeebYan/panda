@@ -1,8 +1,11 @@
 package com.pig4cloud.pigx.codegen.config;
 
+import com.mysql.cj.jdbc.Driver;
+import com.pig4cloud.pigx.codegen.util.DataSourceConstant;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +33,7 @@ import java.util.Optional;
 public class DynamicDataSourceConfig implements TransactionManagementConfigurer {
 	private final Map<Object, Object> dataSourceMap = new HashMap<>(8);
 	private final DataSourceProperties dataSourceProperties;
+	private final StringEncryptor stringEncryptor;
 
 	@Bean("dynamicDataSource")
 	public DynamicDataSource dataSource() {
@@ -56,17 +60,18 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 		dds.setUsername(dataSourceProperties.getUsername());
 		dds.setPassword(dataSourceProperties.getPassword());
 
-		String sql = "select * from sys_datasource_conf where del_flag = '0' ";
-		List<Map<String, Object>> dbList = new JdbcTemplate(dds).queryForList(sql);
+		List<Map<String, Object>> dbList = new JdbcTemplate(dds).queryForList(DataSourceConstant.QUERY_DS_SQL);
 		log.info("开始 -> 初始化动态数据源");
 		Optional.of(dbList).ifPresent(list -> list.forEach(db -> {
-			log.info("数据源:{}", db.get("name"));
+			log.info("数据源:{}", db.get(DataSourceConstant.DS_NAME));
 			HikariDataSource ds = new HikariDataSource();
-			ds.setJdbcUrl(String.valueOf(db.get("url")));
-			ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-			ds.setUsername(String.valueOf(db.get("username")));
-			ds.setPassword(String.valueOf(db.get("password")));
-			dataSourceMap.put(db.get("id"), ds);
+			ds.setJdbcUrl(String.valueOf(db.get(DataSourceConstant.DS_JDBC_URL)));
+			ds.setDriverClassName(Driver.class.getName());
+			ds.setUsername((String) db.get(DataSourceConstant.DS_NAME));
+
+			String decPwd = stringEncryptor.decrypt((String) db.get(DataSourceConstant.DS_USER_PWD));
+			ds.setPassword(decPwd);
+			dataSourceMap.put(db.get(DataSourceConstant.DS_ROUTE_KEY), ds);
 		}));
 
 		log.info("完毕 -> 初始化动态数据源,共计 {} 条", dataSourceMap.size());
@@ -75,11 +80,12 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 	/**
 	 * 重新加载数据源配置
 	 */
-	public void reload() {
+	public Boolean reload() {
 		init();
 		DynamicDataSource dataSource = dataSource();
 		dataSource.setTargetDataSources(dataSourceMap);
 		dataSource.afterPropertiesSet();
+		return Boolean.FALSE;
 	}
 
 
@@ -92,6 +98,5 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 	public PlatformTransactionManager annotationDrivenTransactionManager() {
 		return txManager();
 	}
-
 
 }

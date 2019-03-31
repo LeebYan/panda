@@ -18,7 +18,6 @@ package com.pig4cloud.pigx.codegen.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.codegen.config.DynamicDataSourceConfig;
 import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
 import com.pig4cloud.pigx.codegen.service.SysDatasourceConfService;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -37,7 +36,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/dsconf")
 public class SysDsConfController {
-	private final DynamicDataSourceConfig dynamicDataSourceConfig;
 	private final SysDatasourceConfService sysDatasourceConfService;
 
 	/**
@@ -83,9 +81,7 @@ public class SysDsConfController {
 	@SysLog("新增数据源表")
 	@PostMapping
 	public R save(@RequestBody SysDatasourceConf sysDatasourceConf) {
-		sysDatasourceConfService.save(sysDatasourceConf);
-		dynamicDataSourceConfig.reload();
-		return new R<>();
+		return new R<>(sysDatasourceConfService.saveDsByEnc(sysDatasourceConf));
 	}
 
 	/**
@@ -97,9 +93,7 @@ public class SysDsConfController {
 	@SysLog("修改数据源表")
 	@PutMapping
 	public R updateById(@RequestBody SysDatasourceConf sysDatasourceConf) {
-		sysDatasourceConfService.updateById(sysDatasourceConf);
-		dynamicDataSourceConfig.reload();
-		return new R<>();
+		return new R<>(sysDatasourceConfService.updateDsByEnc(sysDatasourceConf));
 	}
 
 	/**
@@ -111,9 +105,7 @@ public class SysDsConfController {
 	@SysLog("删除数据源表")
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable Integer id) {
-		sysDatasourceConfService.removeById(id);
-		dynamicDataSourceConfig.reload();
-		return new R<>();
+		return new R<>(sysDatasourceConfService.removeById(id));
 	}
 
 }

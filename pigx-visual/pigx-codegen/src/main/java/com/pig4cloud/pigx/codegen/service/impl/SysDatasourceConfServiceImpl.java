@@ -16,10 +16,14 @@
  */
 package com.pig4cloud.pigx.codegen.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.codegen.config.DynamicDataSourceConfig;
 import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
 import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.service.SysDatasourceConfService;
+import lombok.AllArgsConstructor;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +33,36 @@ import org.springframework.stereotype.Service;
  * @date 2019-03-31 16:00:20
  */
 @Service
+@AllArgsConstructor
 public class SysDatasourceConfServiceImpl extends ServiceImpl<SysDatasourceConfMapper, SysDatasourceConf> implements SysDatasourceConfService {
+	private final DynamicDataSourceConfig dynamicDataSourceConfig;
+	private final StringEncryptor stringEncryptor;
 
+	/**
+	 * 保存数据源并且加密
+	 *
+	 * @param sysDatasourceConf
+	 * @return
+	 */
+	@Override
+	public Boolean saveDsByEnc(SysDatasourceConf sysDatasourceConf) {
+		sysDatasourceConf.setPassword(stringEncryptor.encrypt(sysDatasourceConf.getPassword()));
+		this.baseMapper.insert(sysDatasourceConf);
+		return dynamicDataSourceConfig.reload();
+	}
+
+	/**
+	 * 更新数据源
+	 *
+	 * @param sysDatasourceConf
+	 * @return
+	 */
+	@Override
+	public Boolean updateDsByEnc(SysDatasourceConf sysDatasourceConf) {
+		if (StrUtil.isNotBlank(sysDatasourceConf.getPassword())) {
+			sysDatasourceConf.setPassword(stringEncryptor.encrypt(sysDatasourceConf.getPassword()));
+		}
+		this.baseMapper.updateById(sysDatasourceConf);
+		return dynamicDataSourceConfig.reload();
+	}
 }

@@ -26,5 +26,19 @@ import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
  * @date 2019-03-31 16:00:20
  */
 public interface SysDatasourceConfService extends IService<SysDatasourceConf> {
+	/**
+	 * 保存数据源并且加密
+	 *
+	 * @param sysDatasourceConf
+	 * @return
+	 */
+	Boolean saveDsByEnc(SysDatasourceConf sysDatasourceConf);
 
+	/**
+	 * 更新数据源
+	 *
+	 * @param sysDatasourceConf
+	 * @return
+	 */
+	Boolean updateDsByEnc(SysDatasourceConf sysDatasourceConf);
 }
