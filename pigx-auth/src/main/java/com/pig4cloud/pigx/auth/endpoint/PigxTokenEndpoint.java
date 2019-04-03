@@ -111,6 +111,9 @@ public class PigxTokenEndpoint {
 	@Inner
 	@DeleteMapping("/{token}")
 	public R<Boolean> delToken(@PathVariable("token") String token) {
+		if (token != null) {
+			throw new RuntimeException("lalalala");
+		}
 		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
 		tokenStore.removeAccessToken(oAuth2AccessToken);
 		return new R<>();

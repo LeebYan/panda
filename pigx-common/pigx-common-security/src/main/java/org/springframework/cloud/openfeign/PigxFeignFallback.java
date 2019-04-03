@@ -18,7 +18,7 @@
 package org.springframework.cloud.openfeign;
 
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.util.R;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
@@ -57,8 +57,7 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 		String str = StrUtil.str(content, StandardCharsets.UTF_8);
 
 		log.error("PigxFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, str);
-		return R.builder().code(CommonConstants.FAIL)
-				.msg(str).build();
+		return JSONUtil.toBean(str, R.class);
 	}
 
 	@Override
