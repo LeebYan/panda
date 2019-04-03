@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("job_execution_log")
+@TableName("JOB_EXECUTION_LOG")
 public class ExecutionLog extends Model<ExecutionLog> {
 	private static final long serialVersionUID = 1L;
 

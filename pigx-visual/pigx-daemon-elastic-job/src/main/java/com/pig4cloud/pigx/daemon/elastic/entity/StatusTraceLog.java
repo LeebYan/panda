@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("job_status_trace_log")
+@TableName("JOB_STATUS_TRACE_LOG")
 public class StatusTraceLog extends Model<StatusTraceLog> {
 	private static final long serialVersionUID = 1L;
 
