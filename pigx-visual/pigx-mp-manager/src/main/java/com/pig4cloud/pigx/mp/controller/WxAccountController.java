@@ -133,4 +133,15 @@ public class WxAccountController {
 		return new R<>(wxAccountService.list());
 	}
 
+	/**
+	 * 获取公众号接口数据
+	 *
+	 * @param appId    公众号
+	 * @param interval 时间间隔
+	 * @return
+	 */
+	@GetMapping("/statistics")
+	public R statistics(String appId, String interval) {
+		return wxAccountService.statistics(appId, interval);
+	}
 }

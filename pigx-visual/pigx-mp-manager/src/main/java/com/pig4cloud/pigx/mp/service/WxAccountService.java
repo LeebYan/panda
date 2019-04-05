@@ -35,4 +35,13 @@ public interface WxAccountService extends IService<WxAccount> {
 	 * @return
 	 */
 	R generateQr(String appId);
+
+	/**
+	 * 获取公众号统计数据
+	 *
+	 * @param appId
+	 * @param interval
+	 * @return
+	 */
+	R statistics(String appId, String interval);
 }

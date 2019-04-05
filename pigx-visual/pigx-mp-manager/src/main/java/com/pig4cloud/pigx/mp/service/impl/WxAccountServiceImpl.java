@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pigx.mp.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
@@ -26,9 +27,19 @@ import com.pig4cloud.pigx.mp.mapper.WxAccountMapper;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpDataCubeService;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.datacube.WxDataCubeArticleResult;
+import me.chanjar.weixin.mp.bean.datacube.WxDataCubeInterfaceResult;
+import me.chanjar.weixin.mp.bean.datacube.WxDataCubeMsgResult;
+import me.chanjar.weixin.mp.bean.datacube.WxDataCubeUserCumulate;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 公众号账户
@@ -65,5 +76,61 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 		}
 
 		return R.builder().build();
+	}
+
+	/**
+	 * 获取公众号统计数据
+	 *
+	 * @param appId    公众号信息
+	 * @param interval 时间间隔
+	 * @return
+	 */
+	@Override
+	public R statistics(String appId, String interval) {
+		String[] split = interval.split(StrUtil.DASHED);
+		Date start = new Date(Long.parseLong(split[0]));
+		Date end = new Date(Long.parseLong(split[1]));
+
+		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpDataCubeService cubeService = wxMpService.getDataCubeService();
+
+		List<List<Object>> result = new ArrayList<>();
+		try {
+			// 获取累计用户数据
+			List<Object> cumulateList = cubeService.getUserCumulate(start, end).stream()
+					.map(WxDataCubeUserCumulate::getCumulateUser)
+					.collect(Collectors.toList());
+			result.add(cumulateList);
+
+			// 获取用户分享数据
+			List<Object> shareList = cubeService.getUserShare(start, end).stream()
+					.map(WxDataCubeArticleResult::getShareCount)
+					.collect(Collectors.toList());
+			result.add(shareList);
+
+			// 获取消息发送概况数据
+			List<Object> upstreamList = cubeService.getUpstreamMsg(start, end).stream()
+					.map(WxDataCubeMsgResult::getMsgCount)
+					.collect(Collectors.toList());
+			result.add(upstreamList);
+
+			// 获取接口调用概况数据
+			List<WxDataCubeInterfaceResult> interfaceSummaryList = cubeService.getInterfaceSummary(start, end);
+			List<Object> interfaceList = interfaceSummaryList.stream()
+					.map(WxDataCubeInterfaceResult::getCallbackCount)
+					.collect(Collectors.toList());
+			result.add(interfaceList);
+
+			// 接口日期保存
+			List<Object> dateList = interfaceSummaryList.stream()
+					.map(WxDataCubeInterfaceResult::getRefDate)
+					.collect(Collectors.toList());
+			result.add(dateList);
+		} catch (WxErrorException e) {
+			log.error(" 获取公众号统计数据报错", e);
+			return R.builder().code(CommonConstants.FAIL).msg("获取公众号数据失败:" + e.getError().getErrorMsg()).build();
+		}
+
+		return R.builder().data(result).build();
 	}
 }
