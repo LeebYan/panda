@@ -38,6 +38,12 @@
 			<groupId>com.dangdang</groupId>
 			<artifactId>elastic-job-lite-core</artifactId>
 			<version>${elastic-job-lite.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP-java7</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- import other module if need -->
 		<dependency>
