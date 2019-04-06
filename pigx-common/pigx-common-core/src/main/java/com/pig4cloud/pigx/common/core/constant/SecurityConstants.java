@@ -155,4 +155,8 @@ public interface SecurityConstants {
 	 */
 	String DETAILS_LICENSE = "license";
 
+	/**
+	 * AES 加密
+	 */
+	String AES = "aes";
 }

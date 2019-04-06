@@ -62,10 +62,6 @@
                 tableOption: tableOption
             }
         },
-        created() {
-        },
-        mounted: function () {
-        },
         computed: {
             ...mapGetters(['permissions']),
             permissionList() {
@@ -98,11 +94,7 @@
                     return delObj(row.$pk.lowerAttrName)
                 }).then(data => {
                     _this.tableData.splice(index, 1)
-                    _this.$message({
-                        showClose: true,
-                        message: '删除成功',
-                        type: 'success'
-                    })
+                    _this.$message.success('删除成功')
                     this.getList(this.page)
                 }).catch(function (err) {
                 })
@@ -117,11 +109,7 @@
             handleUpdate: function (row, index, done) {
                 putObj(row).then(data => {
                     this.tableData.splice(index, 1, Object.assign({}, row))
-                    this.$message({
-                        showClose: true,
-                        message: '修改成功',
-                        type: 'success'
-                    })
+                    _this.$message.success('修改成功')
                     done()
                     this.getList(this.page)
                 })
@@ -135,11 +123,7 @@
             handleSave: function (row, done) {
                 addObj(row).then(data => {
                     this.tableData.push(Object.assign({}, row))
-                    this.$message({
-                        showClose: true,
-                        message: '添加成功',
-                        type: 'success'
-                    })
+                    _this.$message.success('添加成功')
                     done()
                     this.getList(this.page)
                 })

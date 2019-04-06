@@ -69,16 +69,6 @@ public class DeptController {
 	}
 
 	/**
-	 * 返回当前用户树形菜单集合
-	 *
-	 * @return 树形菜单
-	 */
-	@GetMapping(value = "/user-tree")
-	public R getUserTree() {
-		return new R<>(sysDeptService.getUserTree());
-	}
-
-	/**
 	 * 添加
 	 *
 	 * @param sysDept 实体

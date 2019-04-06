@@ -27,6 +27,10 @@ import lombok.Data;
 @Data
 public class GenConfig {
 	/**
+	 * 数据源ID
+	 */
+	private Integer id;
+	/**
 	 * 包名
 	 */
 	private String packageName;

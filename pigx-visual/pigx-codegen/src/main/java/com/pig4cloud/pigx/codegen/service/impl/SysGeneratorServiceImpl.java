@@ -21,8 +21,10 @@ import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
+import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.mapper.SysGeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
+import com.pig4cloud.pigx.codegen.util.DynamicDataSourceContextHolder;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,18 +43,20 @@ import java.util.zip.ZipOutputStream;
 @Service
 @AllArgsConstructor
 public class SysGeneratorServiceImpl implements SysGeneratorService {
+	private final SysDatasourceConfMapper sysDatasourceConfMapper;
 	private final SysGeneratorMapper sysGeneratorMapper;
-
 
 	/**
 	 * 分页查询表
 	 *
 	 * @param tableName 查询条件
+	 * @param id
 	 * @return
 	 */
 	@Override
-	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName) {
-		return sysGeneratorMapper.queryList(page,tableName);
+	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id) {
+		DynamicDataSourceContextHolder.setDataSourceType(id);
+		return sysGeneratorMapper.queryList(page, tableName);
 	}
 
 	/**
@@ -63,6 +67,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	 */
 	@Override
 	public byte[] generatorCode(GenConfig genConfig) {
+		DynamicDataSourceContextHolder.setDataSourceType(genConfig.getId());
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
 
