@@ -53,4 +53,11 @@ public interface WxMenuService extends IService<WxMpMenu> {
 	 * @return
 	 */
 	R getByAppId(String appId);
+
+	/**
+	 * 通过appid 删除菜单
+	 * @param appId
+	 * @return
+	 */
+	R delete(String appId);
 }

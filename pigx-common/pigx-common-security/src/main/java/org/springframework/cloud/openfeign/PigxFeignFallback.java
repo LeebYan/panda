@@ -45,7 +45,7 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 
 	@Nullable
 	@Override
-	public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+	public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) {
 		Class<?> returnType = method.getReturnType();
 		if (R.class != returnType) {
 			return null;

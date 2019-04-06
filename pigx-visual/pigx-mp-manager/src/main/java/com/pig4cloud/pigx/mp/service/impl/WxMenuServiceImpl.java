@@ -134,4 +134,28 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 		}
 		return R.builder().data(wxMpMenuList.get(0).getMenu()).build();
 	}
+
+	/**
+	 * 通过appid 删除菜单
+	 *
+	 * @param appId
+	 * @return
+	 */
+	@Override
+	public R delete(String appId) {
+		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpMenuService menuService = wxMpService.getMenuService();
+		try {
+			menuService.menuDelete();
+		} catch (WxErrorException e) {
+			log.error("微信菜单删除失败", e.getError().getErrorMsg());
+			return R.builder()
+					.code(CommonConstants.FAIL)
+					.msg(e.getError().getErrorMsg()).build();
+		}
+
+		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery()
+				.eq(WxMpMenu::getWxAccountAppid, appId));
+		return R.builder().build();
+	}
 }

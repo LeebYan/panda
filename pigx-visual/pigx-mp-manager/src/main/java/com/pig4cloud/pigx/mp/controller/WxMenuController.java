@@ -91,4 +91,10 @@ public class WxMenuController {
 		return wxMenuService.push(appId);
 	}
 
+	@DeleteMapping("/{appId}")
+	public R delete(@PathVariable("appId") String appId) {
+		return wxMenuService.delete(appId);
+	}
+
+
 }
