@@ -1,5 +1,6 @@
 package com.pig4cloud.pigx.act.config;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,16 +50,24 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 			@Override
 			public Message<?> preSend(Message<?> message, MessageChannel channel) {
 				StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+				// 判断是否首次连接请求
 				if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 					String tokens = accessor.getFirstNativeHeader("Authorization");
 					log.info("webSocket token is {}", tokens);
 					if (StrUtil.isBlank(tokens)) {
 						return null;
 					}
+					// 验证令牌信息
 					OAuth2Authentication auth2Authentication = tokenService.loadAuthentication(tokens.split(" ")[1]);
-					SecurityContextHolder.getContext().setAuthentication(auth2Authentication);
-					accessor.setUser(() -> (String) auth2Authentication.getPrincipal());
+					if(ObjectUtil.isNotNull(auth2Authentication)) {
+						SecurityContextHolder.getContext().setAuthentication(auth2Authentication);
+						accessor.setUser(() -> (String) auth2Authentication.getPrincipal());
+						return message;
+					}else{
+						return null;
+					}
 				}
+				//不是首次连接，已经成功登陆
 				return message;
 			}
 		});
