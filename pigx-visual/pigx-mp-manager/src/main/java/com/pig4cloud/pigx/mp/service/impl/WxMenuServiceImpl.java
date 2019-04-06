@@ -48,7 +48,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> implements WxMenuService {
-	private static final String MENU = "menu";
+	private static final String PUB_ED = "1";
 	private final WxAccountMapper wxAccountMapper;
 
 	/**
@@ -90,22 +90,31 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 		if (CollUtil.isEmpty(wxMpMenuList)) {
 			return R.builder()
 					.code(CommonConstants.FAIL)
-					.msg("微信菜单配置为空，不能发布").build();
+					.msg("微信菜单配置未保存，不能发布").build();
 		}
-
+		WxMpMenu wxMpMenu = wxMpMenuList.get(0);
+		// 判断是否发布
+		if (PUB_ED.equals(wxMpMenu.getPubFlag())) {
+			return R.builder()
+					.code(CommonConstants.FAIL)
+					.msg("微信菜单配置已发布，不要重复发布").build();
+		}
 		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
 		WxMpMenuService menuService = wxMpService.getMenuService();
 
 		// 给数据库保存的加一层
-		JSONObject jsonObject = new JSONObject(wxMpMenuList.get(0).getMenu());
-		jsonObject.put(MENU, jsonObject);
 		try {
-			menuService.menuCreate(jsonObject.toStringPretty());
+			menuService.menuCreate(wxMpMenu.getMenu());
 		} catch (WxErrorException e) {
+			log.error("发布微信菜单失败", e.getError().getErrorMsg());
 			return R.builder()
 					.code(CommonConstants.FAIL)
 					.msg(e.getError().getErrorMsg()).build();
 		}
+
+		//更新菜单发布标志
+		wxMpMenu.setPubFlag(PUB_ED);
+		baseMapper.updateById(wxMpMenu);
 		return R.builder().build();
 	}
 

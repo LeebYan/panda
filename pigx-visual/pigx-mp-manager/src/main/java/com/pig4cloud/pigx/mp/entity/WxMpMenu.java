@@ -77,4 +77,9 @@ public class WxMpMenu extends Model<WxMpMenu> {
 	@TableLogic
 	private String delFlag;
 
+	/**
+	 * 是否发布 0 未发布 1 已发布
+	 */
+	private String pubFlag;
+
 }
