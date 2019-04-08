@@ -46,7 +46,17 @@ public enum LoginTypeEnum {
 	/**
 	 * 微信登录
 	 */
-	WECHAT("WX", "微信登录");
+	WECHAT("WX", "微信登录"),
+
+	/**
+	 * 码云登录
+	 */
+	GITEE("GITEE", "码云登录"),
+
+	/**
+	 * 开源中国登录
+	 */
+	OSC("OSC", "开源中国登录");
 
 	/**
 	 * 类型

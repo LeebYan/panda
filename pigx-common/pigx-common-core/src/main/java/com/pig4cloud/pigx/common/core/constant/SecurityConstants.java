@@ -94,6 +94,28 @@ public interface SecurityConstants {
 			"?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
 
 	/**
+	 * 码云获取token
+	 */
+	String GITEE_AUTHORIZATION_CODE_URL = "https://gitee.com/oauth/token?grant_type=" +
+			"authorization_code&code=%S&client_id=%s&redirect_uri=" +
+			"%s&client_secret=%s";
+
+	/**
+	 * 开源中国获取token
+	 */
+	String OSC_AUTHORIZATION_CODE_URL = "https://www.oschina.net/action/openapi/token";
+
+	/**
+	 * 码云获取用户信息
+	 */
+	String GITEE_USER_INFO_URL = "https://gitee.com/api/v5/user?access_token=%s";
+
+	/**
+	 * 开源中国用户信息
+	 */
+	String OSC_USER_INFO_URL = "https://www.oschina.net/action/openapi/user?access_token=%s&dataType=json";
+
+	/**
 	 * {bcrypt} 加密的特征码
 	 */
 	String BCRYPT = "{bcrypt}";

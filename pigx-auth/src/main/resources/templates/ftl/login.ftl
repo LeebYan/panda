@@ -14,7 +14,7 @@
     <link href="/css/signin.css" rel="stylesheet">
   </head>
 
-  <body>
+  <body class="sign_body">
     <div class="container form-margin-top">
       <form class="form-signin" action="/token/form" method="post">
         <h2 class="form-signin-heading" align="center">统一认证系统</h2>
@@ -24,7 +24,7 @@
       </form>
     </div>
     <footer>
-      <p>support by: lengleng</p>
+      <p>support by: pig4cloud</p>
       <p>email: <a href="mailto:wangiegie@gmail.com">wangiegie@gmail.com</a>.</p>
     </footer>
   </body>

@@ -105,4 +105,13 @@ public class SysUser implements Serializable {
 	 */
 	private String qqOpenid;
 
+	/**
+	 * 码云唯一标识
+	 */
+	private String giteeLogin;
+
+	/**
+	 * 开源中国唯一标识
+	 */
+	private String oscId;
 }

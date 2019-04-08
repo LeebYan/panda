@@ -87,6 +87,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.userDetailsService(pigxUserDetailsService)
 				.authenticationManager(authenticationManagerBean)
 				.reuseRefreshTokens(false)
+				.pathMapping("/oauth/confirm_access", "/token/confirm_access")
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
 	}
 
