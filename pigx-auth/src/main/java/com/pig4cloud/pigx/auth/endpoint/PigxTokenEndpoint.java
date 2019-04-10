@@ -28,6 +28,7 @@ import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
+import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ConvertingCursor;
@@ -98,6 +99,7 @@ public class PigxTokenEndpoint {
 			AuthorizationRequest authorizationRequest = (AuthorizationRequest) auth;
 			ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authorizationRequest.getClientId());
 			modelAndView.addObject("app", clientDetails.getAdditionalInformation());
+			modelAndView.addObject("user", SecurityUtils.getUser());
 		}
 
 		modelAndView.setViewName("ftl/confirm");

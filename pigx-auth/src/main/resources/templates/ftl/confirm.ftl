@@ -20,13 +20,17 @@
             <p class="navbar-text navbar-right">
                 <a target="_blank" href="https://pig4cloud.com">技术支持</a>
             </p>
+            <p class="navbar-text navbar-right">
+                <a target="_blank" href="https://pig4cloud.com">${user.username}</a>
+            </p>
         </div>
     </div>
 </nav>
 <div style="padding-top: 80px;width: 300px; color: #555; margin:0px auto;">
     <form id='confirmationForm' name='confirmationForm' action="/oauth/authorize" method='post'>
         <input name='user_oauth_approval' value='true' type='hidden'/>
-        <p><a href="${app.website}" target="_blank">${app.appName}</a> 将获得以下权限：</p>
+        <p>
+            <a href="${app.website}" target="_blank">${app.appName}</a> 将获得以下权限：</p>
         <ul class="list-group">
             <li class="list-group-item"> <span>
               <#list scopeList as scope>
