@@ -16,6 +16,7 @@ services:
     image: pigx-mysql
     ports:
       - 3306:3306
+    command: --lower_case_table_names=1
 
   pigx-zookeeper:
     image: zookeeper:3.4.13
