@@ -8,10 +8,7 @@ security:
       ignore-urls:
         - '/actuator/**'
         - '/v2/api-docs'
-        - '/service/**'
         - '/editor-app/**'
-        - '/task/view/*'
-        - '/process/resource/**'
         - '/modeler.html'
         - '/ws/**'
 spring:

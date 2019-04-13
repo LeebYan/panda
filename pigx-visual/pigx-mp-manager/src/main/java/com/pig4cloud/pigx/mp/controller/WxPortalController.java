@@ -2,6 +2,7 @@ package com.pig4cloud.pigx.mp.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * 微信接入入口
  */
 @Slf4j
+@Inner(value = false)
 @RestController
 @RequestMapping("/{appId}/portal")
 public class WxPortalController {

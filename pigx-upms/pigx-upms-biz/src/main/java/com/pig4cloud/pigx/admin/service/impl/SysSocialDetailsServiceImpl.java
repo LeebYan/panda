@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.dto.UserInfo;
 import com.pig4cloud.pigx.admin.api.entity.SysSocialDetails;
@@ -80,7 +81,7 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 	 */
 	@Override
 	public UserInfo getUserInfo(String inStr) {
-		String[] inStrs = inStr.split("@");
+		String[] inStrs = inStr.split(StringPool.AT);
 		String type = inStrs[0];
 		String loginStr = inStrs[1];
 		return loginHandlerMap.get(type).handle(loginStr);

@@ -21,11 +21,11 @@ import java.lang.annotation.*;
 
 /**
  * @author lengleng
- * @date 2018/11/26
+ * @date 2019/4/13
  * <p>
- * 服务调用不鉴权注解
+ * 服务调用鉴权注解
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Inner {

@@ -20,7 +20,6 @@ package com.pig4cloud.pigx.daemon.quartz.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJobLog;
 import com.pig4cloud.pigx.daemon.quartz.service.SysJobLogService;
 import io.swagger.annotations.Api;
@@ -53,7 +52,6 @@ public class SysJobLogController {
 	@GetMapping("/page")
 	@ApiOperation(value = "分页定时任务日志查询")
 	public R getSysJobLogPage(Page page, SysJobLog sysJobLog) {
-		sysJobLog.setTenantId(TenantContextHolder.getTenantId());
 		return R.builder().data(sysJobLogService.page(page, Wrappers.query(sysJobLog))).build();
 	}
 }

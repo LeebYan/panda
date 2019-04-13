@@ -21,6 +21,7 @@ import cn.hutool.core.io.IoUtil;
 import com.pig4cloud.pigx.act.service.ProcessService;
 import com.pig4cloud.pigx.common.core.constant.enums.ResourceTypeEnum;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ public class ProcessController {
 		return new R<>(processService.getProcessByPage(params));
 	}
 
+	@Inner(value = false)
 	@GetMapping(value = "/resource/{proInsId}/{procDefId}/{resType}")
 	public ResponseEntity resourceRead(@PathVariable String procDefId, @PathVariable String proInsId, @PathVariable String resType) {
 

@@ -1,6 +1,7 @@
 package com.pig4cloud.pigx.daemon.quartz.task;
 
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ public class RestTaskDemo {
 	/**
 	 * 测试REST风格调用定时任务的演示方法
 	 */
+	@Inner(value = false)
 	@GetMapping("/{param}")
 	public R demoMethod(@PathVariable("param") String param) {
 		log.info("测试于:{}，传入参数{}", LocalDateTime.now(), param);

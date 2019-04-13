@@ -59,11 +59,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 					}
 					// 验证令牌信息
 					OAuth2Authentication auth2Authentication = tokenService.loadAuthentication(tokens.split(" ")[1]);
-					if(ObjectUtil.isNotNull(auth2Authentication)) {
+					if (ObjectUtil.isNotNull(auth2Authentication)) {
 						SecurityContextHolder.getContext().setAuthentication(auth2Authentication);
 						accessor.setUser(() -> (String) auth2Authentication.getPrincipal());
 						return message;
-					}else{
+					} else {
 						return null;
 					}
 				}

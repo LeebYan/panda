@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
@@ -67,7 +66,6 @@ public class SysJobController {
 	@GetMapping("/page")
 	@ApiOperation(value = "分页定时业务查询")
 	public R getSysJobPage(Page page, SysJob sysJob) {
-		sysJob.setTenantId(TenantContextHolder.getTenantId());
 		return R.builder().data(sysJobService.page(page, Wrappers.query(sysJob))).build();
 	}
 
@@ -97,7 +95,6 @@ public class SysJobController {
 	public R save(@RequestBody SysJob sysJob) {
 		sysJob.setJobStatus(JOB_STATUS_RELEASE.getType());
 		sysJob.setCreateBy(SecurityUtils.getUser().getUsername());
-		sysJob.setTenantId(TenantContextHolder.getTenantId());
 		return R.builder().data(sysJobService.save(sysJob)).build();
 	}
 

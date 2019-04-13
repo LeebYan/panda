@@ -67,7 +67,7 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 			HikariDataSource ds = new HikariDataSource();
 			ds.setJdbcUrl(String.valueOf(db.get(DataSourceConstant.DS_JDBC_URL)));
 			ds.setDriverClassName(Driver.class.getName());
-			ds.setUsername((String) db.get(DataSourceConstant.DS_NAME));
+			ds.setUsername((String) db.get(DataSourceConstant.DS_USER_NAME));
 
 			String decPwd = stringEncryptor.decrypt((String) db.get(DataSourceConstant.DS_USER_PWD));
 			ds.setPassword(decPwd);

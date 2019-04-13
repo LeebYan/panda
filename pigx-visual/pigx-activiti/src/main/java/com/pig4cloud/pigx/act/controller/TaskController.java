@@ -21,6 +21,7 @@ import cn.hutool.core.io.IoUtil;
 import com.pig4cloud.pigx.act.dto.LeaveBillDto;
 import com.pig4cloud.pigx.act.service.ActTaskService;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -57,6 +58,7 @@ public class TaskController {
 		return new R(actTaskService.submitTask(leaveBillDto));
 	}
 
+	@Inner(value = false)
 	@GetMapping("/view/{id}")
 	public ResponseEntity viewCurrentImage(@PathVariable String id) {
 		InputStream imageStream = actTaskService.viewByTaskId(id);
