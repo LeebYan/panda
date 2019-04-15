@@ -32,7 +32,6 @@ import java.time.LocalDateTime;
  * @date 2019-03-26 22:08:08
  */
 @Data
-@TableName("t_wx_account_fans")
 @EqualsAndHashCode(callSuper = true)
 public class WxAccountFans extends Model<WxAccountFans> {
 	private static final long serialVersionUID = 1L;

@@ -9,3 +9,6 @@ create database `pigxx_zipkin` default character set utf8mb4 collate utf8mb4_gen
 
 -- pigx 任务相关库
 create database `pigxx_job` default character set utf8mb4 collate utf8mb4_general_ci;
+
+-- pigx 公众号管理模块
+create database `pigxx_mp ` default character set utf8mb4 collate utf8mb4_general_ci;

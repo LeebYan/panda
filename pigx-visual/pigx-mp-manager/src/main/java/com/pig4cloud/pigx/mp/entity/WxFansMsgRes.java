@@ -17,7 +17,6 @@
 package com.pig4cloud.pigx.mp.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,7 +30,6 @@ import java.time.LocalDateTime;
  * @date 2019-03-27 20:45:48
  */
 @Data
-@TableName("t_wx_fans_msg_res")
 @EqualsAndHashCode(callSuper = true)
 public class WxFansMsgRes extends Model<WxFansMsgRes> {
 	private static final long serialVersionUID = 1L;

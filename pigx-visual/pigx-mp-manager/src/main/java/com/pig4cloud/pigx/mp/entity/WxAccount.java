@@ -18,7 +18,6 @@ package com.pig4cloud.pigx.mp.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,7 +31,6 @@ import java.time.LocalDateTime;
  * @date 2019-03-26 22:07:53
  */
 @Data
-@TableName("t_wx_account")
 @EqualsAndHashCode(callSuper = true)
 public class WxAccount extends Model<WxAccount> {
 	private static final long serialVersionUID = 1L;
