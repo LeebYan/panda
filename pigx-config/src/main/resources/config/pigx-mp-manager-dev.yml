@@ -25,5 +25,8 @@ pigx:
   tenant:
     column: tenant_id
     tables:
-      - t_wx_account
-      - t_wx_account_fans
+      - wx_menu
+      - wx_account
+      - wx_account_fans
+      - wx_fans_msg
+      - wx_fans_msg_res
