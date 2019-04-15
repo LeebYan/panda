@@ -115,6 +115,14 @@ services:
     image: pigx-codegen
     container_name: pigx-codegen
 
+  pigx-mp-manager:
+    build:
+      context: ./
+      dockerfile: ./pigx-visual/pigx-mp-manager/Dockerfile
+    restart: always
+    image: pigx-mp-manager
+    container_name: pigx-mp-manager
+
   pigx-activiti:
     build:
       context: ./

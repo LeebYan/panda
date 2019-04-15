@@ -8,7 +8,7 @@ RUN mkdir -p /pigx-mp-manager
 
 WORKDIR /pigx-mp-manager
 
-EXPOSE 5003
+EXPOSE 6000
 
 ADD ./pigx-visual/pigx-mp-manager/target/pigx-mp-manager.jar ./
 
