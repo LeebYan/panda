@@ -114,8 +114,8 @@ CREATE TABLE `wx_fans_msg_res` (
 -- ----------------------------
 --  Table structure for `wx_menu`
 -- ----------------------------
-DROP TABLE IF EXISTS `wx_menu`;
-CREATE TABLE `wx_menu` (
+DROP TABLE IF EXISTS `wx_mp_menu`;
+CREATE TABLE `wx_mp_menu` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `menu` json DEFAULT NULL COMMENT '菜单',
   `wx_account_id` int(11) DEFAULT NULL,

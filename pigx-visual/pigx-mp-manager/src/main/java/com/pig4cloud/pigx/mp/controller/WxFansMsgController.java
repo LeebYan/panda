@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.mp.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.mp.entity.WxFansMsg;
 import com.pig4cloud.pigx.mp.service.WxFansMsgService;
@@ -49,6 +50,7 @@ public class WxFansMsgController {
 	 */
 	@GetMapping("/page")
 	public R getWxFansMsgPage(Page page, WxFansMsg wxFansMsg) {
+		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
 		return new R<>(wxFansMsgService.page(page, Wrappers.query(wxFansMsg)));
 	}
 
@@ -74,6 +76,7 @@ public class WxFansMsgController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_add')")
 	public R save(@RequestBody WxFansMsg wxFansMsg) {
+		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
 		return new R<>(wxFansMsgService.save(wxFansMsg));
 	}
 
@@ -87,6 +90,7 @@ public class WxFansMsgController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_edit')")
 	public R updateById(@RequestBody WxFansMsg wxFansMsg) {
+		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
 		return new R<>(wxFansMsgService.updateById(wxFansMsg));
 	}
 
