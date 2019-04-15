@@ -8,5 +8,5 @@ ignore:
   clients:
     - test
   swagger-providers:
-    - pigx-auth
-    - pigx-tx-manager
+    - ${AUTH-HOST:pigx-auth}
+    - ${TX-MGR-HOST:pigx-tx-manager}
