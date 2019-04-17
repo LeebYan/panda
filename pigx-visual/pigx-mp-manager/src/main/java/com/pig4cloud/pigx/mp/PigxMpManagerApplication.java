@@ -26,7 +26,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 /**
  * @author lengleng
  * @date 2019/03/25
- * 代码生成模块
+ * 微信公众号管理模块
  */
 @EnablePigxSwagger2
 @SpringCloudApplication
