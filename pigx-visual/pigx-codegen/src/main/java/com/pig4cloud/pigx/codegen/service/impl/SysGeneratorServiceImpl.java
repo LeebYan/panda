@@ -21,7 +21,6 @@ import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
-import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.mapper.SysGeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
 import com.pig4cloud.pigx.codegen.util.DynamicDataSourceContextHolder;
@@ -43,7 +42,6 @@ import java.util.zip.ZipOutputStream;
 @Service
 @AllArgsConstructor
 public class SysGeneratorServiceImpl implements SysGeneratorService {
-	private final SysDatasourceConfMapper sysDatasourceConfMapper;
 	private final SysGeneratorMapper sysGeneratorMapper;
 
 	/**
