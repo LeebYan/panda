@@ -1,0 +1,26 @@
+nacos:
+  port: 8849
+  cmdb:
+    dumpTaskInterval: 3600
+    eventTaskInterval: 10
+    labelTaskInterval: 300
+    loadDataAtStart: false
+
+# 数据源相关配置
+db:
+  num: 1
+  user: root
+  password: root
+  url:
+    0: jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+
+# 关闭nacos 登录
+spring:
+  datasource:
+    platform: mysql
+  security:
+    enabled: false
+
+server:
+  tomcat:
+    basedir: logs

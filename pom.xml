@@ -70,11 +70,11 @@
 	</properties>
 
 	<dependencies>
-		<!--eureka 客户端-->
-		<dependency>
+		<!--nacos discovery 客户端-->
+		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>-->
 		<!--配置文件处理器-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -127,8 +127,7 @@
 	</dependencies>
 
 	<modules>
-		<module>pigx-eureka</module>
-		<module>pigx-config</module>
+		<module>pigx-register</module>
 		<module>pigx-gateway</module>
 		<module>pigx-auth</module>
 		<module>pigx-upms</module>
@@ -163,6 +162,14 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>pigx-common-bom</artifactId>
 				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--spring cloud alibaba-->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>2.1.0.BUILD-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -256,6 +263,14 @@
 	</build>
 
 	<repositories>
+		<repository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshot Repository</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>aliyun</id>
 			<name>aliyun</name>
