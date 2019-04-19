@@ -16,7 +16,7 @@
 
 package com.alibaba.nacos;
 
-import com.alibaba.nacos.core.utils.Constants;
+import com.alibaba.nacos.console.config.ConfigConstant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -32,10 +32,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PigxNacosApplication {
 
 	public static void main(String[] args) {
-		System.setProperty("server.tomcat.basedir", "logs");
-		System.setProperty("nacos.home", "pigx-config");
-		System.setProperty("user.home", "logs");
-		System.setProperty(Constants.STANDALONE_MODE_PROPERTY_NAME, "true");
+		System.setProperty(ConfigConstant.TOMCAT_DIR, "logs");
+		System.setProperty(ConfigConstant.NACOS_HOME, "pigx-config");
+		System.setProperty(ConfigConstant.USER_HOME, "logs");
+		System.setProperty(ConfigConstant.STANDALONE_MODE, "true");
 		SpringApplication.run(PigxNacosApplication.class, args);
 	}
 }
