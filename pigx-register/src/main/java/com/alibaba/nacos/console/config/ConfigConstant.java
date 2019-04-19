@@ -16,6 +16,11 @@ public interface ConfigConstant {
 	String USER_HOME = "user.home";
 
 	/**
+	 * nacos 日志路径配置
+	 */
+	String NACOS_LOGS_PATH = "nacos.logs.path";
+
+	/**
 	 * nacos 家目录
 	 */
 	String NACOS_HOME = "nacos.home";
@@ -24,4 +29,9 @@ public interface ConfigConstant {
 	 * tomcat 目录
 	 */
 	String TOMCAT_DIR = "server.tomcat.basedir";
+
+	/**
+	 * tomcat 日志配置
+	 */
+	String TOMCAT_ACCESS_LOG = "server.tomcat.accesslog.enabled";
 }

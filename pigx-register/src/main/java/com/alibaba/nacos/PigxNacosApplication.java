@@ -33,8 +33,9 @@ public class PigxNacosApplication {
 
 	public static void main(String[] args) {
 		System.setProperty(ConfigConstant.TOMCAT_DIR, "logs");
+		System.setProperty(ConfigConstant.TOMCAT_ACCESS_LOG, "false");
 		System.setProperty(ConfigConstant.NACOS_HOME, "pigx-config");
-		System.setProperty(ConfigConstant.USER_HOME, "logs");
+		System.setProperty(ConfigConstant.NACOS_LOGS_PATH, "logs/nacos");
 		System.setProperty(ConfigConstant.STANDALONE_MODE, "true");
 		SpringApplication.run(PigxNacosApplication.class, args);
 	}
