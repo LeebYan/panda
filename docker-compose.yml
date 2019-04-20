@@ -1,4 +1,4 @@
-# 使用说明 V2.8.0
+# 使用说明 V3.0.0
 # 1. 使用docker-compose  宿主机不需要配置host来发现
 # 2. 无需修改源码，根目录  docker-compose up 即可
 # 3. 静静等待服务启动
@@ -26,6 +26,16 @@ services:
     image: redis:4.0.10
     restart: always
     container_name: pigx-redis
+
+  pigx-register:
+    build:
+      context: ./
+      dockerfile: ./pigx-register/Dockerfile
+    restart: always
+    container_name: pigx-register
+    image: pigx-register
+    ports:
+      - 8848:8848
 
   pigx-gateway:
     build:
