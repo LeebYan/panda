@@ -3,6 +3,8 @@ package com.alibaba.nacos.console.config;
 /**
  * @author lengleng
  * @date 2019-04-19
+ * <p>
+ * 覆盖nacos 默认配置
  */
 public interface ConfigConstant {
 	/**
@@ -24,6 +26,7 @@ public interface ConfigConstant {
 	 * nacos 家目录
 	 */
 	String NACOS_HOME = "nacos.home";
+
 
 	/**
 	 * tomcat 目录

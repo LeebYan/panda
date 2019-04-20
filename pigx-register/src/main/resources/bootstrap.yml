@@ -12,7 +12,7 @@ db:
   user: root
   password: root
   url:
-    0: jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+    0: jdbc:mysql://127.0.0.1:3306/pigxx_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
 
 # 关闭nacos 登录
 spring:
