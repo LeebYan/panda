@@ -27,24 +27,6 @@ services:
     restart: always
     container_name: pigx-redis
 
-  pigx-eureka:
-    build:
-      context: ./
-      dockerfile: ./pigx-eureka/Dockerfile
-    restart: always
-    container_name: pigx-eureka
-    image: pigx-eureka
-    ports:
-      - 8761:8761
-
-  pigx-config:
-    build:
-      context: ./
-      dockerfile: ./pigx-config/Dockerfile
-    restart: always
-    container_name: pigx-config
-    image: pigx-config
-
   pigx-gateway:
     build:
       context: ./

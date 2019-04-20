@@ -16,6 +16,8 @@ db:
 spring:
   datasource:
     platform: mysql
+  security:
+    enabled: false
 
 server:
   tomcat:

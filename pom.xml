@@ -70,11 +70,6 @@
 	</properties>
 
 	<dependencies>
-		<!--nacos discovery 客户端-->
-		<!--<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-		</dependency>-->
 		<!--配置文件处理器-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
