@@ -12,4 +12,14 @@ public interface ConfigConstants {
 	 */
 	String STANDALONE_MODE = "nacos.standalone";
 
+	/**
+	 * tomcat 目录
+	 */
+	String TOMCAT_DIR = "server.tomcat.basedir";
+
+	/**
+	 * tomcat 日志配置
+	 */
+	String TOMCAT_ACCESS_LOG = "server.tomcat.accesslog.enabled";
+
 }
