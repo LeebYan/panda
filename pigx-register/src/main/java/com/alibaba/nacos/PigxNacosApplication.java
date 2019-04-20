@@ -16,7 +16,7 @@
 
 package com.alibaba.nacos;
 
-import com.alibaba.nacos.console.config.ConfigConstant;
+import com.alibaba.nacos.console.config.ConfigConstants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -32,7 +32,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PigxNacosApplication {
 
 	public static void main(String[] args) {
-		System.setProperty(ConfigConstant.STANDALONE_MODE, "true");
+		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
 		SpringApplication.run(PigxNacosApplication.class, args);
 	}
 }

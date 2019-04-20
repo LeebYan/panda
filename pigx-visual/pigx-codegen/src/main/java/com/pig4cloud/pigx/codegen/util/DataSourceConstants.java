@@ -6,7 +6,7 @@ package com.pig4cloud.pigx.codegen.util;
  * <p>
  * 数据源相关常量
  */
-public interface DataSourceConstant {
+public interface DataSourceConstants {
 	/**
 	 * 查询数据源的SQL
 	 */
