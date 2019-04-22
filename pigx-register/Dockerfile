@@ -8,7 +8,7 @@ RUN mkdir -p /pigx-register
 
 WORKDIR /pigx-register
 
-EXPOSE 9999
+EXPOSE 8848
 
 ADD ./pigx-register/target/pigx-register.jar ./
 
