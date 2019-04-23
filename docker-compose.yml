@@ -16,6 +16,8 @@ services:
     image: pigx-mysql
     ports:
       - 3306:3306
+    volumes:
+      - ./pigx-mysql:/var/lib/mysql
     command: --lower_case_table_names=1
 
   pigx-zookeeper:
