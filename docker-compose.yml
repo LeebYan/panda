@@ -23,9 +23,11 @@ services:
     restart: always
 
   pigx-redis:
-    image: redis:4.0.10
+    image: redis:5.0.4
     restart: always
     container_name: pigx-redis
+    ports:
+      - 6379:6379
 
   pigx-minio:
     image: minio/minio
