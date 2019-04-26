@@ -39,8 +39,8 @@ services:
       - ./config:/root/.minio
     environment:
       - "MINIO_DOMAIN=pigx-minio"
-      - "MINIO_ACCESS_KEY=pigxdata"
-      - "MINIO_SECRET_KEY=pigxdata"
+      - "MINIO_ACCESS_KEY=lengleng"
+      - "MINIO_SECRET_KEY=lengleng"
 
   pigx-eureka:
     build:
