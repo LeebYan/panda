@@ -27,6 +27,19 @@ services:
     restart: always
     container_name: pigx-redis
 
+  pigx-minio:
+    image: minio/minio
+    command: server /export
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./data:/data
+      - ./config:/root/.minio
+    environment:
+      - "MINIO_DOMAIN=pigx-minio"
+      - "MINIO_ACCESS_KEY=pigxdata"
+      - "MINIO_SECRET_KEY=pigxdata"
+
   pigx-eureka:
     build:
       context: ./
