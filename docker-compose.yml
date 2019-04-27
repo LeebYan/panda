@@ -33,14 +33,14 @@ services:
     image: minio/minio
     command: server /data
     ports:
-      - "9000:9000"
+      - 9000:9000
     volumes:
       - ./data:/data
       - ./config:/root/.minio
     environment:
-      - "MINIO_DOMAIN=pigx-minio"
-      - "MINIO_ACCESS_KEY=lengleng"
-      - "MINIO_SECRET_KEY=lengleng"
+      - MINIO_DOMAIN=pigx-minio
+      - MINIO_ACCESS_KEY=lengleng
+      - MINIO_SECRET_KEY=lengleng
 
   pigx-eureka:
     build:
