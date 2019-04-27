@@ -1,0 +1,37 @@
+# 运行：docker-compose up -d
+# 运行(推荐)：docker-compose up --build
+# 查看：docker ps -a
+# 集群：docker run --rm -it zvelo/redis-trib create --replicas 1 ip:6061 ip:6062 ip:6063 ip:6064 ip:6065 ip:6066
+
+version: '2'
+services:
+  redis-slave1:
+    build: ./slave1
+    ports:
+      - 6061:6061
+      - 16061:16061
+  redis-slave2:
+    build: ./slave2
+    ports:
+      - 6062:6062
+      - 16062:16062
+  redis-slave3:
+    build: ./slave3
+    ports:
+      - 6063:6063
+      - 16063:16063
+  redis-slave4:
+    build: ./slave4
+    ports:
+      - 6064:6064
+      - 16064:16064
+  redis-slave5:
+    build: ./slave5
+    ports:
+      - 6065:6065
+      - 16065:16065
+  redis-slave6:
+    build: ./slave6
+    ports:
+      - 6066:6066
+      - 16066:16066
