@@ -27,6 +27,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysDict;
 import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
 import com.pig4cloud.pigx.admin.service.SysDictItemService;
 import com.pig4cloud.pigx.admin.service.SysDictService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -83,7 +84,7 @@ public class DictController {
 	 * @return 同类型字典
 	 */
 	@GetMapping("/type/{type}")
-	@Cacheable(value = "dict_details", key = "#type")
+	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result == null")
 	public R getDictByType(@PathVariable String type) {
 		return new R<>(sysDictItemService.list(Wrappers
 				.<SysDictItem>query().lambda()
@@ -161,7 +162,7 @@ public class DictController {
 	 */
 	@SysLog("新增字典项")
 	@PostMapping("/item")
-	@CacheEvict(value = "dict_details", allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R save(@RequestBody SysDictItem sysDictItem) {
 		return new R<>(sysDictItemService.save(sysDictItem));
 	}
@@ -174,7 +175,7 @@ public class DictController {
 	 */
 	@SysLog("修改字典项")
 	@PutMapping("/item")
-	@CacheEvict(value = "dict_details", allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R updateById(@RequestBody SysDictItem sysDictItem) {
 		return new R<>(sysDictItemService.updateById(sysDictItem));
 	}
@@ -187,7 +188,7 @@ public class DictController {
 	 */
 	@SysLog("删除字典项")
 	@DeleteMapping("/item/{id}")
-	@CacheEvict(value = "dict_details", allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R removeDictItemById(@PathVariable Integer id) {
 		return new R<>(sysDictItemService.removeById(id));
 	}
