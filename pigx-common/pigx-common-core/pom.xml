@@ -70,5 +70,10 @@
 			<artifactId>transmittable-thread-local</artifactId>
 			<version>${ttl.version}</version>
 		</dependency>
+		<!--swagger 依赖-->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
 	</dependencies>
 </project>

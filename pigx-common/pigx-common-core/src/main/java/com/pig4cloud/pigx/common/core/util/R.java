@@ -20,6 +20,8 @@
 package com.pig4cloud.pigx.common.core.util;
 
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -34,21 +36,25 @@ import java.io.Serializable;
 @Builder
 @ToString
 @Accessors(chain = true)
+@ApiModel(description = "响应信息主体")
 @AllArgsConstructor
 public class R<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Getter
 	@Setter
+	@ApiModelProperty(value = "返回标记：成功标记=0，失败标记=0")
 	private int code = CommonConstants.SUCCESS;
 
 	@Getter
 	@Setter
+	@ApiModelProperty(value = "返回信息")
 	private String msg = "success";
 
 
 	@Getter
 	@Setter
+	@ApiModelProperty(value = "数据")
 	private T data;
 
 	public R() {
