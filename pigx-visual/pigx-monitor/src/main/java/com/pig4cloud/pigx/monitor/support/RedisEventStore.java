@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.monitor.support;
 
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.eventstore.InMemoryEventStore;
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class RedisEventStore extends InMemoryEventStore {
 			log.info("保存实例事件的KEY：{},EVENT: {}", key, event.getType());
 			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(InstanceEvent.class));
-			redisTemplate.opsForHash().put(CommonConstants.EVENT_KEY, key, event);
+			redisTemplate.opsForHash().put(CacheConstants.EVENT_KEY, key, event);
 		});
 		return super.append(events);
 	}
