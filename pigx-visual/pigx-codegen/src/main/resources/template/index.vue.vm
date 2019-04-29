@@ -24,6 +24,7 @@
                        :table-loading="tableLoading"
                        :option="tableOption"
                        @on-load="getList"
+                       @search-change="searchChange"
                        @refresh-change="refreshChange"
                        @row-update="handleUpdate"
                        @row-save="handleSave"
@@ -94,7 +95,11 @@
                     return delObj(row.$pk.lowerAttrName)
                 }).then(data => {
                     _this.tableData.splice(index, 1)
-                    _this.$message.success('删除成功')
+                    _this.$message({
+                        showClose: true,
+                        message: '删除成功',
+                        type: 'success'
+                    })
                     this.getList(this.page)
                 }).catch(function (err) {
                 })
@@ -109,7 +114,11 @@
             handleUpdate: function (row, index, done) {
                 putObj(row).then(data => {
                     this.tableData.splice(index, 1, Object.assign({}, row))
-                    _this.$message.success('修改成功')
+                    this.$message({
+                        showClose: true,
+                        message: '修改成功',
+                        type: 'success'
+                    })
                     done()
                     this.getList(this.page)
                 })
@@ -123,10 +132,20 @@
             handleSave: function (row, done) {
                 addObj(row).then(data => {
                     this.tableData.push(Object.assign({}, row))
-                    _this.$message.success('添加成功')
+                    this.$message({
+                        showClose: true,
+                        message: '添加成功',
+                        type: 'success'
+                    })
                     done()
                     this.getList(this.page)
                 })
+            },
+            /**
+             * 搜索回调
+             */
+            searchChange(form) {
+                this.getList(this.page, form)
             },
             /**
              * 刷新回调
