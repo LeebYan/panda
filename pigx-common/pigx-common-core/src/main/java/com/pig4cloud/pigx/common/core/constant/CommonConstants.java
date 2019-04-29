@@ -78,6 +78,11 @@ public interface CommonConstants {
 	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY_";
 
 	/**
+	 * 公共参数
+	 */
+	String PIG_PUBLIC_PARAM_KEY = "PIG_PUBLIC_PARAM_KEY";
+
+	/**
 	 * 成功标记
 	 */
 	Integer SUCCESS = 0;
