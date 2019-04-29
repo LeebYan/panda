@@ -63,16 +63,6 @@ public interface CommonConstants {
 	String BACK_END_PROJECT = "pigx";
 
 	/**
-	 * 路由存放
-	 */
-	String ROUTE_KEY = "gateway_route_key";
-
-	/**
-	 * spring boot admin 事件key
-	 */
-	String EVENT_KEY = "event_key";
-
-	/**
 	 * 验证码前缀
 	 */
 	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY_";

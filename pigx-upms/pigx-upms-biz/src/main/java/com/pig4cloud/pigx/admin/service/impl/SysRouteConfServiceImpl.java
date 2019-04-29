@@ -25,7 +25,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysRouteConf;
 import com.pig4cloud.pigx.admin.mapper.SysRouteConfMapper;
 import com.pig4cloud.pigx.admin.service.SysRouteConfService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.gateway.support.DynamicRouteInitEvent;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,77 +84,86 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 	@Transactional(rollbackFor = Exception.class)
 	public Mono<Void> updateRoutes(JSONArray routes) {
 		// 清空Redis 缓存
-		Boolean result = pigxRedisTemplate.delete(CommonConstants.ROUTE_KEY);
+		Boolean result = pigxRedisTemplate.delete(CacheConstants.ROUTE_KEY);
 		log.info("清空网关路由 {} ", result);
 
 		// 遍历修改的routes，保存到Redis
 		List<RouteDefinitionVo> routeDefinitionVoList = new ArrayList<>();
-		routes.forEach(value -> {
-			log.info("更新路由 ->{}", value);
-			RouteDefinitionVo vo = new RouteDefinitionVo();
-			Map<String, Object> map = (Map) value;
 
-			Object id = map.get("routeId");
-			if (id != null) {
-				vo.setId(String.valueOf(id));
-			}
+		try {
+			routes.forEach(value -> {
+				log.info("更新路由 ->{}", value);
+				RouteDefinitionVo vo = new RouteDefinitionVo();
+				Map<String, Object> map = (Map) value;
 
-			Object routeName = map.get("routeName");
-			if (routeName != null) {
-				vo.setRouteName(String.valueOf(routeName));
-			}
+				Object id = map.get("routeId");
+				if (id != null) {
+					vo.setId(String.valueOf(id));
+				}
 
-			Object predicates = map.get("predicates");
-			if (predicates != null) {
-				JSONArray predicatesArray = (JSONArray) predicates;
-				List<PredicateDefinition> predicateDefinitionList =
-					predicatesArray.toList(PredicateDefinition.class);
-				vo.setPredicates(predicateDefinitionList);
-			}
+				Object routeName = map.get("routeName");
+				if (routeName != null) {
+					vo.setRouteName(String.valueOf(routeName));
+				}
 
-			Object filters = map.get("filters");
-			if (filters != null) {
-				JSONArray filtersArray = (JSONArray) filters;
-				List<FilterDefinition> filterDefinitionList
-					= filtersArray.toList(FilterDefinition.class);
-				vo.setFilters(filterDefinitionList);
-			}
+				Object predicates = map.get("predicates");
+				if (predicates != null) {
+					JSONArray predicatesArray = (JSONArray) predicates;
+					List<PredicateDefinition> predicateDefinitionList =
+							predicatesArray.toList(PredicateDefinition.class);
+					vo.setPredicates(predicateDefinitionList);
+				}
 
-			Object uri = map.get("uri");
-			if (uri != null) {
-				vo.setUri(URI.create(String.valueOf(uri)));
-			}
+				Object filters = map.get("filters");
+				if (filters != null) {
+					JSONArray filtersArray = (JSONArray) filters;
+					List<FilterDefinition> filterDefinitionList
+							= filtersArray.toList(FilterDefinition.class);
+					vo.setFilters(filterDefinitionList);
+				}
 
-			Object order = map.get("order");
-			if (order != null) {
-				vo.setOrder(Integer.parseInt(String.valueOf(order)));
-			}
+				Object uri = map.get("uri");
+				if (uri != null) {
+					vo.setUri(URI.create(String.valueOf(uri)));
+				}
 
-			pigxRedisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-			pigxRedisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, vo.getId(), vo);
-			routeDefinitionVoList.add(vo);
-		});
+				Object order = map.get("order");
+				if (order != null) {
+					vo.setOrder(Integer.parseInt(String.valueOf(order)));
+				}
+				pigxRedisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
+				pigxRedisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, vo.getId(), vo);
+				routeDefinitionVoList.add(vo);
+			});
 
-		// 逻辑删除全部
-		SysRouteConf condition = new SysRouteConf();
-		condition.setDelFlag(CommonConstants.STATUS_NORMAL);
-		this.remove(new UpdateWrapper<>(condition));
+			// 逻辑删除全部
+			SysRouteConf condition = new SysRouteConf();
+			condition.setDelFlag(CommonConstants.STATUS_NORMAL);
+			this.remove(new UpdateWrapper<>(condition));
 
-		//插入生效路由
-		List<SysRouteConf> routeConfList = routeDefinitionVoList.stream().map(vo -> {
-			SysRouteConf routeConf = new SysRouteConf();
-			routeConf.setRouteId(vo.getId());
-			routeConf.setRouteName(vo.getRouteName());
-			routeConf.setFilters(JSONUtil.toJsonStr(vo.getFilters()));
-			routeConf.setPredicates(JSONUtil.toJsonStr(vo.getPredicates()));
-			routeConf.setOrder(vo.getOrder());
-			routeConf.setUri(vo.getUri().toString());
-			return routeConf;
-		}).collect(Collectors.toList());
-		this.saveBatch(routeConfList);
-		log.debug("更新网关路由结束 ");
+			//插入生效路由
+			List<SysRouteConf> routeConfList = routeDefinitionVoList.stream().map(vo -> {
+				SysRouteConf routeConf = new SysRouteConf();
+				routeConf.setRouteId(vo.getId());
+				routeConf.setRouteName(vo.getRouteName());
+				routeConf.setFilters(JSONUtil.toJsonStr(vo.getFilters()));
+				routeConf.setPredicates(JSONUtil.toJsonStr(vo.getPredicates()));
+				routeConf.setOrder(vo.getOrder());
+				routeConf.setUri(vo.getUri().toString());
+				return routeConf;
+			}).collect(Collectors.toList());
+			this.saveBatch(routeConfList);
+			log.debug("更新网关路由结束 ");
 
-		this.applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
+			this.applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
+
+		} catch (Exception e) {
+			log.error("路由配置解析失败", e);
+			// 回滚路由，重新加载即可
+			this.applicationEventPublisher.publishEvent(new DynamicRouteInitEvent(this));
+			// 抛出异常
+			throw new RuntimeException(e);
+		}
 		return Mono.empty();
 	}
 

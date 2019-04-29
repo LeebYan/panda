@@ -1,7 +1,7 @@
 package com.pig4cloud.pigx.codegen.config;
 
 import com.mysql.cj.jdbc.Driver;
-import com.pig4cloud.pigx.codegen.util.DataSourceConstant;
+import com.pig4cloud.pigx.codegen.util.DataSourceConstants;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,18 +60,18 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 		dds.setUsername(dataSourceProperties.getUsername());
 		dds.setPassword(dataSourceProperties.getPassword());
 
-		List<Map<String, Object>> dbList = new JdbcTemplate(dds).queryForList(DataSourceConstant.QUERY_DS_SQL);
+		List<Map<String, Object>> dbList = new JdbcTemplate(dds).queryForList(DataSourceConstants.QUERY_DS_SQL);
 		log.info("开始 -> 初始化动态数据源");
 		Optional.of(dbList).ifPresent(list -> list.forEach(db -> {
-			log.info("数据源:{}", db.get(DataSourceConstant.DS_NAME));
+			log.info("数据源:{}", db.get(DataSourceConstants.DS_NAME));
 			HikariDataSource ds = new HikariDataSource();
-			ds.setJdbcUrl(String.valueOf(db.get(DataSourceConstant.DS_JDBC_URL)));
+			ds.setJdbcUrl(String.valueOf(db.get(DataSourceConstants.DS_JDBC_URL)));
 			ds.setDriverClassName(Driver.class.getName());
-			ds.setUsername((String) db.get(DataSourceConstant.DS_USER_NAME));
+			ds.setUsername((String) db.get(DataSourceConstants.DS_USER_NAME));
 
-			String decPwd = stringEncryptor.decrypt((String) db.get(DataSourceConstant.DS_USER_PWD));
+			String decPwd = stringEncryptor.decrypt((String) db.get(DataSourceConstants.DS_USER_PWD));
 			ds.setPassword(decPwd);
-			dataSourceMap.put(db.get(DataSourceConstant.DS_ROUTE_KEY), ds);
+			dataSourceMap.put(db.get(DataSourceConstants.DS_ROUTE_KEY), ds);
 		}));
 
 		log.info("完毕 -> 初始化动态数据源,共计 {} 条", dataSourceMap.size());

@@ -8,6 +8,7 @@ import com.pig4cloud.pigx.mp.service.WxFansMsgService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -35,6 +36,11 @@ public class LogHandler extends AbstractHandler {
 									Map<String, Object> context, WxMpService wxMpService,
 									WxSessionManager sessionManager) {
 		log.debug("接收到请求消息，内容：{}", wxMessage.getContent());
+
+		if (!WxConsts.XmlMsgType.TEXT.equals(wxMessage.getMsgType())) {
+			log.debug("消息类型其他类型不保存", wxMessage.getContent());
+			return null;
+		}
 
 		WxAccount wxAccount = wxAccountService.getOne(Wrappers.<WxAccount>lambdaQuery()
 				.eq(WxAccount::getAccount, wxMessage.getToUser()));

@@ -82,10 +82,6 @@ public interface SecurityConstants {
 	 * 自定义登录URL
 	 */
 	String MOBILE_TOKEN_URL = "/mobile/token/*";
-	/**
-	 * oauth 客户端信息
-	 */
-	String CLIENT_DETAILS_KEY = "pigx_oauth:client:details";
 
 	/**
 	 * 微信获取OPENID

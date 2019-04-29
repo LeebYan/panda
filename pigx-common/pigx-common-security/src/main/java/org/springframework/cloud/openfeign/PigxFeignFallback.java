@@ -18,10 +18,12 @@
 package org.springframework.cloud.openfeign;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -45,6 +47,7 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 
 	@Nullable
 	@Override
+	@SneakyThrows
 	public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) {
 		Class<?> returnType = method.getReturnType();
 		if (R.class != returnType) {
@@ -57,7 +60,8 @@ public class PigxFeignFallback<T> implements MethodInterceptor {
 		String str = StrUtil.str(content, StandardCharsets.UTF_8);
 
 		log.error("PigxFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, str);
-		return JSONUtil.toBean(str, R.class);
+		ObjectMapper objectMapper = SpringContextHolder.getBean(ObjectMapper.class);
+		return objectMapper.readValue(str, R.class);
 	}
 
 	@Override
