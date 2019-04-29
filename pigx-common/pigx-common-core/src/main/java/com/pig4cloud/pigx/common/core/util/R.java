@@ -43,7 +43,7 @@ public class R<T> implements Serializable {
 
 	@Getter
 	@Setter
-	@ApiModelProperty(value = "返回标记：成功标记=0，失败标记=0")
+	@ApiModelProperty(value = "返回标记：成功标记=0，失败标记=1")
 	private int code = CommonConstants.SUCCESS;
 
 	@Getter
