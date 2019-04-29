@@ -21,6 +21,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.admin.service.SysRouteConfService;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.gateway.support.DynamicRouteInitEvent;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,8 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.scheduling.annotation.Async;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lengleng
@@ -56,10 +59,11 @@ public class DynamicRouteInitRunner {
 	@Async
 	@Order
 	@EventListener({WebServerInitializedEvent.class, DynamicRouteInitEvent.class})
-	public void initRoute() {
+	public R initRoute() {
 		Boolean result = pigxRedisTemplate.delete(CommonConstants.ROUTE_KEY);
 		log.info("初始化网关路由 {} ", result);
-
+		//列信息
+		List<RouteDefinitionVo> routeDefinitionVoList = new ArrayList<>();
 		routeConfService.routes().forEach(route -> {
 			RouteDefinitionVo vo = new RouteDefinitionVo();
 			vo.setRouteName(route.getRouteName());
@@ -73,10 +77,13 @@ public class DynamicRouteInitRunner {
 			vo.setPredicates(predicateObj.toList(PredicateDefinition.class));
 
 			log.info("加载路由ID：{},{}", route.getRouteId(), vo);
+			routeDefinitionVoList.add(vo);
 			pigxRedisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
 			pigxRedisTemplate.opsForHash().put(CommonConstants.ROUTE_KEY, route.getRouteId(), vo);
 		});
 		log.debug("初始化网关路由结束 ");
+
+		return new R<>(routeDefinitionVoList);
 	}
 
 	/**
