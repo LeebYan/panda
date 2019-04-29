@@ -9,9 +9,19 @@ package com.pig4cloud.pigx.common.core.constant;
 public interface CacheConstants {
 
 	/**
+	 * 菜单信息缓存
+	 */
+	String MENU_DETAILS = "menu_details";
+
+	/**
 	 * 用户信息缓存
 	 */
 	String USER_DETAILS = "user_details";
+
+	/**
+	 * 字典信息缓存
+	 */
+	String DICT_DETAILS = "dict_details";
 
 
 	/**
@@ -19,10 +29,6 @@ public interface CacheConstants {
 	 */
 	String CLIENT_DETAILS_KEY = "pigx_oauth:client:details";
 
-	/**
-	 * 菜单信息缓存
-	 */
-	String MENU_DETAILS = "menu_details";
 
 	/**
 	 * spring boot admin 事件key
