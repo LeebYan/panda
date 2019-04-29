@@ -39,4 +39,8 @@ public interface CacheConstants {
 	 */
 	String DICT_DETAILS = "dict_details";
 
+	/**
+	 * 参数缓存
+	 */
+	String PARAMS_DETAILS = "params_details";
 }
