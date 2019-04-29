@@ -10,6 +10,32 @@ use pigxx;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+
+-- ----------------------------
+-- 查询菜单函数脚本tree
+-- 1200 是菜单父节点
+-- 使用：select * from sys_menu where FIND_IN_SET(menu_id, queryChildMenuInfo(1200));
+-- ----------------------------
+CREATE DEFINER=`root`@`localhost` FUNCTION `queryChildMenuInfo`(menuId INT) RETURNS varchar(4000) CHARSET utf8mb4
+BEGIN
+	DECLARE
+		sTemp VARCHAR ( 4000 );
+	DECLARE
+		sTempChd VARCHAR ( 4000 );
+	SET sTemp = '$';
+	SET sTempChd = cast( menuId AS CHAR );
+	WHILE
+			sTempChd IS NOT NULL DO
+			SET sTemp = CONCAT( sTemp, ',', sTempChd );
+		SELECT
+			group_concat( menu_id ) INTO sTempChd
+		FROM
+			sys_menu
+		WHERE
+			FIND_IN_SET( parent_id, sTempChd ) > 0;
+	END WHILE;
+RETURN sTemp;
+END
 -- ----------------------------
 -- 公共参数设计表
 -- ----------------------------
