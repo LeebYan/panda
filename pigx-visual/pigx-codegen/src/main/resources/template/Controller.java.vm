@@ -24,6 +24,9 @@ import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import ${package}.${moduleName}.entity.${className};
 import ${package}.${moduleName}.service.${className}Service;
 import org.springframework.security.access.prepost.PreAuthorize;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/${pathName}" )
+@Api(value = "${pathName}", tags = "${pathName}管理")
 public class ${className}Controller {
 
     private final  ${className}Service ${classname}Service;
