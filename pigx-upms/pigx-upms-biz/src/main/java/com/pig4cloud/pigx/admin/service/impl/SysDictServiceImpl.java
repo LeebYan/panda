@@ -23,6 +23,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
 import com.pig4cloud.pigx.admin.mapper.SysDictItemMapper;
 import com.pig4cloud.pigx.admin.mapper.SysDictMapper;
 import com.pig4cloud.pigx.admin.service.SysDictService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = "dict_details", allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean removeDict(Integer id) {
 		baseMapper.deleteById(id);

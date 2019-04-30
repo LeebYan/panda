@@ -123,20 +123,20 @@ public class SysJobController {
 	/**
 	 * 通过id删除定时任务
 	 *
-	 * @param jobId id
+	 * @param id id
 	 * @return R
 	 */
 	@SysLog("删除定时任务")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('job_sys_job_del')")
 	@ApiOperation(value = "唯一标识查询定时任务，暂停任务才能删除")
-	public R removeById(@PathVariable Integer jobId) {
-		SysJob querySysJob = this.sysJobService.getById(jobId);
+	public R removeById(@PathVariable Integer id) {
+		SysJob querySysJob = this.sysJobService.getById(id);
 		if (JOB_STATUS_NOT_RUNNING.getType().equals(querySysJob.getJobStatus())) {
 			this.taskUtil.removeJob(querySysJob, scheduler);
-			this.sysJobService.removeById(jobId);
+			this.sysJobService.removeById(id);
 		} else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
-			this.sysJobService.removeById(jobId);
+			this.sysJobService.removeById(id);
 		}
 		return R.builder().build();
 	}

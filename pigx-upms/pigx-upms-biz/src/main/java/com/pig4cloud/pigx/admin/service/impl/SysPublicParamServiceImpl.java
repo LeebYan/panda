@@ -17,21 +17,15 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
-import com.pig4cloud.pigx.admin.api.vo.ParamVo;
 import com.pig4cloud.pigx.admin.mapper.SysPublicParamMapper;
 import com.pig4cloud.pigx.admin.service.SysPublicParamService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 公共参数配置
@@ -43,25 +37,16 @@ import java.util.List;
 @AllArgsConstructor
 public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper, SysPublicParam> implements SysPublicParamService {
 
-	private final RedisTemplate redisTemplate;
-
 	@Override
-	public List<SysPublicParam> querySysPublicParam() {
-		List paramList =  baseMapper.selectList(Wrappers.emptyWrapper());
-		return paramList;
-	}
-
-	@Override
+	@Cacheable(value = CacheConstants.PARAMS_DETAILS, key = "#publicKey", unless = "#result == null ")
 	public String getSysPublicParamKeyToValue(String publicKey) {
-		String groupName = CommonConstants.PIG_PUBLIC_PARAM_KEY;
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(ParamVo.class));
-		//List<ParamVo> values = redisTemplate.opsForHash().values(groupName);
-		ParamVo mapValue = (ParamVo) redisTemplate.opsForHash().get(groupName, publicKey);
+		SysPublicParam sysPublicParam = this.baseMapper
+				.selectOne(Wrappers.<SysPublicParam>lambdaQuery()
+						.eq(SysPublicParam::getPublicKey, publicKey));
 
-		if(ObjectUtil.isNull(mapValue)){
-			return "";
+		if (sysPublicParam != null) {
+			return sysPublicParam.getPublicValue();
 		}
-		return mapValue.getPublicValue();
+		return null;
 	}
 }

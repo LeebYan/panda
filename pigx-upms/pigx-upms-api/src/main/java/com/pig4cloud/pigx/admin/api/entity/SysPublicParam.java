@@ -18,9 +18,8 @@
 package com.pig4cloud.pigx.admin.api.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -73,8 +72,9 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	/**
 	 * 删除状态（0：正常 1：已删除）
 	 */
+	@TableLogic
 	@ApiModelProperty(value = "状态[0-正常，1-删除]", example = "0")
-	private String deleteFlag;
+	private String delFlag;
 
 	/**
 	 * 公共参数编码
@@ -86,14 +86,12 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 创建时间
 	 */
 	@ApiModelProperty(value = "创建时间", example = "2019-03-21 12:28:48")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private LocalDateTime createTime;
 
 	/**
 	 * 修改时间
 	 */
 	@ApiModelProperty(value = "修改时间", example = "2019-03-21 12:28:48")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private LocalDateTime updateTime;
 
 	/**

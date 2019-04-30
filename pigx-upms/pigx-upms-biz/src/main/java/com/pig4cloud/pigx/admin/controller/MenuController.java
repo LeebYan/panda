@@ -78,7 +78,9 @@ public class MenuController {
 	 */
 	@GetMapping(value = "/tree")
 	public R getTree() {
-		return new R<>(TreeUtil.buildTree(sysMenuService.list(Wrappers.emptyWrapper()), -1));
+		return new R<>(TreeUtil.buildTree(sysMenuService
+				.list(Wrappers.<SysMenu>lambdaQuery()
+						.orderByAsc(SysMenu::getSort)), -1));
 	}
 
 	/**

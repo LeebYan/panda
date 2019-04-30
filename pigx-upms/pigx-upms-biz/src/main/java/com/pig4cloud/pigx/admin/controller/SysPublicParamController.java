@@ -20,17 +20,18 @@ package com.pig4cloud.pigx.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
-import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.admin.service.SysPublicParamService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,86 +43,89 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/param" )
+@RequestMapping("/param")
 @Api(value = "param", tags = "公共参数配置")
 public class SysPublicParamController {
 
-    private final  SysPublicParamService sysPublicParamService;
+	private final SysPublicParamService sysPublicParamService;
 
 	/**
 	 * 通过key查询公共参数值
+	 *
 	 * @param publicKey
 	 * @return
-	 * @throws Exception
 	 */
 	@Inner(value = false)
-	@ApiOperation(value = "查询公共参数值",notes = "根据key查询公共参数值")
-	@ApiImplicitParams({@ApiImplicitParam(name = "publicKey",value = "键值，譬如：VERSION_INSTRUCTIONS",required = true)})
+	@ApiOperation(value = "查询公共参数值", notes = "根据key查询公共参数值")
+	@ApiImplicitParams({@ApiImplicitParam(name = "publicKey", value = "键值，譬如：VERSION_INSTRUCTIONS", required = true)})
 	@GetMapping("/publicValue/{publicKey}")
-	public R publicKey(@PathVariable("publicKey") String publicKey) throws Exception {
-		String publicValue = sysPublicParamService.getSysPublicParamKeyToValue(publicKey);
-		if(StringUtils.isEmpty(publicValue)){
-			return R.builder().code(44005).msg("查询数据内容为空").build();
-		}
-		return new R<>(publicValue);
+	public R publicKey(@PathVariable("publicKey") String publicKey) {
+		return new R<>(sysPublicParamService.getSysPublicParamKeyToValue(publicKey));
 	}
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param sysPublicParam 公共参数
-     * @return
-     */
-    @GetMapping("/page" )
-    public R getSysPublicParamPage(Page page, SysPublicParam sysPublicParam) {
-        return new R<>(sysPublicParamService.page(page, Wrappers.query(sysPublicParam)));
-    }
+	/**
+	 * 分页查询
+	 *
+	 * @param page           分页对象
+	 * @param sysPublicParam 公共参数
+	 * @return
+	 */
+	@GetMapping("/page")
+	public R getSysPublicParamPage(Page page, SysPublicParam sysPublicParam) {
+		return new R<>(sysPublicParamService.page(page, Wrappers.query(sysPublicParam)));
+	}
 
 
-    /**
-     * 通过id查询公共参数
-     * @param publicId id
-     * @return R
-     */
-    @GetMapping("/{publicId}" )
-    public R getById(@PathVariable("publicId" ) Long publicId) {
-        return new R<>(sysPublicParamService.getById(publicId));
-    }
+	/**
+	 * 通过id查询公共参数
+	 *
+	 * @param publicId id
+	 * @return R
+	 */
+	@GetMapping("/{publicId}")
+	public R getById(@PathVariable("publicId") Long publicId) {
+		return new R<>(sysPublicParamService.getById(publicId));
+	}
 
-    /**
-     * 新增公共参数
-     * @param sysPublicParam 公共参数
-     * @return R
-     */
-    @SysLog("新增公共参数" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('admin_syspublicparam_add')" )
-    public R save(@RequestBody SysPublicParam sysPublicParam) {
-        return new R<>(sysPublicParamService.save(sysPublicParam));
-    }
+	/**
+	 * 新增公共参数
+	 *
+	 * @param sysPublicParam 公共参数
+	 * @return R
+	 */
+	@SysLog("新增公共参数")
+	@PostMapping
+	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_add')")
+	public R save(@RequestBody SysPublicParam sysPublicParam) {
+		return new R<>(sysPublicParamService.save(sysPublicParam));
+	}
 
-    /**
-     * 修改公共参数
-     * @param sysPublicParam 公共参数
-     * @return R
-     */
-    @SysLog("修改公共参数" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('admin_syspublicparam_edit')" )
-    public R updateById(@RequestBody SysPublicParam sysPublicParam) {
-        return new R<>(sysPublicParamService.updateById(sysPublicParam));
-    }
+	/**
+	 * 修改公共参数
+	 *
+	 * @param sysPublicParam 公共参数
+	 * @return R
+	 */
+	@SysLog("修改公共参数")
+	@PutMapping
+	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, key = "#sysPublicParam.publicKey")
+	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_edit')")
+	public R updateById(@RequestBody SysPublicParam sysPublicParam) {
+		return new R<>(sysPublicParamService.updateById(sysPublicParam));
+	}
 
-    /**
-     * 通过id删除公共参数
-     * @param publicId id
-     * @return R
-     */
-    @SysLog("删除公共参数" )
-    @DeleteMapping("/{publicId}" )
-    @PreAuthorize("@pms.hasPermission('admin_syspublicparam_del')" )
-    public R removeById(@PathVariable Long publicId) {
-        return new R<>(sysPublicParamService.removeById(publicId));
-    }
+	/**
+	 * 通过id删除公共参数
+	 *
+	 * @param publicId id
+	 * @return R
+	 */
+	@SysLog("删除公共参数")
+	@DeleteMapping("/{publicId}")
+	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, allEntries = true)
+	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_del')")
+	public R removeById(@PathVariable Long publicId) {
+		return new R<>(sysPublicParamService.removeById(publicId));
+	}
 
 }

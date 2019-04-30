@@ -18,10 +18,3 @@ security:
 spring:
   application:
     name: @artifactId@
-# 注册中心
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://pig:pig@${EUREKA-HOST:pigx-eureka}:${EUREKA-PORT:8761}/eureka/

@@ -40,6 +40,5 @@
 		<module>pigx-mp-manager</module>
 		<module>pigx-sso-client-demo</module>
 		<module>pigx-tx-manager</module>
-		<module>pigx-zipkin</module>
 	</modules>
 </project>

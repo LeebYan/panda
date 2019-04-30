@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.admin.handler.LoginHandler;
 import com.pig4cloud.pigx.admin.mapper.SysSocialDetailsMapper;
 import com.pig4cloud.pigx.admin.mapper.SysUserMapper;
 import com.pig4cloud.pigx.admin.service.SysSocialDetailsService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -69,7 +70,7 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 		}
 		sysUserMapper.updateById(sysUser);
 		//更新緩存
-		cacheManager.getCache("user_details").evict(sysUser.getUsername());
+		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(sysUser.getUsername());
 		return Boolean.TRUE;
 	}
 

@@ -61,7 +61,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 					OAuth2Authentication auth2Authentication = tokenService.loadAuthentication(tokens.split(" ")[1]);
 					if (ObjectUtil.isNotNull(auth2Authentication)) {
 						SecurityContextHolder.getContext().setAuthentication(auth2Authentication);
-						accessor.setUser(() -> (String) auth2Authentication.getPrincipal());
+						accessor.setUser(() -> auth2Authentication.getName());
 						return message;
 					} else {
 						return null;

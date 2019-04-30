@@ -20,8 +20,6 @@ package com.pig4cloud.pigx.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
 
-import java.util.List;
-
 /**
  * 公共参数配置
  *
@@ -29,12 +27,6 @@ import java.util.List;
  * @date 2019-04-29
  */
 public interface SysPublicParamService extends IService<SysPublicParam> {
-
-	/**
-	 * 查询所有
-	 * @return
-	 */
-	List<SysPublicParam> querySysPublicParam();
 
 	/**
 	 * 通过key查询公共参数指定值
