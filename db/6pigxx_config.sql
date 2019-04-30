@@ -14,6 +14,8 @@
  Date: 04/29/2019 22:53:28 PM
 */
 
+USE pigxx_config;
+
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
