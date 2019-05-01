@@ -30,7 +30,7 @@
     <form id='confirmationForm' name='confirmationForm' action="/oauth/authorize" method='post'>
         <input name='user_oauth_approval' value='true' type='hidden'/>
         <p>
-            <a href="${app.website}" target="_blank">${app.appName}</a> 将获得以下权限：</p>
+            <a href="${app.website!''}" target="_blank">${app.appName!'未定义应用名称'}</a> 将获得以下权限：</p>
         <ul class="list-group">
             <li class="list-group-item"> <span>
               <#list scopeList as scope>

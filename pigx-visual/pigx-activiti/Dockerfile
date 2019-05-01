@@ -12,4 +12,4 @@ EXPOSE 5005
 
 ADD ./pigx-visual/pigx-activiti/target/pigx-activiti.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-activiti.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-activiti.jar

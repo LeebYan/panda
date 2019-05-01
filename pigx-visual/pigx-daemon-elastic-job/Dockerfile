@@ -12,4 +12,4 @@ EXPOSE 5002
 
 ADD ./pigx-visual/pigx-daemon-elastic-job/target/pigx-daemon-elastic-job.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-daemon-elastic-job.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-daemon-elastic-job.jar

@@ -12,4 +12,4 @@ EXPOSE 5007
 
 ADD ./pigx-visual/pigx-daemon-quartz/target/pigx-daemon-quartz.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-daemon-quartz.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-daemon-quartz.jar

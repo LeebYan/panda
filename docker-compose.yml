@@ -90,16 +90,6 @@ services:
     ports:
       - 5001:5001
 
-  pigx-zipkin:
-    build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-zipkin/Dockerfile
-    restart: always
-    image: pigx-zipkin
-    container_name: pigx-zipkin
-    ports:
-      - 5006:5006
-
   pigx-daemon-quartz:
     build:
       context: ./

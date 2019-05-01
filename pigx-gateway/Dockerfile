@@ -12,4 +12,4 @@ EXPOSE 9999
 
 ADD ./pigx-gateway/target/pigx-gateway.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-gateway.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-gateway.jar

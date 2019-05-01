@@ -12,4 +12,4 @@ EXPOSE 4000
 
 ADD ./pigx-upms/pigx-upms-biz/target/pigx-upms-biz.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-upms-biz.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-upms-biz.jar

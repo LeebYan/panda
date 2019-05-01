@@ -12,4 +12,4 @@ EXPOSE 5001
 
 ADD ./pigx-visual/pigx-monitor/target/pigx-monitor.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar pigx-monitor.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-monitor.jar
