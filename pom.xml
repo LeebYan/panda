@@ -250,27 +250,17 @@
 	</build>
 
 	<repositories>
+		<!--阿里云私服-->
 		<repository>
 			<id>aliyun</id>
 			<name>aliyun</name>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
+		<!--gitee 私服-->
 		<repository>
 			<id>gitee.wang</id>
 			<name>gitee.wang</name>
 			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 </project>
