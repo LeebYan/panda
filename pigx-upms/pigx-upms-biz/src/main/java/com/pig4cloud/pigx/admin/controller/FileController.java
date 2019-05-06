@@ -82,9 +82,8 @@ public class FileController {
 	 */
 	@GetMapping("/{fileName}")
 	public void file(@PathVariable String fileName, HttpServletResponse response) {
-		String[] nameArray = StrUtil.split(fileName, StrUtil.DASHED);
-
-		try (InputStream inputStream = minioTemplate.getObject(nameArray[0], nameArray[1])) {
+		Integer separator = fileName.lastIndexOf(StrUtil.DASHED);
+		try (InputStream inputStream = minioTemplate.getObject(fileName.substring(0,separator),fileName.substring(separator+1,fileName.length()))) {
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			IoUtil.copy(inputStream, response.getOutputStream());
 		} catch (Exception e) {
