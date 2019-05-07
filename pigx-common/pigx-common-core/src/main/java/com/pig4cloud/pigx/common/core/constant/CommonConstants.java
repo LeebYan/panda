@@ -48,6 +48,11 @@ public interface CommonConstants {
 	String MENU = "0";
 
 	/**
+	 * 菜单树根节点
+	 */
+	Integer MENU_TREE_ROOT_ID = -1;
+
+	/**
 	 * 编码
 	 */
 	String UTF8 = "UTF-8";
