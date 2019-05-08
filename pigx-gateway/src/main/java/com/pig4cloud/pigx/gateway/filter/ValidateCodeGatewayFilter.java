@@ -121,8 +121,11 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 		}
 
 		String randomStr = request.getQueryParams().getFirst("randomStr");
-		if (StrUtil.isBlank(randomStr)) {
-			randomStr = request.getQueryParams().getFirst("mobile");
+
+		//https://gitee.com/log4j/pig/issues/IWA0D
+		String mobile = request.getQueryParams().getFirst("mobile");
+		if (StrUtil.isNotBlank(mobile)) {
+			randomStr = mobile;
 		}
 
 		String key = CommonConstants.DEFAULT_CODE_KEY + randomStr;

@@ -41,11 +41,6 @@ public interface CacheConstants {
 	String ROUTE_KEY = "gateway_route_key";
 
 	/**
-	 * 字典缓存
-	 */
-	String DICT_DETAILS = "dict_details";
-
-	/**
 	 * 参数缓存
 	 */
 	String PARAMS_DETAILS = "params_details";
