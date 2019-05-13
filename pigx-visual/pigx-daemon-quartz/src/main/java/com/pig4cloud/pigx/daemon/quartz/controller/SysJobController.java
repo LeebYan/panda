@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -66,7 +65,7 @@ public class SysJobController {
 	@GetMapping("/page")
 	@ApiOperation(value = "分页定时业务查询")
 	public R getSysJobPage(Page page, SysJob sysJob) {
-		return R.builder().data(sysJobService.page(page, Wrappers.query(sysJob))).build();
+		return R.ok(sysJobService.page(page, Wrappers.query(sysJob)));
 	}
 
 
@@ -79,7 +78,7 @@ public class SysJobController {
 	@GetMapping("/{id}")
 	@ApiOperation(value = "唯一标识查询定时任务")
 	public R getById(@PathVariable("id") Integer id) {
-		return R.builder().data(sysJobService.getById(id)).build();
+		return R.ok(sysJobService.getById(id));
 	}
 
 	/**
@@ -95,7 +94,7 @@ public class SysJobController {
 	public R save(@RequestBody SysJob sysJob) {
 		sysJob.setJobStatus(JOB_STATUS_RELEASE.getType());
 		sysJob.setCreateBy(SecurityUtils.getUser().getUsername());
-		return R.builder().data(sysJobService.save(sysJob)).build();
+		return R.ok(sysJobService.save(sysJob));
 	}
 
 	/**
@@ -117,7 +116,7 @@ public class SysJobController {
 		} else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
 			sysJobService.updateById(sysJob);
 		}
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -138,7 +137,7 @@ public class SysJobController {
 		} else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
 			this.sysJobService.removeById(id);
 		}
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -155,13 +154,13 @@ public class SysJobController {
 		int count = this.sysJobService.count(new LambdaQueryWrapper<SysJob>()
 				.eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
 		if (count <= 0) {
-			return R.builder().msg("无正在运行定时任务").build();
+			return R.ok("无正在运行定时任务");
 		} else {
 			//更新定时任务状态条件，运行状态2更新为暂停状态2
 			this.sysJobService.update(SysJob.builder()
 					.jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build(), new UpdateWrapper<SysJob>()
 					.lambda().eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
-			return R.builder().msg("暂停成功").build();
+			return R.ok("暂停成功");
 		}
 	}
 
@@ -180,7 +179,7 @@ public class SysJobController {
 				.getType()).build(), new UpdateWrapper<SysJob>().lambda()
 				.eq(SysJob::getJobStatus, JOB_STATUS_NOT_RUNNING.getType()));
 		taskUtil.startJobs(scheduler);
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -204,7 +203,7 @@ public class SysJobController {
 				taskUtil.removeJob(sysjob, scheduler);
 			}
 		});
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -228,7 +227,7 @@ public class SysJobController {
 		//更新定时任务状态条件，暂停状态3更新为运行状态2
 		this.sysJobService.updateById(SysJob.builder().jobId(jobId)
 				.jobStatus(JOB_STATUS_RUNNING.getType()).build());
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -246,7 +245,7 @@ public class SysJobController {
 		this.sysJobService.updateById(SysJob.builder().jobId(querySysJob.getJobId())
 				.jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build());
 		taskUtil.pauseJob(querySysJob, scheduler);
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -257,7 +256,7 @@ public class SysJobController {
 	@GetMapping("/job-log")
 	@ApiOperation(value = "唯一标识查询定时执行日志")
 	public R getJobLog(Page page, SysJobLog sysJobLog) {
-		return R.builder().data(sysJobLogService.page(page, Wrappers.query(sysJobLog))).build();
+		return R.ok(sysJobLogService.page(page, Wrappers.query(sysJobLog)));
 	}
 
 	/**
@@ -268,8 +267,8 @@ public class SysJobController {
 	@GetMapping("/is-valid-task-name")
 	@ApiOperation(value = "检验任务名称和任务组联合是否唯一")
 	public R isValidTaskName(@RequestParam String jobName, @RequestParam String jobGroup) {
-		return R.builder().data(this.sysJobService
+		return this.sysJobService
 				.count(Wrappers.query(SysJob.builder().jobName(jobName).jobGroup(jobGroup).build())) > 0
-				? CommonConstants.FAIL : CommonConstants.SUCCESS).build();
+				? R.failed() : R.ok();
 	}
 }

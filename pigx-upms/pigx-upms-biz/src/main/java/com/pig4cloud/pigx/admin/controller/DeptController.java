@@ -54,7 +54,7 @@ public class DeptController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable Integer id) {
-		return new R<>(sysDeptService.getById(id));
+		return R.ok(sysDeptService.getById(id));
 	}
 
 
@@ -65,7 +65,7 @@ public class DeptController {
 	 */
 	@GetMapping(value = "/tree")
 	public R getTree() {
-		return new R<>(sysDeptService.selectTree());
+		return R.ok(sysDeptService.selectTree());
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class DeptController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_dept_add')")
 	public R save(@Valid @RequestBody SysDept sysDept) {
-		return new R<>(sysDeptService.saveDept(sysDept));
+		return R.ok(sysDeptService.saveDept(sysDept));
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class DeptController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_dept_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysDeptService.removeDeptById(id));
+		return R.ok(sysDeptService.removeDeptById(id));
 	}
 
 	/**
@@ -105,6 +105,6 @@ public class DeptController {
 	@PreAuthorize("@pms.hasPermission('sys_dept_edit')")
 	public R update(@Valid @RequestBody SysDept sysDept) {
 		sysDept.setUpdateTime(LocalDateTime.now());
-		return new R<>(sysDeptService.updateDeptById(sysDept));
+		return R.ok(sysDeptService.updateDeptById(sysDept));
 	}
 }

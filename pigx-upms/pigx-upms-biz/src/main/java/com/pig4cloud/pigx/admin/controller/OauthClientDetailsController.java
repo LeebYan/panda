@@ -55,7 +55,7 @@ public class OauthClientDetailsController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable Integer id) {
-		return new R<>(sysOauthClientDetailsService.getById(id));
+		return R.ok(sysOauthClientDetailsService.getById(id));
 	}
 
 
@@ -68,7 +68,7 @@ public class OauthClientDetailsController {
 	 */
 	@GetMapping("/page")
 	public R getOauthClientDetailsPage(Page page, SysOauthClientDetails sysOauthClientDetails) {
-		return new R<>(sysOauthClientDetailsService.page(page, Wrappers.query(sysOauthClientDetails)));
+		return R.ok(sysOauthClientDetailsService.page(page, Wrappers.query(sysOauthClientDetails)));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class OauthClientDetailsController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_client_add')")
 	public R add(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
-		return new R<>(sysOauthClientDetailsService.save(sysOauthClientDetails));
+		return R.ok(sysOauthClientDetailsService.save(sysOauthClientDetails));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class OauthClientDetailsController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_client_del')")
 	public R removeById(@PathVariable String id) {
-		return new R<>(sysOauthClientDetailsService.removeClientDetailsById(id));
+		return R.ok(sysOauthClientDetailsService.removeClientDetailsById(id));
 	}
 
 	/**
@@ -107,6 +107,6 @@ public class OauthClientDetailsController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
 	public R update(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
-		return new R<>(sysOauthClientDetailsService.updateClientDetailsById(sysOauthClientDetails));
+		return R.ok(sysOauthClientDetailsService.updateClientDetailsById(sysOauthClientDetails));
 	}
 }

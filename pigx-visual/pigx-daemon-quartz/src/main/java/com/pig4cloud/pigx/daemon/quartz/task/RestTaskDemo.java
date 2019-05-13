@@ -27,6 +27,6 @@ public class RestTaskDemo {
 	@GetMapping("/{param}")
 	public R demoMethod(@PathVariable("param") String param) {
 		log.info("测试于:{}，传入参数{}", LocalDateTime.now(), param);
-		return R.builder().build();
+		return R.ok();
 	}
 }

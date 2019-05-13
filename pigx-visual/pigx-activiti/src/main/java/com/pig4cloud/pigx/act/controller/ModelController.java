@@ -39,28 +39,28 @@ public class ModelController {
 	@PostMapping(value = "/insert")
 	public R<Boolean> insertForm(@RequestBody @Valid ModelForm form) {
 		modelService.create(form.getName(), form.getKey(), form.getDesc(), form.getCategory());
-		return new R<>(Boolean.TRUE);
+		return R.ok(Boolean.TRUE);
 	}
 
 	@PostMapping
 	public R createModel(@RequestParam String name, @RequestParam String key,
 						 @RequestParam String desc, @RequestParam String category) {
-		return new R(modelService.create(name, key, desc, category));
+		return R.ok(modelService.create(name, key, desc, category));
 	}
 
 	@GetMapping
 	public R getModelPage(@RequestParam Map<String, Object> params) {
-		return new R<>(modelService.getModelPage(params));
+		return R.ok(modelService.getModelPage(params));
 	}
 
 	@DeleteMapping("/{id}")
 	public R removeModelById(@PathVariable("id") String id) {
-		return new R<>(modelService.removeModelById(id));
+		return R.ok(modelService.removeModelById(id));
 
 	}
 
 	@PostMapping("/deploy/{id}")
 	public R deploy(@PathVariable("id") String id) {
-		return new R<>(modelService.deploy(id));
+		return R.ok(modelService.deploy(id));
 	}
 }

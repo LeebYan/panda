@@ -52,6 +52,6 @@ public class SysJobLogController {
 	@GetMapping("/page")
 	@ApiOperation(value = "分页定时任务日志查询")
 	public R getSysJobLogPage(Page page, SysJobLog sysJobLog) {
-		return R.builder().data(sysJobLogService.page(page, Wrappers.query(sysJobLog))).build();
+		return R.ok(sysJobLogService.page(page, Wrappers.query(sysJobLog)));
 	}
 }

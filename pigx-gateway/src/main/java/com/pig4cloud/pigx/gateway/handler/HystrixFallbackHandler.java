@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.gateway.handler;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,9 +48,6 @@ public class HystrixFallbackHandler implements HandlerFunction<ServerResponse> {
 
 		return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.body(BodyInserters.fromObject(R.builder()
-						.msg("服务异常")
-						.code(CommonConstants.FAIL)
-						.build()));
+				.body(BodyInserters.fromObject(R.failed("服务异常")));
 	}
 }

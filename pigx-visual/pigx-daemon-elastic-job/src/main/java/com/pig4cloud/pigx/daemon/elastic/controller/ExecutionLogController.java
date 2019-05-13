@@ -47,7 +47,7 @@ public class ExecutionLogController {
 	 */
 	@GetMapping("/page")
 	public R getExecutionLogPage(Page page, ExecutionLog executionLog) {
-		return new R<>(executionLogService.page(page, Wrappers.query(executionLog)));
+		return R.ok(executionLogService.page(page, Wrappers.query(executionLog)));
 	}
 
 
@@ -59,7 +59,7 @@ public class ExecutionLogController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") String id) {
-		return new R<>(executionLogService.getById(id));
+		return R.ok(executionLogService.getById(id));
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ExecutionLogController {
 	 */
 	@PostMapping
 	public R save(@RequestBody ExecutionLog executionLog) {
-		return new R<>(executionLogService.save(executionLog));
+		return R.ok(executionLogService.save(executionLog));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class ExecutionLogController {
 	 */
 	@PutMapping
 	public R update(@RequestBody ExecutionLog executionLog) {
-		return new R<>(executionLogService.updateById(executionLog));
+		return R.ok(executionLogService.updateById(executionLog));
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class ExecutionLogController {
 	 */
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable String id) {
-		return new R<>(executionLogService.removeById(id));
+		return R.ok(executionLogService.removeById(id));
 	}
 
 }

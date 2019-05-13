@@ -51,7 +51,7 @@ public class LeaveBillController {
 	 */
 	@GetMapping("/page")
 	public R getLeaveBillPage(Page page, LeaveBill leaveBill) {
-		return new R<>(leaveBillService.page(page, Wrappers.query(leaveBill)));
+		return R.ok(leaveBillService.page(page, Wrappers.query(leaveBill)));
 	}
 
 
@@ -63,7 +63,7 @@ public class LeaveBillController {
 	 */
 	@GetMapping("/{leaveId}")
 	public R getById(@PathVariable("leaveId") Integer leaveId) {
-		return new R<>(leaveBillService.getById(leaveId));
+		return R.ok(leaveBillService.getById(leaveId));
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class LeaveBillController {
 	public R save(@RequestBody LeaveBill leaveBill) {
 		leaveBill.setUsername(SecurityUtils.getUser().getUsername());
 		leaveBill.setState(TaskStatusEnum.UNSUBMIT.getStatus());
-		return new R<>(leaveBillService.save(leaveBill));
+		return R.ok(leaveBillService.save(leaveBill));
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class LeaveBillController {
 	 */
 	@PutMapping
 	public R updateById(@RequestBody LeaveBill leaveBill) {
-		return new R<>(leaveBillService.updateById(leaveBill));
+		return R.ok(leaveBillService.updateById(leaveBill));
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class LeaveBillController {
 	 */
 	@DeleteMapping("/{leaveId}")
 	public R removeById(@PathVariable Integer leaveId) {
-		return new R<>(leaveBillService.removeById(leaveId));
+		return R.ok(leaveBillService.removeById(leaveId));
 	}
 
 	/**
@@ -109,6 +109,6 @@ public class LeaveBillController {
 	 */
 	@GetMapping("/submit/{leaveId}")
 	public R submit(@PathVariable("leaveId") Integer leaveId) {
-		return new R<>(processService.saveStartProcess(leaveId));
+		return R.ok(processService.saveStartProcess(leaveId));
 	}
 }

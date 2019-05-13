@@ -50,7 +50,7 @@ public class WxMenuController {
 	 */
 	@GetMapping("/page")
 	public R getWxMpMenuPage(Page page, WxMpMenu WxMpMenu) {
-		return new R<>(wxMenuService.page(page, Wrappers.query(WxMpMenu)));
+		return R.ok(wxMenuService.page(page, Wrappers.query(WxMpMenu)));
 	}
 
 
@@ -75,7 +75,7 @@ public class WxMenuController {
 	@PostMapping("/{appId}")
 	@PreAuthorize("@pms.hasPermission('mp_wxmenu_add')")
 	public R save(@RequestBody JSONObject WxMpMenus, @PathVariable String appId) {
-		return new R(wxMenuService.save(WxMpMenus, appId));
+		return R.ok(wxMenuService.save(WxMpMenus, appId));
 	}
 
 	/**

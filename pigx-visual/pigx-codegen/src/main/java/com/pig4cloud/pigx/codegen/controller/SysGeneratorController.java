@@ -50,7 +50,7 @@ public class SysGeneratorController {
 	 */
 	@GetMapping("/page")
 	public R getPage(Page page, String tableName, Integer id) {
-		return new R<>(sysGeneratorService.getPage(page, tableName, id));
+		return R.ok(sysGeneratorService.getPage(page, tableName, id));
 	}
 
 	/**

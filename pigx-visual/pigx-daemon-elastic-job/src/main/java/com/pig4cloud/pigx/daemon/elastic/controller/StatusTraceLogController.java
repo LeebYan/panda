@@ -45,7 +45,7 @@ public class StatusTraceLogController {
 	 */
 	@GetMapping("/page")
 	public R getStatusTraceLogPage(Page<StatusTraceLog> page, StatusTraceLog statusTraceLog) {
-		return new R<>(statusTraceLogService.page(page, Wrappers.query(statusTraceLog)));
+		return R.ok(statusTraceLogService.page(page, Wrappers.query(statusTraceLog)));
 	}
 
 
@@ -57,7 +57,7 @@ public class StatusTraceLogController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") String id) {
-		return new R<>(statusTraceLogService.getById(id));
+		return R.ok(statusTraceLogService.getById(id));
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class StatusTraceLogController {
 	 */
 	@PostMapping
 	public R save(@RequestBody StatusTraceLog statusTraceLog) {
-		return new R<>(statusTraceLogService.save(statusTraceLog));
+		return R.ok(statusTraceLogService.save(statusTraceLog));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class StatusTraceLogController {
 	 */
 	@PutMapping
 	public R update(@RequestBody StatusTraceLog statusTraceLog) {
-		return new R<>(statusTraceLogService.updateById(statusTraceLog));
+		return R.ok(statusTraceLogService.updateById(statusTraceLog));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class StatusTraceLogController {
 	 */
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable("id") String id) {
-		return new R<>(statusTraceLogService.removeById(id));
+		return R.ok(statusTraceLogService.removeById(id));
 	}
 
 }

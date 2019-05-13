@@ -83,6 +83,8 @@
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total
                     this.tableLoading = false
+                }).catch(() => {
+                    this.listLoading=false
                 })
             },
             rowDel: function (row, index) {
@@ -101,7 +103,6 @@
                         type: 'success'
                     })
                     this.getList(this.page)
-                }).catch(function (err) {
                 })
             },
             /**
@@ -111,7 +112,7 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
+            handleUpdate: function (row, index, done,loading) {
                 putObj(row).then(data => {
                     this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
@@ -121,7 +122,9 @@
                     })
                     done()
                     this.getList(this.page)
-                })
+                }).catch(() => {
+                    loading();
+                });
             },
             /**
              * @title 数据添加
@@ -129,7 +132,7 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
+            handleSave: function (row, done,loading) {
                 addObj(row).then(data => {
                     this.tableData.push(Object.assign({}, row))
                     this.$message({
@@ -139,7 +142,9 @@
                     })
                     done()
                     this.getList(this.page)
-                })
+                }).catch(() => {
+                    loading();
+                });
             },
             /**
              * 搜索回调

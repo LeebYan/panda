@@ -51,7 +51,7 @@ public class WxFansMsgController {
 	@GetMapping("/page")
 	public R getWxFansMsgPage(Page page, WxFansMsg wxFansMsg) {
 		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
-		return new R<>(wxFansMsgService.page(page, Wrappers.query(wxFansMsg)));
+		return R.ok(wxFansMsgService.page(page, Wrappers.query(wxFansMsg)));
 	}
 
 
@@ -63,7 +63,7 @@ public class WxFansMsgController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxFansMsgService.getById(id));
+		return R.ok(wxFansMsgService.getById(id));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class WxFansMsgController {
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_add')")
 	public R save(@RequestBody WxFansMsg wxFansMsg) {
 		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
-		return new R<>(wxFansMsgService.save(wxFansMsg));
+		return R.ok(wxFansMsgService.save(wxFansMsg));
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class WxFansMsgController {
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_edit')")
 	public R updateById(@RequestBody WxFansMsg wxFansMsg) {
 		wxFansMsg.setTenantId(TenantContextHolder.getTenantId());
-		return new R<>(wxFansMsgService.updateById(wxFansMsg));
+		return R.ok(wxFansMsgService.updateById(wxFansMsg));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class WxFansMsgController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxFansMsgService.removeById(id));
+		return R.ok(wxFansMsgService.removeById(id));
 	}
 
 }

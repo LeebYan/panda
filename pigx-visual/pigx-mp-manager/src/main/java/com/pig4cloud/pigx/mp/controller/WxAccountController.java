@@ -50,7 +50,7 @@ public class WxAccountController {
 	 */
 	@GetMapping("/page")
 	public R getWxAccountPage(Page page, WxAccount wxAccount) {
-		return new R<>(wxAccountService.page(page, Wrappers.query(wxAccount)));
+		return R.ok(wxAccountService.page(page, Wrappers.query(wxAccount)));
 	}
 
 
@@ -62,7 +62,7 @@ public class WxAccountController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxAccountService.getById(id));
+		return R.ok(wxAccountService.getById(id));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class WxAccountController {
 	public R save(@RequestBody WxAccount wxAccount) {
 		wxAccountService.save(wxAccount);
 		wxMpConfiguration.initServices();
-		return new R<>();
+		return R.ok();
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class WxAccountController {
 	public R updateById(@RequestBody WxAccount wxAccount) {
 		wxAccountService.updateById(wxAccount);
 		wxMpConfiguration.initServices();
-		return new R<>();
+		return R.ok();
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class WxAccountController {
 	public R removeById(@PathVariable Integer id) {
 		wxAccountService.removeById(id);
 		wxMpConfiguration.initServices();
-		return new R<>();
+		return R.ok();
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class WxAccountController {
 	 */
 	@GetMapping("/list")
 	public R list() {
-		return new R<>(wxAccountService.list());
+		return R.ok(wxAccountService.list());
 	}
 
 	/**

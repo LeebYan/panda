@@ -53,7 +53,7 @@ public class RoleController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable Integer id) {
-		return new R<>(sysRoleService.getById(id));
+		return R.ok(sysRoleService.getById(id));
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class RoleController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_role_add')")
 	public R save(@Valid @RequestBody SysRole sysRole) {
-		return new R<>(sysRoleService.save(sysRole));
+		return R.ok(sysRoleService.save(sysRole));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class RoleController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_role_edit')")
 	public R update(@Valid @RequestBody SysRole sysRole) {
-		return new R<>(sysRoleService.updateById(sysRole));
+		return R.ok(sysRoleService.updateById(sysRole));
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class RoleController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_role_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysRoleService.removeRoleById(id));
+		return R.ok(sysRoleService.removeRoleById(id));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class RoleController {
 	 */
 	@GetMapping("/list")
 	public R listRoles() {
-		return new R<>(sysRoleService.list(Wrappers.emptyWrapper()));
+		return R.ok(sysRoleService.list(Wrappers.emptyWrapper()));
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class RoleController {
 	 */
 	@GetMapping("/page")
 	public R getRolePage(Page page) {
-		return new R<>(sysRoleService.page(page, Wrappers.emptyWrapper()));
+		return R.ok(sysRoleService.page(page, Wrappers.emptyWrapper()));
 	}
 
 	/**
@@ -128,6 +128,6 @@ public class RoleController {
 	@PreAuthorize("@pms.hasPermission('sys_role_perm')")
 	public R saveRoleMenus(Integer roleId, @RequestParam(value = "menuIds", required = false) String menuIds) {
 		SysRole sysRole = sysRoleService.getById(roleId);
-		return new R<>(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleId, menuIds));
+		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleId, menuIds));
 	}
 }

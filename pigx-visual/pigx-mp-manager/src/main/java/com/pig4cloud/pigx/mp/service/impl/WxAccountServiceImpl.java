@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.mp.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
@@ -72,10 +71,10 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 			baseMapper.updateById(wxAccount);
 		} catch (WxErrorException e) {
 			log.error(" 获取公众号二维码失败", e);
-			return R.builder().code(CommonConstants.FAIL).msg("更新公众号二维码失败").build();
+			return R.failed("更新公众号二维码失败");
 		}
 
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -128,9 +127,9 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 			result.add(dateList);
 		} catch (WxErrorException e) {
 			log.error(" 获取公众号统计数据报错", e);
-			return R.builder().code(CommonConstants.FAIL).msg("获取公众号数据失败:" + e.getError().getErrorMsg()).build();
+			return R.failed("获取公众号数据失败:" + e.getError().getErrorMsg());
 		}
 
-		return R.builder().data(result).build();
+		return R.ok();
 	}
 }

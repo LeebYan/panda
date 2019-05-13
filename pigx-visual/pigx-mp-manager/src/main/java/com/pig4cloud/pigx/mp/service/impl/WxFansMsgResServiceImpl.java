@@ -17,7 +17,6 @@
 package com.pig4cloud.pigx.mp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -75,7 +74,7 @@ public class WxFansMsgResServiceImpl extends ServiceImpl<WxFansMsgResMapper, WxF
 					.build());
 		} catch (WxErrorException e) {
 			log.error("发送客服消息失败 ", e);
-			return R.builder().code(CommonConstants.FAIL).msg(e.getError().getErrorMsg()).build();
+			return R.failed(e.getError().getErrorMsg());
 		}
 
 		PigxUser user = SecurityUtils.getUser();
@@ -85,6 +84,6 @@ public class WxFansMsgResServiceImpl extends ServiceImpl<WxFansMsgResMapper, WxF
 
 		wxFansMsg.setIsRes("1");
 		wxFansMsgMapper.updateById(wxFansMsg);
-		return R.builder().build();
+		return R.ok();
 	}
 }

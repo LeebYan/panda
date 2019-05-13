@@ -75,14 +75,10 @@ public class RedisServiceImpl implements RedisService {
 				}
 				return connection.execute(arrs[0], bytes);
 			});
-			return R.builder()
-					.msg("success")
-					.data(StrUtil.str(result, CharsetUtil.UTF_8)).build();
+			return R.ok(StrUtil.str(result, CharsetUtil.UTF_8), "success");
 		} catch (Exception e) {
 			log.error("REDIS 命令执行失败", e);
-			return R.builder()
-					.msg("error")
-					.data(e.getMessage()).build();
+			return R.failed("error");
 		}
 	}
 }

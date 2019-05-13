@@ -64,14 +64,14 @@ public class MobileServiceImpl implements MobileService {
 
 		if (CollUtil.isEmpty(userList)) {
 			log.info("手机号未注册:{}", mobile);
-			return new R<>(Boolean.FALSE, "手机号未注册");
+			return R.ok(Boolean.FALSE, "手机号未注册");
 		}
 
 		Object codeObj = pigxRedisTemplate.opsForValue().get(CommonConstants.DEFAULT_CODE_KEY + mobile);
 
 		if (codeObj != null) {
 			log.info("手机号验证码未过期:{}，{}", mobile, codeObj);
-			return new R<>(Boolean.FALSE, "验证码发送过频繁");
+			return R.ok(Boolean.FALSE, "验证码发送过频繁");
 		}
 
 		String code = RandomUtil.randomNumbers(Integer.parseInt(SecurityConstants.CODE_SIZE));
@@ -79,6 +79,6 @@ public class MobileServiceImpl implements MobileService {
 		pigxRedisTemplate.opsForValue().set(
 			CommonConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + "@" + mobile
 			, code, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
-		return new R<>(Boolean.TRUE, code);
+		return R.ok(Boolean.TRUE, code);
 	}
 }

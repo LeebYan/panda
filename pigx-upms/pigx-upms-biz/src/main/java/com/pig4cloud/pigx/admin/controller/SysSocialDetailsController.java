@@ -55,7 +55,7 @@ public class SysSocialDetailsController {
 	 */
 	@GetMapping("/page")
 	public R getSocialDetailsPage(Page page, SysSocialDetails sysSocialDetails) {
-		return new R<>(sysSocialDetailsService.page(page, Wrappers.query(sysSocialDetails)));
+		return R.ok(sysSocialDetailsService.page(page, Wrappers.query(sysSocialDetails)));
 	}
 
 
@@ -67,7 +67,7 @@ public class SysSocialDetailsController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(sysSocialDetailsService.getById(id));
+		return R.ok(sysSocialDetailsService.getById(id));
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class SysSocialDetailsController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_social_details_add')")
 	public R save(@Valid @RequestBody SysSocialDetails sysSocialDetails) {
-		return new R<>(sysSocialDetailsService.save(sysSocialDetails));
+		return R.ok(sysSocialDetailsService.save(sysSocialDetails));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class SysSocialDetailsController {
 	@PreAuthorize("@pms.hasPermission('sys_social_details_edit')")
 	public R updateById(@Valid @RequestBody SysSocialDetails sysSocialDetails) {
 		sysSocialDetailsService.updateById(sysSocialDetails);
-		return new R<>(Boolean.TRUE);
+		return R.ok(Boolean.TRUE);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class SysSocialDetailsController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_social_details_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysSocialDetailsService.removeById(id));
+		return R.ok(sysSocialDetailsService.removeById(id));
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class SysSocialDetailsController {
 	@Inner
 	@GetMapping("/info/{inStr}")
 	public R getUserInfo(@PathVariable String inStr) {
-		return new R<>(sysSocialDetailsService.getUserInfo(inStr));
+		return R.ok(sysSocialDetailsService.getUserInfo(inStr));
 	}
 
 	/**
@@ -131,6 +131,6 @@ public class SysSocialDetailsController {
 	 */
 	@PostMapping("/bind")
 	public R bindSocial(String state, String code) {
-		return new R<>(sysSocialDetailsService.bindSocial(state, code));
+		return R.ok(sysSocialDetailsService.bindSocial(state, code));
 	}
 }

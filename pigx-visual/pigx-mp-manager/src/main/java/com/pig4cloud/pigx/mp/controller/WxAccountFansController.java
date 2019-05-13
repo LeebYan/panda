@@ -49,7 +49,7 @@ public class WxAccountFansController {
 	 */
 	@GetMapping("/page")
 	public R getWxAccountFansPage(Page page, WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.page(page, Wrappers.query(wxAccountFans)));
+		return R.ok(wxAccountFansService.page(page, Wrappers.query(wxAccountFans)));
 	}
 
 
@@ -61,7 +61,7 @@ public class WxAccountFansController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxAccountFansService.getById(id));
+		return R.ok(wxAccountFansService.getById(id));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class WxAccountFansController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_add')")
 	public R save(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.save(wxAccountFans));
+		return R.ok(wxAccountFansService.save(wxAccountFans));
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class WxAccountFansController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_edit')")
 	public R updateById(@RequestBody WxAccountFans wxAccountFans) {
-		return new R<>(wxAccountFansService.updateById(wxAccountFans));
+		return R.ok(wxAccountFansService.updateById(wxAccountFans));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class WxAccountFansController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxAccountFansService.removeById(id));
+		return R.ok(wxAccountFansService.removeById(id));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class WxAccountFansController {
 	 */
 	@PostMapping("/sync/{appId}")
 	public R sync(@PathVariable String appId) {
-		return new R(wxAccountFansService.syncAccountFans(appId));
+		return R.ok(wxAccountFansService.syncAccountFans(appId));
 	}
 
 }

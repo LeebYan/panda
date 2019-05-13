@@ -22,7 +22,7 @@ package com.pig4cloud.pigx.auth.endpoint;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -40,6 +40,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -114,26 +115,27 @@ public class PigxTokenEndpoint {
 	@DeleteMapping("/logout")
 	public R logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 		if (StrUtil.isBlank(authHeader)) {
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.data(Boolean.FALSE)
-					.msg("退出失败，token 为空").build();
+			return R.failed(Boolean.FALSE, "退出失败，token 为空");
 		}
 
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.data(Boolean.FALSE)
-					.msg("退出失败，token 无效").build();
+			return R.failed(Boolean.FALSE, "退出失败，token 无效");
 		}
 
 		OAuth2Authentication auth2Authentication = tokenStore.readAuthentication(accessToken);
-		cacheManager.getCache("user_details")
+		// 清空用户信息
+		cacheManager.getCache(CacheConstants.USER_DETAILS)
 				.evict(auth2Authentication.getName());
+
+		// 清空access token
 		tokenStore.removeAccessToken(accessToken);
-		return new R<>(Boolean.TRUE);
+
+		// 清空 refresh token
+		OAuth2RefreshToken refreshToken = tokenStore.readRefreshToken(tokenValue);
+		tokenStore.removeRefreshToken(refreshToken);
+		return R.ok(Boolean.TRUE);
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class PigxTokenEndpoint {
 		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
 		result.setRecords(pigxRedisTemplate.opsForValue().multiGet(pages));
 		result.setTotal(Long.valueOf(pigxRedisTemplate.keys(key).size()));
-		return new R<>(result);
+		return R.ok(result);
 	}
 
 

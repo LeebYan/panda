@@ -63,7 +63,7 @@ public class DictController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable Integer id) {
-		return new R<>(sysDictService.getById(id));
+		return R.ok(sysDictService.getById(id));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class DictController {
 	 */
 	@GetMapping("/page")
 	public R<IPage> getDictPage(Page page, SysDict sysDict) {
-		return new R<>(sysDictService.page(page, Wrappers.query(sysDict)));
+		return R.ok(sysDictService.page(page, Wrappers.query(sysDict)));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DictController {
 	@GetMapping("/type/{type}")
 	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result == null")
 	public R getDictByType(@PathVariable String type) {
-		return new R<>(sysDictItemService.list(Wrappers
+		return R.ok(sysDictItemService.list(Wrappers
 				.<SysDictItem>query().lambda()
 				.eq(SysDictItem::getType, type)));
 	}
@@ -101,7 +101,7 @@ public class DictController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_dict_add')")
 	public R save(@Valid @RequestBody SysDict sysDict) {
-		return new R<>(sysDictService.save(sysDict));
+		return R.ok(sysDictService.save(sysDict));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class DictController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysDictService.removeDict(id));
+		return R.ok(sysDictService.removeDict(id));
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class DictController {
 	@SysLog("修改字典")
 	@PreAuthorize("@pms.hasPermission('sys_dict_edit')")
 	public R updateById(@Valid @RequestBody SysDict sysDict) {
-		return new R<>(sysDictService.updateById(sysDict));
+		return R.ok(sysDictService.updateById(sysDict));
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class DictController {
 	 */
 	@GetMapping("/item/page")
 	public R getSysDictItemPage(Page page, SysDictItem sysDictItem) {
-		return new R<>(sysDictItemService.page(page, Wrappers.query(sysDictItem)));
+		return R.ok(sysDictItemService.page(page, Wrappers.query(sysDictItem)));
 	}
 
 
@@ -151,7 +151,7 @@ public class DictController {
 	 */
 	@GetMapping("/item/{id}")
 	public R getDictItemById(@PathVariable("id") Integer id) {
-		return new R<>(sysDictItemService.getById(id));
+		return R.ok(sysDictItemService.getById(id));
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class DictController {
 	@PostMapping("/item")
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R save(@RequestBody SysDictItem sysDictItem) {
-		return new R<>(sysDictItemService.save(sysDictItem));
+		return R.ok(sysDictItemService.save(sysDictItem));
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class DictController {
 	@PutMapping("/item")
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R updateById(@RequestBody SysDictItem sysDictItem) {
-		return new R<>(sysDictItemService.updateById(sysDictItem));
+		return R.ok(sysDictItemService.updateById(sysDictItem));
 	}
 
 	/**
@@ -190,6 +190,6 @@ public class DictController {
 	@DeleteMapping("/item/{id}")
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R removeDictItemById(@PathVariable Integer id) {
-		return new R<>(sysDictItemService.removeById(id));
+		return R.ok(sysDictItemService.removeById(id));
 	}
 }

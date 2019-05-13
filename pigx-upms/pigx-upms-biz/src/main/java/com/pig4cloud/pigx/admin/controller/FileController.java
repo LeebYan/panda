@@ -67,10 +67,9 @@ public class FileController {
 			minioTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
 		} catch (Exception e) {
 			log.error("上传失败", e);
-			return R.builder().code(CommonConstants.FAIL)
-					.msg(e.getLocalizedMessage()).build();
+			return R.failed(e.getLocalizedMessage());
 		}
-		return R.builder().data(resultMap).build();
+		return R.ok(resultMap);
 	}
 
 	/**
@@ -83,7 +82,7 @@ public class FileController {
 	@GetMapping("/{fileName}")
 	public void file(@PathVariable String fileName, HttpServletResponse response) {
 		Integer separator = fileName.lastIndexOf(StrUtil.DASHED);
-		try (InputStream inputStream = minioTemplate.getObject(fileName.substring(0,separator),fileName.substring(separator+1,fileName.length()))) {
+		try (InputStream inputStream = minioTemplate.getObject(fileName.substring(0, separator), fileName.substring(separator + 1, fileName.length()))) {
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			IoUtil.copy(inputStream, response.getOutputStream());
 		} catch (Exception e) {

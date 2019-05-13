@@ -49,7 +49,7 @@ public class WxFansMsgResController {
 	 */
 	@GetMapping("/page")
 	public R getWxFansMsgResPage(Page page, WxFansMsgRes wxFansMsgRes) {
-		return new R<>(wxFansMsgResService.page(page, Wrappers.query(wxFansMsgRes)));
+		return R.ok(wxFansMsgResService.page(page, Wrappers.query(wxFansMsgRes)));
 	}
 
 
@@ -61,7 +61,7 @@ public class WxFansMsgResController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(wxFansMsgResService.getById(id));
+		return R.ok(wxFansMsgResService.getById(id));
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class WxFansMsgResController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_edit')")
 	public R updateById(@RequestBody WxFansMsgRes wxFansMsgRes) {
-		return new R<>(wxFansMsgResService.updateById(wxFansMsgRes));
+		return R.ok(wxFansMsgResService.updateById(wxFansMsgRes));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class WxFansMsgResController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('mp_wxfansmsgres_del')")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(wxFansMsgResService.removeById(id));
+		return R.ok(wxFansMsgResService.removeById(id));
 	}
 
 }

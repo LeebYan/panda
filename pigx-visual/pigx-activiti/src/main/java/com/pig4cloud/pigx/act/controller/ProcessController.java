@@ -44,7 +44,7 @@ public class ProcessController {
 
 	@GetMapping
 	public R list(@RequestParam Map<String, Object> params) {
-		return new R<>(processService.getProcessByPage(params));
+		return R.ok(processService.getProcessByPage(params));
 	}
 
 	@Inner(value = false)
@@ -65,11 +65,11 @@ public class ProcessController {
 
 	@PutMapping("/status/{procDefId}/{status}")
 	public R updateState(@PathVariable String procDefId, @PathVariable String status) {
-		return new R<>(processService.updateStatus(status, procDefId));
+		return R.ok(processService.updateStatus(status, procDefId));
 	}
 
 	@DeleteMapping("/{deploymentId}")
 	public R deleteProcIns(@PathVariable String deploymentId) {
-		return new R<>(processService.removeProcIns(deploymentId));
+		return R.ok(processService.removeProcIns(deploymentId));
 	}
 }

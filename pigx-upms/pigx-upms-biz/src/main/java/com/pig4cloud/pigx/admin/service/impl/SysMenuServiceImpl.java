@@ -29,7 +29,6 @@ import com.pig4cloud.pigx.admin.mapper.SysMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -66,9 +65,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		List<SysMenu> menuList = this.list(Wrappers.<SysMenu>query()
 				.lambda().eq(SysMenu::getParentId, id));
 		if (CollUtil.isNotEmpty(menuList)) {
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.msg("菜单含有下级不能删除").build();
+			return R.failed("菜单含有下级不能删除");
 		}
 
 		sysRoleMenuMapper
@@ -76,7 +73,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 						.lambda().eq(SysRoleMenu::getMenuId, id));
 
 		//删除当前菜单及其子菜单
-		return new R(this.removeById(id));
+		return R.ok(this.removeById(id));
 	}
 
 	@Override

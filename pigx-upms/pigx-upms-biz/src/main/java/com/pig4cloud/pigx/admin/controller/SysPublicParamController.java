@@ -60,7 +60,7 @@ public class SysPublicParamController {
 	@ApiImplicitParams({@ApiImplicitParam(name = "publicKey", value = "键值，譬如：VERSION_INSTRUCTIONS", required = true)})
 	@GetMapping("/publicValue/{publicKey}")
 	public R publicKey(@PathVariable("publicKey") String publicKey) {
-		return new R<>(sysPublicParamService.getSysPublicParamKeyToValue(publicKey));
+		return R.ok(sysPublicParamService.getSysPublicParamKeyToValue(publicKey));
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class SysPublicParamController {
 	 */
 	@GetMapping("/page")
 	public R getSysPublicParamPage(Page page, SysPublicParam sysPublicParam) {
-		return new R<>(sysPublicParamService.page(page, Wrappers.query(sysPublicParam)));
+		return R.ok(sysPublicParamService.page(page, Wrappers.query(sysPublicParam)));
 	}
 
 
@@ -84,7 +84,7 @@ public class SysPublicParamController {
 	 */
 	@GetMapping("/{publicId}")
 	public R getById(@PathVariable("publicId") Long publicId) {
-		return new R<>(sysPublicParamService.getById(publicId));
+		return R.ok(sysPublicParamService.getById(publicId));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class SysPublicParamController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_add')")
 	public R save(@RequestBody SysPublicParam sysPublicParam) {
-		return new R<>(sysPublicParamService.save(sysPublicParam));
+		return R.ok(sysPublicParamService.save(sysPublicParam));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class SysPublicParamController {
 	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, key = "#sysPublicParam.publicKey")
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_edit')")
 	public R updateById(@RequestBody SysPublicParam sysPublicParam) {
-		return new R<>(sysPublicParamService.updateById(sysPublicParam));
+		return R.ok(sysPublicParamService.updateById(sysPublicParam));
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class SysPublicParamController {
 	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, allEntries = true)
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_del')")
 	public R removeById(@PathVariable Long publicId) {
-		return new R<>(sysPublicParamService.removeById(publicId));
+		return R.ok(sysPublicParamService.removeById(publicId));
 	}
 
 }

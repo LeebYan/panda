@@ -45,17 +45,17 @@ public class TaskController {
 
 	@GetMapping("/todo")
 	public R todo(@RequestParam Map<String, Object> params) {
-		return new R<>(actTaskService.getTaskByName(params, SecurityUtils.getUser().getUsername()));
+		return R.ok(actTaskService.getTaskByName(params, SecurityUtils.getUser().getUsername()));
 	}
 
 	@GetMapping("/{id}")
 	public R getTaskById(@PathVariable String id) {
-		return new R(actTaskService.getTaskById(id));
+		return R.ok(actTaskService.getTaskById(id));
 	}
 
 	@PostMapping
 	public R submitTask(@RequestBody LeaveBillDto leaveBillDto) {
-		return new R(actTaskService.submitTask(leaveBillDto));
+		return R.ok(actTaskService.submitTask(leaveBillDto));
 	}
 
 	@Inner(value = false)
@@ -69,7 +69,7 @@ public class TaskController {
 
 	@GetMapping("/comment/{id}")
 	public R commitList(@PathVariable String id) {
-		return new R(actTaskService.getCommentByTaskId(id));
+		return R.ok(actTaskService.getCommentByTaskId(id));
 	}
 
 

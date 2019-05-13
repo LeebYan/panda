@@ -20,7 +20,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
@@ -88,16 +87,12 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 				.eq(WxMpMenu::getWxAccountAppid, appId));
 
 		if (CollUtil.isEmpty(wxMpMenuList)) {
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.msg("微信菜单配置未保存，不能发布").build();
+			return R.failed("微信菜单配置未保存，不能发布");
 		}
 		WxMpMenu wxMpMenu = wxMpMenuList.get(0);
 		// 判断是否发布
 		if (PUB_ED.equals(wxMpMenu.getPubFlag())) {
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.msg("微信菜单配置已发布，不要重复发布").build();
+			return R.failed("微信菜单配置已发布，不要重复发布");
 		}
 		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
 		WxMpMenuService menuService = wxMpService.getMenuService();
@@ -107,15 +102,13 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 			menuService.menuCreate(wxMpMenu.getMenu());
 		} catch (WxErrorException e) {
 			log.error("发布微信菜单失败", e.getError().getErrorMsg());
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.msg(e.getError().getErrorMsg()).build();
+			return R.failed(e.getError().getErrorMsg());
 		}
 
 		//更新菜单发布标志
 		wxMpMenu.setPubFlag(PUB_ED);
 		baseMapper.updateById(wxMpMenu);
-		return R.builder().build();
+		return R.ok();
 	}
 
 	/**
@@ -130,9 +123,9 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 				.eq(WxMpMenu::getWxAccountAppid, appId));
 
 		if (CollUtil.isEmpty(wxMpMenuList)) {
-			return R.builder().build();
+			return R.ok();
 		}
-		return R.builder().data(wxMpMenuList.get(0).getMenu()).build();
+		return R.ok(wxMpMenuList.get(0).getMenu());
 	}
 
 	/**
@@ -149,13 +142,11 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 			menuService.menuDelete();
 		} catch (WxErrorException e) {
 			log.error("微信菜单删除失败", e.getError().getErrorMsg());
-			return R.builder()
-					.code(CommonConstants.FAIL)
-					.msg(e.getError().getErrorMsg()).build();
+			return R.failed(e.getError().getErrorMsg());
 		}
 
 		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery()
 				.eq(WxMpMenu::getWxAccountAppid, appId));
-		return R.builder().build();
+		return R.ok();
 	}
 }

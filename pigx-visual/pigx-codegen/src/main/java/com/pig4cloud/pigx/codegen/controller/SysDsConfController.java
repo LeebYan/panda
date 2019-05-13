@@ -47,7 +47,7 @@ public class SysDsConfController {
 	 */
 	@GetMapping("/page")
 	public R getSysDatasourceConfPage(Page page, SysDatasourceConf sysDatasourceConf) {
-		return new R<>(sysDatasourceConfService.page(page, Wrappers.query(sysDatasourceConf)));
+		return R.ok(sysDatasourceConfService.page(page, Wrappers.query(sysDatasourceConf)));
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class SysDsConfController {
 	 */
 	@GetMapping("/list")
 	public R list() {
-		return new R<>(sysDatasourceConfService.list());
+		return R.ok(sysDatasourceConfService.list());
 	}
 
 
@@ -69,7 +69,7 @@ public class SysDsConfController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") Integer id) {
-		return new R<>(sysDatasourceConfService.getById(id));
+		return R.ok(sysDatasourceConfService.getById(id));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class SysDsConfController {
 	@SysLog("新增数据源表")
 	@PostMapping
 	public R save(@RequestBody SysDatasourceConf sysDatasourceConf) {
-		return new R<>(sysDatasourceConfService.saveDsByEnc(sysDatasourceConf));
+		return R.ok(sysDatasourceConfService.saveDsByEnc(sysDatasourceConf));
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class SysDsConfController {
 	@SysLog("修改数据源表")
 	@PutMapping
 	public R updateById(@RequestBody SysDatasourceConf sysDatasourceConf) {
-		return new R<>(sysDatasourceConfService.updateDsByEnc(sysDatasourceConf));
+		return R.ok(sysDatasourceConfService.updateDsByEnc(sysDatasourceConf));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class SysDsConfController {
 	@SysLog("删除数据源表")
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable Integer id) {
-		return new R<>(sysDatasourceConfService.removeById(id));
+		return R.ok(sysDatasourceConfService.removeById(id));
 	}
 
 }

@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,10 +50,7 @@ public class GlobalExceptionHandlerResolver {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public R handleGlobalException(Exception e) {
 		log.error("全局异常信息 ex={}", e.getMessage(), e);
-		return R.builder()
-			.msg(e.getLocalizedMessage())
-			.code(CommonConstants.FAIL)
-			.build();
+		return R.failed(e.getLocalizedMessage());
 	}
 
 	/**
@@ -67,13 +63,10 @@ public class GlobalExceptionHandlerResolver {
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public R handleAccessDeniedException(AccessDeniedException e) {
 		String msg = SpringSecurityMessageSource.getAccessor()
-			.getMessage("AbstractAccessDecisionManager.accessDenied"
-				, e.getMessage());
+				.getMessage("AbstractAccessDecisionManager.accessDenied"
+						, e.getMessage());
 		log.error("拒绝授权异常信息 ex={}", msg, e);
-		return R.builder()
-			.msg(msg)
-			.code(CommonConstants.FAIL)
-			.build();
+		return R.failed(e.getLocalizedMessage());
 	}
 
 	/**
@@ -87,9 +80,6 @@ public class GlobalExceptionHandlerResolver {
 	public R handleBodyValidException(MethodArgumentNotValidException exception) {
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		log.error("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
-		return R.builder()
-			.msg(fieldErrors.get(0).getDefaultMessage())
-			.code(CommonConstants.FAIL)
-			.build();
+		return R.failed(fieldErrors.get(0).getDefaultMessage());
 	}
 }

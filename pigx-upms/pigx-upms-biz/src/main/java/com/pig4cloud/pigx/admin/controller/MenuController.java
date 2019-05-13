@@ -68,7 +68,7 @@ public class MenuController {
 				.map(MenuTree::new)
 				.sorted(Comparator.comparingInt(MenuTree::getSort))
 				.collect(Collectors.toList());
-		return new R<>(TreeUtil.build(menuTreeList, CommonConstants.MENU_TREE_ROOT_ID));
+		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.MENU_TREE_ROOT_ID));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class MenuController {
 	 */
 	@GetMapping(value = "/tree")
 	public R getTree() {
-		return new R<>(TreeUtil.buildTree(sysMenuService
+		return R.ok(TreeUtil.buildTree(sysMenuService
 				.list(Wrappers.<SysMenu>lambdaQuery()
 						.orderByAsc(SysMenu::getSort)), CommonConstants.MENU_TREE_ROOT_ID));
 	}
@@ -90,11 +90,11 @@ public class MenuController {
 	 * @return 属性集合
 	 */
 	@GetMapping("/tree/{roleId}")
-	public List getRoleTree(@PathVariable Integer roleId) {
-		return sysMenuService.findMenuByRoleId(roleId)
+	public R getRoleTree(@PathVariable Integer roleId) {
+		return R.ok(sysMenuService.findMenuByRoleId(roleId)
 				.stream()
 				.map(MenuVO::getMenuId)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class MenuController {
 	 */
 	@GetMapping("/{id}")
 	public R getById(@PathVariable Integer id) {
-		return new R<>(sysMenuService.getById(id));
+		return R.ok(sysMenuService.getById(id));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class MenuController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_add')")
 	public R save(@Valid @RequestBody SysMenu sysMenu) {
-		return new R<>(sysMenuService.save(sysMenu));
+		return R.ok(sysMenuService.save(sysMenu));
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class MenuController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_edit')")
 	public R update(@Valid @RequestBody SysMenu sysMenu) {
-		return new R<>(sysMenuService.updateMenuById(sysMenu));
+		return R.ok(sysMenuService.updateMenuById(sysMenu));
 	}
 
 }

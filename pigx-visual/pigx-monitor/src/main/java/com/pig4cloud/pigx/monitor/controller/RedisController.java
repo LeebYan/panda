@@ -26,7 +26,7 @@ public class RedisController {
 	 */
 	@GetMapping("/info")
 	public R memory() {
-		return R.builder().data(redisService.getInfo()).build();
+		return R.ok(redisService.getInfo());
 	}
 
 	/**
