@@ -2,10 +2,7 @@ package com.pig4cloud.pigx.monitor.service.impl;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.monitor.service.RedisService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,34 +48,5 @@ public class RedisServiceImpl implements RedisService {
 		});
 		result.put("commandStats", pieList);
 		return result;
-	}
-
-	/**
-	 * 执行运行命令
-	 *
-	 * @param input 用户输入
-	 * @return
-	 */
-	@Override
-	public R exec(String input) {
-		try {
-			Object result = redisTemplate.execute((RedisCallback) connection -> {
-				String[] arrs = input.split(StrUtil.SPACE);
-				if (arrs.length == 1) {
-					return connection.execute(arrs[0]);
-				}
-
-				String[] args = ArrayUtil.sub(arrs, 1, arrs.length);
-				byte[][] bytes = new byte[args.length][];
-				for (int i = 0; i < args.length; i++) {
-					bytes[i] = StrUtil.bytes(args[i], CharsetUtil.UTF_8);
-				}
-				return connection.execute(arrs[0], bytes);
-			});
-			return R.ok(StrUtil.str(result, CharsetUtil.UTF_8), "success");
-		} catch (Exception e) {
-			log.error("REDIS 命令执行失败", e);
-			return R.failed("error");
-		}
 	}
 }

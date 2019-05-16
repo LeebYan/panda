@@ -37,6 +37,8 @@ public class PigxTenantHandler implements TenantHandler {
 
 	/**
 	 * 获取租户值
+	 * <p>
+	 * TODO 校验租户状态
 	 *
 	 * @return 租户值
 	 */

@@ -1,7 +1,5 @@
 package com.pig4cloud.pigx.monitor.service;
 
-import com.pig4cloud.pigx.common.core.util.R;
-
 import java.util.Map;
 
 /**
@@ -17,12 +15,4 @@ public interface RedisService {
 	 * @return
 	 */
 	Map<String, Object> getInfo();
-
-	/**
-	 * 执行运行命令
-	 *
-	 * @param command
-	 * @return
-	 */
-	R exec(String command);
 }

@@ -114,7 +114,7 @@ public class DictController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
 	public R removeById(@PathVariable Integer id) {
-		return R.ok(sysDictService.removeDict(id));
+		return sysDictService.removeDict(id);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class DictController {
 	@SysLog("修改字典")
 	@PreAuthorize("@pms.hasPermission('sys_dict_edit')")
 	public R updateById(@Valid @RequestBody SysDict sysDict) {
-		return R.ok(sysDictService.updateById(sysDict));
+		return sysDictService.updateDict(sysDict);
 	}
 
 	/**
@@ -175,9 +175,8 @@ public class DictController {
 	 */
 	@SysLog("修改字典项")
 	@PutMapping("/item")
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R updateById(@RequestBody SysDictItem sysDictItem) {
-		return R.ok(sysDictItemService.updateById(sysDictItem));
+		return sysDictItemService.updateDictItem(sysDictItem);
 	}
 
 	/**
@@ -188,8 +187,7 @@ public class DictController {
 	 */
 	@SysLog("删除字典项")
 	@DeleteMapping("/item/{id}")
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R removeDictItemById(@PathVariable Integer id) {
-		return R.ok(sysDictItemService.removeById(id));
+		return sysDictItemService.removeDictItem(id);
 	}
 }

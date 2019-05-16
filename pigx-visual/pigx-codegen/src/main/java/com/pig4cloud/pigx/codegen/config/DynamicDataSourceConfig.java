@@ -1,12 +1,11 @@
 package com.pig4cloud.pigx.codegen.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.mysql.cj.jdbc.Driver;
 import com.pig4cloud.pigx.codegen.util.DataSourceConstants;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,14 +31,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DynamicDataSourceConfig implements TransactionManagementConfigurer {
 	private final Map<Object, Object> dataSourceMap = new HashMap<>(8);
-	private final DataSourceProperties dataSourceProperties;
+	private final DruidDataSourceProperties dataSourceProperties;
 	private final StringEncryptor stringEncryptor;
 
 	@Bean("dynamicDataSource")
 	public DynamicDataSource dataSource() {
 		DynamicDataSource ds = new DynamicDataSource();
-		HikariDataSource cads = new HikariDataSource();
-		cads.setJdbcUrl(dataSourceProperties.getUrl());
+		DruidDataSource cads = new DruidDataSource();
+		cads.setUrl(dataSourceProperties.getUrl());
 		cads.setDriverClassName(dataSourceProperties.getDriverClassName());
 		cads.setUsername(dataSourceProperties.getUsername());
 		cads.setPassword(dataSourceProperties.getPassword());
@@ -64,8 +63,8 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 		log.info("开始 -> 初始化动态数据源");
 		Optional.of(dbList).ifPresent(list -> list.forEach(db -> {
 			log.info("数据源:{}", db.get(DataSourceConstants.DS_NAME));
-			HikariDataSource ds = new HikariDataSource();
-			ds.setJdbcUrl(String.valueOf(db.get(DataSourceConstants.DS_JDBC_URL)));
+			DruidDataSource ds = new DruidDataSource();
+			ds.setUrl(String.valueOf(db.get(DataSourceConstants.DS_JDBC_URL)));
 			ds.setDriverClassName(Driver.class.getName());
 			ds.setUsername((String) db.get(DataSourceConstants.DS_USER_NAME));
 

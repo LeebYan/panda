@@ -14,64 +14,70 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.admin.api.entity;
+
+package com.pig4cloud.pigx.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 字典表
+ * 租户
  *
  * @author lengleng
- * @date 2019/03/19
+ * @date 2019-05-15 15:55:41
  */
 @Data
+@TableName("sys_tenant")
 @EqualsAndHashCode(callSuper = true)
-public class SysDict extends Model<SysDict> {
+@ApiModel(description = "租户")
+public class SysTenant extends Model<SysTenant> {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 编号
+	 * 租户id
 	 */
 	@TableId
 	private Integer id;
 	/**
-	 * 类型
+	 * 租户名称
 	 */
-	private String type;
+	private String name;
 	/**
-	 * 描述
+	 * 租户编号
 	 */
-	private String description;
+	private String code;
 	/**
-	 * 创建时间
+	 * 开始时间
 	 */
-	private LocalDateTime createTime;
+	private LocalDate startTime;
 	/**
-	 * 更新时间
+	 * 结束时间
 	 */
-	private LocalDateTime updateTime;
+	private LocalDate endTime;
 	/**
-	 * 是否是系统内置
+	 * 0正常 9-冻结
 	 */
-	private String system;
-	/**
-	 * 备注信息
-	 */
-	private String remarks;
+	private String status;
 	/**
 	 * 删除标记
 	 */
 	@TableLogic
 	private String delFlag;
 	/**
-	 * 所属租户
+	 * 创建
 	 */
-	private Integer tenantId;
+	private LocalDateTime createTime;
+	/**
+	 * 更新时间
+	 */
+	private LocalDateTime updateTime;
 
 }

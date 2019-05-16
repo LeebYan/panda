@@ -34,6 +34,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -132,6 +133,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	private List<DeptTree> getDeptTree(List<SysDept> depts) {
 		List<DeptTree> treeList = depts.stream()
 				.filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
+				.sorted(Comparator.comparingInt(SysDept::getSort))
 				.map(dept -> {
 					DeptTree node = new DeptTree();
 					node.setId(dept.getDeptId());

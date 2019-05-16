@@ -89,6 +89,11 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	private LocalDateTime createTime;
 
 	/**
+	 * 是否是系统内置
+	 */
+	private String system;
+
+	/**
 	 * 修改时间
 	 */
 	@ApiModelProperty(value = "修改时间", example = "2019-03-21 12:28:48")
@@ -99,5 +104,6 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 */
 	@ApiModelProperty(value = "类型[1-检索；2-原文...]", example = "1")
 	private String publicType;
+
 
 }

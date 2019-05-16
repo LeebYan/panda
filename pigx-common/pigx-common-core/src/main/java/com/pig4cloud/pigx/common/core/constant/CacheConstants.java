@@ -44,4 +44,9 @@ public interface CacheConstants {
 	 * 参数缓存
 	 */
 	String PARAMS_DETAILS = "params_details";
+
+	/**
+	 * 租户缓存
+	 */
+	String TENANT_DETAILS = "tenant_details";
 }

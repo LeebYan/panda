@@ -15,41 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.admin.service;
+package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
-import com.pig4cloud.pigx.common.core.util.R;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.admin.entity.SysTenant;
 
 /**
- * 公共参数配置
+ * 租户
  *
- * @author Lucky
- * @date 2019-04-29
+ * @author lengleng
+ * @date 2019-05-15 15:55:41
  */
-public interface SysPublicParamService extends IService<SysPublicParam> {
+public interface SysTenantMapper extends BaseMapper<SysTenant> {
 
-	/**
-	 * 通过key查询公共参数指定值
-	 *
-	 * @param publicKey
-	 * @return
-	 */
-	String getSysPublicParamKeyToValue(String publicKey);
-
-	/**
-	 * 更新参数
-	 *
-	 * @param sysPublicParam
-	 * @return
-	 */
-	R updateParam(SysPublicParam sysPublicParam);
-
-	/**
-	 * 删除参数
-	 *
-	 * @param publicId
-	 * @return
-	 */
-	R removeParam(Long publicId);
 }

@@ -84,7 +84,7 @@
                     this.page.total = response.data.data.total
                     this.tableLoading = false
                 }).catch(() => {
-                    this.listLoading=false
+                    this.tableLoading=false
                 })
             },
             rowDel: function (row, index) {

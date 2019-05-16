@@ -115,13 +115,13 @@ public class PigxTokenEndpoint {
 	@DeleteMapping("/logout")
 	public R logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 		if (StrUtil.isBlank(authHeader)) {
-			return R.failed(Boolean.FALSE, "退出失败，token 为空");
+			return R.ok(Boolean.FALSE, "退出失败，token 为空");
 		}
 
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			return R.failed(Boolean.FALSE, "退出失败，token 无效");
+			return R.ok(Boolean.TRUE, "退出失败，token 无效");
 		}
 
 		OAuth2Authentication auth2Authentication = tokenStore.readAuthentication(accessToken);
@@ -133,7 +133,7 @@ public class PigxTokenEndpoint {
 		tokenStore.removeAccessToken(accessToken);
 
 		// 清空 refresh token
-		OAuth2RefreshToken refreshToken = tokenStore.readRefreshToken(tokenValue);
+		OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
 		tokenStore.removeRefreshToken(refreshToken);
 		return R.ok(Boolean.TRUE);
 	}

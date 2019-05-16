@@ -108,10 +108,9 @@ public class SysPublicParamController {
 	 */
 	@SysLog("修改公共参数")
 	@PutMapping
-	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, key = "#sysPublicParam.publicKey")
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_edit')")
 	public R updateById(@RequestBody SysPublicParam sysPublicParam) {
-		return R.ok(sysPublicParamService.updateById(sysPublicParam));
+		return sysPublicParamService.updateParam(sysPublicParam);
 	}
 
 	/**
@@ -122,10 +121,9 @@ public class SysPublicParamController {
 	 */
 	@SysLog("删除公共参数")
 	@DeleteMapping("/{publicId}")
-	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, allEntries = true)
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_del')")
 	public R removeById(@PathVariable Long publicId) {
-		return R.ok(sysPublicParamService.removeById(publicId));
+		return sysPublicParamService.removeParam(publicId);
 	}
 
 }

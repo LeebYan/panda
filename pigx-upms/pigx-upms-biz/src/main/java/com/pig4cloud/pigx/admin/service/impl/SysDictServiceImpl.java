@@ -24,6 +24,8 @@ import com.pig4cloud.pigx.admin.mapper.SysDictItemMapper;
 import com.pig4cloud.pigx.admin.mapper.SysDictMapper;
 import com.pig4cloud.pigx.admin.service.SysDictService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.constant.enums.DictTypeEnum;
+import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -43,17 +45,38 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	/**
 	 * 根据ID 删除字典
 	 *
-	 * @param id
+	 * @param id 字典ID
 	 * @return
 	 */
 	@Override
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
-	public Boolean removeDict(Integer id) {
-		baseMapper.deleteById(id);
+	public R removeDict(Integer id) {
+		SysDict dict = this.getById(id);
+		// 系统内置
+		if (DictTypeEnum.SYSTEM.getType().equals(dict.getSystem())) {
+			return R.failed("系统内置字典不能删除");
+		}
 
+		baseMapper.deleteById(id);
 		dictItemMapper.delete(Wrappers.<SysDictItem>lambdaQuery()
 				.eq(SysDictItem::getDictId, id));
-		return Boolean.TRUE;
+		return R.ok();
+	}
+
+	/**
+	 * 更新字典
+	 *
+	 * @param dict 字典
+	 * @return
+	 */
+	@Override
+	public R updateDict(SysDict dict) {
+		SysDict sysDict = this.getById(dict.getId());
+		// 系统内置
+		if (DictTypeEnum.SYSTEM.getType().equals(sysDict.getSystem())) {
+			return R.failed("系统内置字典不能修改");
+		}
+		return R.ok(this.updateById(dict));
 	}
 }

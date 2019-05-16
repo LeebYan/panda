@@ -28,15 +28,4 @@ public class RedisController {
 	public R memory() {
 		return R.ok(redisService.getInfo());
 	}
-
-	/**
-	 * 执行用户输入命令
-	 *
-	 * @param command 命令
-	 * @return
-	 */
-	@GetMapping("/exec")
-	public R exec(String command) {
-		return redisService.exec(command);
-	}
 }
