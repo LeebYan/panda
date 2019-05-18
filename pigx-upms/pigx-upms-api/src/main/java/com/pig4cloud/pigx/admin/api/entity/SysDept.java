@@ -53,6 +53,7 @@ public class SysDept extends Model<SysDept> {
 	/**
 	 * 排序
 	 */
+	@NotBlank(message = "排序值不能为空")
 	private Integer sort;
 	/**
 	 * 创建时间

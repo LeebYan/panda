@@ -13,6 +13,6 @@ EXPOSE 8848
 ADD ./pigx-register/target/pigx-register.jar ./
 
 
-CMD sleep 10;java -Djava.security.egd=file:/dev/./urandom -jar pigx-register.jar
+CMD sleep 20;java -Djava.security.egd=file:/dev/./urandom -jar pigx-register.jar
 
 
