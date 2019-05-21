@@ -43,5 +43,6 @@
 		<module>pigx-common-security</module>
 		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>
+		<module>pigx-common-autopoi</module>
 	</modules>
 </project>
