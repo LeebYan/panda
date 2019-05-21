@@ -1,6 +1,6 @@
-package com.pig4cloud.pigx.codegen.config;
+package com.pig4cloud.pigx.common.datasource.config;
 
-import com.pig4cloud.pigx.codegen.util.DynamicDataSourceContextHolder;
+import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

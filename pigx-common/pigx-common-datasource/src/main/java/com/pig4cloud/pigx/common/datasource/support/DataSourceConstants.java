@@ -1,4 +1,4 @@
-package com.pig4cloud.pigx.codegen.util;
+package com.pig4cloud.pigx.common.datasource.support;
 
 /**
  * @author lengleng

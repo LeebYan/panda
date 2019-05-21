@@ -44,5 +44,6 @@
 		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>
 		<module>pigx-common-autopoi</module>
+		<module>pigx-common-datasource</module>
 	</modules>
 </project>
