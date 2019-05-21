@@ -92,6 +92,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		<!--分布式事务-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+		</dependency>
 		<!--web 模块-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
