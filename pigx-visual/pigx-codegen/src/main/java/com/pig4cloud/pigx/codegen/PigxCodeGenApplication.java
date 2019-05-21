@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.codegen;
 
+import com.pig4cloud.pigx.common.datasource.annotation.EnableDynamicDataSource;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
 import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
@@ -28,6 +29,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @date 2018/07/29
  * 代码生成模块
  */
+@EnableDynamicDataSource //开启动态数据源
 @EnablePigxSwagger2
 @SpringCloudApplication
 @EnablePigxFeignClients
