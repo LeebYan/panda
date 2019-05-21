@@ -44,5 +44,9 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-autopoi</artifactId>
+		</dependency>
 	</dependencies>
 </project>
