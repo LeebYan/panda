@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.admin.entity.SysTenant;
+import com.pig4cloud.pigx.admin.api.entity.SysTenant;
 
 /**
  * 租户

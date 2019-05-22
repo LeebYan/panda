@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.admin.entity.SysTenant;
+import com.pig4cloud.pigx.admin.api.entity.SysTenant;
 import com.pig4cloud.pigx.admin.service.SysTenantService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -28,8 +28,6 @@ import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 
 /**
@@ -114,7 +112,6 @@ public class SysTenantController {
 	 *
 	 * @return
 	 */
-	@SysLog("查询全部有效的租户")
 	@Inner(value = false)
 	@GetMapping("/list")
 	public R list() {
