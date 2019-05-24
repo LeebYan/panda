@@ -18,10 +18,10 @@ package com.pig4cloud.pigx.codegen.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.codegen.config.DynamicDataSourceConfig;
 import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
 import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.service.SysDatasourceConfService;
+import com.pig4cloud.pigx.common.datasource.config.DynamicDataSourceConfig;
 import lombok.AllArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;

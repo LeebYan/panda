@@ -29,6 +29,11 @@
 			<!--pigx 工具包-->
 			<dependency>
 				<groupId>com.pig4cloud</groupId>
+				<artifactId>pigx-common-autopoi</artifactId>
+				<version>${pigx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-core</artifactId>
 				<version>${pigx.version}</version>
 			</dependency>
@@ -40,6 +45,11 @@
 			<dependency>
 				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-gateway</artifactId>
+				<version>${pigx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.pig4cloud</groupId>
+				<artifactId>pigx-common-datasource</artifactId>
 				<version>${pigx.version}</version>
 			</dependency>
 			<dependency>

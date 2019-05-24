@@ -23,7 +23,7 @@
 
 <mapper namespace="com.pig4cloud.pigx.admin.mapper.SysTenantMapper">
 
-	<resultMap id="sysTenantMap" type="com.pig4cloud.pigx.admin.entity.SysTenant">
+	<resultMap id="sysTenantMap" type="com.pig4cloud.pigx.admin.api.entity.SysTenant">
 		<id property="id" column="id"/>
 		<result property="name" column="name"/>
 		<result property="code" column="code"/>

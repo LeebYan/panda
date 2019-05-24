@@ -25,10 +25,10 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
-		<!--数据操作-->
+		<!--动态数据源 数据操作-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-data</artifactId>
+			<artifactId>pigx-common-datasource</artifactId>
 		</dependency>
 		<!--mybatis-->
 		<dependency>

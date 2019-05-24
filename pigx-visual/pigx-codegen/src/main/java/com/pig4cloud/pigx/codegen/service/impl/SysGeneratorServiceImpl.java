@@ -23,8 +23,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
 import com.pig4cloud.pigx.codegen.mapper.SysGeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
-import com.pig4cloud.pigx.codegen.util.DynamicDataSourceContextHolder;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
+import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
