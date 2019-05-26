@@ -14,7 +14,7 @@
 
 	<packaging>jar</packaging>
 
-	<description>pigx 动态切换数据源，为后期提供Online在线开发、读写分离、数据同步做好准备 </description>
+	<description>pigx 动态切换数据源</description>
 
 	<dependencies>
 		<dependency>
@@ -90,17 +90,4 @@
 			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>
