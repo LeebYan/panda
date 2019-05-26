@@ -17,29 +17,18 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
 import com.pig4cloud.pigx.admin.service.SysPublicParamService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.common.poi.excel.ExcelImportUtil;
-import com.pig4cloud.pigx.common.poi.excel.def.NormalExcelConstants;
-import com.pig4cloud.pigx.common.poi.excel.entity.ExportParams;
-import com.pig4cloud.pigx.common.poi.excel.entity.ImportParams;
-import com.pig4cloud.pigx.common.poi.excel.view.PigxEntityExcelView;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -135,78 +124,5 @@ public class SysPublicParamController {
 	@PreAuthorize("@pms.hasPermission('admin_syspublicparam_del')")
 	public R removeById(@PathVariable Long publicId) {
 		return sysPublicParamService.removeParam(publicId);
-	}
-
-
-	/**
-	 * 导出excel
-	 *
-	 */
-	//临时接口调试开启Inner
-	@Inner(value = false)
-	@SysLog("导出excel数据")
-	@ApiOperation(value = "导出excel数据", notes = "导出excel数据")
-	@GetMapping(value = "/exportXls")
-//	@PostMapping(value = "/exportXls")
-	public ModelAndView exportXls() {
-		// Step.1 组装查询条件
-		// TODO 后续封装完成 通用查询条件 包含权限、排序、普通检索、高级检索 QueryGenerator.initQueryWrapper(...);
-		QueryWrapper<SysPublicParam> queryWrapper = null;
-		queryWrapper = Wrappers.query();
-
-		// Step.2 AutoPoi 导出Excel
-		ModelAndView mv = new ModelAndView(new PigxEntityExcelView());
-		List<SysPublicParam> pageList = sysPublicParamService.list(Wrappers.query());
-
-		//Step.3 导出文件名称
-		mv.addObject(NormalExcelConstants.FILE_NAME, "参数配置列表");
-		mv.addObject(NormalExcelConstants.CLASS, SysPublicParam.class);
-		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("参数配置列表数据", "导出人:pigx", "导出信息"));
-		mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-		return mv;
-	}
-
-	/**
-	 * 通过excel导入数据
-	 *
-	 * @param file
-	 * @return
-	 */
-	//临时接口调试开启Inner
-	@Inner(value = false)
-	@SysLog("导入excel数据")
-	@ApiOperation(value = "导入excel数据", notes = "导入excel数据")
-	@PostMapping(value = "/importExcel")
-	public R<?> importExcel(@RequestParam("file") MultipartFile file) {
-//		HttpServletRequest request
-//		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-//		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-		//for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-			// 获取上传文件对象
-			//MultipartFile file = entity.getValue();
-			ImportParams params = new ImportParams();
-			params.setTitleRows(2);
-			params.setHeadRows(1);
-			params.setNeedSave(true);
-			try {
-				List<SysPublicParam> listSysPublicParams = null;
-				if(file.getInputStream() != null){
-					listSysPublicParams = ExcelImportUtil.importExcel(file.getInputStream(), SysPublicParam.class, params);
-					for (SysPublicParam sysPublicParamExcel : listSysPublicParams) {
-						sysPublicParamService.save(sysPublicParamExcel);
-					}
-				}
-
-				return R.ok("文件导入成功！数据行数：" + listSysPublicParams.size());
-			} catch (Exception e) {
-				return R.failed("文件导入失败！");
-			} finally {
-				try {
-					file.getInputStream().close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		//}
 	}
 }

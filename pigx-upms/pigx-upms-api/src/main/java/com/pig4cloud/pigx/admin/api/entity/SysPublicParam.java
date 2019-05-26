@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pig4cloud.pigx.common.poi.excel.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -52,21 +51,18 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 公共参数名称
 	 */
 	@ApiModelProperty(value = "公共参数名称", required = true, example = "公共参数名称")
-	@Excel(name = "名称", width = 15)
 	private String publicName;
 
 	/**
 	 * 公共参数地址值,英文大写+下划线
 	 */
 	@ApiModelProperty(value = "键[英文大写+下划线]", required = true, example = "PIGX_PUBLIC_KEY")
-	@Excel(name = "键", width = 15)
 	private String publicKey;
 
 	/**
 	 * 值
 	 */
 	@ApiModelProperty(value = "值", required = true, example = "999")
-	@Excel(name = "值", width = 15)
 	private String publicValue;
 
 	/**
@@ -86,14 +82,12 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 公共参数编码
 	 */
 	@ApiModelProperty(value = "编码", example = "^(PIG|PIGX)$")
-	@Excel(name = "编码", width = 15)
 	private String validateCode;
 
 	/**
 	 * 创建时间
 	 */
 	@ApiModelProperty(value = "创建时间", example = "2019-03-21 12:28:48")
-	@Excel(name = "创建时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
@@ -102,9 +96,6 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 修改时间
 	 */
 	@ApiModelProperty(value = "修改时间", example = "2019-03-21 12:28:48")
-	//TODO 待处理 时间导入导出 java.util.Date类型，java.time.LocalDateTime报错
-	//时间格式三要素：Excel  JsonFormat DateTimeFormat
-	@Excel(name = "修改时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
@@ -113,16 +104,13 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 是否是系统内置
 	 */
 	@ApiModelProperty(value = "是否是系统内置")
-	@Excel(name = "备注", width = 15)
 	private String system;
-
 
 
 	/**
 	 * 配置类型：0-默认；1-检索；2-原文；3-报表；4-安全；5-文档；6-消息；9-其他
 	 */
 	@ApiModelProperty(value = "类型[1-检索；2-原文...]", example = "1")
-	@Excel(name = "配置类型", width = 15)
 	private String publicType;
 
 
