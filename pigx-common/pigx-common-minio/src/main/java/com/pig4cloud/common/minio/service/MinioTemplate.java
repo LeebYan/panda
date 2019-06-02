@@ -137,7 +137,7 @@ public class MinioTemplate implements InitializingBean {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
 	 */
 	public void putObject(String bucketName, String objectName, InputStream stream) throws Exception {
-		client.putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
+		client.putObject(bucketName, objectName, stream, (long) stream.available(), null, null, "application/octet-stream");
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class MinioTemplate implements InitializingBean {
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
 	 */
 	public void putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws Exception {
-		client.putObject(bucketName, objectName, stream, size, contextType);
+		client.putObject(bucketName, objectName, stream, size, null, null, contextType);
 	}
 
 	/**

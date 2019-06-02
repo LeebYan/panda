@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx</artifactId>
-		<version>3.0.0</version>
+		<version>3.2</version>
 	</parent>
 
 	<artifactId>pigx-common</artifactId>
@@ -42,6 +42,7 @@
 		<module>pigx-common-minio</module>
 		<module>pigx-common-security</module>
 		<module>pigx-common-swagger</module>
+		<module>pigx-common-sequence</module>
 		<module>pigx-common-transaction</module>
 		<module>pigx-common-datasource</module>
 	</modules>
