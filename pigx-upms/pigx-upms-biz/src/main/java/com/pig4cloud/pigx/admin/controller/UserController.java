@@ -60,7 +60,7 @@ public class UserController {
 		SysUser user = userService.getOne(Wrappers.<SysUser>query()
 				.lambda().eq(SysUser::getUsername, username));
 		if (user == null) {
-			return R.failed(Boolean.FALSE, "获取当前用户信息失败");
+			return R.failed(null, "获取当前用户信息失败");
 		}
 		return R.ok(userService.findUserInfo(user));
 	}
@@ -76,7 +76,7 @@ public class UserController {
 		SysUser user = userService.getOne(Wrappers.<SysUser>query()
 				.lambda().eq(SysUser::getUsername, username));
 		if (user == null) {
-			return R.failed(Boolean.FALSE, String.format("用户信息为空 %s", username));
+			return R.failed(null, String.format("用户信息为空 %s", username));
 		}
 		return R.ok(userService.findUserInfo(user));
 	}
