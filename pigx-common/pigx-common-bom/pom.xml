@@ -16,12 +16,12 @@
 	<description>pigx 公共版本控制</description>
 
 	<properties>
-		<pigx.version>3.0.0</pigx.version>
+		<pigx.version>3.1.0</pigx.version>
 		<mybatis-plus.version>3.1.0</mybatis-plus.version>
-		<druid.version>1.1.16</druid.version>
+		<druid.version>1.1.17</druid.version>
 		<mysql.connector.version>8.0.16</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
-		<mp.weixin.version>3.3.0</mp.weixin.version>
+		<mp.weixin.version>3.4.0</mp.weixin.version>
 	</properties>
 
 	<dependencyManagement>
