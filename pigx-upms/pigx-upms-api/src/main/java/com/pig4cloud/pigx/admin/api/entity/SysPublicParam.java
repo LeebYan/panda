@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.admin.api.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -104,6 +105,7 @@ public class SysPublicParam extends Model<SysPublicParam> {
 	 * 是否是系统内置
 	 */
 	@ApiModelProperty(value = "是否是系统内置")
+	@TableField(value = "`system`")
 	private String system;
 
 
