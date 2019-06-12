@@ -61,6 +61,7 @@ public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, P
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public R buy(Long amount) {
+		return null;
 	}
 
 }

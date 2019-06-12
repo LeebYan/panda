@@ -17,10 +17,11 @@
 
 package com.pig4cloud.pigx.admin;
 
-import com.ulisesbocchio.jasyptspringboot.encryptor.DefaultLazyEncryptor;
-import org.jasypt.encryption.StringEncryptor;
+import cn.hutool.core.date.DateUtil;
 import org.junit.Test;
-import org.springframework.core.env.StandardEnvironment;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author lengleng
@@ -31,14 +32,12 @@ import org.springframework.core.env.StandardEnvironment;
 public class PigxAdminApplicationTest {
 	@Test
 	public void testJasypt() {
-		// 对应application-dev.yml 中配置的根密码
-		System.setProperty("jasypt.encryptor.password", "pigx");
-		StringEncryptor stringEncryptor = new DefaultLazyEncryptor(new StandardEnvironment());
+		 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
-		//加密方法
-		System.out.println(stringEncryptor.encrypt("root"));
+		String date = DateUtil.date().toDateStr();
 
-		//解密方法
-		System.out.println(stringEncryptor.decrypt("ltJPpR50wT0oIY9kfOe1Iw==="));
+		LocalDateTime dateTime = LocalDateTime.parse("2019-06-11",formatter);
+
+		System.out.println(dateTime);
 	}
 }

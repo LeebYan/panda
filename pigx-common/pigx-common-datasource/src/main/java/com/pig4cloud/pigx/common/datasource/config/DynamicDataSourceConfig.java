@@ -1,10 +1,5 @@
 package com.pig4cloud.pigx.common.datasource.config;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import javax.annotation.PostConstruct;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mysql.cj.jdbc.Driver;
 import com.pig4cloud.pigx.common.datasource.support.DataSourceConstants;
@@ -13,11 +8,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author lengleng
@@ -89,7 +91,9 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 
 	@Bean
 	public PlatformTransactionManager txManager() {
-		return new DataSourceTransactionManager(dataSource());
+		DataSourceTransactionManager transactionManager
+				= new DataSourceTransactionManager(dataSource());
+		return new ChainedTransactionManager(transactionManager);
 	}
 
 	@Override
