@@ -21,10 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class DynamicDatasourceInterceptor implements HandlerInterceptor {
 
+	/**
+	 * TODO 根据上线文判断路由哪个数据库
+	 *
+	 * @param request
+	 * @param response
+	 * @param handler
+	 * @return
+	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		DynamicDataSourceContextHolder.setDataSourceType(1);
-		log.info("数据源切换:{}", 1);
 		return true;
 	}
 

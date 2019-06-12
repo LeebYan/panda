@@ -29,7 +29,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @date 2018/07/29
  * 代码生成模块
  */
-@EnableDynamicDataSource //开启动态数据源
+@EnableDynamicDataSource
 @EnablePigxSwagger2
 @SpringCloudApplication
 @EnablePigxFeignClients

@@ -19,9 +19,9 @@ package com.pig4cloud.pigx.admin.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.*;
-import com.pig4cloud.pigx.admin.api.entity.SysTenant;
 import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
 import com.pig4cloud.pigx.admin.service.*;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.DictTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
@@ -31,10 +31,12 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.annotations.Cacheable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -70,6 +72,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	 * @return
 	 */
 	@Override
+	@Cacheable(value = CacheConstants.TENANT_DETAILS)
 	public List<SysTenant> getNormal() {
 		return list(Wrappers.<SysTenant>lambdaQuery()
 				.eq(SysTenant::getStatus, CommonConstants.STATUS_NORMAL)
@@ -94,6 +97,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
 	public Boolean saveTenant(SysTenant sysTenant) {
 		this.save(sysTenant);
 

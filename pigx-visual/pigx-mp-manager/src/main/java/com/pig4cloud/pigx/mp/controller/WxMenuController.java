@@ -44,13 +44,13 @@ public class WxMenuController {
 	/**
 	 * 分页查询
 	 *
-	 * @param page     分页对象
-	 * @param WxMpMenu lengleng
+	 * @param page   分页对象
+	 * @param wxMpMenu
 	 * @return
 	 */
 	@GetMapping("/page")
-	public R getWxMpMenuPage(Page page, WxMpMenu WxMpMenu) {
-		return R.ok(wxMenuService.page(page, Wrappers.query(WxMpMenu)));
+	public R getWxMpMenuPage(Page page, WxMpMenu wxMpMenu) {
+		return R.ok(wxMenuService.page(page, Wrappers.query(wxMpMenu)));
 	}
 
 
@@ -68,14 +68,14 @@ public class WxMenuController {
 	/**
 	 * 新增微信菜单
 	 *
-	 * @param WxMpMenus 微信菜单列表
+	 * @param wxMenu 微信菜单列表
 	 * @return R
 	 */
 	@SysLog("新增微信菜单")
 	@PostMapping("/{appId}")
 	@PreAuthorize("@pms.hasPermission('mp_wxmenu_add')")
-	public R save(@RequestBody JSONObject WxMpMenus, @PathVariable String appId) {
-		return R.ok(wxMenuService.save(WxMpMenus, appId));
+	public R save(@RequestBody JSONObject wxMenu, @PathVariable String appId) {
+		return R.ok(wxMenuService.save(wxMenu, appId));
 	}
 
 	/**

@@ -21,11 +21,13 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysTenant;
 import com.pig4cloud.pigx.admin.service.SysTenantService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,6 +91,7 @@ public class SysTenantController {
 	 */
 	@SysLog("修改租户")
 	@PutMapping
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
 	@PreAuthorize("@pms.hasPermission('admin_systenant_edit')")
 	public R updateById(@RequestBody SysTenant sysTenant) {
 		return R.ok(sysTenantService.updateById(sysTenant));
@@ -102,6 +105,7 @@ public class SysTenantController {
 	 */
 	@SysLog("删除租户")
 	@DeleteMapping("/{id}")
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
 	@PreAuthorize("@pms.hasPermission('admin_systenant_del')")
 	public R removeById(@PathVariable Integer id) {
 		return R.ok(sysTenantService.removeById(id));
