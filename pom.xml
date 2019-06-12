@@ -56,7 +56,6 @@
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
-		<poi.version>3.15</poi.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.10.2</ttl.version>
 		<minio.version>6.0.7</minio.version>
@@ -125,23 +124,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- poi begin https://gitee.com/lemur/easypoi/issues/INTGY-->
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml-schemas</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
-			<!-- poi end-->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -206,7 +188,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${project.name}</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
