@@ -110,7 +110,7 @@ public class PreWriterHandler<T extends Class<? extends BaseRowModel>> implement
 		if (cellStyle == null) {
 			return;
 		}
-		//设置居中方式
+		//设置样式
 		cell.setCellStyle(cellStyle);
 	}
 }

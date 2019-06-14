@@ -11,13 +11,14 @@ import com.pig4cloud.common.excel.exception.ExcelException;
 import com.pig4cloud.common.excel.factory.ExcelWriterFactory;
 import com.pig4cloud.common.excel.handler.PreWriterHandler;
 import com.pig4cloud.common.excel.listener.ExcelListener;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -35,7 +36,7 @@ import java.util.List;
 @UtilityClass
 public class ExcelUtils {
 
-	private final String DEFAULT_EXCEL_SHEET_NAME="Sheet1";
+	private final String DEFAULT_EXCEL_SHEET_NAME = "Sheet1";
 
 	/**
 	 * 读取 Excel(多个 sheet)
@@ -103,8 +104,8 @@ public class ExcelUtils {
 	 * @param <T>
 	 */
 	public <T extends BaseRowModel> void writeExcel(HttpServletResponse response, List<T> list,
-													String fileName, Class<T> classType){
-		writeExcel(response,list,fileName,null,classType);
+													String fileName, Class<T> classType) {
+		writeExcel(response, list, fileName, null, classType);
 	}
 
 
@@ -120,66 +121,54 @@ public class ExcelUtils {
 	 */
 	public <T extends BaseRowModel> void writeExcel(HttpServletResponse response, List<T> list,
 													String fileName, String sheetName,
-													Class<T> classType){
-		writeExcel(response,list,fileName,sheetName,ExcelTypeEnum.XLSX,classType);
+													Class<T> classType) {
+		writeExcel(response, list, fileName, sheetName, ExcelTypeEnum.XLSX, classType);
 	}
 
 	/**
 	 * 导出 Excel ：一个 sheet，带表头
 	 * 自定义WriterHandler 可以定制行列数据进行灵活化操作
 	 *
-	 * @param response  HttpServletResponse
-	 * @param list      数据 list，每个元素为一个 BaseRowModel
-	 * @param fileName  导出的文件名
-	 * @param sheetName 导入文件的 sheet 名
+	 * @param response      HttpServletResponse
+	 * @param list          数据 list，每个元素为一个 BaseRowModel
+	 * @param fileName      导出的文件名
+	 * @param sheetName     导入文件的 sheet 名
 	 * @param excelTypeEnum 导出Excel类型
-	 * @param classType 实体类映射，继承 BaseRowModel 类
-	 *
+	 * @param classType     实体类映射，继承 BaseRowModel 类
 	 */
+	@SneakyThrows
 	public <T extends BaseRowModel> void writeExcel(HttpServletResponse response, List<T> list,
 													String fileName, String sheetName, ExcelTypeEnum excelTypeEnum,
 													Class<T> classType) {
 		if (StrUtil.isBlank(sheetName)) {
 			sheetName = DEFAULT_EXCEL_SHEET_NAME;
 		}
-		OutputStream outputStream =null;
-		try {
-			response.reset();
-			outputStream = getOutputStream(fileName, response, excelTypeEnum);
-			if (excelTypeEnum == ExcelTypeEnum.XLSX) {
-				ExcelWriter writer = EasyExcelFactory.getWriterWithTempAndHandler(null, outputStream
-						, excelTypeEnum, true, new PreWriterHandler<>(classType));
-				Sheet sheet = new Sheet(1, 0, classType);
-				sheet.setSheetName(sheetName);
-				try {
-					writer.write(list, sheet);
-				} finally {
-					writer.finish();
-				}
-			} else if (excelTypeEnum == ExcelTypeEnum.XLS) {
-				// 其实也可以专门调03版的样式，或者直接套用
-				ExcelWriterFactory writer = new ExcelWriterFactory(outputStream, excelTypeEnum);
-				Sheet sheet = new Sheet(1, 0, classType);
-				sheet.setSheetName(sheetName);
-				try {
-					writer.write(list, sheet);
-				} finally {
-					writer.finish();
-					writer.close();
-				}
+		response.reset();
+		@Cleanup
+		OutputStream outputStream = getOutputStream(fileName, response, excelTypeEnum);
+		if (excelTypeEnum == ExcelTypeEnum.XLSX) {
+			ExcelWriter writer = EasyExcelFactory.getWriterWithTempAndHandler(null, outputStream
+					, excelTypeEnum, true, new PreWriterHandler<>(classType));
+			Sheet sheet = new Sheet(1, 0, classType);
+			sheet.setSheetName(sheetName);
+			try {
+				writer.write(list, sheet);
+			} finally {
+				writer.finish();
 			}
-			outputStream.flush();
-		}catch (IOException e){
-			log.error("导出excel异常:{}",e);
-		}finally {
-			if(outputStream!=null){
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		} else if (excelTypeEnum == ExcelTypeEnum.XLS) {
+			// 其实也可以专门调03版的样式，或者直接套用
+			ExcelWriterFactory writer = new ExcelWriterFactory(outputStream, excelTypeEnum);
+			Sheet sheet = new Sheet(1, 0, classType);
+			sheet.setSheetName(sheetName);
+			try {
+				writer.write(list, sheet);
+			} finally {
+				writer.finish();
+				writer.close();
 			}
 		}
+		outputStream.flush();
 
 	}
 
@@ -204,16 +193,14 @@ public class ExcelUtils {
 	/**
 	 * 导出文件时为Writer生成OutputStream
 	 */
+	@SneakyThrows
 	private OutputStream getOutputStream(String fileName, HttpServletResponse response, ExcelTypeEnum excelTypeEnum) {
-		try {
-			String encodeFilename = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
-			response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
-			response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-			response.setHeader("Content-disposition", "attachment;filename="+ encodeFilename+excelTypeEnum.getValue());
-			return response.getOutputStream();
-		} catch (IOException e) {
-			throw new ExcelException("创建文件失败！");
-		}
+		// 解决文件乱码问题
+		String encodeFilename = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
+		response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		response.setHeader("Content-disposition", "attachment;filename=" + encodeFilename + excelTypeEnum.getValue());
+		return response.getOutputStream();
 	}
 
 	/**
@@ -222,6 +209,7 @@ public class ExcelUtils {
 	 * @param excel         需要解析的 Excel 文件
 	 * @param excelListener new ExcelListener()
 	 */
+	@SneakyThrows
 	private ExcelReader getReader(MultipartFile excel,
 								  ExcelListener excelListener) {
 		String fileName = excel.getOriginalFilename();
@@ -231,14 +219,10 @@ public class ExcelUtils {
 		if (!fileName.toLowerCase().endsWith(ExcelTypeEnum.XLS.getValue()) && !fileName.toLowerCase().endsWith(ExcelTypeEnum.XLSX.getValue())) {
 			throw new ExcelException("文件格式错误！");
 		}
-		InputStream inputStream;
-		try {
-			inputStream = excel.getInputStream();
-			return new ExcelReader(inputStream, null, excelListener, false);
-		} catch (IOException e) {
-			//do something
-		}
-		return null;
+		@Cleanup
+		InputStream inputStream= excel.getInputStream();
+		return new ExcelReader(inputStream, null, excelListener, false);
+
 	}
 
 	/**
