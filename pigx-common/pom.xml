@@ -36,14 +36,15 @@
 		<module>pigx-common-bom</module>
 		<module>pigx-common-core</module>
 		<module>pigx-common-data</module>
+		<module>pigx-common-datasource</module>
+		<module>pigx-common-excel</module>
 		<module>pigx-common-gateway</module>
 		<module>pigx-common-job</module>
 		<module>pigx-common-log</module>
 		<module>pigx-common-minio</module>
 		<module>pigx-common-security</module>
-		<module>pigx-common-swagger</module>
 		<module>pigx-common-sequence</module>
+		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>
-		<module>pigx-common-datasource</module>
 	</modules>
 </project>

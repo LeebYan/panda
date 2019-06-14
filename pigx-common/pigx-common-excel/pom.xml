@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>pigx-common</artifactId>
+		<groupId>com.pig4cloud</groupId>
+		<version>3.2</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>pigx-common-excel</artifactId>
+	<description>pigx Excel导入导出工具,基于easyexcel</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>easyexcel</artifactId>
+			<version>${easyexcel.version}</version>
+		</dependency>
+		<!--core 工具类-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+</project>
