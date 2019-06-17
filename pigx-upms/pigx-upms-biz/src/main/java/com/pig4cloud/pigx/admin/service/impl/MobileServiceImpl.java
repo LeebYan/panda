@@ -67,7 +67,7 @@ public class MobileServiceImpl implements MobileService {
 			return R.ok(Boolean.FALSE, "手机号未注册");
 		}
 
-		Object codeObj = pigxRedisTemplate.opsForValue().get(CommonConstants.DEFAULT_CODE_KEY + mobile);
+		Object codeObj = pigxRedisTemplate.opsForValue().get(CommonConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + "@" + mobile);
 
 		if (codeObj != null) {
 			log.info("手机号验证码未过期:{}，{}", mobile, codeObj);
