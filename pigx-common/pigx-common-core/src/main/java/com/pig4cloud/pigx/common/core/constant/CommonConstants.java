@@ -28,6 +28,12 @@ public interface CommonConstants {
 	 * header 中租户ID
 	 */
 	String TENANT_ID = "TENANT_ID";
+
+	/**
+	 * 租户ID
+	 */
+	Integer TENANT_ID_1 = 1;
+
 	/**
 	 * 删除
 	 */

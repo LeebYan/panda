@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/${pathName}" )
-@Api(value = "${pathName}", tags = "${pathName}管理")
+@Api(value = "${pathName}", tags = "${comments}管理")
 public class ${className}Controller {
 
     private final  ${className}Service ${classname}Service;
