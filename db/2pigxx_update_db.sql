@@ -34,8 +34,8 @@ CREATE TABLE `sys_file`  (
 -- ----------------------------
 -- Records of sys_file
 -- ----------------------------
-INSERT INTO `sys_file` VALUES ('402847035f012c2d015f0130f5160006', 'j8k6fmcs2nl.jpg', '/image/2019-5-09/j8k6fmcs2nl.jpg', '/user/app/resources/upload//image/2017-10-09/j8k6fmcs2nl.jpg', '/test-demo/dl', '欢迎扫描.jpg', '73d4281e46a68222934403627e5b4e19', '.jpg', 'image', 516424, '504.32KB', 'admin', '2019-05-09 16:55:04', '', '0000-00-00 00:00:00', 0, 1);
-INSERT INTO `sys_file` VALUES ('5c43db6a9004a7547b5409592675f2f9', 'bigdata-8676f56c7f6047579f2832744fc3d7d7.png', NULL, NULL, NULL, '6水费查询.png', '297c0cbd903535763e910e78adb4c5c2', '.png', 'image', 7976, '7.79KB', 'admin', '2019-06-18 16:47:13', NULL, NULL, 0, 1);
+INSERT INTO `sys_file` VALUES ('402847035f012c2d015f0130f5160006', 'j8k6fmcs2nl.jpg', '/image/2019-5-09/j8k6fmcs2nl.jpg', '/user/app/resources/upload/image/2019-5-09/j8k6fmcs2nl.jpg', '/test-demo/dl', '欢迎扫描.jpg', '73d4281e46a68222934403627e5b4e19', '.jpg', 'image', 516424, '504.32KB', 'admin', '2019-05-09 16:55:04', '', '0000-00-00 00:00:00', 0, 1);
+INSERT INTO `sys_file` VALUES ('5c43db6a9004a7547b5409592675f2f9', 'pigx-8676f56c7f6047579f2832744fc3d7d7.png', NULL, NULL, NULL, '6水费查询.png', '297c0cbd903535763e910e78adb4c5c2', '.png', 'image', 7976, '7.79KB', 'admin', '2019-06-18 16:47:13', NULL, NULL, 0, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
 
