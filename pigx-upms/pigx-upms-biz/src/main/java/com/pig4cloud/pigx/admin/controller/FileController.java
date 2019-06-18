@@ -22,15 +22,21 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.common.minio.service.MinioTemplate;
+import com.pig4cloud.pigx.admin.api.entity.SysFile;
+import com.pig4cloud.pigx.admin.service.SysFileService;
+import com.pig4cloud.pigx.admin.util.FileKit;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +56,7 @@ import java.util.Map;
 @Api(value = "file", tags = "文件管理模块")
 public class FileController {
 	private final MinioTemplate minioTemplate;
-
+	private final SysFileService sysFileService;
 	/**
 	 * 上传文件
 	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
@@ -59,7 +65,7 @@ public class FileController {
 	 * @return R(bucketName, filename)
 	 */
 	@PostMapping("/upload")
-	public R upload(@RequestParam("file") MultipartFile file) {
+	public R upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
 		String fileName = IdUtil.simpleUUID() + StrUtil.DOT + FileUtil.extName(file.getOriginalFilename());
 		Map<String, String> resultMap = new HashMap<>(4);
 		resultMap.put("bucketName", CommonConstants.BUCKET_NAME);
@@ -67,12 +73,55 @@ public class FileController {
 
 		try {
 			minioTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
+			String tenantId = request.getHeader(CommonConstants.TENANT_ID);
+			log.debug("获取header中的租户ID为:{}", tenantId);
+			//文件管理数据记录,收集管理追踪文件
+			fileLog(file, fileName,tenantId);
 		} catch (Exception e) {
 			log.error("上传失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
 		return R.ok(resultMap);
 	}
+
+	/**
+	 * 文件管理数据记录,收集管理追踪文件
+	 *
+	 * @param file     上传文件格式
+	 * @param fileName 文件名
+	 */
+	private void fileLog(MultipartFile file, String fileName, String tenantId) throws IOException {
+		SysFile sysFile = new SysFile();
+		//存储文件名
+		String name = CommonConstants.BUCKET_NAME + StrUtil.DASHED + fileName;
+		//原文件名
+		String original = file.getOriginalFilename();
+		//文件大小
+		Long size = file.getSize();
+		//后缀名
+		String suffix = FileKit.getSuffix(name);
+		//文件类型
+		String type = FileKit.getType(name);
+		//显示大小
+		String displaySize = FileKit.getDisplaySize(file.getSize());
+
+		sysFile.setName(name);
+		sysFile.setOriginal(original);
+		sysFile.setFileSize(size);
+		sysFile.setSuffix(suffix);
+		sysFile.setType(type);
+		sysFile.setDisplaySize(displaySize);
+		sysFile.setMd5(DigestUtils.md5Hex(file.getBytes()));
+
+//		if (StrUtil.isNotBlank(tenantId)) {
+//			sysFile.setTenantId(Integer.parseInt(tenantId));
+//		} else {
+//			sysFile.setTenantId(CommonConstants.TENANT_ID_1);
+//		}
+
+		sysFileService.save(sysFile);
+	}
+
 
 	/**
 	 * 获取文件
