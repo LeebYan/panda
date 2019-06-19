@@ -104,6 +104,7 @@ public class SysFileController {
 	 * @param id id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id删除文件管理", notes = "通过id删除文件管理")
 	@SysLog("删除文件管理")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_file_del')")
