@@ -17,7 +17,6 @@
 package com.pig4cloud.pigx.pay.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.common.sequence.sequence.Sequence;
 import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.mapper.PayChannelMapper;
 import com.pig4cloud.pigx.pay.service.PayChannelService;
@@ -33,7 +32,6 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class PayChannelServiceImpl extends ServiceImpl<PayChannelMapper, PayChannel> implements PayChannelService {
-	private final Sequence channelSequence;
 
 	/**
 	 * 新增支付渠道
@@ -43,7 +41,6 @@ public class PayChannelServiceImpl extends ServiceImpl<PayChannelMapper, PayChan
 	 */
 	@Override
 	public Boolean saveChannel(PayChannel payChannel) {
-		payChannel.setMchId(channelSequence.nextNo());
 		return save(payChannel);
 	}
 }

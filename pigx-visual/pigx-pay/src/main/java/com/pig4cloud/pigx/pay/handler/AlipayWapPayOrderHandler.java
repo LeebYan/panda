@@ -1,15 +1,20 @@
 package com.pig4cloud.pigx.pay.handler;
 
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.jpay.alipay.AliPayApi;
+import com.jpay.alipay.AliPayApiConfigKit;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.pay.config.PayCommonProperties;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
-import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
-import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
+import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
+import com.pig4cloud.pigx.pay.mapper.PayTradeOrderMapper;
 import com.pig4cloud.pigx.pay.utils.OrderStatusEnum;
+import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,8 +33,9 @@ import java.io.IOException;
 @Service("ALIPAY_WAP")
 @AllArgsConstructor
 public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
-	private final PayTradeOrderService tradeOrderService;
-	private final PayGoodsOrderService goodsOrderService;
+	private final PayCommonProperties payCommonProperties;
+	private final PayTradeOrderMapper tradeOrderMapper;
+	private final PayGoodsOrderMapper goodsOrderMapper;
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
 
@@ -44,14 +50,14 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		PayTradeOrder tradeOrder = new PayTradeOrder();
 		tradeOrder.setOrderId(goodsOrder.getPayOrderId());
 		tradeOrder.setAmount(goodsOrder.getAmount());
-		tradeOrder.setChannelId("ALIPAY_WAP");
-		tradeOrder.setChannelMchId("1517584931");
+		tradeOrder.setChannelId(PayChannelNameEnum.ALIPAY_WAP.getName());
+		tradeOrder.setChannelMchId(AliPayApiConfigKit.getAliPayApiConfig().getAppId());
 		tradeOrder.setClientIp(ServletUtil.getClientIP(request));
 		tradeOrder.setCurrency("cny");
-		tradeOrder.setExpireTime(30L);
+		tradeOrder.setExpireTime(Long.parseLong(payCommonProperties.getAliPayConfig().getReturnUrl()));
 		tradeOrder.setStatus(OrderStatusEnum.INIT.getStatus());
-		tradeOrder.setBody("测试商品");
-		tradeOrderService.save(tradeOrder);
+		tradeOrder.setBody(goodsOrder.getGoodsName());
+		tradeOrderMapper.insert(tradeOrder);
 		return tradeOrder;
 	}
 
@@ -67,12 +73,15 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		model.setBody(tradeOrder.getBody());
 		model.setSubject(tradeOrder.getBody());
 		model.setOutTradeNo(tradeOrder.getOrderId());
-		model.setTimeoutExpress(tradeOrder.getExpireTime() + "m");
-		model.setTotalAmount(String.valueOf(tradeOrder.getAmount()));
-		model.setPassbackParams(String.valueOf(TenantContextHolder.getTenantId()));
+		model.setTimeoutExpress(payCommonProperties.getAliPayConfig().getExpireTime() + "m");
+
+		//分转成元 并且保留两位
+		model.setTotalAmount(NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString());
 		model.setProductCode(goodsOrder.getGoodsId());
+		model.setPassbackParams(URLUtil.encode(String.format("tenant=%s", TenantContextHolder.getTenantId())));
 		try {
-			AliPayApi.wapPay(response, model, "http://www.baidu.com", "/alipay/notify_url");
+			AliPayApi.wapPay(response, model, payCommonProperties.getAliPayConfig().getReturnUrl()
+					, payCommonProperties.getAliPayConfig().getNotifyUrl());
 		} catch (AlipayApiException e) {
 			log.warn("支付宝支付失败 {} {}", e.getErrCode(), e.getErrMsg());
 			tradeOrder.setErrMsg(e.getErrMsg());
@@ -96,7 +105,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 	 */
 	@Override
 	public void updateOrder(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
-		tradeOrderService.updateById(tradeOrder);
-		goodsOrderService.updateById(goodsOrder);
+		tradeOrderMapper.updateById(tradeOrder);
+		goodsOrderMapper.updateById(goodsOrder);
 	}
 }

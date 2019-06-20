@@ -33,7 +33,7 @@ public interface PayOrderHandler {
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
-	PayTradeOrder pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder);
+	Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder);
 
 	/**
 	 * 更新订单信息
@@ -44,6 +44,7 @@ public interface PayOrderHandler {
 	 * 调用入口
 	 *
 	 * @param goodsOrde 商品订单
+	 * @return
 	 */
-	void handle(PayGoodsOrder goodsOrde);
+	Object handle(PayGoodsOrder goodsOrde);
 }

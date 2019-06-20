@@ -51,9 +51,9 @@ public class PayTradeOrder extends Model<PayTradeOrder> {
 	 */
 	private String channelId;
 	/**
-	 * 支付金额,单位分
+	 * 支付金额,单位元
 	 */
-	private Long amount;
+	private String amount;
 	/**
 	 * 三位货币代码,人民币:cny
 	 */

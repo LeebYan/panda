@@ -27,6 +27,7 @@ import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -62,6 +63,7 @@ public class MybatisPlusConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "mybatisPlus.tenantEnable", havingValue = "true", matchIfMissing = true)
 	public PaginationInterceptor paginationInterceptor(PigxTenantHandler tenantHandler) {
 		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 		List<ISqlParser> sqlParserList = new ArrayList<>();

@@ -16,20 +16,26 @@
  */
 package com.pig4cloud.pigx.pay.service.impl;
 
+import cn.hutool.core.util.EnumUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.common.sequence.sequence.Sequence;
-import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
+import com.pig4cloud.pigx.pay.handler.PayOrderHandler;
 import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
 import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
-import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
+import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
+import com.pig4cloud.pigx.pay.utils.PayConstants;
+import com.pig4cloud.pigx.pay.utils.TradeStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 商品
@@ -41,27 +47,49 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 @AllArgsConstructor
 public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, PayGoodsOrder> implements PayGoodsOrderService {
-	private final PayTradeOrderService tradeOrderService;
-	private static final String WX = "MicroMessenger";
+	private final Map<String, PayOrderHandler> orderHandlerMap;
 	private final HttpServletRequest request;
-	private final HttpServletResponse response;
-	private final Sequence paySequence;
 
 
 	/**
-	 * 购买商品
-	 * <p>
-	 * 1、 新增商品订单
-	 * 2、 根据UA 去下单
-	 * 3、构建支付订单
+	 * 下单购买
 	 *
-	 * @param amount
+	 * @param goodsOrder
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public R buy(Long amount) {
-		return null;
+	public Map<String, Object> buy(PayGoodsOrder goodsOrder) {
+		String ua = request.getHeader(HttpHeaders.USER_AGENT);
+		Enum channel = PayChannelNameEnum.getChannel(ua);
+		PayOrderHandler orderHandler = orderHandlerMap.get(channel.name());
+		goodsOrder.setGoodsName("测试产品");
+		goodsOrder.setGoodsId("10001");
+		Object params = orderHandler.handle(goodsOrder);
+
+		Map<String, Object> result = new HashMap<>(4);
+		result.put("channel", channel.name());
+		result.put("goods", goodsOrder);
+		result.put("params", params);
+		return result;
 	}
+
+	/**
+	 * 异步更新商品订单
+	 *
+	 * @param params
+	 */
+	@Async
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateOrder(Map<String, String> params) {
+		PayGoodsOrder goodsOrder = new PayGoodsOrder();
+		Integer tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("trade_status")).getStatus();
+		goodsOrder.setStatus(tradeStatus);
+		this.baseMapper.update(goodsOrder, Wrappers.<PayGoodsOrder>lambdaQuery()
+				.eq(PayGoodsOrder::getPayOrderId, params.
+						get(PayConstants.OUT_TRADE_NO)));
+	}
+
 
 }

@@ -46,6 +46,10 @@ public class PayChannel extends Model<PayChannel> {
 	@TableId
 	private Integer id;
 	/**
+	 * 应用ID
+	 */
+	private String appId;
+	/**
 	 * 渠道ID
 	 */
 	private String channelId;
@@ -57,10 +61,6 @@ public class PayChannel extends Model<PayChannel> {
 	 * 渠道商户ID
 	 */
 	private String channelMchId;
-	/**
-	 * 内部商户ID
-	 */
-	private String mchId;
 	/**
 	 * 渠道状态
 	 */

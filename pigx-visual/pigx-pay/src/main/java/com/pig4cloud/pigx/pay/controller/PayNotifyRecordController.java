@@ -19,16 +19,26 @@ package com.pig4cloud.pigx.pay.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jpay.alipay.AliPayApi;
+import com.jpay.ext.kit.HttpKit;
+import com.jpay.ext.kit.PaymentKit;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
+import com.pig4cloud.pigx.pay.handler.MessageDuplicateCheckerHandler;
 import com.pig4cloud.pigx.pay.service.PayNotifyRecordService;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.pig4cloud.pigx.pay.utils.PayConstants;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 /**
@@ -37,70 +47,120 @@ import org.springframework.web.bind.annotation.*;
  * @author lengleng
  * @date 2019-05-28 23:57:23
  */
+@Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/paynotifyrecord" )
-@Api(value = "paynotifyrecord", tags = "paynotifyrecord管理")
+@RequestMapping("/notify")
+@Api(value = "notify", tags = "notify管理")
 public class PayNotifyRecordController {
+	private final MessageDuplicateCheckerHandler duplicateCheckerHandler;
+	private final PayNotifyRecordService payNotifyRecordService;
 
-    private final  PayNotifyRecordService payNotifyRecordService;
+	/**
+	 * 分页查询
+	 *
+	 * @param page            分页对象
+	 * @param payNotifyRecord 异步通知记录
+	 * @return
+	 */
+	@GetMapping("/page")
+	public R getPayNotifyRecordPage(Page page, PayNotifyRecord payNotifyRecord) {
+		return R.ok(payNotifyRecordService.page(page, Wrappers.query(payNotifyRecord)));
+	}
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param payNotifyRecord 异步通知记录
-     * @return
-     */
-    @GetMapping("/page" )
-    public R getPayNotifyRecordPage(Page page, PayNotifyRecord payNotifyRecord) {
-        return R.ok(payNotifyRecordService.page(page, Wrappers.query(payNotifyRecord)));
-    }
 
+	/**
+	 * 通过id查询异步通知记录
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@GetMapping("/{id}")
+	public R getById(@PathVariable("id") Long id) {
+		return R.ok(payNotifyRecordService.getById(id));
+	}
 
-    /**
-     * 通过id查询异步通知记录
-     * @param id id
-     * @return R
-     */
-    @GetMapping("/{id}" )
-    public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(payNotifyRecordService.getById(id));
-    }
+	/**
+	 * 新增异步通知记录
+	 *
+	 * @param payNotifyRecord 异步通知记录
+	 * @return R
+	 */
+	@SysLog("新增异步通知记录")
+	@PostMapping
+	@PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_add')")
+	public R save(@RequestBody PayNotifyRecord payNotifyRecord) {
+		return R.ok(payNotifyRecordService.save(payNotifyRecord));
+	}
 
-    /**
-     * 新增异步通知记录
-     * @param payNotifyRecord 异步通知记录
-     * @return R
-     */
-    @SysLog("新增异步通知记录" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_add')" )
-    public R save(@RequestBody PayNotifyRecord payNotifyRecord) {
-        return R.ok(payNotifyRecordService.save(payNotifyRecord));
-    }
+	/**
+	 * 修改异步通知记录
+	 *
+	 * @param payNotifyRecord 异步通知记录
+	 * @return R
+	 */
+	@SysLog("修改异步通知记录")
+	@PutMapping
+	@PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_edit')")
+	public R updateById(@RequestBody PayNotifyRecord payNotifyRecord) {
+		return R.ok(payNotifyRecordService.updateById(payNotifyRecord));
+	}
 
-    /**
-     * 修改异步通知记录
-     * @param payNotifyRecord 异步通知记录
-     * @return R
-     */
-    @SysLog("修改异步通知记录" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_edit')" )
-    public R updateById(@RequestBody PayNotifyRecord payNotifyRecord) {
-        return R.ok(payNotifyRecordService.updateById(payNotifyRecord));
-    }
+	/**
+	 * 通过id删除异步通知记录
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@SysLog("删除异步通知记录")
+	@DeleteMapping("/{id}")
+	@PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_del')")
+	public R removeById(@PathVariable Long id) {
+		return R.ok(payNotifyRecordService.removeById(id));
+	}
 
-    /**
-     * 通过id删除异步通知记录
-     * @param id id
-     * @return R
-     */
-    @SysLog("删除异步通知记录" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('pay_paynotifyrecord_del')" )
-    public R removeById(@PathVariable Long id) {
-        return R.ok(payNotifyRecordService.removeById(id));
-    }
+	/**
+	 * 渠道异步回调
+	 *
+	 * @param request 渠道请求
+	 * @return
+	 */
+	@Inner(false)
+	@SneakyThrows
+	@PostMapping("/ali/callbak")
+	public void aliCallbak(HttpServletRequest request, HttpServletResponse response) {
+		// 解析回调信息
+		Map<String, String> params = AliPayApi.toMap(request);
+		// 判断10秒内是否已经回调处理
+		if (!duplicateCheckerHandler.isDuplicate(params.get(PayConstants.OUT_TRADE_NO))) {
+			log.warn("支付宝订单重复回调 {} 不做处理", params);
+			payNotifyRecordService.saveAliRecord(params, "");
+			return;
+		}
+		String result = payNotifyRecordService.aliCallbak(params);
+		payNotifyRecordService.saveAliRecord(params, result);
+		//写出处理结果
+		response.getWriter().print(result);
+	}
+
+	@Inner(false)
+	@SneakyThrows
+	@ResponseBody
+	@PostMapping("/wx/callbak")
+	public String wxCallbak(HttpServletRequest request, HttpServletResponse response) {
+		String xmlMsg = HttpKit.readData(request);
+		log.info("微信订单回调信息:{}", xmlMsg);
+		Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
+
+		// 判断10秒内是否已经回调处理
+		if (!duplicateCheckerHandler.isDuplicate(params.get(PayConstants.OUT_TRADE_NO))) {
+			log.warn("微信订单重复回调 {} 不做处理", params);
+			payNotifyRecordService.saveAliRecord(params, "");
+			return null;
+		}
+		String result = payNotifyRecordService.wxCallbak(params);
+		payNotifyRecordService.saveAliRecord(params, result);
+		return result;
+	}
 
 }

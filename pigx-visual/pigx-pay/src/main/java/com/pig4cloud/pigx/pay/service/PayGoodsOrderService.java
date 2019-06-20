@@ -18,8 +18,9 @@
 package com.pig4cloud.pigx.pay.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
+
+import java.util.Map;
 
 /**
  * 商品
@@ -32,8 +33,15 @@ public interface PayGoodsOrderService extends IService<PayGoodsOrder> {
 	/**
 	 * 购买商品
 	 *
-	 * @param amount
+	 * @param goodsOrder goods
 	 * @return
 	 */
-	R buy(Long amount);
+	Map<String, Object> buy(PayGoodsOrder goodsOrder);
+
+	/**
+	 * 更新订单
+	 *
+	 * @param params
+	 */
+	void updateOrder(Map<String, String> params);
 }

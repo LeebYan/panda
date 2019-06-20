@@ -20,6 +20,8 @@ package com.pig4cloud.pigx.pay.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
 
+import java.util.Map;
+
 /**
  * 异步通知记录
  *
@@ -28,4 +30,27 @@ import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
  */
 public interface PayNotifyRecordService extends IService<PayNotifyRecord> {
 
+	/**
+	 * 处理支付宝渠道回调
+	 *
+	 * @param params
+	 * @return
+	 */
+	String aliCallbak(Map<String, String> params);
+
+	/**
+	 * 保存支付宝回调结果
+	 *
+	 * @param params
+	 * @param result
+	 */
+	void saveAliRecord(Map<String, String> params, String result);
+
+	/**
+	 * 处理微信渠道回调
+	 *
+	 * @param params
+	 * @return
+	 */
+	String wxCallbak(Map<String, String> params);
 }

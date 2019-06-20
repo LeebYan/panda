@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "xsequence.db")
+@ConfigurationProperties(prefix = "pigx.xsequence.db")
 public class SequenceDbProperties extends BaseSequenceProperties {
 	/**
 	 * 表名称

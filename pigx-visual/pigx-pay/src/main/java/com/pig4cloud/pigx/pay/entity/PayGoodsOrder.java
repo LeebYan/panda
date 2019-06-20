@@ -56,7 +56,7 @@ public class PayGoodsOrder extends Model<PayGoodsOrder> {
 	/**
 	 * 金额,单位分
 	 */
-	private Long amount;
+	private String amount;
 	/**
 	 * 用户ID
 	 */

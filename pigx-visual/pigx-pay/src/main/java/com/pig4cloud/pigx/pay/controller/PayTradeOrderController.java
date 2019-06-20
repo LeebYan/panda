@@ -23,11 +23,9 @@ import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -39,8 +37,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/paytradeorder" )
-@Api(value = "paytradeorder", tags = "paytradeorder管理")
+@RequestMapping("/order" )
+@Api(value = "order", tags = "订单")
 public class PayTradeOrderController {
 
     private final  PayTradeOrderService payTradeOrderService;

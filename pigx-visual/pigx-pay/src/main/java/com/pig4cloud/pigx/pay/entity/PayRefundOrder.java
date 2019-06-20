@@ -66,9 +66,9 @@ public class PayRefundOrder extends Model<PayRefundOrder> {
 	 */
 	private String channelId;
 	/**
-	 * 支付金额,单位分
+	 * 支付金额,单位元
 	 */
-	private Long payAmount;
+	private String payAmount;
 	/**
 	 * 退款金额,单位分
 	 */

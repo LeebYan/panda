@@ -20,7 +20,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.mapper.PayTradeOrderMapper;
 import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
+import com.pig4cloud.pigx.pay.utils.PayConstants;
+import com.pig4cloud.pigx.pay.utils.TradeStatusEnum;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * 支付
@@ -31,4 +37,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PayTradeOrderServiceImpl extends ServiceImpl<PayTradeOrderMapper, PayTradeOrder> implements PayTradeOrderService {
 
+	/**
+	 * 更新支付订单
+	 *
+	 * @param params
+	 */
+	@Async
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateOrder(Map<String, String> params) {
+		PayTradeOrder payTradeOrder = this.baseMapper.selectById(params.get(PayConstants.OUT_TRADE_NO));
+		payTradeOrder.setStatus(TradeStatusEnum.TRADE_SUCCESS.getStatus());
+		payTradeOrder.setChannelOrderNo(params.get("trade_no"));
+		this.baseMapper.updateById(payTradeOrder);
+	}
 }

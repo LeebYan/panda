@@ -1,15 +1,37 @@
 package com.pig4cloud.pigx.pay.config;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.annotation.SqlParser;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.jpay.alipay.AliPayApiConfig;
 import com.jpay.alipay.AliPayApiConfigKit;
+import com.jpay.weixin.api.WxPayApiConfig;
+import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.service.PayChannelService;
+import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author lengleng
@@ -21,21 +43,69 @@ import org.springframework.scheduling.annotation.Async;
 @Configuration
 @AllArgsConstructor
 public class PayConfigParmaInitRunner {
+	public static Map<String, WxMpService> mpServiceMap = new HashMap<>();
 	private final PayChannelService channelService;
+	private final RemoteTenantService tenantService;
+
 
 	@Async
 	@Order
+	@SqlParser(filter = true)
 	@EventListener({WebServerInitializedEvent.class})
 	public void initPayConfig() {
 
-		AliPayApiConfig rsa2 = AliPayApiConfig.New()
-				.setAppId("2016102000727659")
-				.setPrivateKey("MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkejVpiLJlece9KLb8gG/+WODkpe5SRfr65n3aUAvRPoouDUp/URBAtt24mzHFdGkaU/Il7ZxG7KUjLaFNTfq8t/bHEF7HBt7MZidpEjVaDxeG/hkA+xc+X2ePAJXVhy7v1tH+XRrxuggTj+d4q7vVGD7r1mtgX4d5hK9TTKnyhO6IUcthPOUSn07wx+5wlbv4/51ggj4Ku4AWCGaCWiebDFy4VZ/FmOMP5u3O7TocCGSy5UtaFZaVMM1nH603DG6NJ8fG+zKum9IvrdQMMmBWPT8rpy0U9ztchcd+0gTNrTfE/NOCgl/RF6z7Qic7NiTKjLxkGRq73XPzfJx0hyfpAgMBAAECggEAa2/sndAN/90JjNUgmlVnUnRKCvEceJ9/rw6KXOV2oqrAZg6GgB26iRsqP6EYZMuCsBDvlrjcITQJNq5is/Vg+I8OYr+duVISjN+ZlLexI+/BxYsLWCmr6DE3myCdvwn7rezb5NR6ejWzetvALoG3Qx4AU9sO7rfX7ZevUrE8Pc5pa/rTCHOIec9P7Hfm4xrXd0DPmbAwFvUQ4spcC9xjcBhLJ3tfmkoEU11jC6Y/J7N0/TZZxqNC+HcYftSNEmbO3vxYfz/9mbabx7Uzp8xs4qHPJACmaP5tcWOCf1qJVOwP53Cd3H9J9Be9cAvlxKfT48s1ghoxLn7QB27p0UwntQKBgQDzTpCCFDoUH328B3iGTkwZq24DOUh5ZwhMG6VIFPLHwJYK6HVM473SX0nJWkbiBYFG4WiQWUZnOhz/qjTH1vvE/nzJwQ79zZahren2b8XulXKM6S/mafiBAHKl/FArcr14iAWkh+scZKWFKrNf6Hp8rQ6zu0fWdwzUOlaQFaSnTwKBgQCtDtpIagRPyNj0J39uMRJqsaY0TdJ53TD4bflf5UiFhNFH2Dikgw/uX8Pom2qtIvf3xnO2bzmJW2+OSkF7U0fL+UXkAaBHW+7YVcs8pWARSd5LWBXGWysV2wUALwynZSdwtgpgrzMQnuzklQ3hNR9LBSEGN7yJwkU83ZRWPzbvRwKBgQDU3E8g/oExSbu+3Opc1fNOIeTFfUAitjlUHHulbG5aw+qA8I5vDm/rtOHg/tI0u4w2bs4EO5aUiQsFwesbSsJJvjt+ZyCue0blfDnMGE2aRbVKAlidxOhcNAAZp3ycBm4tHROStjbDSGpm7syvg7xlhyHtrFNVFiJrKf7BX64FkQKBgCA8lAzJMuRp1YAlm2c7XOLjFMLJfFuXCHg+hCWI4Gl+xD1N2b9LarxMuoGp8cUurmJJZWSmc2FS1wT6cBg4+zbTyGEgrGqehW9nC+TQKYUO7Ym7btL0SKJZmiTenszP2vjz8Bryh+CguiAaY+t/qcSfv/cYitZeiec8n1UxkVohAoGAa8YwnzkEGBgz0TpdrGFxVBCqMIriMH4PQs2tWZ1nEBk6A7GrODRcRL0FQnRpHyf3mY5N/iEiNQ5GhQ5p1lifTvolTkVkdHpTGFhVfnYegaEAOznigi7dWJPoYlloN36AROxirGJKRIm+Od2bsybM/dNPJfoTDBDPFWGBH/klEBs=")
-				.setCharset("UTF-8")
-				.setAlipayPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuPkP2VJMR6vWCX8RwSFqNIa3klCdvRFJbuS1PN1anzQeeL9eOwtU7kGdI85yxb0dcdPzOYlG+jf9go8W9hBlgjxSRoXxLx03Yfl7cLmzJO9l9vIM1+HmNF0Ctm+el4Yi9dGs/P6q7lcHPUqs/RXGfeLrg33GMVwJbLmRcDZYeIcqPAA1OVF/4SHYr+f+O7glDOd60z+veOOexyoHmvUzYWlEz5+R4kOCNM/Z0w7KGgEYvHbZopexuTuFgUWy/9tYlNrnX+cZUWXVTskLUgD1UGWM1dS5+qfriqY9MPEwJjetcPJkoCK7A4IReE4q1DffUY9KS50/1ML+7na3R/p/UQIDAQAB")
-				.setServiceUrl("https://openapi.alipaydev.com/gateway.do")
-				.setSignType("RSA2")
-				.build();
-		AliPayApiConfigKit.putApiConfig(rsa2);
+		List<PayChannel> channelList = new ArrayList<>();
+		tenantService.list(SecurityConstants.FROM_IN).getData()
+				.forEach(tenant -> {
+					TenantContextHolder.setTenantId(tenant.getId());
+					List<PayChannel> payChannelList = channelService
+							.list(Wrappers.<PayChannel>lambdaQuery()
+									.eq(PayChannel::getState, CommonConstants.STATUS_NORMAL));
+					channelList.addAll(payChannelList);
+				});
+
+		channelList.forEach(channel -> {
+			JSONObject params = JSONUtil.parseObj(channel.getParam());
+
+			//支付宝支付
+			if (PayChannelNameEnum.ALIPAY_WAP.getName().equals(channel.getChannelId())) {
+
+				AliPayApiConfig aliPayApiConfig = AliPayApiConfig.New()
+						.setAppId(channel.getAppId())
+						.setPrivateKey(params.getStr("privateKey"))
+						.setCharset(CharsetUtil.UTF_8)
+						.setAlipayPublicKey(params.getStr("publicKey"))
+						.setServiceUrl(params.getStr("serviceUrl"))
+						.setSignType("RSA2")
+						.build();
+
+				AliPayApiConfigKit.putApiConfig(aliPayApiConfig);
+			}
+
+			// 微信支付
+			if (PayChannelNameEnum.WEIXIN_MP.getName().equals(channel.getChannelId())) {
+				WxPayApiConfig wx = WxPayApiConfig.New()
+						.setAppId(channel.getAppId())
+						.setMchId(channel.getChannelMchId())
+						.setPaternerKey(params.getStr("paternerKey"))
+						.setPayModel(WxPayApiConfig.PayModel.BUSINESSMODEL);
+
+				String subMchId = params.getStr("subMchId");
+				if (StrUtil.isNotBlank(subMchId)) {
+					wx.setPayModel(WxPayApiConfig.PayModel.SERVICEMODE);
+					wx.setSubMchId(subMchId);
+				}
+
+				WxPayApiConfigKit.putApiConfig(wx);
+
+				WxMpService wxMpService = new WxMpServiceImpl();
+				WxMpInMemoryConfigStorage storage = new WxMpInMemoryConfigStorage();
+				storage.setAppId(channel.getAppId());
+				storage.setSecret(params.getStr("secret"));
+				storage.setToken(params.getStr("token"));
+				wxMpService.setWxMpConfigStorage(storage);
+				mpServiceMap.put(channel.getAppId(), wxMpService);
+			}
+		});
 	}
 }

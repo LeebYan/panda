@@ -25,10 +25,10 @@
 
 	<resultMap id="payChannelMap" type="com.pig4cloud.pigx.pay.entity.PayChannel">
 		<id property="id" column="id"/>
-		<result property="channelId" column="channel_id"/>
+		<result property="appId" column="app_id"/>
 		<result property="channelName" column="channel_name"/>
 		<result property="channelMchId" column="channel_mch_id"/>
-		<result property="mchId" column="mch_id"/>
+		<result property="channelId" column="channel_id"/>
 		<result property="state" column="state"/>
 		<result property="param" column="param"/>
 		<result property="remark" column="remark"/>
