@@ -51,6 +51,7 @@ public class ${className}Controller {
      * @param ${classname} ${comments}
      * @return
      */
+    @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R get${className}Page(Page page, ${className} ${classname}) {
         return R.ok(${classname}Service.page(page, Wrappers.query(${classname})));
@@ -62,6 +63,7 @@ public class ${className}Controller {
      * @param ${pk.lowerAttrName} id
      * @return R
      */
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{${pk.lowerAttrName}}" )
     public R getById(@PathVariable("${pk.lowerAttrName}" ) ${pk.attrType} ${pk.lowerAttrName}) {
         return R.ok(${classname}Service.getById(${pk.lowerAttrName}));
@@ -72,6 +74,7 @@ public class ${className}Controller {
      * @param ${classname} ${comments}
      * @return R
      */
+    @ApiOperation(value = "新增${comments}", notes = "新增${comments}")
     @SysLog("新增${comments}" )
     @PostMapping
     @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_add')" )
@@ -84,6 +87,7 @@ public class ${className}Controller {
      * @param ${classname} ${comments}
      * @return R
      */
+    @ApiOperation(value = "修改${comments}", notes = "修改${comments}")
     @SysLog("修改${comments}" )
     @PutMapping
     @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_edit')" )
@@ -96,7 +100,8 @@ public class ${className}Controller {
      * @param ${pk.lowerAttrName} id
      * @return R
      */
-    @SysLog("删除${comments}" )
+    @ApiOperation(value = "通过id删除${comments}", notes = "通过id删除${comments}")
+    @SysLog("通过id删除${comments}" )
     @DeleteMapping("/{${pk.lowerAttrName}}" )
     @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_del')" )
     public R removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {

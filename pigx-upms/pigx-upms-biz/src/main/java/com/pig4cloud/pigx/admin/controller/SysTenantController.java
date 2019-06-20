@@ -28,6 +28,7 @@ import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -118,6 +119,7 @@ public class SysTenantController {
 	 */
 	@Inner(value = false)
 	@GetMapping("/list")
+	@Cacheable(value = CacheConstants.TENANT_DETAILS)
 	public R list() {
 		return R.ok(sysTenantService.getNormal());
 	}

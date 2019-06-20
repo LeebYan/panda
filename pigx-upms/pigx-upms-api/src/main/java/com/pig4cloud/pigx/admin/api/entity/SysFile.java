@@ -35,7 +35,6 @@ import java.time.LocalDateTime;
  * @date 2019-06-18 17:18:42
  */
 @Data
-@TableName("sys_file")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "文件管理")
 public class SysFile extends Model<SysFile> {
@@ -49,7 +48,7 @@ public class SysFile extends Model<SysFile> {
 	/**
 	 * 文件名
 	 */
-	@TableField("`file_name`")
+	@TableField("`name`")
 	private String name;
 	/**
 	 * 保存路径
@@ -82,7 +81,6 @@ public class SysFile extends Model<SysFile> {
 	/**
 	 * 文件大小
 	 */
-	@TableField("`file_size`")
 	private Long fileSize;
 	/**
 	 * 显示大小
