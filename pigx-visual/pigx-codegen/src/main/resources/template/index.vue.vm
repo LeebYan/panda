@@ -35,19 +35,9 @@
 </template>
 
 <script>
-    import {
-        fetchList,
-        getObj,
-        addObj,
-        putObj,
-        delObj
-    } from '@/api/${pathName}'
-    import {
-        tableOption
-    } from '@/const/crud/${pathName}'
-    import {
-        mapGetters
-    } from 'vuex'
+    import {fetchList, getObj, addObj, putObj, delObj} from '@/api/${pathName}'
+    import {tableOption} from '@/const/crud/${pathName}'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: '${pathName}',
@@ -150,7 +140,7 @@
              * 搜索回调
              */
             searchChange(form) {
-                this.getList(this.page,  this.filterForm(form))
+                this.getList(this.page, form)
             },
             /**
              * 刷新回调

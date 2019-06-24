@@ -34,7 +34,6 @@ public class MenuTree extends TreeNode {
 	private String name;
 	private boolean spread = false;
 	private String path;
-	private String component;
 	private String authority;
 	private String redirect;
 	private String keepAlive;
@@ -66,7 +65,6 @@ public class MenuTree extends TreeNode {
 		this.icon = menuVo.getIcon();
 		this.name = menuVo.getName();
 		this.path = menuVo.getPath();
-		this.component = menuVo.getComponent();
 		this.type = menuVo.getType();
 		this.label = menuVo.getName();
 		this.sort = menuVo.getSort();
