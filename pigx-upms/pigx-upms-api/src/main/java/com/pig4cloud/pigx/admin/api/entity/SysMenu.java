@@ -47,8 +47,7 @@ public class SysMenu extends Model<SysMenu> {
 	/**
 	 * 菜单ID
 	 */
-	@NotNull(message = "菜单ID不能为空")
-	@TableId(value = "menu_id", type = IdType.INPUT)
+	@TableId(value = "menu_id", type = IdType.AUTO)
 	private Integer menuId;
 	/**
 	 * 菜单名称
@@ -72,6 +71,13 @@ public class SysMenu extends Model<SysMenu> {
 	 * VUE页面
 	 */
 	private String component;
+
+	/**
+	 * 前端路由标识路径，默认和 comment 保持一致
+	 * 过期
+	 */
+	@Deprecated
+	private String path;
 	/**
 	 * 排序值
 	 */
@@ -98,10 +104,4 @@ public class SysMenu extends Model<SysMenu> {
 	 */
 	@TableLogic
 	private String delFlag;
-	/**
-	 * 前端URL
-	 */
-	private String path;
-
-
 }
