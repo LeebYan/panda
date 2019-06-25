@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service("sysRouteConfService")
 public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, SysRouteConf> implements SysRouteConfService {
-	private final RedisTemplate pigxRedisTemplate;
+	private final RedisTemplate redisTemplate;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
 
@@ -84,7 +84,7 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 	@Transactional(rollbackFor = Exception.class)
 	public Mono<Void> updateRoutes(JSONArray routes) {
 		// 清空Redis 缓存
-		Boolean result = pigxRedisTemplate.delete(CacheConstants.ROUTE_KEY);
+		Boolean result = redisTemplate.delete(CacheConstants.ROUTE_KEY);
 		log.info("清空网关路由 {} ", result);
 
 		// 遍历修改的routes，保存到Redis
@@ -131,8 +131,8 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 				if (order != null) {
 					vo.setOrder(Integer.parseInt(String.valueOf(order)));
 				}
-				pigxRedisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-				pigxRedisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, vo.getId(), vo);
+				redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
+				redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, vo.getId(), vo);
 				routeDefinitionVoList.add(vo);
 			});
 

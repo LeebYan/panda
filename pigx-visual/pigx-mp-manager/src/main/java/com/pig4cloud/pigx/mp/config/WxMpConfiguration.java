@@ -55,7 +55,7 @@ public class WxMpConfiguration {
 			, LocationHandler locationHandler, MenuHandler menuHandler
 			, MsgHandler msgHandler, UnsubscribeHandler unsubscribeHandler
 			, SubscribeHandler subscribeHandler, ScanHandler scanHandler
-			, RedisTemplate pigxRedisTemplate) {
+			, RedisTemplate redisTemplate) {
 		this.accountService = accountService;
 		this.logHandler = logHandler;
 		this.nullHandler = nullHandler;
@@ -67,7 +67,7 @@ public class WxMpConfiguration {
 		this.unsubscribeHandler = unsubscribeHandler;
 		this.subscribeHandler = subscribeHandler;
 		this.scanHandler = scanHandler;
-		this.redisTemplate = pigxRedisTemplate;
+		this.redisTemplate = redisTemplate;
 	}
 
 	@PostConstruct

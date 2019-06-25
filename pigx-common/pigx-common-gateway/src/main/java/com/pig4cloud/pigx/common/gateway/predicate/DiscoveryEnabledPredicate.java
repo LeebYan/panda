@@ -15,32 +15,35 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gateway.configuration;
+package com.pig4cloud.pigx.common.gateway.predicate;
 
-import org.springframework.cloud.gateway.config.GatewayProperties;
-import org.springframework.cloud.gateway.config.PropertiesRouteDefinitionLocator;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import com.netflix.loadbalancer.AbstractServerPredicate;
+import com.netflix.loadbalancer.PredicateKey;
+import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
+import org.springframework.lang.Nullable;
 
 /**
- * @author lengleng
- * @date 2018/11/5
- * <p>
- * 动态路由配置类
+ * 过滤服务
+ *
+ * @author L.cm
  */
-@Configuration
-@ComponentScan("com.pig4cloud.pigx.common.gateway")
-public class DynamicRouteAutoConfiguration {
+public abstract class DiscoveryEnabledPredicate extends AbstractServerPredicate {
+
 	/**
-	 * 配置文件设置为空
-	 * redis 加载为准
-	 *
-	 * @return
+	 * {@inheritDoc}
 	 */
-	@Bean
-	public PropertiesRouteDefinitionLocator propertiesRouteDefinitionLocator() {
-		return new PropertiesRouteDefinitionLocator(new GatewayProperties());
+	@Override
+	public boolean apply(@Nullable PredicateKey input) {
+		return input != null
+			&& input.getServer() instanceof NacosServer
+			&& apply((NacosServer) input.getServer());
 	}
 
+	/**
+	 * Returns whether the specific {@link NacosServer} matches this predicate.
+	 *
+	 * @param server the discovered server
+	 * @return whether the server matches the predicate
+	 */
+	protected abstract boolean apply(NacosServer server);
 }

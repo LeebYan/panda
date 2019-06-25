@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @AllArgsConstructor
 public class MobileServiceImpl implements MobileService {
-	private final RedisTemplate pigxRedisTemplate;
+	private final RedisTemplate redisTemplate;
 	private final SysUserMapper userMapper;
 
 
@@ -67,7 +67,7 @@ public class MobileServiceImpl implements MobileService {
 			return R.ok(Boolean.FALSE, "手机号未注册");
 		}
 
-		Object codeObj = pigxRedisTemplate.opsForValue().get(CommonConstants.DEFAULT_CODE_KEY + mobile);
+		Object codeObj = redisTemplate.opsForValue().get(CommonConstants.DEFAULT_CODE_KEY + mobile);
 
 		if (codeObj != null) {
 			log.info("手机号验证码未过期:{}，{}", mobile, codeObj);
@@ -76,7 +76,7 @@ public class MobileServiceImpl implements MobileService {
 
 		String code = RandomUtil.randomNumbers(Integer.parseInt(SecurityConstants.CODE_SIZE));
 		log.debug("手机号生成验证码成功:{},{}", mobile, code);
-		pigxRedisTemplate.opsForValue().set(
+		redisTemplate.opsForValue().set(
 			CommonConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + "@" + mobile
 			, code, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 		return R.ok(Boolean.TRUE, code);

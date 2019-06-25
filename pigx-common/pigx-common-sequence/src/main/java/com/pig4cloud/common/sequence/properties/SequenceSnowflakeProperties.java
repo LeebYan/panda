@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "xsequence.snowflake")
+@ConfigurationProperties(prefix = "pigx.xsequence.snowflake")
 public class SequenceSnowflakeProperties extends BaseSequenceProperties {
 
 	/**

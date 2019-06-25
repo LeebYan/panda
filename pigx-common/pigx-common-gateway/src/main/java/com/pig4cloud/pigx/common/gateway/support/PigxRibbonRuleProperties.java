@@ -15,32 +15,36 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gateway.configuration;
+package com.pig4cloud.pigx.common.gateway.support;
 
-import org.springframework.cloud.gateway.config.GatewayProperties;
-import org.springframework.cloud.gateway.config.PropertiesRouteDefinitionLocator;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author lengleng
- * @date 2018/11/5
- * <p>
- * 动态路由配置类
+ * Ribbon 配置
+ *
+ * @author L.cm
  */
-@Configuration
-@ComponentScan("com.pig4cloud.pigx.common.gateway")
-public class DynamicRouteAutoConfiguration {
+@Getter
+@Setter
+@RefreshScope
+@ConfigurationProperties("ribbon.rule")
+public class PigxRibbonRuleProperties {
 	/**
-	 * 配置文件设置为空
-	 * redis 加载为准
-	 *
-	 * @return
+	 * 是否开启，默认：true
 	 */
-	@Bean
-	public PropertiesRouteDefinitionLocator propertiesRouteDefinitionLocator() {
-		return new PropertiesRouteDefinitionLocator(new GatewayProperties());
-	}
-
+	private Boolean enabled = Boolean.TRUE;
+	/**
+	 * 服务的tag，用于灰度，匹配：nacos.discovery.metadata.tag
+	 */
+	private String tag;
+	/**
+	 * 优先的ip列表，支持通配符，例如：10.20.0.8*、10.20.0.*
+	 */
+	private List<String> priorIpPattern = new ArrayList<>();
 }

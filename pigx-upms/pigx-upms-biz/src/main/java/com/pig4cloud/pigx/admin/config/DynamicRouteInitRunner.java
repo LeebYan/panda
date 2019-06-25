@@ -50,14 +50,14 @@ import java.net.URI;
 @Configuration
 @AllArgsConstructor
 public class DynamicRouteInitRunner {
-	private final RedisTemplate pigxRedisTemplate;
+	private final RedisTemplate redisTemplate;
 	private final SysRouteConfService routeConfService;
 
 	@Async
 	@Order
 	@EventListener({WebServerInitializedEvent.class, DynamicRouteInitEvent.class})
 	public void initRoute() {
-		Boolean result = pigxRedisTemplate.delete(CacheConstants.ROUTE_KEY);
+		Boolean result = redisTemplate.delete(CacheConstants.ROUTE_KEY);
 		log.info("初始化网关路由 {} ", result);
 
 		routeConfService.routes().forEach(route -> {
@@ -73,8 +73,8 @@ public class DynamicRouteInitRunner {
 			vo.setPredicates(predicateObj.toList(PredicateDefinition.class));
 
 			log.info("加载路由ID：{},{}", route.getRouteId(), vo);
-			pigxRedisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
-			pigxRedisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, route.getRouteId(), vo);
+			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
+			redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, route.getRouteId(), vo);
 		});
 		log.debug("初始化网关路由结束 ");
 	}
