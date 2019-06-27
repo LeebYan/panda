@@ -23,22 +23,4 @@
 
 <mapper namespace="com.pig4cloud.pigx.admin.mapper.SysFileMapper">
 
-	<resultMap id="sysFileMap" type="com.pig4cloud.pigx.admin.api.entity.SysFile">
-		<id property="id" column="id"/>
-		<result property="name" column="file_name"/>
-		<result property="path" column="path"/>
-		<result property="absolutePath" column="absolute_path"/>
-		<result property="prefix" column="prefix"/>
-		<result property="original" column="original"/>
-		<result property="md5" column="md5"/>
-		<result property="suffix" column="suffix"/>
-		<result property="type" column="type"/>
-		<result property="fileSize" column="file_size"/>
-		<result property="displaySize" column="display_size"/>
-		<result property="createUser" column="create_user"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateUser" column="update_user"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-	</resultMap>
 </mapper>

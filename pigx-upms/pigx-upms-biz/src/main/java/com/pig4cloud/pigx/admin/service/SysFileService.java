@@ -19,6 +19,10 @@ package com.pig4cloud.pigx.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
+import com.pig4cloud.pigx.common.core.util.R;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文件管理
@@ -28,4 +32,27 @@ import com.pig4cloud.pigx.admin.api.entity.SysFile;
  */
 public interface SysFileService extends IService<SysFile> {
 
+	/**
+	 * 上传文件
+	 *
+	 * @param file
+	 * @return
+	 */
+	R uploadFile(MultipartFile file);
+
+	/**
+	 * 读取文件
+	 *
+	 * @param fileName
+	 * @param response
+	 */
+	void getFile(String fileName, HttpServletResponse response);
+
+	/**
+	 * 删除文件
+	 *
+	 * @param id
+	 * @return
+	 */
+	Boolean deleteFile(Long id);
 }

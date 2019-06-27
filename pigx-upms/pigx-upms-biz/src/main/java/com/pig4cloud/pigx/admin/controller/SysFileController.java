@@ -28,6 +28,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -41,7 +44,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sys-file")
 @Api(value = "sys-file", tags = "文件管理")
 public class SysFileController {
-
 	private final SysFileService sysFileService;
 
 	/**
@@ -59,46 +61,6 @@ public class SysFileController {
 
 
 	/**
-	 * 通过id查询文件管理
-	 *
-	 * @param id id
-	 * @return R
-	 */
-	@ApiOperation(value = "通过id查询文件管理", notes = "通过id查询文件管理")
-	@GetMapping("/{id}")
-	public R getById(@PathVariable("id") String id) {
-		return R.ok(sysFileService.getById(id));
-	}
-
-	/**
-	 * 新增文件管理
-	 *
-	 * @param sysFile 文件管理
-	 * @return R
-	 */
-	@ApiOperation(value = "新增文件管理", notes = "新增文件管理")
-	@SysLog("新增文件管理")
-	@PostMapping
-	@PreAuthorize("@pms.hasPermission('sys_file_add')")
-	public R save(@RequestBody SysFile sysFile) {
-		return R.ok(sysFileService.save(sysFile));
-	}
-
-	/**
-	 * 修改文件管理
-	 *
-	 * @param sysFile 文件管理
-	 * @return R
-	 */
-	@ApiOperation(value = "修改文件管理", notes = "修改文件管理")
-	@SysLog("修改文件管理")
-	@PutMapping
-	@PreAuthorize("@pms.hasPermission('sys_file_edit')")
-	public R updateById(@RequestBody SysFile sysFile) {
-		return R.ok(sysFileService.updateById(sysFile));
-	}
-
-	/**
 	 * 通过id删除文件管理
 	 *
 	 * @param id id
@@ -108,8 +70,32 @@ public class SysFileController {
 	@SysLog("删除文件管理")
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_file_del')")
-	public R removeById(@PathVariable String id) {
-		return R.ok(sysFileService.removeById(id));
+	public R removeById(@PathVariable Long id) {
+		return R.ok(sysFileService.deleteFile(id));
+	}
+
+	/**
+	 * 上传文件
+	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
+	 *
+	 * @param file 资源
+	 * @return R(bucketName, filename)
+	 */
+	@PostMapping("/upload")
+	public R upload(@RequestParam("file") MultipartFile file) {
+		return sysFileService.uploadFile(file);
+	}
+
+	/**
+	 * 获取文件
+	 *
+	 * @param fileName 文件空间/名称
+	 * @param response
+	 * @return
+	 */
+	@GetMapping("/{fileName}")
+	public void file(@PathVariable String fileName, HttpServletResponse response) {
+		sysFileService.getFile(fileName, response);
 	}
 
 }

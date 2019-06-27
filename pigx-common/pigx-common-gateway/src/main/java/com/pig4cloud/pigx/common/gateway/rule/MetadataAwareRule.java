@@ -24,7 +24,7 @@ import com.netflix.loadbalancer.Server;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.gateway.predicate.DiscoveryEnabledPredicate;
 import com.pig4cloud.pigx.common.gateway.predicate.MetadataAwarePredicate;
-import com.pig4cloud.pigx.common.gateway.support.MicaRibbonRuleProperties;
+import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class MetadataAwareRule extends DiscoveryEnabledRule {
 
 	@Override
 	public List<Server> filterServers(List<Server> serverList) {
-		MicaRibbonRuleProperties ribbonProperties = SpringContextHolder.getBean(MicaRibbonRuleProperties.class);
+		PigxRibbonRuleProperties ribbonProperties = SpringContextHolder.getBean(PigxRibbonRuleProperties.class);
 		List<String> priorIpPattern = ribbonProperties.getPriorIpPattern();
 
 		// 1. 查找是否有本机 ip

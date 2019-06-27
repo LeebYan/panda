@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.common.gateway.predicate;
 
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
-import com.pig4cloud.pigx.common.gateway.support.MicaRibbonRuleProperties;
+import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ public class MetadataAwarePredicate extends DiscoveryEnabledPredicate {
 		final Map<String, String> metadata = server.getMetadata();
 
 		// 获取配置
-		MicaRibbonRuleProperties properties = SpringContextHolder.getBean(MicaRibbonRuleProperties.class);
+		PigxRibbonRuleProperties properties = SpringContextHolder.getBean(PigxRibbonRuleProperties.class);
 		// 服务里的配置
 		String localTag = properties.getTag();
 

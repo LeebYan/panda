@@ -41,7 +41,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @RequestMapping("/role")
 @Api(value = "role", tags = "角色管理模块")
-public class RoleController {
+public class SysRoleController {
 	private final SysRoleService sysRoleService;
 	private final SysRoleMenuService sysRoleMenuService;
 

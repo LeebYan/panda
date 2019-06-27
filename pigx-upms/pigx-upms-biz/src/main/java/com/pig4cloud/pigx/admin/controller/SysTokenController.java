@@ -37,7 +37,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/token")
 @Api(value = "token", tags = "令牌管理模块")
-public class TokenController {
+public class SysTokenController {
 	private final RemoteTokenService remoteTokenService;
 
 	/**

@@ -17,10 +17,9 @@
 
 package com.pig4cloud.pigx.admin.api.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -43,37 +42,20 @@ public class SysFile extends Model<SysFile> {
 	/**
 	 * 编号
 	 */
-	@TableId
-	private String id;
+	@TableId(type = IdType.AUTO)
+	private Long id;
 	/**
 	 * 文件名
 	 */
-	@TableField("`name`")
-	private String name;
-	/**
-	 * 保存路径
-	 */
-	private String path;
-	/**
-	 * 绝对路径
-	 */
-	private String absolutePath;
-	/**
-	 * 上传服务器前缀地址
-	 */
-	private String prefix;
+	private String fileName;
 	/**
 	 * 原文件名
 	 */
 	private String original;
 	/**
-	 * MD5值
+	 * 容器名称
 	 */
-	private String md5;
-	/**
-	 * 后缀名
-	 */
-	private String suffix;
+	private String bucketName;
 	/**
 	 * 文件类型
 	 */
@@ -82,10 +64,6 @@ public class SysFile extends Model<SysFile> {
 	 * 文件大小
 	 */
 	private Long fileSize;
-	/**
-	 * 显示大小
-	 */
-	private String displaySize;
 	/**
 	 * 上传人
 	 */

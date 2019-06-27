@@ -43,7 +43,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequestMapping("/dept")
 @Api(value = "dept", tags = "部门管理模块")
-public class DeptController {
+public class SysDeptController {
 	private final SysDeptService sysDeptService;
 
 	/**

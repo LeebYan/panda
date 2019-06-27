@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.common.gateway.configuration;
 
 import com.pig4cloud.pigx.common.gateway.rule.DiscoveryEnabledRule;
 import com.pig4cloud.pigx.common.gateway.rule.MetadataAwareRule;
-import com.pig4cloud.pigx.common.gateway.support.MicaRibbonRuleProperties;
+import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -37,14 +37,15 @@ import org.springframework.context.annotation.Scope;
  * Mica ribbon rule auto configuration.
  *
  * @author L.cm
+ * @link https://github.com/lets-mica/mica
  */
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnClass(NacosServer.class)
 @AutoConfigureBefore(RibbonClientConfiguration.class)
-@EnableConfigurationProperties(MicaRibbonRuleProperties.class)
-@ConditionalOnProperty(value = "mica.ribbon.rule.enabled", matchIfMissing = true)
-public class MicaRibbonRuleAutoConfiguration {
+@EnableConfigurationProperties(PigxRibbonRuleProperties.class)
+@ConditionalOnProperty(value = "ribbon.rule.enabled", matchIfMissing = true)
+public class PigxRibbonRuleAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean

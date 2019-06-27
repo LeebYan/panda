@@ -47,7 +47,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/log")
 @Api(value = "log", tags = "日志管理模块")
-public class LogController {
+public class SysLogController {
 	private final SysLogService sysLogService;
 
 	/**
