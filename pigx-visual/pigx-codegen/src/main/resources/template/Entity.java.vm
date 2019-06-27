@@ -49,6 +49,7 @@ private static final long serialVersionUID = 1L;
   #if($column.columnName == $pk.columnName)
   @TableId
   #end
+  @ApiModelProperty(value="$column.comments"#if($column.nullable),required=$column.nullable#end#if($column.hidden),hidden=$column.hidden#end)
   private $column.attrType $column.lowerAttrName;
   #end
 
