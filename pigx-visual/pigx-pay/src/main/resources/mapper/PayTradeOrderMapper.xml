@@ -47,7 +47,7 @@
 		<result property="paySuccTime" column="pay_succ_time"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="delFlaag" column="del_flaag"/>
+		<result property="delFlag" column="del_flag"/>
 		<result property="tenantId" column="tenant_id"/>
 	</resultMap>
 </mapper>

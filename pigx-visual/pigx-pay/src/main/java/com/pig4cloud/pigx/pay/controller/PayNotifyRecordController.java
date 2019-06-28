@@ -26,9 +26,8 @@ import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
-import com.pig4cloud.pigx.pay.handler.MessageDuplicateCheckerHandler;
+import com.pig4cloud.pigx.pay.handler.PayNotifyCallbakHandler;
 import com.pig4cloud.pigx.pay.service.PayNotifyRecordService;
-import com.pig4cloud.pigx.pay.utils.PayConstants;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -53,8 +52,9 @@ import java.util.Map;
 @RequestMapping("/notify")
 @Api(value = "notify", tags = "notify管理")
 public class PayNotifyRecordController {
-	private final MessageDuplicateCheckerHandler duplicateCheckerHandler;
 	private final PayNotifyRecordService payNotifyRecordService;
+	private final PayNotifyCallbakHandler alipayCallback;
+	private final PayNotifyCallbakHandler weChatCallback;
 
 	/**
 	 * 分页查询
@@ -120,7 +120,7 @@ public class PayNotifyRecordController {
 	}
 
 	/**
-	 * 渠道异步回调
+	 * 支付宝渠道异步回调
 	 *
 	 * @param request 渠道请求
 	 * @return
@@ -131,36 +131,25 @@ public class PayNotifyRecordController {
 	public void aliCallbak(HttpServletRequest request, HttpServletResponse response) {
 		// 解析回调信息
 		Map<String, String> params = AliPayApi.toMap(request);
-		// 判断10秒内是否已经回调处理
-		if (!duplicateCheckerHandler.isDuplicate(params.get(PayConstants.OUT_TRADE_NO))) {
-			log.warn("支付宝订单重复回调 {} 不做处理", params);
-			payNotifyRecordService.saveAliRecord(params, "");
-			return;
-		}
-		String result = payNotifyRecordService.aliCallbak(params);
-		payNotifyRecordService.saveAliRecord(params, result);
-		//写出处理结果
-		response.getWriter().print(result);
+		alipayCallback.handle(params);
+		response.getWriter().print(alipayCallback.handle(params));
 	}
 
+	/**
+	 * 微信渠道支付回调
+	 *
+	 * @param request
+	 * @return
+	 */
 	@Inner(false)
 	@SneakyThrows
 	@ResponseBody
 	@PostMapping("/wx/callbak")
-	public String wxCallbak(HttpServletRequest request, HttpServletResponse response) {
+	public String wxCallbak(HttpServletRequest request) {
 		String xmlMsg = HttpKit.readData(request);
 		log.info("微信订单回调信息:{}", xmlMsg);
 		Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
-
-		// 判断10秒内是否已经回调处理
-		if (!duplicateCheckerHandler.isDuplicate(params.get(PayConstants.OUT_TRADE_NO))) {
-			log.warn("微信订单重复回调 {} 不做处理", params);
-			payNotifyRecordService.saveAliRecord(params, "");
-			return null;
-		}
-		String result = payNotifyRecordService.wxCallbak(params);
-		payNotifyRecordService.saveAliRecord(params, result);
-		return result;
+		return weChatCallback.handle(params);
 	}
 
 }

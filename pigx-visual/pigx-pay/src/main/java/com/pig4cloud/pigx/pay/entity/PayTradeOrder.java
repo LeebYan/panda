@@ -61,7 +61,7 @@ public class PayTradeOrder extends Model<PayTradeOrder> {
 	/**
 	 * 支付状态,0-订单生成,1-支付中(目前未使用),2-支付成功,3-业务处理完成
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 客户端IP
 	 */
@@ -138,7 +138,7 @@ public class PayTradeOrder extends Model<PayTradeOrder> {
 	 * 删除标记
 	 */
 	@TableLogic
-	private String delFlaag;
+	private String delFlag;
 	/**
 	 * 租户ID
 	 */

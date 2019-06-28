@@ -80,11 +80,11 @@ public class PayRefundOrder extends Model<PayRefundOrder> {
 	/**
 	 * 退款状态:0-订单生成,1-退款中,2-退款成功,3-退款失败,4-业务处理完成
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 退款结果:0-不确认结果,1-等待手动处理,2-确认成功,3-确认失败
 	 */
-	private Integer result;
+	private String result;
 	/**
 	 * 客户端IP
 	 */

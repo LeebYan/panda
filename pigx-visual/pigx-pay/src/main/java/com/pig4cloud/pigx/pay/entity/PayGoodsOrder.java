@@ -64,7 +64,7 @@ public class PayGoodsOrder extends Model<PayGoodsOrder> {
 	/**
 	 * 订单状态,订单生成(0),支付成功(1),处理完成(2),处理失败(-1)
 	 */
-	private Integer status;
+	private String status;
 	/**
 	 * 支付订单号
 	 */

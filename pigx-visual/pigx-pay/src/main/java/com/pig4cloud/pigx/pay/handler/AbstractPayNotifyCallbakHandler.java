@@ -15,17 +15,37 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.pay.service;
+package com.pig4cloud.pigx.pay.handler;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 /**
- * 异步通知记录
- *
  * @author lengleng
- * @date 2019-05-28 23:57:23
+ * @date 2019-06-27
  */
-public interface PayNotifyRecordService extends IService<PayNotifyRecord> {
+@Slf4j
+public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallbakHandler {
+	/**
+	 * 调用入口
+	 *
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public String handle(Map<String, String> params) {
 
+		// 去重处理
+		if (duplicateChecker(params)) {
+			return null;
+		}
+
+		// 验签处理
+		if (!verifyNotify(params)) {
+			return null;
+		}
+
+		return parse(params);
+	}
 }

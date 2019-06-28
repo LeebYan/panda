@@ -84,7 +84,7 @@ public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, P
 	@Transactional(rollbackFor = Exception.class)
 	public void updateOrder(Map<String, String> params) {
 		PayGoodsOrder goodsOrder = new PayGoodsOrder();
-		Integer tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("trade_status")).getStatus();
+		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("trade_status")).getStatus();
 		goodsOrder.setStatus(tradeStatus);
 		this.baseMapper.update(goodsOrder, Wrappers.<PayGoodsOrder>lambdaQuery()
 				.eq(PayGoodsOrder::getPayOrderId, params.

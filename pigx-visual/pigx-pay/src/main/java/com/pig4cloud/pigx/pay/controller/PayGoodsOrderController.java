@@ -112,6 +112,7 @@ public class PayGoodsOrderController {
 	 * @param payGoodsOrder 商品订单表
 	 * @return
 	 */
+	@ResponseBody
 	@GetMapping("/page")
 	public R getPayGoodsOrderPage(Page page, PayGoodsOrder payGoodsOrder) {
 		return R.ok(payGoodsOrderService.page(page, Wrappers.query(payGoodsOrder)));
@@ -124,6 +125,7 @@ public class PayGoodsOrderController {
 	 * @param goodsOrderId id
 	 * @return R
 	 */
+	@ResponseBody
 	@GetMapping("/{goodsOrderId}")
 	public R getById(@PathVariable("goodsOrderId") Integer goodsOrderId) {
 		return R.ok(payGoodsOrderService.getById(goodsOrderId));
@@ -137,6 +139,7 @@ public class PayGoodsOrderController {
 	 */
 	@SysLog("新增商品订单表")
 	@PostMapping
+	@ResponseBody
 	@PreAuthorize("@pms.hasPermission('generator_paygoodsorder_add')")
 	public R save(@RequestBody PayGoodsOrder payGoodsOrder) {
 		return R.ok(payGoodsOrderService.save(payGoodsOrder));
@@ -150,6 +153,7 @@ public class PayGoodsOrderController {
 	 */
 	@SysLog("修改商品订单表")
 	@PutMapping
+	@ResponseBody
 	@PreAuthorize("@pms.hasPermission('generator_paygoodsorder_edit')")
 	public R updateById(@RequestBody PayGoodsOrder payGoodsOrder) {
 		return R.ok(payGoodsOrderService.updateById(payGoodsOrder));
@@ -162,6 +166,7 @@ public class PayGoodsOrderController {
 	 * @return R
 	 */
 	@SysLog("删除商品订单表")
+	@ResponseBody
 	@DeleteMapping("/{goodsOrderId}")
 	@PreAuthorize("@pms.hasPermission('generator_paygoodsorder_del')")
 	public R removeById(@PathVariable Integer goodsOrderId) {
