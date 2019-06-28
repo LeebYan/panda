@@ -64,16 +64,15 @@ public class MetadataAwareRule extends DiscoveryEnabledRule {
 		List<Server> priorServerList = new ArrayList<>();
 		for (Server server : serverList) {
 			String host = server.getHost();
-			// 2. 优先的 ip 服务
-			if (hasPriorIpPattern && PatternMatchUtils.simpleMatch(priorIpPatterns, host)) {
-				log.debug("路由匹配 {},优先路由", priorIpPatterns);
-				priorServerList.add(server);
-			}
-
-			// 3. 优先本地 ip 的服务
-			if (ObjectUtil.equal(hostIp, host)) {
-				log.debug("路由匹配本地IP,优先路由", hostIp);
+			// 2. 优先本地 ip 的服务
+			if (!hasPriorIpPattern && ObjectUtil.equal(hostIp, host)) {
+				log.debug("{} 不存在优先配置，本地路由条件", hostIp);
 				return Collections.singletonList(server);
+			}
+			// 3. 优先的 ip 服务
+			if (hasPriorIpPattern && PatternMatchUtils.simpleMatch(priorIpPatterns, host)) {
+				log.debug("{} 存在优先配置，ribbon 强制路由", priorIpPatterns);
+				priorServerList.add(server);
 			}
 		}
 
