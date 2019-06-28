@@ -55,4 +55,16 @@ public class ColumnEntity {
 	 * 其他信息
 	 */
 	private String extra;
+	/**
+	 * 字段类型
+	 */
+	private String columnType;
+	/**
+	 * 是否可以为空
+	 */
+	private Boolean nullable;
+	/**
+	 * 是否隐藏
+	 */
+	private Boolean hidden;
 }
