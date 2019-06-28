@@ -25,6 +25,7 @@ import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.gateway.predicate.DiscoveryEnabledPredicate;
 import com.pig4cloud.pigx.common.gateway.predicate.MetadataAwarePredicate;
 import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.List;
  *
  * @author dream.lu
  */
+@Slf4j
 public class MetadataAwareRule extends DiscoveryEnabledRule {
 
 	public MetadataAwareRule() {
@@ -62,13 +64,16 @@ public class MetadataAwareRule extends DiscoveryEnabledRule {
 		List<Server> priorServerList = new ArrayList<>();
 		for (Server server : serverList) {
 			String host = server.getHost();
-			// 2. 优先本地 ip 的服务
-			if (ObjectUtil.equal(hostIp, host)) {
-				return Collections.singletonList(server);
-			}
-			// 3. 优先的 ip 服务
+			// 2. 优先的 ip 服务
 			if (hasPriorIpPattern && PatternMatchUtils.simpleMatch(priorIpPatterns, host)) {
+				log.debug("路由匹配 {},优先路由", priorIpPatterns);
 				priorServerList.add(server);
+			}
+
+			// 3. 优先本地 ip 的服务
+			if (ObjectUtil.equal(hostIp, host)) {
+				log.debug("路由匹配本地IP,优先路由", hostIp);
+				return Collections.singletonList(server);
 			}
 		}
 
