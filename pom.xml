@@ -44,7 +44,8 @@
 
 	<properties>
 		<spring-boot.version>2.1.6.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+		<spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -60,7 +61,7 @@
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.10.2</ttl.version>
-		<minio.version>6.0.7</minio.version>
+		<minio.version>6.0.8</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
@@ -157,7 +158,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
-				<version>0.9.0.RELEASE</version>
+				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
