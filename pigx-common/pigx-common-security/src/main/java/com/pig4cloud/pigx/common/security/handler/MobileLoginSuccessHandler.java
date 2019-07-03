@@ -20,8 +20,9 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.security.util.AuthUtils;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -46,12 +47,16 @@ import java.io.PrintWriter;
  * 手机号登录成功，返回oauth token
  */
 @Slf4j
-@Builder
 public class MobileLoginSuccessHandler implements AuthenticationSuccessHandler {
 	private static final String BASIC_ = "Basic ";
+	@Autowired
 	private ObjectMapper objectMapper;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
 	private ClientDetailsService clientDetailsService;
+	@Lazy
+	@Autowired
 	private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
 
 	/**
@@ -98,7 +103,7 @@ public class MobileLoginSuccessHandler implements AuthenticationSuccessHandler {
 			printWriter.append(objectMapper.writeValueAsString(oAuth2AccessToken));
 		} catch (IOException e) {
 			throw new BadCredentialsException(
-				"Failed to decode basic authentication token");
+					"Failed to decode basic authentication token");
 		}
 
 	}

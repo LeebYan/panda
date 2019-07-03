@@ -28,6 +28,13 @@ import java.util.Map;
 public interface PayNotifyCallbakHandler {
 
 	/**
+	 * 初始化执行
+	 *
+	 * @param params
+	 */
+	void before(Map<String, String> params);
+
+	/**
 	 * 去重处理
 	 *
 	 * @param params 回调报文

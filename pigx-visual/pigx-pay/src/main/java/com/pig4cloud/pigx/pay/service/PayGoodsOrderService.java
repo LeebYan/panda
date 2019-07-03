@@ -38,10 +38,4 @@ public interface PayGoodsOrderService extends IService<PayGoodsOrder> {
 	 */
 	Map<String, Object> buy(PayGoodsOrder goodsOrder);
 
-	/**
-	 * 更新订单
-	 *
-	 * @param params
-	 */
-	void updateOrder(Map<String, String> params);
 }

@@ -17,7 +17,8 @@
 
 package com.pig4cloud.pigx.common.gateway.configuration;
 
-import com.pig4cloud.pigx.common.gateway.rule.DiscoveryEnabledRule;
+import com.pig4cloud.pigx.common.gateway.filter.GrayLoadBalancerClientFilter;
+import com.pig4cloud.pigx.common.gateway.rule.AbstractDiscoveryEnabledRule;
 import com.pig4cloud.pigx.common.gateway.rule.MetadataAwareRule;
 import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.cloud.gateway.config.LoadBalancerProperties;
+import org.springframework.cloud.gateway.filter.LoadBalancerClientFilter;
 import org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration;
+import org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient;
+import org.springframework.cloud.netflix.ribbon.SpringClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -50,7 +56,21 @@ public class PigxRibbonRuleAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public DiscoveryEnabledRule metadataAwareRule() {
+	public AbstractDiscoveryEnabledRule metadataAwareRule() {
 		return new MetadataAwareRule();
 	}
+
+	@Bean
+	@ConditionalOnMissingBean(LoadBalancerClient.class)
+	public LoadBalancerClient loadBalancerClient(SpringClientFactory springClientFactory) {
+		return new RibbonLoadBalancerClient(springClientFactory);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(LoadBalancerClientFilter.class)
+	public LoadBalancerClientFilter loadBalancerClientFilter(RibbonLoadBalancerClient client
+			, LoadBalancerProperties properties) {
+		return new GrayLoadBalancerClientFilter(client, properties);
+	}
+
 }

@@ -20,8 +20,6 @@ package com.pig4cloud.pigx.pay.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 
-import java.util.Map;
-
 /**
  * 支付
  *
@@ -30,10 +28,4 @@ import java.util.Map;
  */
 public interface PayTradeOrderService extends IService<PayTradeOrder> {
 
-	/**
-	 * 更新支付订单
-	 *
-	 * @param params
-	 */
-	void updateOrder(Map<String, String> params);
 }

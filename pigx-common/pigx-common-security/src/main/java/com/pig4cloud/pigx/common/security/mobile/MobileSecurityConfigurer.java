@@ -30,7 +30,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 /**
  * @author lengleng
@@ -39,13 +38,14 @@ import org.springframework.stereotype.Component;
  */
 @Getter
 @Setter
-@Component
 public class MobileSecurityConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
 	private AuthenticationEventPublisher defaultAuthenticationEventPublisher;
+	@Autowired
 	private AuthenticationSuccessHandler mobileLoginSuccessHandler;
+	@Autowired
 	private PigxUserDetailsService userDetailsService;
 
 	@Override
@@ -59,6 +59,6 @@ public class MobileSecurityConfigurer extends SecurityConfigurerAdapter<DefaultS
 		MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
 		mobileAuthenticationProvider.setUserDetailsService(userDetailsService);
 		http.authenticationProvider(mobileAuthenticationProvider)
-			.addFilterAfter(mobileAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterAfter(mobileAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

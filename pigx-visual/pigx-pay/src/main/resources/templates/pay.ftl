@@ -4,7 +4,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Pigx Pro 支付模块</title>
 </head>
 <script src="//cdn.jsdelivr.net/jquery/1.12.1/jquery.min.js"></script>
 

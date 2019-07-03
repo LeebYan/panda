@@ -18,10 +18,15 @@
 package com.pig4cloud.pigx.pay.handler;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.jpay.ext.kit.PaymentKit;
 import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
+import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
 import com.pig4cloud.pigx.pay.service.PayNotifyRecordService;
 import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
@@ -48,6 +53,17 @@ public class WeChatPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	private final PayTradeOrderService tradeOrderService;
 	private final PayGoodsOrderService goodsOrderService;
 	private final PayNotifyRecordService recordService;
+
+	/**
+	 * 维护租户信息
+	 *
+	 * @param params
+	 */
+	@Override
+	public void before(Map<String, String> params) {
+		Integer tenant = MapUtil.getInt(params, "attach");
+		TenantContextHolder.setTenantId(tenant);
+	}
 
 	/**
 	 * 去重处理
@@ -90,10 +106,23 @@ public class WeChatPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	 */
 	@Override
 	public String parse(Map<String, String> params) {
-		params.put("trade_status", TradeStatusEnum.TRADE_SUCCESS.getDescription());
+		String orderNo = params.get("out_trade_no");
+		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("result_code")).getStatus();
 
-		goodsOrderService.updateOrder(params);
-		tradeOrderService.updateOrder(params);
+		PayGoodsOrder goodsOrder = goodsOrderService.getOne(Wrappers.<PayGoodsOrder>lambdaQuery()
+				.eq(PayGoodsOrder::getPayOrderId, orderNo));
+		goodsOrder.setStatus(tradeStatus);
+		goodsOrderService.updateById(goodsOrder);
+
+		PayTradeOrder tradeOrder = tradeOrderService.getOne(Wrappers.<PayTradeOrder>lambdaQuery()
+				.eq(PayTradeOrder::getOrderId, orderNo));
+		Long succTime = MapUtil.getLong(params, "time_end");
+		tradeOrder.setPaySuccTime(succTime);
+		tradeOrder.setStatus(tradeStatus);
+		tradeOrder.setChannelOrderNo(params.get("transaction_id"));
+		tradeOrder.setErrMsg(params.get("err_code_des"));
+		tradeOrder.setErrCode(params.get("err_code"));
+		tradeOrderService.updateById(tradeOrder);
 
 		Map<String, String> xml = new HashMap<>(4);
 		xml.put("return_code", "SUCCESS");
@@ -110,7 +139,7 @@ public class WeChatPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	@Override
 	public void saveNotifyRecord(Map<String, String> params, String result) {
 		PayNotifyRecord record = new PayNotifyRecord();
-		String notifyId = params.get("notify_id");
+		String notifyId = params.get("transaction_id");
 		record.setNotifyId(notifyId);
 		String orderNo = params.get("out_trade_no");
 		record.setOrderNo(orderNo);

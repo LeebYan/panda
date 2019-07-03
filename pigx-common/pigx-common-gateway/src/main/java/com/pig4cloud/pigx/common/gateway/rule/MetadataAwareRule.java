@@ -22,8 +22,8 @@ import cn.hutool.system.HostInfo;
 import cn.hutool.system.SystemUtil;
 import com.netflix.loadbalancer.Server;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
-import com.pig4cloud.pigx.common.gateway.predicate.DiscoveryEnabledPredicate;
-import com.pig4cloud.pigx.common.gateway.predicate.MetadataAwarePredicate;
+import com.pig4cloud.pigx.common.gateway.predicate.AbstractDiscoveryEnabledPredicate;
+import com.pig4cloud.pigx.common.gateway.predicate.GrayMetadataAwarePredicate;
 import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
@@ -38,13 +38,13 @@ import java.util.List;
  * @author dream.lu
  */
 @Slf4j
-public class MetadataAwareRule extends DiscoveryEnabledRule {
+public class MetadataAwareRule extends AbstractDiscoveryEnabledRule {
 
 	public MetadataAwareRule() {
-		this(new MetadataAwarePredicate());
+		this(new GrayMetadataAwarePredicate());
 	}
 
-	public MetadataAwareRule(DiscoveryEnabledPredicate predicate) {
+	public MetadataAwareRule(AbstractDiscoveryEnabledPredicate predicate) {
 		super(predicate);
 	}
 
@@ -52,6 +52,10 @@ public class MetadataAwareRule extends DiscoveryEnabledRule {
 	public List<Server> filterServers(List<Server> serverList) {
 		PigxRibbonRuleProperties ribbonProperties = SpringContextHolder.getBean(PigxRibbonRuleProperties.class);
 		List<String> priorIpPattern = ribbonProperties.getPriorIpPattern();
+
+		if (ribbonProperties.isGrayEnabled()) {
+			return serverList;
+		}
 
 		// 1. 查找是否有本机 ip
 		HostInfo hostInfo = SystemUtil.getHostInfo();

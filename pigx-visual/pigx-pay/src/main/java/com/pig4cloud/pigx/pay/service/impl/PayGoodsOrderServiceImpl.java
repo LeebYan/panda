@@ -16,20 +16,15 @@
  */
 package com.pig4cloud.pigx.pay.service.impl;
 
-import cn.hutool.core.util.EnumUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.handler.PayOrderHandler;
 import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
 import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
 import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
-import com.pig4cloud.pigx.pay.utils.PayConstants;
-import com.pig4cloud.pigx.pay.utils.TradeStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,23 +68,5 @@ public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, P
 		result.put("params", params);
 		return result;
 	}
-
-	/**
-	 * 异步更新商品订单
-	 *
-	 * @param params
-	 */
-	@Async
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void updateOrder(Map<String, String> params) {
-		PayGoodsOrder goodsOrder = new PayGoodsOrder();
-		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("trade_status")).getStatus();
-		goodsOrder.setStatus(tradeStatus);
-		this.baseMapper.update(goodsOrder, Wrappers.<PayGoodsOrder>lambdaQuery()
-				.eq(PayGoodsOrder::getPayOrderId, params.
-						get(PayConstants.OUT_TRADE_NO)));
-	}
-
 
 }

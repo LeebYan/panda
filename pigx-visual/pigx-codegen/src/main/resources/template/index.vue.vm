@@ -104,7 +104,6 @@
              **/
             handleUpdate: function (row, index, done,loading) {
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -124,7 +123,6 @@
              **/
             handleSave: function (row, done,loading) {
                 addObj(row).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',

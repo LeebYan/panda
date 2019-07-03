@@ -19,15 +19,11 @@
 
 package com.pig4cloud.pigx.auth.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.security.handler.MobileLoginSuccessHandler;
 import com.pig4cloud.pigx.common.security.mobile.MobileSecurityConfigurer;
-import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,8 +32,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
@@ -49,16 +43,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Order(90)
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private ObjectMapper objectMapper;
-	@Autowired
-	private ClientDetailsService clientDetailsService;
-	@Autowired
-	private PigxUserDetailsService userDetailsService;
-	@Lazy
-	@Autowired
-	private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
-
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
@@ -96,19 +80,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
-		return MobileLoginSuccessHandler.builder()
-			.objectMapper(objectMapper)
-			.clientDetailsService(clientDetailsService)
-			.passwordEncoder(passwordEncoder())
-			.defaultAuthorizationServerTokenServices(defaultAuthorizationServerTokenServices).build();
+		return new MobileLoginSuccessHandler();
 	}
 
 	@Bean
 	public MobileSecurityConfigurer mobileSecurityConfigurer() {
-		MobileSecurityConfigurer mobileSecurityConfigurer = new MobileSecurityConfigurer();
-		mobileSecurityConfigurer.setMobileLoginSuccessHandler(mobileLoginSuccessHandler());
-		mobileSecurityConfigurer.setUserDetailsService(userDetailsService);
-		return mobileSecurityConfigurer;
+		return new MobileSecurityConfigurer();
 	}
 
 

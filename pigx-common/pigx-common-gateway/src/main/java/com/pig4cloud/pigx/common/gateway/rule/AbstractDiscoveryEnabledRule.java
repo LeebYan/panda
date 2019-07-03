@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.common.gateway.rule;
 
 import com.google.common.base.Optional;
 import com.netflix.loadbalancer.*;
-import com.pig4cloud.pigx.common.gateway.predicate.DiscoveryEnabledPredicate;
+import com.pig4cloud.pigx.common.gateway.predicate.AbstractDiscoveryEnabledPredicate;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -29,10 +29,10 @@ import java.util.List;
  *
  * @author L.cm
  */
-public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
+public abstract class AbstractDiscoveryEnabledRule extends PredicateBasedRule {
 	private final CompositePredicate predicate;
 
-	public DiscoveryEnabledRule(DiscoveryEnabledPredicate discoveryEnabledPredicate) {
+	public AbstractDiscoveryEnabledRule(AbstractDiscoveryEnabledPredicate discoveryEnabledPredicate) {
 		Assert.notNull(discoveryEnabledPredicate, "Parameter 'discoveryEnabledPredicate' can't be null");
 		this.predicate = createCompositePredicate(discoveryEnabledPredicate, new AvailabilityPredicate(this, null));
 	}
@@ -69,8 +69,8 @@ public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
 	 */
 	public abstract List<Server> filterServers(List<Server> serverList);
 
-	private CompositePredicate createCompositePredicate(DiscoveryEnabledPredicate discoveryEnabledPredicate, AvailabilityPredicate availabilityPredicate) {
+	private CompositePredicate createCompositePredicate(AbstractDiscoveryEnabledPredicate discoveryEnabledPredicate, AvailabilityPredicate availabilityPredicate) {
 		return CompositePredicate.withPredicates(discoveryEnabledPredicate, availabilityPredicate)
-			.build();
+				.build();
 	}
 }

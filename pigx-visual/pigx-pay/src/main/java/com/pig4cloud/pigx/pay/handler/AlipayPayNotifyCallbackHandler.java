@@ -19,16 +19,22 @@ package com.pig4cloud.pigx.pay.handler;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.jpay.alipay.AliPayApiConfig;
 import com.jpay.alipay.AliPayApiConfigKit;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
+import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
 import com.pig4cloud.pigx.pay.service.PayNotifyRecordService;
 import com.pig4cloud.pigx.pay.service.PayTradeOrderService;
 import com.pig4cloud.pigx.pay.utils.PayConstants;
+import com.pig4cloud.pigx.pay.utils.TradeStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,6 +55,17 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	private final PayTradeOrderService tradeOrderService;
 	private final PayGoodsOrderService goodsOrderService;
 	private final PayNotifyRecordService recordService;
+
+	/**
+	 * 维护租户信息
+	 *
+	 * @param params
+	 */
+	@Override
+	public void before(Map<String, String> params) {
+		Integer tenant = MapUtil.getInt(params, "tenant");
+		TenantContextHolder.setTenantId(tenant);
+	}
 
 	/**
 	 * 去重处理
@@ -107,9 +124,21 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	 */
 	@Override
 	public String parse(Map<String, String> params) {
+		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get("trade_status")).getStatus();
 
-		goodsOrderService.updateOrder(params);
-		tradeOrderService.updateOrder(params);
+		String orderNo = params.get("out_trade_no");
+		PayGoodsOrder goodsOrder = goodsOrderService.getOne(Wrappers.<PayGoodsOrder>lambdaQuery()
+				.eq(PayGoodsOrder::getPayOrderId, orderNo));
+		goodsOrder.setStatus(tradeStatus);
+		goodsOrderService.updateById(goodsOrder);
+
+		PayTradeOrder tradeOrder = tradeOrderService.getOne(Wrappers.<PayTradeOrder>lambdaQuery()
+				.eq(PayTradeOrder::getOrderId, orderNo));
+		Long succTime = MapUtil.getLong(params, "time_end");
+		tradeOrder.setPaySuccTime(succTime);
+		tradeOrder.setStatus(TradeStatusEnum.TRADE_SUCCESS.getStatus());
+		tradeOrder.setChannelOrderNo(params.get("transaction_id"));
+		tradeOrderService.updateById(tradeOrder);
 
 		return "success";
 	}

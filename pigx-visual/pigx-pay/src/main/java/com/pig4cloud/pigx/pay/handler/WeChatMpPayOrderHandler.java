@@ -4,6 +4,7 @@ import cn.hutool.extra.servlet.ServletUtil;
 import com.jpay.ext.kit.PaymentKit;
 import com.jpay.weixin.api.WxPayApi;
 import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.config.PayCommonProperties;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
@@ -67,7 +68,7 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 	public Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
 		String ip = ServletUtil.getClientIP(request);
 		Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
-				.setAttach(goodsOrder.getGoodsId())
+				.setAttach(TenantContextHolder.getTenantId().toString())
 				.setBody(goodsOrder.getGoodsName())
 				.setSpbillCreateIp(ip)
 				.setTotalFee(goodsOrder.getAmount())

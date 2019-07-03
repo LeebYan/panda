@@ -36,6 +36,9 @@ public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallba
 	@Override
 	public String handle(Map<String, String> params) {
 
+		// 初始化租户
+		before(params);
+
 		// 去重处理
 		if (duplicateChecker(params)) {
 			return null;
@@ -46,6 +49,9 @@ public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallba
 			return null;
 		}
 
-		return parse(params);
+		String result = parse(params);
+		// 保存处理结果
+		saveNotifyRecord(params, result);
+		return result;
 	}
 }

@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.common.gateway.predicate;
 import com.netflix.loadbalancer.AbstractServerPredicate;
 import com.netflix.loadbalancer.PredicateKey;
 import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 
 /**
@@ -27,7 +28,7 @@ import org.springframework.lang.Nullable;
  *
  * @author L.cm
  */
-public abstract class DiscoveryEnabledPredicate extends AbstractServerPredicate {
+public abstract class AbstractDiscoveryEnabledPredicate extends AbstractServerPredicate {
 
 	/**
 	 * {@inheritDoc}
@@ -35,15 +36,16 @@ public abstract class DiscoveryEnabledPredicate extends AbstractServerPredicate 
 	@Override
 	public boolean apply(@Nullable PredicateKey input) {
 		return input != null
-			&& input.getServer() instanceof NacosServer
-			&& apply((NacosServer) input.getServer());
+				&& input.getServer() instanceof NacosServer
+				&& apply((NacosServer) input.getServer(), (HttpHeaders) input.getLoadBalancerKey());
 	}
 
 	/**
 	 * Returns whether the specific {@link NacosServer} matches this predicate.
 	 *
-	 * @param server the discovered server
+	 * @param server  the discovered server
+	 * @param headers 请求头
 	 * @return whether the server matches the predicate
 	 */
-	protected abstract boolean apply(NacosServer server);
+	abstract boolean apply(NacosServer server, HttpHeaders headers);
 }

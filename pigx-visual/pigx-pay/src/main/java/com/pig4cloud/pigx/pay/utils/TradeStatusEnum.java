@@ -28,7 +28,17 @@ public enum TradeStatusEnum {
 	/**
 	 * 交易关闭
 	 */
-	TRADE_FINISHED("TRADE_FINISHED", OrderStatusEnum.COMPLETE.getStatus());
+	TRADE_FINISHED("TRADE_FINISHED", OrderStatusEnum.COMPLETE.getStatus()),
+
+	/**
+	 * 微信支付成功
+	 */
+	SUCCESS("SUCCESS", OrderStatusEnum.SUCCESS.getStatus()),
+
+	/**
+	 * 微信支付失败
+	 */
+	FAIL("FAIL", OrderStatusEnum.FAIL.getStatus());
 
 
 	/**

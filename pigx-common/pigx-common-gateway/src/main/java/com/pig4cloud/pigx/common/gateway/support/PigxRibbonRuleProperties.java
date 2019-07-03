@@ -38,11 +38,11 @@ public class PigxRibbonRuleProperties {
 	/**
 	 * 是否开启，默认：true
 	 */
-	private Boolean enabled = Boolean.TRUE;
+	private boolean enabled = Boolean.TRUE;
 	/**
-	 * 服务的tag，用于灰度，匹配：nacos.discovery.metadata.tag
+	 * 是否开启灰度路由，默认:false
 	 */
-	private String tag;
+	private boolean grayEnabled;
 	/**
 	 * 优先的ip列表，支持通配符，例如：10.20.0.8*、10.20.0.*
 	 */
