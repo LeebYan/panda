@@ -44,5 +44,11 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 		</dependency>
+		<!--Excel导入导出-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-excel</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>
