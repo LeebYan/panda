@@ -38,7 +38,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("${tableName}")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(description = "${comments}")
+@ApiModel(value = "${comments}")
 public class ${className} extends Model<${className}> {
 private static final long serialVersionUID = 1L;
 
