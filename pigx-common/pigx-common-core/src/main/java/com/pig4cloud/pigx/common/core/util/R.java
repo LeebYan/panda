@@ -37,7 +37,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@ApiModel(description = "响应信息主体")
+@ApiModel(value = "响应信息主体")
 public class R<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 

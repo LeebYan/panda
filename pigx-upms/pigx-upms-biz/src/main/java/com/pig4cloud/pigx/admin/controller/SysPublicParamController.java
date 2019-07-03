@@ -19,7 +19,9 @@ package com.pig4cloud.pigx.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.common.excel.util.ExcelUtils;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
+import com.pig4cloud.pigx.admin.api.excel.SysPublicParamRowModel;
 import com.pig4cloud.pigx.admin.service.SysPublicParamService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -27,8 +29,13 @@ import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -125,4 +132,25 @@ public class SysPublicParamController {
 	public R removeById(@PathVariable Long publicId) {
 		return sysPublicParamService.removeParam(publicId);
 	}
+
+	/**
+	 * 导出Excel
+	 *
+	 * @param response
+	 * @param sysPublicParam
+	 * @return
+	 */
+	@ApiOperation("导出公共参数信息Excel")
+	@GetMapping("/export")
+	public void exportCustomerData(HttpServletResponse response, SysPublicParam sysPublicParam) {
+		List<SysPublicParamRowModel> resultList = new ArrayList<>();
+		List<SysPublicParam> sysPublicParamList = sysPublicParamService.list(Wrappers.query(sysPublicParam));
+		sysPublicParamList.forEach(data -> {
+			SysPublicParamRowModel publicParamRowModel = new SysPublicParamRowModel();
+			BeanUtils.copyProperties(data, publicParamRowModel);
+			resultList.add(publicParamRowModel);
+		});
+		ExcelUtils.writeExcel(response, resultList,"公共参数导出",SysPublicParamRowModel.class);
+	}
+
 }

@@ -19,6 +19,8 @@
 
 package com.pig4cloud.pigx.admin.api.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,7 +30,9 @@ import lombok.EqualsAndHashCode;
  * 部门树
  */
 @Data
+@ApiModel(value = "部门树")
 @EqualsAndHashCode(callSuper = true)
 public class DeptTree extends TreeNode {
+	@ApiModelProperty(value = "部门名称")
 	private String name;
 }
