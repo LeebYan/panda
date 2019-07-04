@@ -57,11 +57,6 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-minio</artifactId>
 		</dependency>
-		<!--Excel导入导出-->
-		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-excel</artifactId>
-		</dependency>
 		<!--注册中心客户端-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
