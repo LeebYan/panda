@@ -64,11 +64,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.pig4cloud</groupId>
-				<artifactId>pigx-common-excel</artifactId>
-				<version>${pigx.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-security</artifactId>
 				<version>${pigx.version}</version>
 			</dependency>
