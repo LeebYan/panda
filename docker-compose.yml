@@ -122,6 +122,14 @@ services:
     image: pigx-mp-manager
     container_name: pigx-mp-manager
 
+  pigx-pay:
+    build:
+      context: ./
+      dockerfile: ./pigx-visual/pigx-pay/Dockerfile
+    restart: always
+    image: pigx-pay
+    container_name: pigx-pay
+
   pigx-activiti:
     build:
       context: ./

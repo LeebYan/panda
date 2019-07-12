@@ -10,5 +10,8 @@ create database `pigxx_job` default character set utf8mb4 collate utf8mb4_genera
 -- pigx 公众号管理相关库
 create database `pigxx_mp` default character set utf8mb4 collate utf8mb4_general_ci;
 
+-- pigx nacos配置相关库
+create database `pigxx_config` default character set utf8mb4 collate utf8mb4_general_ci;
+
 -- pigx pay配置相关库
 create database `pigxx_pay` default character set utf8mb4 collate utf8mb4_general_ci;
