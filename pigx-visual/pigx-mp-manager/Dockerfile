@@ -12,4 +12,4 @@ EXPOSE 6000
 
 ADD ./pigx-visual/pigx-mp-manager/target/pigx-mp-manager.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-mp-manager.jar
+CMD sleep 30;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-mp-manager.jar

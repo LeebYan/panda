@@ -12,4 +12,4 @@ EXPOSE 5003
 
 ADD ./pigx-visual/pigx-pay/target/pigx-pay.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar pigx-pay.jar
+CMD sleep 30;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-pay.jar
