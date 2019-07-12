@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DynamicDatasourceInterceptor implements HandlerInterceptor {
 
 	/**
-	 * TODO 根据上线文判断路由哪个数据库
+	 * TODO 根据上下文判断路由哪个数据库
 	 *
 	 * @param request
 	 * @param response

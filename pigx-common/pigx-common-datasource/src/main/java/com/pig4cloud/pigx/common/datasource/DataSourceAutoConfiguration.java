@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @author Lucky
  * @date 2019-05-18
  * <p>
- * DbAcess 自动配置类
+ * 自动配置类
  */
 @AllArgsConstructor
 @EnableConfigurationProperties({DruidDataSourceProperties.class})
