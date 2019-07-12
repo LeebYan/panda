@@ -1,4 +1,21 @@
-package com.pig4cloud.pigx.pay.handler;
+/*
+ *    Copyright (c) 2018-2025, lengleng All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * Neither the name of the pig4cloud.com developer nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Author: lengleng (wangiegie@gmail.com)
+ */
+
+package com.pig4cloud.pigx.pay.handler.impl;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.URLUtil;
@@ -54,7 +71,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		tradeOrder.setChannelMchId(AliPayApiConfigKit.getAliPayApiConfig().getAppId());
 		tradeOrder.setClientIp(ServletUtil.getClientIP(request));
 		tradeOrder.setCurrency("cny");
-		tradeOrder.setExpireTime(Long.parseLong(payCommonProperties.getAliPayConfig().getReturnUrl()));
+		tradeOrder.setExpireTime(Long.parseLong(payCommonProperties.getAliPayConfig().getExpireTime()));
 		tradeOrder.setStatus(OrderStatusEnum.INIT.getStatus());
 		tradeOrder.setBody(goodsOrder.getGoodsName());
 		tradeOrderMapper.insert(tradeOrder);
@@ -83,7 +100,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 			AliPayApi.wapPay(response, model, payCommonProperties.getAliPayConfig().getReturnUrl()
 					, payCommonProperties.getAliPayConfig().getNotifyUrl());
 		} catch (AlipayApiException e) {
-			log.warn("支付宝支付失败 {} {}", e.getErrCode(), e.getErrMsg());
+			log.error("支付宝手机支付失败", e);
 			tradeOrder.setErrMsg(e.getErrMsg());
 			tradeOrder.setErrCode(e.getErrCode());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());

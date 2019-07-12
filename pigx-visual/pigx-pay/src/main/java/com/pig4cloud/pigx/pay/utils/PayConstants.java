@@ -23,4 +23,15 @@ public interface PayConstants {
 	 */
 	String MICRO_MESSENGER = "MicroMessenger";
 
+	/**
+	 * 返回码
+	 */
+	String RESULT_CODE = "result_code";
+
+	/**
+	 * 支付状态（支付宝）
+	 */
+	String TRADE_STATUS = "trade_status";
+
+
 }

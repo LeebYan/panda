@@ -13,7 +13,7 @@ public enum TradeStatusEnum {
 	/**
 	 * 交易完成
 	 */
-	WAIT_BUYER_PAY("TRADE_FINISHED", OrderStatusEnum.INIT.getStatus()),
+	WAIT_BUYER_PAY("WAIT_BUYER_PAY", OrderStatusEnum.INIT.getStatus()),
 
 	/**
 	 * TRADE_CLOSED
