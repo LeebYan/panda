@@ -72,7 +72,7 @@ public class PayGoodsOrderController {
 		if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			String appId = WxPayApiConfigKit.getWxPayApiConfig().getAppId();
 			modelAndView.setViewName("redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId +
-					"&redirect_uri=http%3a%2f%2fpigx.huaxiadaowei.com%2fpay%2fgoods%2fwx%3famount%3d" + goods.getAmount() +
+					"&redirect_uri=http%3a%2f%2fadmin.pig4cloud.com%2fpay%2fgoods%2fwx%3famount%3d" + goods.getAmount() +
 					"&response_type=code&scope=snsapi_base&state=" + appId);
 			return modelAndView;
 		}
