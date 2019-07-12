@@ -64,7 +64,7 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	 */
 	@Override
 	public void before(Map<String, String> params) {
-		Integer tenant = MapUtil.getInt(params, "tenant");
+		Integer tenant = MapUtil.getInt(params, "passback_params");
 		TenantContextHolder.setTenantId(tenant);
 	}
 

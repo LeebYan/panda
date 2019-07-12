@@ -80,6 +80,7 @@ public class PayConfigParmaInitRunner {
 						.build();
 
 				AliPayApiConfigKit.putApiConfig(aliPayApiConfig);
+				log.info("新增支付宝支付参数 {}", aliPayApiConfig);
 			}
 
 			// 微信支付
@@ -104,7 +105,9 @@ public class PayConfigParmaInitRunner {
 				storage.setSecret(params.getStr("secret"));
 				storage.setToken(params.getStr("token"));
 				wxMpService.setWxMpConfigStorage(storage);
+
 				mpServiceMap.put(channel.getAppId(), wxMpService);
+				log.info("新增微信支付参数 {} {}", wx, wxMpService);
 			}
 		});
 	}

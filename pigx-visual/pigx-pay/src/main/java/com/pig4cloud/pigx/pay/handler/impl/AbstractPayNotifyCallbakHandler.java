@@ -69,7 +69,7 @@ public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallba
 	 * @param notifyId
 	 * @param recordService
 	 */
-	public void saveRecord(Map<String, String> params, String result, PayNotifyRecord record, String notifyId
+	void saveRecord(Map<String, String> params, String result, PayNotifyRecord record, String notifyId
 			, PayNotifyRecordService recordService) {
 		record.setNotifyId(notifyId);
 		String orderNo = params.get(PayConstants.OUT_TRADE_NO);

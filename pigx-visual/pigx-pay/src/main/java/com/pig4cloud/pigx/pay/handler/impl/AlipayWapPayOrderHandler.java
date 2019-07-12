@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.pay.handler.impl;
 
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
@@ -95,7 +94,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		//分转成元 并且保留两位
 		model.setTotalAmount(NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString());
 		model.setProductCode(goodsOrder.getGoodsId());
-		model.setPassbackParams(URLUtil.encode(String.format("tenant=%s", TenantContextHolder.getTenantId())));
+		model.setPassbackParams(String.valueOf(TenantContextHolder.getTenantId()));
 		try {
 			AliPayApi.wapPay(response, model, payCommonProperties.getAliPayConfig().getReturnUrl()
 					, payCommonProperties.getAliPayConfig().getNotifyUrl());
