@@ -30,7 +30,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -60,7 +59,6 @@ public class SysRole extends Model<SysRole> {
 	@ApiModelProperty(value = "角色标识")
 	private String roleCode;
 
-	@NotBlank(message = "角色描述不能为空")
 	@ApiModelProperty(value = "角色描述")
 	private String roleDesc;
 

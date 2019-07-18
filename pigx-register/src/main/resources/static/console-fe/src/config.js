@@ -24,7 +24,7 @@ module.exports = {
       {
         key: 'home', // 用作顶部菜单的选中
         text: 'HOME',
-        link: 'https://pig4cloud.com',
+        link: 'https://nacos.io/en-us/index.html',
       },
       {
         key: 'docs',
@@ -84,7 +84,7 @@ module.exports = {
       {
         key: 'home',
         text: '首页',
-        link: 'https://pig4cloud.com',
+        link: 'https://nacos.io/zh-cn/',
       },
       {
         key: 'docs',

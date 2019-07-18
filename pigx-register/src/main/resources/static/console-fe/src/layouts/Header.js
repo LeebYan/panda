@@ -67,23 +67,23 @@ class Header extends React.Component {
       location: { pathname },
     } = this.props;
     const { home, docs, blog, community, languageSwitchButton } = locale;
-    const BASE_URL = `https://pig4cloud.com/`;
+    const BASE_URL = `https://nacos.io/${language.toLocaleLowerCase()}/`;
     const NAV_MENU = [
       { id: 1, title: home, link: BASE_URL },
-      { id: 2, title: docs, link: BASE_URL },
-      { id: 3, title: blog, link: BASE_URL },
-      { id: 4, title: community, link: BASE_URL },
+      { id: 2, title: docs, link: `${BASE_URL}docs/what-is-nacos.html` },
+      { id: 3, title: blog, link: `${BASE_URL}blog/index.html` },
+      { id: 4, title: community, link: `${BASE_URL}community/index.html` },
     ];
     return (
       <header className="header-container header-container-primary">
         <div className="header-body">
           <a
-            href={`https://pig4cloud.com/`}
+            href={`https://nacos.io/${language.toLocaleLowerCase()}/`}
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
-              src="img/TB118jPv_mWBKNjSZFBXXXxUFXa-2000-390.svg"
+              src="img/logo-2000-390.svg"
               className="logo"
               alt={siteConfig.name}
               title={siteConfig.name}

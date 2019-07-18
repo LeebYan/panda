@@ -78,7 +78,7 @@ public class SysDept extends Model<SysDept> {
 	@ApiModelProperty(value = "父级部门id")
 	private Integer parentId;
 	/**
-	 * 是否删除  -1：已删除  0：正常
+	 * 是否删除  1：已删除  0：正常
 	 */
 	@TableLogic
 	@ApiModelProperty(value = "删除标记,1:已删除,0:正常")

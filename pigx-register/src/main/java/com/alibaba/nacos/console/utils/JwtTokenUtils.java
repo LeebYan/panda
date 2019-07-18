@@ -38,10 +38,8 @@ import java.util.List;
 @Component
 public class JwtTokenUtils {
 
-	private final Logger log = LoggerFactory.getLogger(JwtTokenUtils.class);
-
 	private static final String AUTHORITIES_KEY = "auth";
-
+	private final Logger log = LoggerFactory.getLogger(JwtTokenUtils.class);
 	/**
 	 * secret key
 	 */
@@ -118,7 +116,7 @@ public class JwtTokenUtils {
 		try {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return true;
-		} catch (SecurityException e) {
+		} catch (SignatureException e) {
 			log.info("Invalid JWT signature.");
 			log.trace("Invalid JWT signature trace: {}", e);
 		} catch (MalformedJwtException e) {
