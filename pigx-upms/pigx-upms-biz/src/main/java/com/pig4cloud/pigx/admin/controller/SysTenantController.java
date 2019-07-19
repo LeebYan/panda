@@ -80,6 +80,7 @@ public class SysTenantController {
 	@SysLog("新增租户")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('admin_systenant_add')")
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS, allEntries = true)
 	public R save(@RequestBody SysTenant sysTenant) {
 		return R.ok(sysTenantService.saveTenant(sysTenant));
 	}
@@ -92,8 +93,8 @@ public class SysTenantController {
 	 */
 	@SysLog("修改租户")
 	@PutMapping
-	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
 	@PreAuthorize("@pms.hasPermission('admin_systenant_edit')")
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS, allEntries = true)
 	public R updateById(@RequestBody SysTenant sysTenant) {
 		return R.ok(sysTenantService.updateById(sysTenant));
 	}
@@ -106,7 +107,7 @@ public class SysTenantController {
 	 */
 	@SysLog("删除租户")
 	@DeleteMapping("/{id}")
-	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
+	@CacheEvict(value = CacheConstants.TENANT_DETAILS, allEntries = true)
 	@PreAuthorize("@pms.hasPermission('admin_systenant_del')")
 	public R removeById(@PathVariable Integer id) {
 		return R.ok(sysTenantService.removeById(id));
