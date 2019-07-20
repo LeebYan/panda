@@ -9,10 +9,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `pay_channel`;
 CREATE TABLE `pay_channel` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '渠道主键ID',
-  `mch_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '内部商户号',
+  `mch_id` varchar(32) CHARACTER SET utf8mb4  DEFAULT NULL COMMENT '内部商户号',
   `channel_id` varchar(24) NOT NULL COMMENT '渠道ID',
   `channel_name` varchar(30) NOT NULL COMMENT '渠道名称,如:alipay,wechat',
-  `channel_mch_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '渠道商户ID',
+  `channel_mch_id` varchar(32) CHARACTER SET utf8mb4  DEFAULT NULL COMMENT '渠道商户ID',
   `state` char(1) NOT NULL DEFAULT '0' COMMENT '渠道状态',
   `param` text NOT NULL COMMENT '配置参数,json字符串',
   `remark` varchar(128) DEFAULT NULL COMMENT '备注',
@@ -23,7 +23,7 @@ CREATE TABLE `pay_channel` (
   `app_id` varchar(64) NOT NULL COMMENT 'appid',
   PRIMARY KEY (`id`),
   UNIQUE KEY `IDX_MchId_MchOrderNo` (`channel_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付渠道表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4  COMMENT='支付渠道表';
 
 -- ----------------------------
 -- Records of pay_channel
@@ -151,8 +151,8 @@ CREATE TABLE `pay_trade_order` (
   `pay_succ_time` bigint(20) DEFAULT NULL COMMENT '订单支付成功时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' COMMENT '删除标记',
+  `del_flag` char(1) CHARACTER SET utf8mb4  DEFAULT '0' COMMENT '删除标记',
   `tenant_id` int(11) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='支付订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  COMMENT='支付订单表';
 SET FOREIGN_KEY_CHECKS = 1;
