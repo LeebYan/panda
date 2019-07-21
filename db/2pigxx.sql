@@ -417,7 +417,7 @@ INSERT INTO `sys_menu` VALUES (3400, '在线事务', NULL, '/tx/model', 3000, 'i
 INSERT INTO `sys_menu` VALUES (3500, '文档扩展', NULL, 'http://127.0.0.1:9999/doc.html', 3000, 'icon-wendang', 2, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:57:42', '0');
 INSERT INTO `sys_menu` VALUES (3600, '任务轨迹', '', '/daemon/status-trace-log/index', 3000, 'icon-guiji', 8, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:18:41', '0');
 INSERT INTO `sys_menu` VALUES (3601, '删除轨迹', 'daemon_status_trace_log_del', NULL, 3600, '1', 2, '0', '1', '2018-05-15 21:35:18', '2019-03-30 09:31:06', '0');
-INSERT INTO `sys_menu` VALUES (3620, 'Quartz日志', '', '/daemon/joblog/index', 3000, 'icon-gtsquanjushiwufuwuGTS', 8, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:18:54', '0');
+INSERT INTO `sys_menu` VALUES (3620, 'Quartz日志', '', '/daemon/job-log/index', 3000, 'icon-gtsquanjushiwufuwuGTS', 8, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:18:54', '0');
 INSERT INTO `sys_menu` VALUES (3630, '任务日志', '', '/daemon/execution-log/index', 3000, 'icon-wendang', 7, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:19:07', '0');
 INSERT INTO `sys_menu` VALUES (3631, '删除日志', 'daemon_execution_log_del', NULL, 3900, '1', 2, '0', '1', '2018-05-15 21:35:18', '2019-03-30 09:30:45', '0');
 INSERT INTO `sys_menu` VALUES (3700, '注册配置', NULL, '', 3000, 'icon-line', 10, '0', '0', '2018-01-25 11:08:52', '2019-06-24 15:35:10', '1');
