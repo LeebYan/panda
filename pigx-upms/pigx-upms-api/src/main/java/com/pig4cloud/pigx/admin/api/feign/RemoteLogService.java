@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @author lengleng
  * @date 2018/6/28
  */
-@FeignClient(contextId = "remoteLogService", value = ServiceNameConstants.UMPS_SERVICE)
+@FeignClient(contextId = "remoteLogService", value = ServiceNameConstants.UPMS_SERVICE)
 public interface RemoteLogService {
 	/**
 	 * 保存日志

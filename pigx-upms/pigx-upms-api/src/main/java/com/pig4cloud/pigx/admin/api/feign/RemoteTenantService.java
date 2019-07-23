@@ -35,7 +35,7 @@ import java.util.List;
  * <p>
  * 租户接口
  */
-@FeignClient(contextId = "remoteTenantService", value = ServiceNameConstants.UMPS_SERVICE)
+@FeignClient(contextId = "remoteTenantService", value = ServiceNameConstants.UPMS_SERVICE)
 public interface RemoteTenantService {
 	/**
 	 * 查询全部有效租户
