@@ -19,6 +19,7 @@
 
 package com.pig4cloud.pigx.auth.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
@@ -99,7 +100,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {
-				return super.extractKey(authentication) + ":" + TenantContextHolder.getTenantId();
+				return super.extractKey(authentication) + StrUtil.COLON + TenantContextHolder.getTenantId();
 			}
 		});
 		return tokenStore;

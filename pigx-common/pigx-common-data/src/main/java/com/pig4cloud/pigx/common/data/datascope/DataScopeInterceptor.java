@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.common.data.datascope;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
@@ -92,7 +93,7 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			List<String> roleIdList = user.getAuthorities()
 					.stream().map(GrantedAuthority::getAuthority)
 					.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
-					.map(authority -> authority.split("_")[1])
+					.map(authority -> authority.split(StrUtil.UNDERLINE)[1])
 					.collect(Collectors.toList());
 
 			Entity query = Db.use(dataSource)
@@ -107,7 +108,7 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			// 自定义
 			if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
 				String dsScope = query.getStr("ds_scope");
-				deptIds.addAll(Arrays.stream(dsScope.split(","))
+				deptIds.addAll(Arrays.stream(dsScope.split(StrUtil.COMMA))
 						.map(Integer::parseInt).collect(Collectors.toList()));
 			}
 			// 查询本级及其下级
