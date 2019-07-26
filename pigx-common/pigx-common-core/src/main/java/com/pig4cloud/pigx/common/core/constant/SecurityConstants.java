@@ -174,6 +174,11 @@ public interface SecurityConstants {
 	String DETAILS_LICENSE = "license";
 
 	/**
+	 * 激活字段 兼容外围系统接入
+	 */
+	String ACTIVE = "active";
+
+	/**
 	 * AES 加密
 	 */
 	String AES = "aes";
