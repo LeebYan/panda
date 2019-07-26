@@ -131,7 +131,6 @@ public class PayNotifyRecordController {
 	public void aliCallbak(HttpServletRequest request, HttpServletResponse response) {
 		// 解析回调信息
 		Map<String, String> params = AliPayApi.toMap(request);
-		alipayCallback.handle(params);
 		response.getWriter().print(alipayCallback.handle(params));
 	}
 
