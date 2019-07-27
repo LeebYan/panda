@@ -78,7 +78,7 @@ public class SequenceAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnProperty("xsequence.snowflak")
+	@ConditionalOnProperty("xsequence.snowflake")
 	public Sequence snowflakeSequence(SequenceSnowflakeProperties properties) {
 		return SnowflakeSeqBuilder
 				.create()
