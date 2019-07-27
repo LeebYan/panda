@@ -11,7 +11,6 @@ import com.pig4cloud.common.sequence.range.impl.name.DefaultBizName;
 import com.pig4cloud.common.sequence.sequence.Sequence;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,8 +35,7 @@ public class SequenceAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnBean(DataSource.class)
-	@ConditionalOnProperty("xsequence.db")
+	@ConditionalOnBean(SequenceDbProperties.class)
 	public Sequence dbSequence(DataSource dataSource,
 							   SequenceDbProperties properties) {
 		return DbSeqBuilder
@@ -58,7 +56,7 @@ public class SequenceAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnProperty("xsequence.redis")
+	@ConditionalOnBean(SequenceRedisProperties.class)
 	public Sequence redisSequence(RedisProperties redisProperties,
 								  SequenceRedisProperties properties) {
 		return RedisSeqBuilder
@@ -78,7 +76,7 @@ public class SequenceAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnProperty("xsequence.snowflake")
+	@ConditionalOnBean(SequenceSnowflakeProperties.class)
 	public Sequence snowflakeSequence(SequenceSnowflakeProperties properties) {
 		return SnowflakeSeqBuilder
 				.create()
