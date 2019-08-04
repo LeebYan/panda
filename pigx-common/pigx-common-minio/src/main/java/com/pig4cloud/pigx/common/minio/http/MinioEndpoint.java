@@ -15,11 +15,11 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.common.minio.http;
+package com.pig4cloud.pigx.common.minio.http;
 
-import com.pig4cloud.common.minio.service.MinioTemplate;
-import com.pig4cloud.common.minio.vo.MinioItem;
-import com.pig4cloud.common.minio.vo.MinioObject;
+import com.pig4cloud.pigx.common.minio.service.MinioTemplate;
+import com.pig4cloud.pigx.common.minio.vo.MinioItem;
+import com.pig4cloud.pigx.common.minio.vo.MinioObject;
 import io.minio.messages.Bucket;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

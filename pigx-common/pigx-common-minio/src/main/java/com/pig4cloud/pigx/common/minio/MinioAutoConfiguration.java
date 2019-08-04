@@ -15,9 +15,9 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.common.minio;
+package com.pig4cloud.pigx.common.minio;
 
-import com.pig4cloud.common.minio.service.MinioTemplate;
+import com.pig4cloud.pigx.common.minio.service.MinioTemplate;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

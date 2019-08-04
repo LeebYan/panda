@@ -15,39 +15,41 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.common.minio.vo;
+package com.pig4cloud.pigx.common.minio.vo;
 
-import io.minio.messages.Item;
-import io.minio.messages.Owner;
+import io.minio.ObjectStat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 
 /**
- * minio 桶中的对象信息
+ * 存储对象的元数据
  *
  * @author lengleng
  */
 @Data
 @AllArgsConstructor
-public class MinioItem {
-
-	private String objectName;
-	private Date lastModified;
+public class MinioObject {
+	private String bucketName;
+	private String name;
+	private Date createdTime;
+	private Long length;
 	private String etag;
-	private Long size;
-	private String storageClass;
-	private Owner owner;
-	private String type;
+	private String contentType;
+	private Map<String, List<String>> httpHeaders;
 
-	public MinioItem(Item item) {
-		this.objectName = item.objectName();
-		this.lastModified = item.lastModified();
-		this.etag = item.etag();
-		this.size = (long) item.size();
-		this.storageClass = item.storageClass();
-		this.owner = item.owner();
-		this.type = item.isDir() ? "directory" : "file";
+	public MinioObject(ObjectStat os) {
+		this.bucketName = os.bucketName();
+		this.name = os.name();
+		this.createdTime = os.createdTime();
+		this.length = os.length();
+		this.etag = os.etag();
+		this.contentType = os.contentType();
+		this.httpHeaders = os.httpHeaders();
 	}
+
 }

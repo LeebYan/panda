@@ -21,7 +21,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.common.minio.service.MinioTemplate;
+import com.pig4cloud.pigx.common.minio.service.MinioTemplate;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
 import com.pig4cloud.pigx.admin.mapper.SysFileMapper;
 import com.pig4cloud.pigx.admin.service.SysFileService;

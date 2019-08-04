@@ -15,9 +15,9 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.common.minio.service;
+package com.pig4cloud.pigx.common.minio.service;
 
-import com.pig4cloud.common.minio.vo.MinioItem;
+import com.pig4cloud.pigx.common.minio.vo.MinioItem;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.Result;

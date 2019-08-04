@@ -15,34 +15,39 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.common.minio;
+package com.pig4cloud.pigx.common.minio.vo;
 
+import io.minio.messages.Item;
+import io.minio.messages.Owner;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+
+import java.util.Date;
 
 /**
- * minio 配置信息
+ * minio 桶中的对象信息
  *
  * @author lengleng
  */
 @Data
-@Configuration
-@ConfigurationProperties(prefix = "minio")
-public class MinioProperties {
-	/**
-	 * minio 服务地址 http://ip:port
-	 */
-	private String url;
+@AllArgsConstructor
+public class MinioItem {
 
-	/**
-	 * 用户名
-	 */
-	private String accessKey;
+	private String objectName;
+	private Date lastModified;
+	private String etag;
+	private Long size;
+	private String storageClass;
+	private Owner owner;
+	private String type;
 
-	/**
-	 * 密码
-	 */
-	private String secretKey;
-
+	public MinioItem(Item item) {
+		this.objectName = item.objectName();
+		this.lastModified = item.lastModified();
+		this.etag = item.etag();
+		this.size = (long) item.size();
+		this.storageClass = item.storageClass();
+		this.owner = item.owner();
+		this.type = item.isDir() ? "directory" : "file";
+	}
 }
