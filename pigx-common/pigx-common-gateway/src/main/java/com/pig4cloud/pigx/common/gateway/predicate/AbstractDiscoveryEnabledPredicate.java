@@ -17,9 +17,9 @@
 
 package com.pig4cloud.pigx.common.gateway.predicate;
 
+import com.alibaba.cloud.nacos.ribbon.NacosServer;
 import com.netflix.loadbalancer.AbstractServerPredicate;
 import com.netflix.loadbalancer.PredicateKey;
-import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 

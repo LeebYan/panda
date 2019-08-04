@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,24 +36,25 @@ import java.util.Map;
 @RequestMapping("/v1/console/server")
 public class ServerStateController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ServerStateController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServerStateController.class);
 
 
-	public static String VERSION;
+    public static String VERSION ;
 
 
-	@ResponseBody
-	@RequestMapping(value = "state", method = RequestMethod.GET)
-	public ResponseEntity serverState() {
-		Map<String, String> serverState = new HashMap<String, String>(3);
-		serverState.put("standalone_mode", SystemUtils.STANDALONE_MODE ?
-				SystemUtils.STANDALONE_MODE_ALONE : SystemUtils.STANDALONE_MODE_CLUSTER);
+    @ResponseBody
+    @RequestMapping(value = "state", method = RequestMethod.GET)
+    public ResponseEntity serverState() {
+        Map<String,String> serverState = new HashMap<String, String>(3);
+        serverState.put("standalone_mode",SystemUtils.STANDALONE_MODE ?
+            SystemUtils.STANDALONE_MODE_ALONE : SystemUtils.STANDALONE_MODE_CLUSTER);
 
-		serverState.put("function_mode", SystemUtils.FUNCTION_MODE);
-		serverState.put("version", VersionUtils.VERSION);
+        serverState.put("function_mode", SystemUtils.FUNCTION_MODE);
+        serverState.put("version", VersionUtils.VERSION);
 
-		return ResponseEntity.ok().body(serverState);
-	}
+        return ResponseEntity.ok().body(serverState);
+    }
+
 
 
 }

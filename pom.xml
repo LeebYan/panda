@@ -45,16 +45,16 @@
 	<properties>
 		<spring-boot.version>2.1.6.RELEASE</spring-boot.version>
 		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
-		<spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
+		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
-		<hutool.version>4.5.16</hutool.version>
+		<hutool.version>4.6.1</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<swagger-bootstrap-ui.version>1.9.4</swagger-bootstrap-ui.version>
+		<swagger-bootstrap-ui.version>1.9.5</swagger-bootstrap-ui.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
@@ -64,8 +64,6 @@
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
-		<zipkin.version>2.12.2</zipkin.version>
-		<zipkin-storage-mysql.version>2.8.4</zipkin-storage-mysql.version>
 		<docker.url>http://192.168.0.13:4243</docker.url>
 		<docker.plugin.version>0.4.12</docker.plugin.version>
 		<registry.url>192.168.0.13:5000</registry.url>
@@ -155,7 +153,7 @@
 			</dependency>
 			<!--spring cloud alibaba-->
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
+				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
 				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>

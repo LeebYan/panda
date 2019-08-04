@@ -18,11 +18,11 @@
 package com.pig4cloud.pigx.common.gateway.predicate;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.cloud.nacos.ribbon.NacosServer;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.gateway.support.PigxRibbonRuleProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.alibaba.nacos.ribbon.NacosServer;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Map;
