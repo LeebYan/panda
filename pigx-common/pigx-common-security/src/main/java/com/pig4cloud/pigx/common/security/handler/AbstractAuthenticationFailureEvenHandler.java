@@ -43,7 +43,7 @@ public abstract class AbstractAuthenticationFailureEvenHandler implements Applic
 	}
 
 	/**
-	 * 处理登录成功方法
+	 * 处理登录失败方法
 	 * <p>
 	 *
 	 * @param authenticationException 登录的authentication 对象
