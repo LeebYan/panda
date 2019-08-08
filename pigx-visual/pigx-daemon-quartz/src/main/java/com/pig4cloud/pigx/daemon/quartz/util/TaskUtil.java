@@ -40,7 +40,7 @@ public class TaskUtil {
 	 * @param sysjob
 	 * @return
 	 */
-	public JobKey getJobKey(SysJob sysjob) {
+	public static JobKey getJobKey(SysJob sysjob) {
 		return JobKey.jobKey(sysjob.getJobName(), sysjob.getJobGroup());
 	}
 
@@ -50,7 +50,7 @@ public class TaskUtil {
 	 * @param sysjob
 	 * @return
 	 */
-	public TriggerKey getTriggerKey(SysJob sysjob) {
+	public static TriggerKey getTriggerKey(SysJob sysjob) {
 		return TriggerKey.triggerKey(sysjob.getJobName(), sysjob.getJobGroup());
 	}
 
@@ -63,9 +63,9 @@ public class TaskUtil {
 	public void addOrUpateJob(SysJob sysjob, Scheduler scheduler) {
 		CronTrigger trigger = null;
 		try {
-			JobKey jobKey = this.getJobKey(sysjob);
+			JobKey jobKey = getJobKey(sysjob);
 			//获得触发器
-			TriggerKey triggerKey = this.getTriggerKey(sysjob);
+			TriggerKey triggerKey = getTriggerKey(sysjob);
 			trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 			//判断触发器是否存在（如果存在说明之前运行过但是在当前被禁用了，如果不存在说明一次都没运行过）
 			if (trigger == null) {
@@ -98,6 +98,27 @@ public class TaskUtil {
 			log.error("添加或更新定时任务，失败信息：{}", e.getMessage());
 		}
 	}
+
+
+	/**
+	 * 立即执行一次任务
+	 */
+	public static boolean runOnce(Scheduler scheduler, SysJob sysJob) {
+		try {
+			//参数
+			JobDataMap dataMap = new JobDataMap();
+			dataMap.put(SCHEDULE_JOB_KEY.getType(), sysJob);
+
+			scheduler.triggerJob(getJobKey(sysJob), dataMap);
+		} catch (SchedulerException e) {
+			log.error("立刻执行定时任务，失败信息：{}", e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+
 
 	/**
 	 * 暂停定时任务

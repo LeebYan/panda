@@ -230,6 +230,24 @@ public class SysJobController {
 		return R.ok();
 	}
 
+
+	/**
+	 * 启动定时任务
+	 *
+	 * @param jobId
+	 * @return
+	 */
+	@SysLog("立刻执行定时任务")
+	@PostMapping("/run-job/{id}")
+	@PreAuthorize("@pms.hasPermission('job_sys_job_run_job')")
+	@ApiOperation(value = "立刻执行定时任务")
+	public R runJob(@PathVariable("id") Integer jobId) {
+		SysJob querySysJob = this.sysJobService.getById(jobId);
+		return TaskUtil.runOnce(scheduler, querySysJob)? R.ok(): R.failed();
+	}
+
+
+
 	/**
 	 * 暂停定时任务
 	 *
