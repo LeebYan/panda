@@ -13,7 +13,7 @@ spring:
         file-extension: yml
         shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
-    active: dev
+    active: @profiles.active@
 
 turbine:
   app-config: pigx-upms-biz,pigx-auth
