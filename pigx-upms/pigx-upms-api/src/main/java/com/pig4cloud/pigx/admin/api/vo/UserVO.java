@@ -20,6 +20,8 @@
 package com.pig4cloud.pigx.admin.api.vo;
 
 import com.pig4cloud.pigx.admin.api.entity.SysRole;
+import com.pig4cloud.pigx.common.core.sensitive.Sensitive;
+import com.pig4cloud.pigx.common.core.sensitive.SensitiveTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -90,6 +92,7 @@ public class UserVO implements Serializable {
 	/**
 	 * 手机号
 	 */
+	@Sensitive(type = SensitiveTypeEnum.MOBILE_PHONE)
 	@ApiModelProperty(value = "手机号")
 	private String phone;
 	/**

@@ -14,17 +14,25 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.mp.entity.WxMpMenu;
+package com.pig4cloud.pigx.codegen.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.codegen.entity.GenFormConf;
 
 /**
- * lengleng
+ * 表单管理
  *
  * @author lengleng
- * @date 2019-03-27 20:45:18
+ * @date 2019-08-12 15:55:35
  */
-public interface WxMenuMapper extends BaseMapper<WxMpMenu> {
+public interface GenFormConfService extends IService<GenFormConf> {
 
+	/**
+	 * 获取表单信息
+	 *
+	 * @param tableName
+	 * @return
+	 */
+	GenFormConf getForm(String tableName);
 }

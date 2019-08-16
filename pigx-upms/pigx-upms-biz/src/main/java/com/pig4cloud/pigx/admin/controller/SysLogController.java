@@ -25,10 +25,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.vo.PreLogVo;
 import com.pig4cloud.pigx.admin.service.SysLogService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +51,7 @@ import java.util.List;
 @Api(value = "log", tags = "日志管理模块")
 public class SysLogController {
 	private final SysLogService sysLogService;
+	private final RedisTemplate redisTemplate;
 
 	/**
 	 * 简单分页查询
@@ -71,6 +74,7 @@ public class SysLogController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_log_del')")
 	public R removeById(@PathVariable Long id) {
+		redisTemplate.convertAndSend(CacheConstants.ROUTE_KEY, id);
 		return R.ok(sysLogService.removeById(id));
 	}
 

@@ -14,66 +14,71 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+
 package com.pig4cloud.pigx.codegen.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 /**
- * 数据源表
+ * 生成记录
  *
- * @author pigx code generator
- * @date 2019-03-31 16:00:20
+ * @author lengleng
+ * @date 2019-08-12 15:55:35
  */
 @Data
-@TableName("sys_datasource_conf")
+@TableName("gen_form_conf")
 @EqualsAndHashCode(callSuper = true)
-public class SysDatasourceConf extends Model<SysDatasourceConf> {
+@ApiModel(value = "生成记录")
+public class GenFormConf extends Model<GenFormConf> {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键
+	 * ID
 	 */
 	@TableId
+	@ApiModelProperty(value = "ID")
 	private Integer id;
 	/**
-	 * 名称
+	 * 所属数据源
 	 */
-	private String name;
+	@ApiModelProperty(value = "所属数据源")
+	private String dsName;
 	/**
-	 * jdbcurl
+	 * 表名称
 	 */
-	private String url;
+	@ApiModelProperty(value = "表名称")
+	private String tableName;
 	/**
-	 * 用户名
+	 * 表单信息
 	 */
-	private String username;
-	/**
-	 * 密码
-	 */
-	private String password;
+	@ApiModelProperty(value = "表单信息")
+	private String formInfo;
 	/**
 	 * 创建时间
 	 */
-	private LocalDateTime createDate;
+	@ApiModelProperty(value = "创建时间")
+	private LocalDateTime createTime;
 	/**
-	 * 更新
+	 * 修改时间
 	 */
-	private LocalDateTime updateDate;
+	@ApiModelProperty(value = "修改时间")
+	private LocalDateTime updateTime;
 	/**
 	 * 删除标记
 	 */
-	@TableLogic
+	@ApiModelProperty(value = "删除标记")
 	private String delFlag;
 	/**
-	 * 租户ID
+	 * 所属租户
 	 */
+	@ApiModelProperty(value = "所属租户", hidden = true)
 	private Integer tenantId;
-
 }

@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.codegen.controller;
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
-import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
+import com.pig4cloud.pigx.codegen.service.GeneratorService;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @RequestMapping("/generator")
 public class SysGeneratorController {
-	private final SysGeneratorService sysGeneratorService;
+	private final GeneratorService GeneratorService;
 
 	/**
 	 * 列表
@@ -50,7 +50,7 @@ public class SysGeneratorController {
 	 */
 	@GetMapping("/page")
 	public R getPage(Page page, String tableName, Integer id) {
-		return R.ok(sysGeneratorService.getPage(page, tableName, id));
+		return R.ok(GeneratorService.getPage(page, tableName, id));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SysGeneratorController {
 	@SneakyThrows
 	@PostMapping("/code")
 	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
-		byte[] data = sysGeneratorService.generatorCode(genConfig);
+		byte[] data = GeneratorService.generatorCode(genConfig);
 		response.reset();
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));

@@ -14,31 +14,18 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.codegen.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
+package com.pig4cloud.pigx.codegen.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.codegen.entity.GenFormConf;
 
 /**
- * 数据源表
+ * 生成记录
  *
- * @author pigx code generator
- * @date 2019-03-31 16:00:20
+ * @author lengleng
+ * @date 2019-08-12 15:55:35
  */
-public interface SysDatasourceConfService extends IService<SysDatasourceConf> {
-	/**
-	 * 保存数据源并且加密
-	 *
-	 * @param sysDatasourceConf
-	 * @return
-	 */
-	Boolean saveDsByEnc(SysDatasourceConf sysDatasourceConf);
+public interface GenFormConfMapper extends BaseMapper<GenFormConf> {
 
-	/**
-	 * 更新数据源
-	 *
-	 * @param sysDatasourceConf
-	 * @return
-	 */
-	Boolean updateDsByEnc(SysDatasourceConf sysDatasourceConf);
 }

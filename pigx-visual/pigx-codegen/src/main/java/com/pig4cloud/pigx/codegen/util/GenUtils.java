@@ -23,9 +23,11 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
+import com.pig4cloud.pigx.codegen.entity.GenFormConf;
 import com.pig4cloud.pigx.codegen.entity.TableEntity;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration.Configuration;
@@ -38,7 +40,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -85,8 +86,9 @@ public class GenUtils {
 	/**
 	 * 生成代码
 	 */
+	@SneakyThrows
 	public void generatorCode(GenConfig genConfig, Map<String, String> table,
-							  List<Map<String, String>> columns, ZipOutputStream zip) {
+							  List<Map<String, String>> columns, ZipOutputStream zip, GenFormConf record) {
 		//配置信息
 		Configuration config = getConfig();
 		boolean hasBigDecimal = false;
@@ -124,9 +126,9 @@ public class GenUtils {
 			columnEntity.setNullable("NO".equals(column.get("isNullable")));
 			columnEntity.setColumnType(column.get("columnType"));
 			//隐藏不需要的在接口文档中展示的字段
-			if(hiddenColumns.contains(column.get("columnName"))){
+			if (hiddenColumns.contains(column.get("columnName"))) {
 				columnEntity.setHidden(Boolean.TRUE);
-			}else{
+			} else {
 				columnEntity.setHidden(Boolean.FALSE);
 			}
 			//列名转换成Java属性名
@@ -199,22 +201,29 @@ public class GenUtils {
 		//获取模板列表
 		List<String> templates = getTemplates();
 		for (String template : templates) {
+			// 如果是crud
+			if (template.contains(CRUD_JS_VM) && record != null) {
+				zip.putNextEntry(new ZipEntry(Objects
+						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
+								, map.get("package").toString(), map.get("moduleName").toString()))));
+				IoUtil.write(zip, StandardCharsets.UTF_8, false, record.getFormInfo());
+				zip.closeEntry();
+				continue;
+			}
+
+
 			//渲染模板
 			StringWriter sw = new StringWriter();
 			Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
 			tpl.merge(context, sw);
 
-			try {
-				//添加到zip
-				zip.putNextEntry(new ZipEntry(Objects
-						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
-								, map.get("package").toString(), map.get("moduleName").toString()))));
-				IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
-				IoUtil.close(sw);
-				zip.closeEntry();
-			} catch (IOException e) {
-				throw new CheckedException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
-			}
+			//添加到zip
+			zip.putNextEntry(new ZipEntry(Objects
+					.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
+							, map.get("package").toString(), map.get("moduleName").toString()))));
+			IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+			IoUtil.close(sw);
+			zip.closeEntry();
 		}
 	}
 

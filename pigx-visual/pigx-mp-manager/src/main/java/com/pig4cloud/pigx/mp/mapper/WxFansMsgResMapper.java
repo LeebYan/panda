@@ -22,7 +22,7 @@ import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
 /**
  * lengleng
  *
- * @author pigx code generator
+ * @author lengleng
  * @date 2019-03-27 20:45:48
  */
 public interface WxFansMsgResMapper extends BaseMapper<WxFansMsgRes> {

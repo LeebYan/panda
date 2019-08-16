@@ -28,7 +28,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018/7/29
  */
-public interface SysGeneratorService {
+public interface GeneratorService {
 	/**
 	 * 生成代码
 	 *

@@ -30,7 +30,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018-07-30
  */
-public interface SysGeneratorMapper {
+public interface GeneratorMapper {
 
 	/**
 	 * 分页查询表格

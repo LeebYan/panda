@@ -14,17 +14,17 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.mapper;
+package com.pig4cloud.pigx.codegen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.mp.entity.WxMpMenu;
+import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
 
 /**
- * lengleng
+ * 数据源表
  *
  * @author lengleng
- * @date 2019-03-27 20:45:18
+ * @date 2019-03-31 16:00:20
  */
-public interface WxMenuMapper extends BaseMapper<WxMpMenu> {
+public interface GenDatasourceConfMapper extends BaseMapper<GenDatasourceConf> {
 
 }

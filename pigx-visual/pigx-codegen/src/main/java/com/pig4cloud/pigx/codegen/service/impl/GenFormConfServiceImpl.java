@@ -14,17 +14,28 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.codegen.mapper;
+package com.pig4cloud.pigx.codegen.service.impl;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.codegen.entity.GenFormConf;
+import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
+import com.pig4cloud.pigx.codegen.service.GenFormConfService;
+import org.springframework.stereotype.Service;
 
 /**
- * 数据源表
+ * 表单管理
  *
- * @author pigx code generator
- * @date 2019-03-31 16:00:20
+ * @author lengleng
+ * @date 2019-08-12 15:55:35
  */
-public interface SysDatasourceConfMapper extends BaseMapper<SysDatasourceConf> {
+@Service
+public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFormConf> implements GenFormConfService {
 
+	@Override
+	public GenFormConf getForm(String tableName) {
+		return getOne(Wrappers.<GenFormConf>lambdaQuery()
+				.eq(GenFormConf::getTableName, tableName)
+				.orderByDesc(GenFormConf::getCreateTime), false);
+	}
 }

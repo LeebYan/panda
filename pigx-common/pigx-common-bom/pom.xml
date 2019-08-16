@@ -27,6 +27,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>pigx-common-bom</artifactId>
+				<version>3.2</version>
+			</dependency>
+			<dependency>
 				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-core</artifactId>
 				<version>${pigx.version}</version>

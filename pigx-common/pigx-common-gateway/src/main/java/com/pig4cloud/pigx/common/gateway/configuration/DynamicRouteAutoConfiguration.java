@@ -17,11 +17,16 @@
 
 package com.pig4cloud.pigx.common.gateway.configuration;
 
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.gateway.cache.DynamicRouteCacheListener;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.config.PropertiesRouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 /**
  * @author lengleng
@@ -43,4 +48,25 @@ public class DynamicRouteAutoConfiguration {
 		return new PropertiesRouteDefinitionLocator(new GatewayProperties());
 	}
 
+	/**
+	 * redis 监听配置
+	 *
+	 * @param redisConnectionFactory redis 配置
+	 * @param cacheListener          业务处理
+	 * @return
+	 */
+	@Bean
+	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory
+			, DynamicRouteCacheListener cacheListener) {
+		RedisMessageListenerContainer container
+				= new RedisMessageListenerContainer();
+		container.setConnectionFactory(redisConnectionFactory);
+		container.addMessageListener(cacheListener, topic());
+		return container;
+	}
+
+	@Bean
+	public ChannelTopic topic() {
+		return new ChannelTopic(CacheConstants.ROUTE_KEY);
+	}
 }

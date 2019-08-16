@@ -29,6 +29,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 /**
  * @author lengleng
  * @date 2018年06月21日
+ * <p>
  * 用户统一管理系统
  */
 @EnablePigxSwagger2

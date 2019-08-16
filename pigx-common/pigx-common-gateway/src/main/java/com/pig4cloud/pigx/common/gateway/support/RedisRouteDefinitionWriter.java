@@ -17,7 +17,9 @@
 
 package com.pig4cloud.pigx.common.gateway.support;
 
+import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.gateway.cache.RouteCacheUtil;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,21 +72,27 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 
 	/**
 	 * 动态路由入口
+	 * <p>
+	 * 1. 先从内存中获取
+	 * 2. 为空加载Redis中数据
+	 * 3. 更新内存
 	 *
 	 * @return
 	 */
 	@Override
 	public Flux<RouteDefinition> getRouteDefinitions() {
+		List<RouteDefinitionVo> routeList = RouteCacheUtil.getRouteList();
+		if (CollUtil.isNotEmpty(routeList)) {
+			log.debug("内存 中路由定义条数： {}， {}", routeList.size(), routeList);
+			return Flux.fromIterable(routeList);
+		}
+
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
 		List<RouteDefinitionVo> values = redisTemplate.opsForHash().values(CacheConstants.ROUTE_KEY);
-		List<RouteDefinition> definitionList = new ArrayList<>();
-		values.forEach(vo -> {
-			RouteDefinition routeDefinition = new RouteDefinition();
-			BeanUtils.copyProperties(vo, routeDefinition);
-			definitionList.add(vo);
-		});
-		log.debug("redis 中路由定义条数： {}， {}", definitionList.size(), definitionList);
-		return Flux.fromIterable(definitionList);
+		log.debug("redis 中路由定义条数： {}， {}", values.size(), values);
+
+		RouteCacheUtil.setRouteList(values);
+		return Flux.fromIterable(values);
 	}
 }

@@ -18,11 +18,15 @@
 package com.pig4cloud.pigx.codegen.service.impl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
-import com.pig4cloud.pigx.codegen.mapper.SysGeneratorMapper;
-import com.pig4cloud.pigx.codegen.service.SysGeneratorService;
+import com.pig4cloud.pigx.codegen.entity.GenFormConf;
+import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
+import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
+import com.pig4cloud.pigx.codegen.service.GeneratorService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
 import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.AllArgsConstructor;
@@ -34,15 +38,16 @@ import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 代码生成器
- *
  * @author lengleng
  * @date 2018-07-30
+ * <p>
+ * 代码生成器
  */
 @Service
 @AllArgsConstructor
-public class SysGeneratorServiceImpl implements SysGeneratorService {
-	private final SysGeneratorMapper sysGeneratorMapper;
+public class GeneratorServiceImpl implements GeneratorService {
+	private final GeneratorMapper generatorMapper;
+	private final GenFormConfMapper genRecordMapper;
 
 	/**
 	 * 分页查询表
@@ -54,7 +59,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	@Override
 	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id) {
 		DynamicDataSourceContextHolder.setDataSourceType(id);
-		return sysGeneratorMapper.queryList(page, tableName);
+		return generatorMapper.queryList(page, tableName);
 	}
 
 	/**
@@ -69,21 +74,28 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
 
-		//查询表信息
-		Map<String, String> table = queryTable(genConfig.getTableName());
-		//查询列信息
-		List<Map<String, String>> columns = queryColumns(genConfig.getTableName());
-		//生成代码
-		GenUtils.generatorCode(genConfig, table, columns, zip);
+		String tableNames = genConfig.getTableName();
+		for (String tableName : StrUtil.split(tableNames, StrUtil.DASHED)) {
+			//查询表信息
+			Map<String, String> table = queryTable(tableName);
+			//查询列信息
+			List<Map<String, String>> columns = queryColumns(tableName);
+			//根据tableName 查询最新的表单配置
+			GenFormConf record = genRecordMapper.selectOne(Wrappers.<GenFormConf>lambdaQuery()
+					.eq(GenFormConf::getTableName, tableName)
+					.orderByDesc(GenFormConf::getCreateTime));
+			//生成代码
+			GenUtils.generatorCode(genConfig, table, columns, zip, record);
+		}
 		IoUtil.close(zip);
 		return outputStream.toByteArray();
 	}
 
 	private Map<String, String> queryTable(String tableName) {
-		return sysGeneratorMapper.queryTable(tableName);
+		return generatorMapper.queryTable(tableName);
 	}
 
 	private List<Map<String, String>> queryColumns(String tableName) {
-		return sysGeneratorMapper.queryColumns(tableName);
+		return generatorMapper.queryColumns(tableName);
 	}
 }

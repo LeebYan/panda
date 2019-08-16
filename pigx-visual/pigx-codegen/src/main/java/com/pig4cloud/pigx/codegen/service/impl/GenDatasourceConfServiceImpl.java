@@ -18,9 +18,9 @@ package com.pig4cloud.pigx.codegen.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.codegen.entity.SysDatasourceConf;
-import com.pig4cloud.pigx.codegen.mapper.SysDatasourceConfMapper;
-import com.pig4cloud.pigx.codegen.service.SysDatasourceConfService;
+import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
+import com.pig4cloud.pigx.codegen.mapper.GenDatasourceConfMapper;
+import com.pig4cloud.pigx.codegen.service.GenDatasourceConfService;
 import com.pig4cloud.pigx.common.datasource.config.DynamicDataSourceConfig;
 import lombok.AllArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
@@ -29,40 +29,40 @@ import org.springframework.stereotype.Service;
 /**
  * 数据源表
  *
- * @author pigx code generator
+ * @author lengleng
  * @date 2019-03-31 16:00:20
  */
 @Service
 @AllArgsConstructor
-public class SysDatasourceConfServiceImpl extends ServiceImpl<SysDatasourceConfMapper, SysDatasourceConf> implements SysDatasourceConfService {
+public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfMapper, GenDatasourceConf> implements GenDatasourceConfService {
 	private final DynamicDataSourceConfig dynamicDataSourceConfig;
 	private final StringEncryptor stringEncryptor;
 
 	/**
 	 * 保存数据源并且加密
 	 *
-	 * @param sysDatasourceConf
+	 * @param genDatasourceConf
 	 * @return
 	 */
 	@Override
-	public Boolean saveDsByEnc(SysDatasourceConf sysDatasourceConf) {
-		sysDatasourceConf.setPassword(stringEncryptor.encrypt(sysDatasourceConf.getPassword()));
-		this.baseMapper.insert(sysDatasourceConf);
+	public Boolean saveDsByEnc(GenDatasourceConf genDatasourceConf) {
+		genDatasourceConf.setPassword(stringEncryptor.encrypt(genDatasourceConf.getPassword()));
+		this.baseMapper.insert(genDatasourceConf);
 		return dynamicDataSourceConfig.reload();
 	}
 
 	/**
 	 * 更新数据源
 	 *
-	 * @param sysDatasourceConf
+	 * @param genDatasourceConf
 	 * @return
 	 */
 	@Override
-	public Boolean updateDsByEnc(SysDatasourceConf sysDatasourceConf) {
-		if (StrUtil.isNotBlank(sysDatasourceConf.getPassword())) {
-			sysDatasourceConf.setPassword(stringEncryptor.encrypt(sysDatasourceConf.getPassword()));
+	public Boolean updateDsByEnc(GenDatasourceConf genDatasourceConf) {
+		if (StrUtil.isNotBlank(genDatasourceConf.getPassword())) {
+			genDatasourceConf.setPassword(stringEncryptor.encrypt(genDatasourceConf.getPassword()));
 		}
-		this.baseMapper.updateById(sysDatasourceConf);
+		this.baseMapper.updateById(genDatasourceConf);
 		return dynamicDataSourceConfig.reload();
 	}
 }

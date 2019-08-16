@@ -14,17 +14,31 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pigx.mp.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pigx.mp.entity.WxMpMenu;
+package com.pig4cloud.pigx.common.core.xss;
+
+import org.springframework.lang.NonNull;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * lengleng
- *
  * @author lengleng
- * @date 2019-03-27 20:45:18
+ * @date 2019-08-13
+ * <p>
+ * request 处理过滤器
  */
-public interface WxMenuMapper extends BaseMapper<WxMpMenu> {
+public class RequestWrapperFilter extends OncePerRequestFilter {
 
+	@Override
+	protected void doFilterInternal(@NonNull HttpServletRequest request,
+									@NonNull HttpServletResponse response,
+									@NonNull FilterChain filterChain)
+			throws ServletException, IOException {
+		filterChain.doFilter(new RequestWrapper(request), response);
+	}
 }
