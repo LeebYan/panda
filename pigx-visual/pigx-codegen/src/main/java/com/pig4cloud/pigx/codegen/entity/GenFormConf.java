@@ -47,11 +47,6 @@ public class GenFormConf extends Model<GenFormConf> {
 	@ApiModelProperty(value = "ID")
 	private Integer id;
 	/**
-	 * 所属数据源
-	 */
-	@ApiModelProperty(value = "所属数据源")
-	private String dsName;
-	/**
 	 * 表名称
 	 */
 	@ApiModelProperty(value = "表名称")

@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.codegen.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,7 +48,7 @@ import java.util.zip.ZipOutputStream;
 @AllArgsConstructor
 public class GeneratorServiceImpl implements GeneratorService {
 	private final GeneratorMapper generatorMapper;
-	private final GenFormConfMapper genRecordMapper;
+	private final GenFormConfMapper genFormConfMapper;
 
 	/**
 	 * 分页查询表
@@ -70,6 +71,11 @@ public class GeneratorServiceImpl implements GeneratorService {
 	 */
 	@Override
 	public byte[] generatorCode(GenConfig genConfig) {
+		//根据tableName 查询最新的表单配置
+		List<GenFormConf> formConfList = genFormConfMapper.selectList(Wrappers.<GenFormConf>lambdaQuery()
+				.eq(GenFormConf::getTableName, genConfig.getTableName())
+				.orderByDesc(GenFormConf::getCreateTime));
+
 		DynamicDataSourceContextHolder.setDataSourceType(genConfig.getId());
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
@@ -80,12 +86,12 @@ public class GeneratorServiceImpl implements GeneratorService {
 			Map<String, String> table = queryTable(tableName);
 			//查询列信息
 			List<Map<String, String>> columns = queryColumns(tableName);
-			//根据tableName 查询最新的表单配置
-			GenFormConf record = genRecordMapper.selectOne(Wrappers.<GenFormConf>lambdaQuery()
-					.eq(GenFormConf::getTableName, tableName)
-					.orderByDesc(GenFormConf::getCreateTime));
 			//生成代码
-			GenUtils.generatorCode(genConfig, table, columns, zip, record);
+			if (CollUtil.isNotEmpty(formConfList)) {
+				GenUtils.generatorCode(genConfig, table, columns, zip, formConfList.get(0));
+			} else {
+				GenUtils.generatorCode(genConfig, table, columns, zip, null);
+			}
 		}
 		IoUtil.close(zip);
 		return outputStream.toByteArray();

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/dsconf")
-public class SysDsConfController {
+public class GenDsConfController {
 	private final GenDatasourceConfService datasourceConfService;
 
 	/**

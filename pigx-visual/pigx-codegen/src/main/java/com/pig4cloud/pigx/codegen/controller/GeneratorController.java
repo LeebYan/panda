@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/generator")
-public class SysGeneratorController {
+public class GeneratorController {
 	private final GeneratorService GeneratorService;
 
 	/**

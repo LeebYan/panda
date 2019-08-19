@@ -31,8 +31,10 @@ public interface GenFormConfService extends IService<GenFormConf> {
 	/**
 	 * 获取表单信息
 	 *
-	 * @param tableName
+	 * @param dsId      数据源ID
+	 * @param tableName 表名称
 	 * @return
 	 */
-	GenFormConf getForm(String tableName);
+	String getForm(Integer dsId, String tableName);
+
 }

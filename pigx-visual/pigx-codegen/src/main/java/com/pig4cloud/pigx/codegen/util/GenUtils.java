@@ -55,7 +55,7 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 @UtilityClass
 public class GenUtils {
-
+	public final String CRUD_PREFIX = "export const tableOption =";
 	private final String ENTITY_JAVA_VM = "Entity.java.vm";
 	private final String MAPPER_JAVA_VM = "Mapper.java.vm";
 	private final String SERVICE_JAVA_VM = "Service.java.vm";
@@ -88,7 +88,7 @@ public class GenUtils {
 	 */
 	@SneakyThrows
 	public void generatorCode(GenConfig genConfig, Map<String, String> table,
-							  List<Map<String, String>> columns, ZipOutputStream zip, GenFormConf record) {
+							  List<Map<String, String>> columns, ZipOutputStream zip, GenFormConf formConf) {
 		//配置信息
 		Configuration config = getConfig();
 		boolean hasBigDecimal = false;
@@ -202,11 +202,11 @@ public class GenUtils {
 		List<String> templates = getTemplates();
 		for (String template : templates) {
 			// 如果是crud
-			if (template.contains(CRUD_JS_VM) && record != null) {
+			if (template.contains(CRUD_JS_VM) && formConf != null) {
 				zip.putNextEntry(new ZipEntry(Objects
 						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
 								, map.get("package").toString(), map.get("moduleName").toString()))));
-				IoUtil.write(zip, StandardCharsets.UTF_8, false, record.getFormInfo());
+				IoUtil.write(zip, StandardCharsets.UTF_8, false, CRUD_PREFIX + formConf.getFormInfo());
 				zip.closeEntry();
 				continue;
 			}
@@ -231,7 +231,7 @@ public class GenUtils {
 	/**
 	 * 列名转换成Java属性名
 	 */
-	private String columnToJava(String columnName) {
+	public String columnToJava(String columnName) {
 		return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
 	}
 

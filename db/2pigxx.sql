@@ -4,35 +4,6 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for sys_datasource_conf
--- ----------------------------
-DROP TABLE IF EXISTS `sys_datasource_conf`;
-CREATE TABLE `sys_datasource_conf` (
-                                       `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-                                       `name` varchar(255) DEFAULT NULL COMMENT '名称',
-                                       `url` varchar(255) DEFAULT NULL,
-                                       `username` varchar(255) DEFAULT NULL,
-                                       `password` varchar(255) DEFAULT NULL,
-                                       `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                       `update_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新',
-                                       `del_flag` char(50) DEFAULT '0' COMMENT '删除标记',
-                                       `tenant_id` int(11) DEFAULT NULL COMMENT '租户ID',
-                                       PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='数据源表';
-
--- ----------------------------
--- Records of sys_datasource_conf
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_datasource_conf` VALUES (1, 'pigxx', 'jdbc:mysql://pigx-mysql:3306/pigxx?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 16:40:43', '2019-06-13 03:07:24', '0', 1);
-INSERT INTO `sys_datasource_conf` VALUES (2, 'pigxx_ac', 'jdbc:mysql://pigx-mysql:3306/pigxx_ac?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 17:53:25', '2019-06-13 03:07:25', '0', 1);
-INSERT INTO `sys_datasource_conf` VALUES (3, 'pigxx_job', 'jdbc:mysql://pigx-mysql:3306/pigxx_job?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 17:53:25', '2019-06-13 03:07:26', '0', 1);
-INSERT INTO `sys_datasource_conf` VALUES (4, 'pigxx_zipkin', 'jdbc:mysql://pigx-mysql:3306/pigxx_zipkin?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 17:53:25', '2019-06-13 03:07:27', '0', 1);
-INSERT INTO `sys_datasource_conf` VALUES (5, 'pigxx_mp', 'jdbc:mysql://pigx-mysql:3306/pigxx_mp?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 17:53:25', '2019-06-13 03:07:28', '0', 1);
-INSERT INTO `sys_datasource_conf` VALUES (6, 'pigxx_pay', 'jdbc:mysql://pigx-mysql:3306/pigxx_pay?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8', 'root', 'Cx+ocw0iFCpae4Qo4IoFmQ==', '2019-03-31 17:53:25', '2019-06-13 03:07:30', '0', 1);
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;

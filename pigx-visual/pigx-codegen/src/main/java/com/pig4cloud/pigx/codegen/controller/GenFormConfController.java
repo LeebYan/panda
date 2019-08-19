@@ -46,14 +46,14 @@ public class GenFormConfController {
 	/**
 	 * 分页查询
 	 *
-	 * @param page      分页对象
-	 * @param genRecord 生成记录
+	 * @param page     分页对象
+	 * @param formConf 生成记录
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page")
-	public R getGenFormConfPage(Page page, GenFormConf genRecord) {
-		return R.ok(genRecordService.page(page, Wrappers.query(genRecord)));
+	public R getGenFormConfPage(Page page, GenFormConf formConf) {
+		return R.ok(genRecordService.page(page, Wrappers.query(formConf)));
 	}
 
 
@@ -72,41 +72,42 @@ public class GenFormConfController {
 	/**
 	 * 通过id查询生成记录
 	 *
+	 * @param dsId      数据源ID
 	 * @param tableName tableName
 	 * @return R
 	 */
 	@ApiOperation(value = "通过tableName查询表单信息")
-	@GetMapping("/info/{tableName}")
-	public R form(@PathVariable String tableName) {
-		return R.ok(genRecordService.getForm(tableName));
+	@GetMapping("/info")
+	public R form(Integer dsId, String tableName) {
+		return R.ok(genRecordService.getForm(dsId, tableName));
 	}
 
 	/**
 	 * 新增生成记录
 	 *
-	 * @param genRecord 生成记录
+	 * @param formConf 生成记录
 	 * @return R
 	 */
 	@ApiOperation(value = "新增生成记录", notes = "新增生成记录")
 	@SysLog("新增生成记录")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('gen_form_add')")
-	public R save(@RequestBody GenFormConf genRecord) {
-		return R.ok(genRecordService.save(genRecord));
+	public R save(@RequestBody GenFormConf formConf) {
+		return R.ok(genRecordService.save(formConf));
 	}
 
 	/**
 	 * 修改生成记录
 	 *
-	 * @param genRecord 生成记录
+	 * @param formConf 生成记录
 	 * @return R
 	 */
 	@ApiOperation(value = "修改生成记录", notes = "修改生成记录")
 	@SysLog("修改生成记录")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('gen_form_edit')")
-	public R updateById(@RequestBody GenFormConf genRecord) {
-		return R.ok(genRecordService.updateById(genRecord));
+	public R updateById(@RequestBody GenFormConf formConf) {
+		return R.ok(genRecordService.updateById(formConf));
 	}
 
 	/**

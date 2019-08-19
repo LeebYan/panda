@@ -23,7 +23,6 @@
 
 	<resultMap id="genRecordMap" type="com.pig4cloud.pigx.codegen.entity.GenFormConf">
 		<id property="id" column="id"/>
-		<result property="dsName" column="ds_name"/>
 		<result property="tableName" column="table_name"/>
 		<result property="formInfo" column="form_info"/>
 		<result property="createTime" column="create_time"/>

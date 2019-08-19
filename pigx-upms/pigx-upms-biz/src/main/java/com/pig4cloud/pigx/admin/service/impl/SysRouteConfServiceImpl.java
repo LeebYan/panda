@@ -156,7 +156,7 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 			log.debug("更新网关路由结束 ");
 
 			this.applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
-
+			redisTemplate.convertAndSend(CacheConstants.ROUTE_KEY, "UPMS路由信息,网关缓存更新");
 		} catch (Exception e) {
 			log.error("路由配置解析失败", e);
 			// 回滚路由，重新加载即可

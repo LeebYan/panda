@@ -51,7 +51,6 @@ import java.util.List;
 @Api(value = "log", tags = "日志管理模块")
 public class SysLogController {
 	private final SysLogService sysLogService;
-	private final RedisTemplate redisTemplate;
 
 	/**
 	 * 简单分页查询
@@ -74,7 +73,6 @@ public class SysLogController {
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@pms.hasPermission('sys_log_del')")
 	public R removeById(@PathVariable Long id) {
-		redisTemplate.convertAndSend(CacheConstants.ROUTE_KEY, id);
 		return R.ok(sysLogService.removeById(id));
 	}
 
