@@ -15,4 +15,4 @@ spring:
   autoconfigure:
     exclude: org.springframework.cloud.gateway.config.GatewayAutoConfiguration,org.springframework.cloud.gateway.config.GatewayClassPathWarningAutoConfiguration
   profiles:
-    active: dev
+    active: @profiles.active@
