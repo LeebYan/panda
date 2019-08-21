@@ -86,10 +86,6 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		// 优先获取赋值数据
 		if (CollUtil.isEmpty(deptIds)) {
 			PigxUser user = SecurityUtils.getUser();
-			if (user == null) {
-				throw new CheckedException("auto datascope, set up security details true");
-			}
-
 			List<String> roleIdList = user.getAuthorities()
 					.stream().map(GrantedAuthority::getAuthority)
 					.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
