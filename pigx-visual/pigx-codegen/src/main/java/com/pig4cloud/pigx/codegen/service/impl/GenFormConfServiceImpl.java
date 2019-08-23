@@ -65,7 +65,6 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 	@Override
 	@SneakyThrows
 	public String getForm(Integer dsId, String tableName) {
-		DynamicDataSourceContextHolder.setDataSourceType(dsId);
 		GenFormConf form = getOne(Wrappers.<GenFormConf>lambdaQuery()
 				.eq(GenFormConf::getTableName, tableName)
 				.orderByDesc(GenFormConf::getCreateTime), false);
@@ -74,6 +73,7 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 			return form.getFormInfo();
 		}
 
+		DynamicDataSourceContextHolder.setDataSourceType(dsId);
 		List<Map<String, String>> columns = generatorMapper.queryColumns(tableName);
 		//设置velocity资源加载器
 		Properties prop = new Properties();

@@ -87,22 +87,13 @@
                 }).then(function () {
                     return delObj(row.$pk.lowerAttrName)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
-                    _this.$message({
-                        showClose: true,
-                        message: '删除成功',
-                        type: 'success'
-                    })
+                    _this.$message.success('删除成功')
                     this.getList(this.page)
                 })
             },
             handleUpdate: function (row, index, done,loading) {
                 putObj(row).then(data => {
-                    this.$message({
-                        showClose: true,
-                        message: '修改成功',
-                        type: 'success'
-                    })
+                    this.$message.success('修改成功')
                     done()
                     this.getList(this.page)
                 }).catch(() => {
@@ -111,11 +102,7 @@
             },
             handleSave: function (row, done,loading) {
                 addObj(row).then(data => {
-                    this.$message({
-                        showClose: true,
-                        message: '添加成功',
-                        type: 'success'
-                    })
+                    this.$message.success('添加成功')
                     done()
                     this.getList(this.page)
                 }).catch(() => {
@@ -132,6 +119,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-</style>
