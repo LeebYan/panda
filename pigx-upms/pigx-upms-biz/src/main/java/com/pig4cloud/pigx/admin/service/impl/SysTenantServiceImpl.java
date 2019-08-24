@@ -156,9 +156,15 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 					return roleMenu;
 				}).collect(Collectors.toList());
 		roleMenuService.saveBatch(collect);
-		// 插入系统字典和字典项
+		// 插入系统字典
 		dictService.saveBatch(dictList);
-		return dictItemService.saveBatch(dictItemList);
+		// 处理字典项最新关联的字典ID
+		List<SysDictItem> itemList = dictList.stream()
+				.flatMap(dict -> dictItemList.stream()
+						.filter(item -> item.getType().equals(dict.getType()))
+						.peek(item -> item.setDictId(dict.getId())))
+				.collect(Collectors.toList());
+		return dictItemService.saveBatch(itemList);
 	}
 
 	/**
