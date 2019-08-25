@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.common.gateway.support;
 
 import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
-import com.pig4cloud.pigx.common.gateway.cache.RouteCacheUtil;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +54,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			log.info("保存路由信息{}", vo);
 			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, r.getId(), vo);
-			redisTemplate.convertAndSend(CacheConstants.ROUTE_KEY, "新增路由信息,网关缓存更新");
+			redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "新增路由信息,网关缓存更新");
 			return Mono.empty();
 		});
 	}
@@ -67,7 +66,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			redisTemplate.setKeySerializer(new StringRedisSerializer());
 			redisTemplate.opsForHash().delete(CacheConstants.ROUTE_KEY, id);
 		});
-		redisTemplate.convertAndSend(CacheConstants.ROUTE_KEY, "删除路由信息,网关缓存更新");
+		redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "删除路由信息,网关缓存更新");
 		return Mono.empty();
 	}
 
@@ -83,7 +82,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	 */
 	@Override
 	public Flux<RouteDefinition> getRouteDefinitions() {
-		List<RouteDefinitionVo> routeList = RouteCacheUtil.getRouteList();
+		List<RouteDefinitionVo> routeList = RouteCacheHolder.getRouteList();
 		if (CollUtil.isNotEmpty(routeList)) {
 			log.debug("内存 中路由定义条数： {}， {}", routeList.size(), routeList);
 			return Flux.fromIterable(routeList);
@@ -94,7 +93,7 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 		List<RouteDefinitionVo> values = redisTemplate.opsForHash().values(CacheConstants.ROUTE_KEY);
 		log.debug("redis 中路由定义条数： {}， {}", values.size(), values);
 
-		RouteCacheUtil.setRouteList(values);
+		RouteCacheHolder.setRouteList(values);
 		return Flux.fromIterable(values);
 	}
 }

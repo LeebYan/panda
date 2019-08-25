@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gateway.cache;
+package com.pig4cloud.pigx.common.gateway.support;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
@@ -29,10 +29,10 @@ import java.util.List;
  * @author lengleng
  * @date 2019-08-16
  * <p>
- * 路由缓存
+ * 路由缓存工具类
  */
 @UtilityClass
-public class RouteCacheUtil {
+public class RouteCacheHolder {
 	private Cache<String, RouteDefinitionVo> cache = CacheUtil.newLFUCache(50);
 
 	/**
@@ -52,9 +52,7 @@ public class RouteCacheUtil {
 	 * @param routeList 缓存列表
 	 */
 	public void setRouteList(List<RouteDefinitionVo> routeList) {
-		routeList.forEach(route -> {
-			cache.put(route.getId(), route);
-		});
+		routeList.forEach(route -> cache.put(route.getId(), route));
 	}
 
 	/**
