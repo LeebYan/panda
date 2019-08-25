@@ -40,6 +40,7 @@ public interface GeneratorService {
 	/**
 	 * 分页查询表
 	 *
+	 * @param page      分页信息
 	 * @param tableName 表名
 	 * @param id        数据源ID
 	 * @return

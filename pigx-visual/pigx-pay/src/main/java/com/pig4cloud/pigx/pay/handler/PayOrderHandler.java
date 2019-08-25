@@ -32,11 +32,15 @@ public interface PayOrderHandler {
 	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
+	 * @return obj
 	 */
 	Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder);
 
 	/**
 	 * 更新订单信息
+	 *
+	 * @param goodsOrder 商品订单
+	 * @param tradeOrder 交易订单
 	 */
 	void updateOrder(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder);
 

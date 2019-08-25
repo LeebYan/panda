@@ -10,7 +10,8 @@ import javax.sql.DataSource;
 
 /**
  * 基于DB取步长，序列号生成器构建者
- * Created by xuan on 2018/5/30.
+ *
+ * @author xuan
  */
 public class DbSeqBuilder implements SeqBuilder {
 

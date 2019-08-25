@@ -34,9 +34,7 @@ public class SubscribeHandler extends AbstractHandler {
 				// TODO 可以添加关注用户到本地数据库
 			}
 		} catch (WxErrorException e) {
-			if (e.getError().getErrorCode() == 48001) {
-				log.info("该公众号没有获取用户信息权限！");
-			}
+			log.error("该公众号没有获取用户信息失败！" , e);
 		}
 
 
@@ -52,7 +50,7 @@ public class SubscribeHandler extends AbstractHandler {
 		}
 
 		try {
-			return new TextBuilder().build("感谢关注", wxMessage, weixinService);
+			return new TextBuilder().build("感谢关注" , wxMessage, weixinService);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
