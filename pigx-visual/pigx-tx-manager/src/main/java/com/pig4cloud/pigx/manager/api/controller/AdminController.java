@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.api.controller;
 
-import com.lorne.core.framework.exception.ServiceException;
 import com.pig4cloud.pigx.manager.api.service.ApiAdminService;
 import com.pig4cloud.pigx.manager.api.service.ApiModelService;
 import com.pig4cloud.pigx.manager.compensate.model.TxModel;

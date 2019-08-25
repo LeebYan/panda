@@ -25,7 +25,6 @@ import cn.hutool.db.Entity;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import com.pig4cloud.pigx.common.data.enums.DataScopeTypeEnum;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;

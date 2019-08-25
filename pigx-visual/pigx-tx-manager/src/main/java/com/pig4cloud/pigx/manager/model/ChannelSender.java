@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.manager.model;
 
 import com.lorne.core.framework.utils.http.HttpUtils;
-import com.lorne.core.framework.utils.task.IBack;
 import com.lorne.core.framework.utils.task.Task;
 import com.pig4cloud.pigx.manager.framework.utils.SocketUtils;
 import io.netty.channel.Channel;

@@ -1,9 +1,6 @@
 package com.pig4cloud.pigx.common.data.tenant;
 
 import cn.hutool.core.thread.ThreadUtil;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author lengleng

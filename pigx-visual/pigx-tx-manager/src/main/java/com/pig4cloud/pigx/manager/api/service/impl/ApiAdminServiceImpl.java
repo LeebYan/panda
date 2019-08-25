@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.manager.api.service.impl;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.lorne.core.framework.exception.ServiceException;
 import com.pig4cloud.pigx.manager.api.service.ApiAdminService;
 import com.pig4cloud.pigx.manager.compensate.model.TxModel;
 import com.pig4cloud.pigx.manager.compensate.service.CompensateService;

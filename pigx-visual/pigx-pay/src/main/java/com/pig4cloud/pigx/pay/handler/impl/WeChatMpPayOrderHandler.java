@@ -25,7 +25,6 @@ import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.config.PayCommonProperties;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
-import com.pig4cloud.pigx.pay.handler.impl.AbstractPayOrderHandler;
 import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
 import com.pig4cloud.pigx.pay.mapper.PayTradeOrderMapper;
 import com.pig4cloud.pigx.pay.utils.OrderStatusEnum;

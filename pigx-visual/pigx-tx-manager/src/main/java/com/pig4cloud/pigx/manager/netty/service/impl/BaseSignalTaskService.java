@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.manager.netty.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lorne.core.framework.utils.task.ConditionUtils;
-import com.lorne.core.framework.utils.task.IBack;
 import com.lorne.core.framework.utils.task.Task;
 
 /**
