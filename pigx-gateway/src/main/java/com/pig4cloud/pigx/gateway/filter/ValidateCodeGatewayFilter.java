@@ -35,6 +35,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -92,6 +93,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				checkCode(request);
 			} catch (Exception e) {
 				ServerHttpResponse response = exchange.getResponse();
+				response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				try {
 					return response.writeWith(Mono.just(response.bufferFactory()
