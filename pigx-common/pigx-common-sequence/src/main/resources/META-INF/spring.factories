@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.pig4cloud.common.sequence.SequenceAutoConfiguration
+  com.pig4cloud.pigx.common.sequence.SequenceAutoConfiguration

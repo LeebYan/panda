@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.pay.handler.impl;
 
-import com.pig4cloud.common.sequence.sequence.Sequence;
+import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.handler.PayOrderHandler;

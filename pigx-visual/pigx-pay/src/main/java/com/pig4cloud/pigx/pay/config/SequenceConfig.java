@@ -1,9 +1,9 @@
 package com.pig4cloud.pigx.pay.config;
 
 import cn.hutool.core.date.DateUtil;
-import com.pig4cloud.common.sequence.builder.DbSeqBuilder;
-import com.pig4cloud.common.sequence.properties.SequenceDbProperties;
-import com.pig4cloud.common.sequence.sequence.Sequence;
+import com.pig4cloud.pigx.common.sequence.builder.DbSeqBuilder;
+import com.pig4cloud.pigx.common.sequence.properties.SequenceDbProperties;
+import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
