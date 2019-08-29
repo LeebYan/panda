@@ -13,4 +13,4 @@ EXPOSE 9998
 
 ADD ./pigx-visual/pigx-tx-manager/target/pigx-tx-manager.jar ./
 
-CMD sleep 30;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-tx-manager.jar
+CMD sleep 120;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-tx-manager.jar
