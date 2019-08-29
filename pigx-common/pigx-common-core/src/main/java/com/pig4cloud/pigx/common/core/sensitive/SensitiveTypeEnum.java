@@ -64,7 +64,7 @@ public enum SensitiveTypeEnum {
     /**
      * 密钥, 永远是 ******, 与长度无关
      */
-    KEY;
+    KEY
 
 
 }
