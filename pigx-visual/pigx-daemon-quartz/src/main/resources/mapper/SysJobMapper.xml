@@ -20,9 +20,9 @@
 		<result property="createTime" column="create_time"/>
 		<result property="updateBy" column="update_by"/>
 		<result property="updateTime" column="update_time"/>
-		<result property="starttime" column="startTime"/>
-		<result property="previoustime" column="previousTime"/>
-		<result property="nexttime" column="nextTime"/>
+		<result property="startTime" column="start_time"/>
+		<result property="previousTime" column="previous_time"/>
+		<result property="nextTime" column="next_time"/>
 		<result property="tenantId" column="tenant_id"/>
 		<result property="remark" column="remark"/>
 	</resultMap>
