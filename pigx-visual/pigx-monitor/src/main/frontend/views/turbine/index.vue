@@ -51,8 +51,8 @@
       version: __PROJECT_VERSION__,
       form: {
         stream: 'http://localhost:5001/turbine.stream',
-        delay: '',
-        title: ''
+        delay: '1000',
+        title: 'turbine监控'
       }
     }),
     methods: {

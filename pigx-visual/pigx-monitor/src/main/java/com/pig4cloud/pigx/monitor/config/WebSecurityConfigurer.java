@@ -53,6 +53,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 				, adminContextPath + "/login"
 				, adminContextPath + "/actuator/**"
 				, adminContextPath + "/redis/info"
+				, adminContextPath + "/turbine.stream"
 			).permitAll()
 			.anyRequest().authenticated()
 			.and()
