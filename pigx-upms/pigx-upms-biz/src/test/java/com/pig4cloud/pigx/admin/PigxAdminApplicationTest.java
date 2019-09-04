@@ -17,27 +17,11 @@
 
 package com.pig4cloud.pigx.admin;
 
-import cn.hutool.core.date.DateUtil;
-import org.junit.Test;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
  * @author lengleng
  * @date 2018/10/7
  * <p>
- * 加解密单元测试
  */
 public class PigxAdminApplicationTest {
-	@Test
-	public void testJasypt() {
-		 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
-		String date = DateUtil.date().toDateStr();
-
-		LocalDateTime dateTime = LocalDateTime.parse("2019-06-11",formatter);
-
-		System.out.println(dateTime);
-	}
 }
