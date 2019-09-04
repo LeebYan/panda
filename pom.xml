@@ -54,7 +54,7 @@
 		<hutool.version>4.6.3</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<swagger-bootstrap-ui.version>1.9.5</swagger-bootstrap-ui.version>
+		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>

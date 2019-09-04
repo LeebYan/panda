@@ -26,7 +26,6 @@ import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
 import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.GenFormConfService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
-import com.pig4cloud.pigx.common.datasource.config.DynamicDataSource;
 import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -34,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.StringWriter;
@@ -52,7 +52,6 @@ import java.util.Properties;
 @AllArgsConstructor
 public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFormConf> implements GenFormConfService {
 	private final GeneratorMapper generatorMapper;
-	private final DynamicDataSource dynamicDataSource;
 
 	/**
 	 * 1. 根据数据源、表名称，查询已配置表单信息
@@ -77,7 +76,7 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 		List<Map<String, String>> columns = generatorMapper.queryColumns(tableName);
 		//设置velocity资源加载器
 		Properties prop = new Properties();
-		prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+		prop.put("file.resource.loader.class", ClasspathResourceLoader.class.getName());
 		Velocity.init(prop);
 		Template template = Velocity.getTemplate("template/crud.js.vm", CharsetUtil.UTF_8);
 		VelocityContext context = new VelocityContext();
