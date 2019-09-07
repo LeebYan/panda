@@ -32,6 +32,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author lengleng
@@ -129,5 +130,16 @@ public class SysRoleController {
 	public R saveRoleMenus(Integer roleId, @RequestParam(value = "menuIds", required = false) String menuIds) {
 		SysRole sysRole = sysRoleService.getById(roleId);
 		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleId, menuIds));
+	}
+
+	/**
+	 * 通过角色ID 查询角色列表
+	 *
+	 * @param roleIdList 角色ID
+	 * @return
+	 */
+	@PostMapping("/getRoleList")
+	public R getRoleList(@RequestBody List<String> roleIdList) {
+		return R.ok(sysRoleService.listByIds(roleIdList));
 	}
 }

@@ -19,15 +19,8 @@ package com.pig4cloud.pigx.common.data.datascope;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.db.Db;
-import cn.hutool.db.Entity;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
-import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.enums.DataScopeTypeEnum;
-import com.pig4cloud.pigx.common.security.service.PigxUser;
-import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +31,11 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.springframework.security.core.GrantedAuthority;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -56,7 +48,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class DataScopeInterceptor extends AbstractSqlParserHandler implements Interceptor {
-	private final DataSource dataSource;
+	private final DataScopeHandle dataScopeHandle;
 
 	@Override
 	@SneakyThrows
@@ -83,47 +75,15 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		String scopeName = dataScope.getScopeName();
 		List<Integer> deptIds = dataScope.getDeptIds();
 		// 优先获取赋值数据
-		if (CollUtil.isEmpty(deptIds)) {
-			PigxUser user = SecurityUtils.getUser();
-			List<String> roleIdList = user.getAuthorities()
-					.stream().map(GrantedAuthority::getAuthority)
-					.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
-					.map(authority -> authority.split(StrUtil.UNDERLINE)[1])
-					.collect(Collectors.toList());
-
-			Entity query = Db.use(dataSource)
-					.query("SELECT * FROM sys_role where role_id IN (" + CollUtil.join(roleIdList, ",") + ")")
-					.stream().min(Comparator.comparingInt(o -> o.getInt("ds_type"))).get();
-
-			Integer dsType = query.getInt("ds_type");
-			// 查询全部
-			if (DataScopeTypeEnum.ALL.getType() == dsType) {
-				return invocation.proceed();
-			}
-			// 自定义
-			if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
-				String dsScope = query.getStr("ds_scope");
-				deptIds.addAll(Arrays.stream(dsScope.split(StrUtil.COMMA))
-						.map(Integer::parseInt).collect(Collectors.toList()));
-			}
-			// 查询本级及其下级
-			if (DataScopeTypeEnum.OWN_CHILD_LEVEL.getType() == dsType) {
-				List<Integer> deptIdList = Db.use(dataSource)
-						.findBy("sys_dept_relation", "ancestor", user.getDeptId())
-						.stream().map(entity -> entity.getInt("descendant"))
-						.collect(Collectors.toList());
-				deptIds.addAll(deptIdList);
-			}
-			// 只查询本级
-			if (DataScopeTypeEnum.OWN_LEVEL.getType() == dsType) {
-				deptIds.add(user.getDeptId());
-			}
+		if (CollUtil.isEmpty(deptIds) && dataScopeHandle.calcScope(deptIds)) {
+			return invocation.proceed();
 		}
 		String join = CollectionUtil.join(deptIds, ",");
 		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}
+
 
 	/**
 	 * 生成拦截对象的代理

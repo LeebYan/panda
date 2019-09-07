@@ -19,7 +19,10 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.pig4cloud.pigx.admin.api.entity.SysDept;
+import com.pig4cloud.pigx.admin.api.entity.SysDeptRelation;
+import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
 import com.pig4cloud.pigx.admin.service.SysDeptService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -44,6 +47,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/dept")
 @Api(value = "dept", tags = "部门管理模块")
 public class SysDeptController {
+	private final SysDeptRelationService relationService;
 	private final SysDeptService sysDeptService;
 
 	/**
@@ -107,4 +111,16 @@ public class SysDeptController {
 		sysDept.setUpdateTime(LocalDateTime.now());
 		return R.ok(sysDeptService.updateDeptById(sysDept));
 	}
+
+	/**
+	 * 查收子级列表
+	 *
+	 * @return 返回子级
+	 */
+	@GetMapping(value = "/getDescendantList/{deptId}")
+	public R getDescendantList(@PathVariable Integer deptId) {
+		return R.ok(relationService.list(Wrappers.<SysDeptRelation>lambdaQuery()
+				.eq(SysDeptRelation::getAncestor, deptId)));
+	}
+
 }

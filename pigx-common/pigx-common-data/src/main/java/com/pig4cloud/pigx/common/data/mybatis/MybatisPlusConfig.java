@@ -22,7 +22,9 @@ import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
+import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
+import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -78,15 +80,25 @@ public class MybatisPlusConfig {
 	}
 
 	/**
+	 * pigx 默认数据权限处理
+	 *
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public DataScopeHandle dataScopeHandle() {
+		return new PigxDefaultDatascopeHandle();
+	}
+
+	/**
 	 * 数据权限插件
 	 *
-	 * @param dataSource 数据源
 	 * @return DataScopeInterceptor
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public DataScopeInterceptor dataScopeInterceptor(DataSource dataSource) {
-		return new DataScopeInterceptor(dataSource);
+	public DataScopeInterceptor dataScopeInterceptor() {
+		return new DataScopeInterceptor(dataScopeHandle());
 	}
 
 	/**
