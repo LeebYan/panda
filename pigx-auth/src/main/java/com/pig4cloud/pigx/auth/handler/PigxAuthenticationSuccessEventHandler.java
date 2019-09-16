@@ -22,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author lengleng
  * @date 2018/10/8
@@ -36,9 +39,11 @@ public class PigxAuthenticationSuccessEventHandler extends AbstractAuthenticatio
 	 * 获取到登录的authentication 对象
 	 *
 	 * @param authentication 登录对象
+	 * @param request        请求
+	 * @param response       返回
 	 */
 	@Override
-	public void handle(Authentication authentication) {
+	public void handle(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
 		log.info("用户：{} 登录成功", authentication.getPrincipal());
 	}
 }

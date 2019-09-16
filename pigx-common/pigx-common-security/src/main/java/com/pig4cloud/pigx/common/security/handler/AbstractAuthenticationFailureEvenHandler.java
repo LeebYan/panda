@@ -21,6 +21,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
@@ -36,10 +41,15 @@ public abstract class AbstractAuthenticationFailureEvenHandler implements Applic
 	 */
 	@Override
 	public void onApplicationEvent(AbstractAuthenticationFailureEvent event) {
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
+				RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = requestAttributes.getRequest();
+		HttpServletResponse response = requestAttributes.getResponse();
+
 		AuthenticationException authenticationException = event.getException();
 		Authentication authentication = (Authentication) event.getSource();
 
-		handle(authenticationException, authentication);
+		handle(authenticationException, authentication, request, response);
 	}
 
 	/**
@@ -48,6 +58,9 @@ public abstract class AbstractAuthenticationFailureEvenHandler implements Applic
 	 *
 	 * @param authenticationException 登录的authentication 对象
 	 * @param authentication          登录的authenticationException 对象
+	 * @param request                 请求
+	 * @param response                响应
 	 */
-	public abstract void handle(AuthenticationException authenticationException, Authentication authentication);
+	public abstract void handle(AuthenticationException authenticationException, Authentication authentication
+			, HttpServletRequest request, HttpServletResponse response);
 }
