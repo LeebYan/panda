@@ -25,12 +25,12 @@ import java.lang.annotation.*;
 /**
  * @author lengleng
  * @date 2018/7/24
- * 开启pigx job
+ * 开启pigx elastic job
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @Import({ElasticJobAutoConfiguration.class})
-public @interface EnablePigxJob {
+public @interface EnablePigxElasticJob {
 }

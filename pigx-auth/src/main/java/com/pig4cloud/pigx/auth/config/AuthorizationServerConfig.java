@@ -24,7 +24,6 @@ import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
 import com.pig4cloud.pigx.common.security.service.PigxClientDetailsService;
-import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -33,7 +32,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -46,8 +44,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -59,6 +55,7 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 	private final DataSource dataSource;
+	private final TokenEnhancer pigxTokenEnhancer;
 	private final PigxUserDetailsService pigxUserDetailsService;
 	private final AuthenticationManager authenticationManagerBean;
 	private final RedisConnectionFactory redisConnectionFactory;
@@ -84,7 +81,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 				.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
 				.tokenStore(tokenStore())
-				.tokenEnhancer(tokenEnhancer())
+				.tokenEnhancer(pigxTokenEnhancer)
 				.userDetailsService(pigxUserDetailsService)
 				.authenticationManager(authenticationManagerBean)
 				.reuseRefreshTokens(false)
@@ -104,31 +101,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			}
 		});
 		return tokenStore;
-	}
-
-	/**
-	 * token增强，客户端模式不增强。
-	 *
-	 * @return TokenEnhancer
-	 */
-	@Bean
-	public TokenEnhancer tokenEnhancer() {
-		return (accessToken, authentication) -> {
-			if (SecurityConstants.CLIENT_CREDENTIALS
-					.equals(authentication.getOAuth2Request().getGrantType())) {
-				return accessToken;
-			}
-
-			final Map<String, Object> additionalInfo = new HashMap<>(8);
-			PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
-			additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pigxUser.getId());
-			additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pigxUser.getUsername());
-			additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, pigxUser.getDeptId());
-			additionalInfo.put(SecurityConstants.DETAILS_TENANT_ID, pigxUser.getTenantId());
-			additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.PIGX_LICENSE);
-			additionalInfo.put(SecurityConstants.ACTIVE, Boolean.TRUE);
-			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
-			return accessToken;
-		};
 	}
 }

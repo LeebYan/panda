@@ -51,5 +51,11 @@
 			<artifactId>elastic-job-lite-spring</artifactId>
 			<version>${elastic-job-lite.version}</version>
 		</dependency>
+		<!--xxl job-->
+		<dependency>
+			<groupId>com.xuxueli</groupId>
+			<artifactId>xxl-job-core</artifactId>
+			<version>${xxl.job.version}</version>
+		</dependency>
 	</dependencies>
 </project>

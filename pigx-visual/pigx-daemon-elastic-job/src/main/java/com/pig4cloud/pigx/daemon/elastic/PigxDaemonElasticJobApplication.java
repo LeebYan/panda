@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.daemon.elastic;
 
-import com.pig4cloud.pigx.common.job.annotation.EnablePigxJob;
+import com.pig4cloud.pigx.common.job.annotation.EnablePigxXxlJob;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
 import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
@@ -29,7 +29,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @date 2018/7/24
  * 分布式任务调度模块
  */
-@EnablePigxJob
+@EnablePigxXxlJob
 @EnablePigxSwagger2
 @EnablePigxFeignClients
 @SpringCloudApplication
