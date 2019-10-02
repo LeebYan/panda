@@ -22,10 +22,10 @@ public class SequenceDbProperties extends BaseSequenceProperties {
 	/**
 	 * 表名称
 	 */
-	private String tableName;
+	private String tableName = "pigx_sequence";
 	/**
 	 * 重试次数
 	 */
-	private int retryTimes;
+	private int retryTimes = 1;
 
 }
