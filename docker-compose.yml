@@ -24,6 +24,14 @@ services:
     image: zookeeper:3.4.13
     restart: always
 
+  pigx-xxl-job-admin:
+    image: pig4cloud/xxl-job-admin:2.1.0
+    restart: always
+    environment:
+      - PARAMS="--xxl.admin.login=false"
+    ports:
+      - 9080:9080
+
   pigx-redis:
     image: redis:5.0.4
     restart: always

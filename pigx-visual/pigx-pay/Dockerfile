@@ -8,7 +8,7 @@ RUN mkdir -p /pigx-pay
 
 WORKDIR /pigx-pay
 
-EXPOSE 5003
+EXPOSE 5010
 
 ADD ./pigx-visual/pigx-pay/target/pigx-pay.jar ./
 
