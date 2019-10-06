@@ -15,10 +15,11 @@
  */
 package com.alibaba.nacos.console.controller;
 
-import com.alibaba.nacos.config.server.model.RestResult;
 import com.alibaba.nacos.console.config.WebSecurityConfig;
+import com.alibaba.nacos.config.server.model.RestResult;
 import com.alibaba.nacos.console.security.CustomUserDetailsServiceImpl;
 import com.alibaba.nacos.console.utils.JwtTokenUtils;
+
 import com.alibaba.nacos.console.utils.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
