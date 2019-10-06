@@ -25,12 +25,17 @@ import javax.validation.constraints.NotBlank;
  * @date 2018/9/25
  */
 public class ModelForm {
-	private String category;
-	@NotBlank
+
+	@NotBlank(message = "名称不能为空")
 	private String name;
-	@NotBlank
+
+	@NotBlank(message = "标识不能为空")
 	private String key;
-	@NotBlank
+
+	@NotBlank(message = "分类不能为空")
+	private String category;
+
+	@NotBlank(message = "描述不能为空")
 	private String desc;
 
 	public String getCategory() {

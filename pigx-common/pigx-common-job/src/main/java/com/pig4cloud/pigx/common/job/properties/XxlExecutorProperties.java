@@ -39,7 +39,7 @@ public class XxlExecutorProperties {
 	/**
 	 * 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
 	 */
-	private Integer port = 9999;
+	private Integer port = 0;
 
 	/**
 	 * 执行器通讯TOKEN [选填]：非空时启用；

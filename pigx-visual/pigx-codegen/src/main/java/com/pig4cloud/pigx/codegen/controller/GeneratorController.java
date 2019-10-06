@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @RequestMapping("/generator")
 public class GeneratorController {
-	private final GeneratorService GeneratorService;
+	private final GeneratorService generatorService;
 
 	/**
 	 * 列表
@@ -50,7 +50,7 @@ public class GeneratorController {
 	 */
 	@GetMapping("/page")
 	public R getPage(Page page, String tableName, Integer id) {
-		return R.ok(GeneratorService.getPage(page, tableName, id));
+		return R.ok(generatorService.getPage(page, tableName, id));
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class GeneratorController {
 	@SneakyThrows
 	@PostMapping("/code")
 	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
-		byte[] data = GeneratorService.generatorCode(genConfig);
+		byte[] data = generatorService.generatorCode(genConfig);
 		response.reset();
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));
