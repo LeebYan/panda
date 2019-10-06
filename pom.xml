@@ -43,7 +43,7 @@
 	</developers>
 
 	<properties>
-		<spring-boot.version>2.1.8.RELEASE</spring-boot.version>
+		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
@@ -51,17 +51,16 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
-		<hutool.version>4.6.3</hutool.version>
+		<hutool.version>4.6.8</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
+		<knife4j.version>1.9.6</knife4j.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.10.2</ttl.version>
 		<minio.version>6.0.8</minio.version>
-		<fastjson.version>1.2.58</fastjson.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<xxl.job.version>2.1.0</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
@@ -179,12 +178,6 @@
 						<groupId>org.springframework.boot</groupId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<!--https://gitee.wang/pig/pigx/issues/586-->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
