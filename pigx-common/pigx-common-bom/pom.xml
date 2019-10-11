@@ -68,6 +68,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.pig4cloud</groupId>
+				<artifactId>pigx-common-sentinel</artifactId>
+				<version>${pigx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-sequence</artifactId>
 				<version>${pigx.version}</version>
 			</dependency>

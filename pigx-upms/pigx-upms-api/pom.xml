@@ -44,5 +44,10 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 		</dependency>
+		<!--feign-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 	</dependencies>
 </project>

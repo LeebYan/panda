@@ -42,6 +42,7 @@
 		<module>pigx-common-log</module>
 		<module>pigx-common-minio</module>
 		<module>pigx-common-security</module>
+		<module>pigx-common-sentinel</module>
 		<module>pigx-common-sequence</module>
 		<module>pigx-common-swagger</module>
 		<module>pigx-common-transaction</module>

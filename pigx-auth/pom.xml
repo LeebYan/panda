@@ -63,6 +63,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-data</artifactId>
 		</dependency>
+		<!--sentinel 依赖-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<!--JDBC相关-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

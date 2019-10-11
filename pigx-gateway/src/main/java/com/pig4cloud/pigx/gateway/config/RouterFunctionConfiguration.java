@@ -17,7 +17,10 @@
 
 package com.pig4cloud.pigx.gateway.config;
 
-import com.pig4cloud.pigx.gateway.handler.*;
+import com.pig4cloud.pigx.gateway.handler.ImageCodeHandler;
+import com.pig4cloud.pigx.gateway.handler.SwaggerResourceHandler;
+import com.pig4cloud.pigx.gateway.handler.SwaggerSecurityHandler;
+import com.pig4cloud.pigx.gateway.handler.SwaggerUiHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +39,6 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 @Configuration
 @AllArgsConstructor
 public class RouterFunctionConfiguration {
-	private final HystrixFallbackHandler hystrixFallbackHandler;
 	private final SwaggerResourceHandler swaggerResourceHandler;
 	private final SwaggerSecurityHandler swaggerSecurityHandler;
 	private final SwaggerUiHandler swaggerUiHandler;
@@ -45,16 +47,14 @@ public class RouterFunctionConfiguration {
 	@Bean
 	public RouterFunction routerFunction() {
 		return RouterFunctions.route(
-			RequestPredicates.path("/fallback")
-				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), hystrixFallbackHandler)
-			.andRoute(RequestPredicates.GET("/code")
-				.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
-			.andRoute(RequestPredicates.GET("/swagger-resources")
-				.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler)
-			.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
-				.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
-			.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
-				.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
+				RequestPredicates.path("/code")
+						.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
+				.andRoute(RequestPredicates.GET("/swagger-resources")
+						.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler)
+				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
+						.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
+				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
+						.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
 
 	}
 

@@ -77,6 +77,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-gateway</artifactId>
 		</dependency>
+		<!--sentinel 依赖-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>

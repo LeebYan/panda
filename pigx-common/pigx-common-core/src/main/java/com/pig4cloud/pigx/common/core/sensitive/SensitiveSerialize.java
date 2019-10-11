@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.google.common.base.Preconditions;
 import com.pig4cloud.pigx.common.core.util.DesensitizedUtils;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -49,7 +48,6 @@ public class SensitiveSerialize extends JsonSerializer<String> implements Contex
 	@Override
 	public void serialize(final String origin, final JsonGenerator jsonGenerator,
 						  final SerializerProvider serializerProvider) throws IOException {
-		Preconditions.checkNotNull(type, "Sensitive type enum should not be null.");
 		switch (type) {
 			case CHINESE_NAME:
 				jsonGenerator.writeString(DesensitizedUtils.chineseName(origin));

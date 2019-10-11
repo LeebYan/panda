@@ -15,28 +15,32 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package org.springframework.cloud.openfeign;
+package com.pig4cloud.pigx.common.sentinel.parser;
 
-import feign.hystrix.HystrixFeign;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import com.alibaba.csp.sentinel.adapter.servlet.callback.RequestOriginParser;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author lengleng
+ * @date 2019-10-11
  * <p>
- * HystrixFeignTargeter 配置
+ * sentinel 请求头解析判断
  */
-@Configuration
-@ConditionalOnClass(HystrixFeign.class)
-@ConditionalOnProperty("feign.hystrix.enabled")
-public class PigxHystrixFeignTargeterConfiguration {
+public class PigxHeaderRequestOriginParser implements RequestOriginParser {
+	/**
+	 * 请求头获取allow
+	 */
+	private static final String ALLOW = "Allow";
 
-	@Bean
-	@Primary
-	public Targeter pigxFeignTargeter() {
-		return new PigxHystrixTargeter();
+	/**
+	 * Parse the origin from given HTTP request.
+	 *
+	 * @param request HTTP request
+	 * @return parsed origin
+	 */
+	@Override
+	public String parseOrigin(HttpServletRequest request) {
+		return request.getHeader(ALLOW);
 	}
 }

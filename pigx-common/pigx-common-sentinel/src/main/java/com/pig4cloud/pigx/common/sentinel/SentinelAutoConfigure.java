@@ -15,31 +15,27 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package org.springframework.cloud.openfeign;
+package com.pig4cloud.pigx.common.sentinel;
 
-import feign.Target;
-import feign.hystrix.FallbackFactory;
-import lombok.AllArgsConstructor;
-import org.springframework.cglib.proxy.Enhancer;
+import com.alibaba.csp.sentinel.adapter.servlet.callback.WebCallbackManager;
+import com.pig4cloud.pigx.common.sentinel.handle.PigxUrlBlockHandler;
+import com.pig4cloud.pigx.common.sentinel.parser.PigxHeaderRequestOriginParser;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 /**
- * @author 冷冷
+ * @author lengleng
  * <p>
- * 默认 Fallback，避免写过多fallback类
+ * sentinel 配置
  */
-@AllArgsConstructor
-public class PigxFallbackFactory<T> implements FallbackFactory<T> {
-	private final Target<T> target;
+@Configuration
+public class SentinelAutoConfigure {
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public T create(Throwable cause) {
-		final Class<T> targetType = target.type();
-		final String targetName = target.name();
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(targetType);
-		enhancer.setUseCache(true);
-		enhancer.setCallback(new PigxFeignFallback<>(targetType, targetName, cause));
-		return (T) enhancer.create();
+	@PostConstruct
+	public void initWebCallbackManager() {
+		WebCallbackManager.setUrlBlockHandler(new PigxUrlBlockHandler());
+		WebCallbackManager.setRequestOriginParser(new PigxHeaderRequestOriginParser());
 	}
+
 }

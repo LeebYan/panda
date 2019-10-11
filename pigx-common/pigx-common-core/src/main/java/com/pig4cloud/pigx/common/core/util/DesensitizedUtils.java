@@ -18,7 +18,7 @@
 package com.pig4cloud.pigx.common.core.util;
 
 
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 脱敏工具类
@@ -120,7 +120,7 @@ public class DesensitizedUtils {
 		if (email == null) {
 			return null;
 		}
-		int index = StringUtils.indexOf(email, "@");
+		int index = StrUtil.indexOf(email, '@');
 		if (index <= 1) {
 			return email;
 		}
