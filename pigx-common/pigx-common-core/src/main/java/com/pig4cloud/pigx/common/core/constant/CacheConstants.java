@@ -10,10 +10,10 @@ public interface CacheConstants {
 
 	/**
 	 * 全局缓存，在缓存名称上加上该前缀表示该缓存不区分租户，比如:
-	 * <P/>
+	 * <p/>
 	 * {@code @Cacheable(value = CacheConstants.GLOBALLY+CacheConstants.MENU_DETAILS, key = "#roleId  + '_menu'", unless = "#result == null")}
 	 */
-	String GLOBALLY = "gl@";
+	String GLOBALLY = "gl:";
 
 	/**
 	 * 菜单信息缓存
