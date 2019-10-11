@@ -52,7 +52,7 @@ public class JarTaskInvok implements ITaskInvok {
 		}
 		processBuilder.command(commands);
 		try {
-			Process process = processBuilder.start();
+			processBuilder.start();
 		} catch (IOException e) {
 			log.error("定时任务jar反射执行异常,执行任务：{}", sysJob.getExecutePath());
 			throw new TaskException("定时任务jar反射执行异常,执行任务：" + sysJob.getExecutePath());

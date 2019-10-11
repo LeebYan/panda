@@ -29,7 +29,7 @@ public class ModelInfoManager {
 
 
 	private static ModelInfoManager manager = null;
-	private List<ModelInfo> modelInfos = new CopyOnWriteArrayList<ModelInfo>();
+	private List<ModelInfo> modelInfos = new CopyOnWriteArrayList<>();
 
 	public static ModelInfoManager getInstance() {
 		if (manager == null) {

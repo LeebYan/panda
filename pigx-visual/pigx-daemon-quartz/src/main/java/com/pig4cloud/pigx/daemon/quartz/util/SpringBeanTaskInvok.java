@@ -40,9 +40,9 @@ import java.lang.reflect.Method;
 public class SpringBeanTaskInvok implements ITaskInvok {
 	@Override
 	public void invokMethod(SysJob sysJob) throws TaskException {
-		Object target = null;
-		Method method = null;
-		Object returnValue = null;
+		Object target;
+		Method method;
+		Object returnValue;
 		//通过Spring上下文去找 也有可能找不到
 		target = SpringContextHolder.getBean(sysJob.getClassName());
 		try {
