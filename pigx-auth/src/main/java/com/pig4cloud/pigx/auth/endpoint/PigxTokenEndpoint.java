@@ -173,7 +173,7 @@ public class PigxTokenEndpoint {
 		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
 		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
 		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
-		result.setTotal(Long.valueOf(redisTemplate.keys(key).size()));
+		result.setTotal((long) redisTemplate.keys(key).size());
 		return R.ok(result);
 	}
 

@@ -37,10 +37,10 @@ import java.lang.reflect.Method;
 public class JavaClassTaskInvok implements ITaskInvok {
 	@Override
 	public void invokMethod(SysJob sysJob) throws TaskException {
-		Object obj = null;
-		Class clazz = null;
-		Method method = null;
-		Object returnValue = null;
+		Object obj;
+		Class clazz;
+		Method method;
+		Object returnValue;
 		try {
 			if (StrUtil.isNotEmpty(sysJob.getMethodParamsValue())) {
 				clazz = Class.forName(sysJob.getClassName());
