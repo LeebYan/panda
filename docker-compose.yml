@@ -122,29 +122,29 @@ services:
     image: pigx-codegen
     container_name: pigx-codegen
 
-  pigx-mp-manager:
+  pigx-mp-platform:
     build:
       context: ./
-      dockerfile: ./pigx-visual/pigx-mp-manager/Dockerfile
+      dockerfile: ./pigx-visual/pigx-mp-platform/Dockerfile
     restart: always
-    image: pigx-mp-manager
-    container_name: pigx-mp-manager
+    image: pigx-mp-platform
+    container_name: pigx-mp-platform
 
-  pigx-pay:
+  pigx-pay-platform:
     build:
       context: ./
-      dockerfile: ./pigx-visual/pigx-pay/Dockerfile
+      dockerfile: ./pigx-visual/pigx-pay-platform/Dockerfile
     restart: always
-    image: pigx-pay
-    container_name: pigx-pay
+    image: pigx-pay-platform
+    container_name: pigx-pay-platform
 
-  pigx-activiti:
+  pigx-oa-platform:
     build:
       context: ./
-      dockerfile: ./pigx-visual/pigx-activiti/Dockerfile
+      dockerfile: ./pigx-visual/pigx-oa-platform/Dockerfile
     restart: always
-    image: pigx-activiti
-    container_name: pigx-activiti
+    image: pigx-oa-platform
+    container_name: pigx-oa-platform
 
   pigx-tx-manager:
     build:
