@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>3.4.0</version>
+	<version>3.5.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -51,7 +51,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
-		<hutool.version>4.6.8</hutool.version>
+		<hutool.version>4.6.10</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
 		<knife4j.version>1.9.6</knife4j.version>
@@ -141,7 +141,7 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
+				<groupId>com.pig4cloud</groupId>
 				<artifactId>pigx-common-bom</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
@@ -240,27 +240,13 @@
 	</build>
 
 	<repositories>
-		<!--阿里云私服-->
+		<!--阿里云代理-->
 		<repository>
 			<id>aliyun</id>
 			<name>aliyun</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
-		<!--gitee 私服-->
-		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
-		</repository>
 	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
-
 
 	<profiles>
 		<profile>
