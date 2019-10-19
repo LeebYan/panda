@@ -82,7 +82,7 @@ public class DynamicRouteAutoConfiguration {
 
 
 	@Bean
-	@ConditionalOnProperty(value = "spring.redis.cluster.nodes")
+	@ConditionalOnProperty(value = "spring.redis.cluster.enable",havingValue = "true")
 	public LettuceConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
 		RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(redisProperties.getCluster().getNodes());
 
