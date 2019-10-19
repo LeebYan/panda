@@ -65,6 +65,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 		Map<String, String> resultMap = new HashMap<>(4);
 		resultMap.put("bucketName", CommonConstants.BUCKET_NAME);
 		resultMap.put("fileName", fileName);
+		resultMap.put("url", String.format("/admin/sys-file/%s/%s", CommonConstants.BUCKET_NAME, fileName));
 
 		try {
 			minioTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
@@ -80,14 +81,13 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	/**
 	 * 读取文件
 	 *
+	 * @param bucket
 	 * @param fileName
 	 * @param response
 	 */
 	@Override
-	public void getFile(String fileName, HttpServletResponse response) {
-		int separator = fileName.lastIndexOf(StrUtil.DASHED);
-		try (InputStream inputStream = minioTemplate.getObject(fileName.substring(0, separator),
-				fileName.substring(separator + 1))) {
+	public void getFile(String bucket, String fileName, HttpServletResponse response) {
+		try (InputStream inputStream = minioTemplate.getObject(bucket, fileName)) {
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			IoUtil.copy(inputStream, response.getOutputStream());
 		} catch (Exception e) {

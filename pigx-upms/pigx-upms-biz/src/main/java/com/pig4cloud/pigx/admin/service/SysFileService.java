@@ -43,10 +43,11 @@ public interface SysFileService extends IService<SysFile> {
 	/**
 	 * 读取文件
 	 *
-	 * @param fileName
-	 * @param response
+	 * @param bucket   桶名称
+	 * @param fileName 文件名称
+	 * @param response 输出流
 	 */
-	void getFile(String fileName, HttpServletResponse response);
+	void getFile(String bucket, String fileName, HttpServletResponse response);
 
 	/**
 	 * 删除文件

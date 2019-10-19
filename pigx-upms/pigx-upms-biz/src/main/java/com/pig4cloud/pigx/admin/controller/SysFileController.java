@@ -23,6 +23,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysFile;
 import com.pig4cloud.pigx.admin.service.SysFileService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -79,7 +80,7 @@ public class SysFileController {
 	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
 	 *
 	 * @param file 资源
-	 * @return R(bucketName, filename)
+	 * @return R(/ admin / bucketName / filename)
 	 */
 	@PostMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file) {
@@ -89,13 +90,15 @@ public class SysFileController {
 	/**
 	 * 获取文件
 	 *
+	 * @param bucket   桶名称
 	 * @param fileName 文件空间/名称
 	 * @param response
 	 * @return
 	 */
-	@GetMapping("/{fileName}")
-	public void file(@PathVariable String fileName, HttpServletResponse response) {
-		sysFileService.getFile(fileName, response);
+	@Inner(false)
+	@GetMapping("/{bucket}/{fileName}")
+	public void file(@PathVariable String bucket, @PathVariable String fileName, HttpServletResponse response) {
+		sysFileService.getFile(bucket, fileName, response);
 	}
 
 }
