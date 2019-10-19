@@ -30,6 +30,7 @@ import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ConvertingCursor;
 import org.springframework.data.redis.core.Cursor;
@@ -51,6 +52,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,7 @@ import java.util.Map;
  * @date 2018/6/24
  * 删除token端点
  */
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/token")
@@ -179,7 +182,8 @@ public class PigxTokenEndpoint {
 
 
 	private List<String> findKeysForPage(String patternKey, int pageNum, int pageSize) {
-		ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
+		ScanOptions options = ScanOptions.scanOptions().count(1000L)
+				.match(patternKey).build();
 		RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
 		Cursor cursor = (Cursor) redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
 		List<String> result = new ArrayList<>();
@@ -199,6 +203,12 @@ public class PigxTokenEndpoint {
 			}
 			tmpIndex++;
 			cursor.next();
+		}
+
+		try {
+			cursor.close();
+		} catch (IOException e) {
+			log.error("关闭cursor 失败");
 		}
 		return result;
 	}
