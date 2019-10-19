@@ -139,4 +139,23 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<!--避免和parent bom坐标不一致 -->
+			<plugin>
+				<groupId>com.pig4cloud.plugin</groupId>
+				<artifactId>spring-cloud-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
