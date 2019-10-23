@@ -79,11 +79,6 @@ public interface CommonConstants {
 	String BACK_END_PROJECT = "pigx";
 
 	/**
-	 * 验证码前缀
-	 */
-	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY_";
-
-	/**
 	 * 公共参数
 	 */
 	String PIG_PUBLIC_PARAM_KEY = "PIG_PUBLIC_PARAM_KEY";

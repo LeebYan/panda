@@ -16,6 +16,12 @@ public interface CacheConstants {
 	String GLOBALLY = "gl:";
 
 	/**
+	 * 验证码前缀
+	 */
+	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY:";
+
+
+	/**
 	 * 菜单信息缓存
 	 */
 	String MENU_DETAILS = "menu_details";
@@ -63,7 +69,7 @@ public interface CacheConstants {
 	String PARAMS_DETAILS = "params_details";
 
 	/**
-	 * 租户缓存
+	 * 租户缓存 (不区分租户)
 	 */
-	String TENANT_DETAILS = "tenant_details";
+	String TENANT_DETAILS = GLOBALLY + "tenant_details";
 }

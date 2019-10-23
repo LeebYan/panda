@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.gateway.filter;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.ValidateCodeException;
@@ -129,7 +129,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			randomStr = mobile;
 		}
 
-		String key = CommonConstants.DEFAULT_CODE_KEY + randomStr;
+		String key = CacheConstants.DEFAULT_CODE_KEY + randomStr;
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 
 		if (!redisTemplate.hasKey(key)) {

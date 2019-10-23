@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.gateway.handler;
 
 import com.google.code.kaptcha.Producer;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
@@ -62,8 +63,8 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		//保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, text
-			, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
+		redisTemplate.opsForValue().set(CacheConstants.DEFAULT_CODE_KEY + randomStr, text
+				, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 
 		// 转换流信息写出
 		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
@@ -75,8 +76,8 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		}
 
 		return ServerResponse
-			.status(HttpStatus.OK)
-			.contentType(MediaType.IMAGE_JPEG)
-			.body(BodyInserters.fromResource(new ByteArrayResource(os.toByteArray())));
+				.status(HttpStatus.OK)
+				.contentType(MediaType.IMAGE_JPEG)
+				.body(BodyInserters.fromResource(new ByteArrayResource(os.toByteArray())));
 	}
 }
