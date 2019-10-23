@@ -33,9 +33,9 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @SpringCloudApplication
 @EnablePigxFeignClients
 @EnablePigxResourceServer
-public class PigxPayApplication {
+public class PigxPayPlatformApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PigxPayApplication.class, args);
+		SpringApplication.run(PigxPayPlatformApplication.class, args);
 	}
 }

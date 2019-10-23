@@ -28,7 +28,7 @@
 </div>
 <footer>
     <p>support by: pig4cloud</p>
-    <p>email: <a href="mailto:wangiegie@gmail.com">wangiegie@gmail.com</a>.</p>
+    <p>email: <a href="mailto:pig4cloud@qq.com">pig4cloud@qq.com</a>.</p>
 </footer>
 </body>
 </html>

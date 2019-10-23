@@ -32,9 +32,9 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @SpringCloudApplication
 @EnablePigxFeignClients
 @EnablePigxResourceServer
-public class PigxMpManagerApplication {
+public class PigxMpPlatformApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PigxMpManagerApplication.class, args);
+		SpringApplication.run(PigxMpPlatformApplication.class, args);
 	}
 }
