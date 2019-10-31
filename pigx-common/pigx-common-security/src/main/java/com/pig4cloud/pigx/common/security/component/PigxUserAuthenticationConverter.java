@@ -17,7 +17,10 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import cn.hutool.core.util.StrUtil;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.security.exception.ForbiddenException;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +28,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author lengleng
@@ -64,8 +71,8 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 	@Override
 	public Authentication extractAuthentication(Map<String, ?> map) {
 		if (map.containsKey(USERNAME)) {
+			validateTenantId(map);
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-
 			String username = (String) map.get(USERNAME);
 			Integer id = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
 			Integer deptId = (Integer) map.get(SecurityConstants.DETAILS_DEPT_ID);
@@ -87,5 +94,24 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 					.collectionToCommaDelimitedString((Collection<?>) authorities));
 		}
 		throw new IllegalArgumentException("Authorities must be either a String or a Collection");
+	}
+
+	private void validateTenantId(Map<String, ?> map){
+		String headerValue =  getCurrentTenantId();
+		Integer userValue = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
+		if(StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)){
+			// TODO: 不要提示租户ID不对，避免被穷举
+			throw new ForbiddenException("bad tenant id");
+		}
+	}
+
+	public static Optional<HttpServletRequest> getCurrentHttpRequest() {
+		return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+				.filter(requestAttributes -> ServletRequestAttributes.class.isAssignableFrom(requestAttributes.getClass()))
+				.map(requestAttributes -> ((ServletRequestAttributes) requestAttributes))
+				.map(ServletRequestAttributes::getRequest);
+	}
+	public static String getCurrentTenantId() {
+		return getCurrentHttpRequest().map(httpServletRequest -> httpServletRequest.getHeader(CommonConstants.TENANT_ID)).orElse(null);
 	}
 }

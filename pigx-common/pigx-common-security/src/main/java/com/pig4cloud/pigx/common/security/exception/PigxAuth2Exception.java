@@ -36,6 +36,10 @@ public class PigxAuth2Exception extends OAuth2Exception {
 		super(msg);
 	}
 
+	public PigxAuth2Exception(String msg, Throwable t) {
+		super(msg,t);
+	}
+
 	public PigxAuth2Exception(String msg, String errorCode) {
 		super(msg);
 		this.errorCode = errorCode;
