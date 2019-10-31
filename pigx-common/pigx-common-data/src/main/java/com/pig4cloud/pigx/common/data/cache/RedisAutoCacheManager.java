@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.common.data.cache;
 
 import cn.hutool.core.util.StrUtil;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -73,6 +74,10 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 	 */
 	@Override
 	public Cache getCache(String name) {
+		// see https://gitee.wang/pig/pigx/issues/613
+		if(name.startsWith(CacheConstants.GLOBALLY)){
+			return super.getCache(name);
+		}
 		return super.getCache(TenantContextHolder.getTenantId() + StrUtil.COLON + name);
 	}
 }

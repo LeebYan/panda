@@ -9,6 +9,13 @@ package com.pig4cloud.pigx.common.core.constant;
 public interface CacheConstants {
 
 	/**
+	 * 全局缓存，在缓存名称上加上该前缀表示该缓存不区分租户，比如:
+	 * <P/>
+	 * {@code @Cacheable(value = CacheConstants.GLOBALLY+CacheConstants.MENU_DETAILS, key = "#roleId  + '_menu'", unless = "#result == null")}
+	 */
+	String GLOBALLY = "gl@";
+
+	/**
 	 * 菜单信息缓存
 	 */
 	String MENU_DETAILS = "menu_details";
