@@ -17,18 +17,24 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import cn.hutool.core.util.StrUtil;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.security.exception.PigxAuth2Exception;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @author lengleng
@@ -36,6 +42,7 @@ import java.util.Map;
  * <p>
  * 根据checktoken 的结果转化用户信息
  */
+@Slf4j
 public class PigxUserAuthenticationConverter implements UserAuthenticationConverter {
 	private static final String N_A = "N/A";
 
@@ -64,8 +71,8 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 	@Override
 	public Authentication extractAuthentication(Map<String, ?> map) {
 		if (map.containsKey(USERNAME)) {
+			validateTenantId(map);
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-
 			String username = (String) map.get(USERNAME);
 			Integer id = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
 			Integer deptId = (Integer) map.get(SecurityConstants.DETAILS_DEPT_ID);
@@ -87,5 +94,26 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 					.collectionToCommaDelimitedString((Collection<?>) authorities));
 		}
 		throw new IllegalArgumentException("Authorities must be either a String or a Collection");
+	}
+
+	private void validateTenantId(Map<String, ?> map){
+		String headerValue =  getCurrentTenantId();
+		Integer userValue = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
+		if(StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)){
+			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致",headerValue,userValue);
+			// TODO: 不要提示租户ID不对，可能被穷举
+			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId","Bad tenant ID"));
+		}
+	}
+
+	private Optional<HttpServletRequest> getCurrentHttpRequest() {
+		return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+				.filter(requestAttributes -> ServletRequestAttributes.class.isAssignableFrom(requestAttributes.getClass()))
+				.map(requestAttributes -> ((ServletRequestAttributes) requestAttributes))
+				.map(ServletRequestAttributes::getRequest);
+	}
+
+	private String getCurrentTenantId() {
+		return getCurrentHttpRequest().map(httpServletRequest -> httpServletRequest.getHeader(CommonConstants.TENANT_ID)).orElse(null);
 	}
 }
