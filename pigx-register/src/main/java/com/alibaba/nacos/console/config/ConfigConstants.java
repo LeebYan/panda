@@ -19,7 +19,7 @@ package com.alibaba.nacos.console.config;
 
 /**
  * @author lengleng
- * @date 2019-04-19
+ * @date 2019-10-31
  * <p>
  * 覆盖nacos 默认配置
  */
@@ -38,5 +38,4 @@ public interface ConfigConstants {
 	 * tomcat 日志配置
 	 */
 	String TOMCAT_ACCESS_LOG = "server.tomcat.accesslog.enabled";
-
 }

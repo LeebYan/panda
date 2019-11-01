@@ -75,9 +75,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        String ignoreUrls = env.getProperty("nacos.security.ignore.urls", "/**");
-        for (String url : ignoreUrls.trim().split(SECURITY_IGNORE_URLS_SPILT_CHAR)) {
-            web.ignoring().antMatchers(url.trim());
+        String ignoreURLs = env.getProperty("nacos.security.ignore.urls", "/**");
+        for (String ignoreURL : ignoreURLs.trim().split(SECURITY_IGNORE_URLS_SPILT_CHAR)) {
+            web.ignoring().antMatchers(ignoreURL.trim());
         }
     }
 
