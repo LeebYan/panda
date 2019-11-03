@@ -49,6 +49,11 @@ public enum LoginTypeEnum {
 	WECHAT("WX", "微信登录"),
 
 	/**
+	 * 微信小程序
+	 */
+	MINI_APP("MINI", "微信小程序"),
+
+	/**
 	 * 码云登录
 	 */
 	GITEE("GITEE", "码云登录"),

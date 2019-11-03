@@ -59,6 +59,7 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 	public Boolean bindSocial(String type, String code) {
 		String identify = loginHandlerMap.get(type).identify(code);
 		SysUser sysUser = sysUserMapper.selectById(SecurityUtils.getUser().getId());
+
 		if (LoginTypeEnum.GITEE.getType().equals(type)) {
 			sysUser.setGiteeLogin(identify);
 		} else if (LoginTypeEnum.OSC.getType().equals(type)) {
@@ -67,7 +68,10 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 			sysUser.setWxOpenid(identify);
 		} else if (LoginTypeEnum.QQ.getType().equals(type)) {
 			sysUser.setQqOpenid(identify);
+		} else if (LoginTypeEnum.MINI_APP.getType().equals(type)) {
+			sysUser.setMiniOpenid(identify);
 		}
+
 		sysUserMapper.updateById(sysUser);
 		//更新緩存
 		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(sysUser.getUsername());

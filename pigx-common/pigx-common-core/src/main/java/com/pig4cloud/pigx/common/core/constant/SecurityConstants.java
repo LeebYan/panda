@@ -90,6 +90,12 @@ public interface SecurityConstants {
 			"?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
 
 	/**
+	 * 微信小程序OPENID
+	 */
+	String MINI_APP_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/jscode2session" +
+			"?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
+	/**
 	 * 码云获取token
 	 */
 	String GITEE_AUTHORIZATION_CODE_URL = "https://gitee.com/oauth/token?grant_type=" +

@@ -113,6 +113,11 @@ public class SysUser implements Serializable {
 	@ApiModelProperty(value = "微信openid")
 	private String wxOpenid;
 	/**
+	 * 微信小程序openId
+	 */
+	@ApiModelProperty(value = "微信小程序openid")
+	private String miniOpenid;
+	/**
 	 * QQ openid
 	 */
 	@ApiModelProperty(value = "QQ openid")
