@@ -65,7 +65,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean removeRoleById(Integer id) {
 		sysRoleMenuMapper.delete(Wrappers
