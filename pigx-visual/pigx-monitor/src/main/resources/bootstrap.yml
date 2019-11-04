@@ -15,7 +15,3 @@ spring:
   profiles:
     active: @profiles.active@
 
-turbine:
-  app-config: pigx-upms-biz,pigx-auth
-  cluster-name-expression: new String("default")
-  combine-host-port: true

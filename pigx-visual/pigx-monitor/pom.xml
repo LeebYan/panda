@@ -48,22 +48,6 @@
 			<artifactId>spring-boot-admin-starter-server</artifactId>
 			<version>${spring-boot-admin.version}</version>
 		</dependency>
-		<!--hystrix-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
-		</dependency>
-		<!--turbine-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-turbine</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<!--Redis-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -78,6 +62,11 @@
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--sentinel 依赖-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
 		</dependency>
 		<!--web 模块-->
 		<dependency>
