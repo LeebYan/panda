@@ -10,6 +10,7 @@
 		<relativePath/>
 	</parent>
 
+	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx-common-bom</artifactId>
 	<packaging>pom</packaging>
 	<version>${pigx.version}</version>
@@ -17,8 +18,8 @@
 
 	<properties>
 		<pigx.version>3.5.0</pigx.version>
-		<mybatis-plus.version>3.1.0</mybatis-plus.version>
-		<druid.version>1.1.20</druid.version>
+		<mybatis-plus.version>3.2.0</mybatis-plus.version>
+		<druid.version>1.1.21</druid.version>
 		<mysql.connector.version>8.0.16</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.3.0</mp.weixin.version>

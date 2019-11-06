@@ -8,7 +8,7 @@ RUN mkdir -p /pigx-sentinel-dashboard
 
 WORKDIR /pigx-sentinel-dashboard
 
-EXPOSE 5010
+EXPOSE 5020
 
 ADD ./pigx-visual/pigx-sentinel-dashboard/target/pigx-sentinel-dashboard.jar ./
 

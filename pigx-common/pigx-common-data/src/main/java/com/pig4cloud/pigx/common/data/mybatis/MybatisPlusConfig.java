@@ -17,9 +17,7 @@
 
 package com.pig4cloud.pigx.common.data.mybatis;
 
-import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
@@ -99,16 +97,5 @@ public class MybatisPlusConfig {
 	@ConditionalOnMissingBean
 	public DataScopeInterceptor dataScopeInterceptor() {
 		return new DataScopeInterceptor(dataScopeHandle());
-	}
-
-	/**
-	 * 逻辑删除插件
-	 *
-	 * @return LogicSqlInjector
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	public ISqlInjector sqlInjector() {
-		return new LogicSqlInjector();
 	}
 }

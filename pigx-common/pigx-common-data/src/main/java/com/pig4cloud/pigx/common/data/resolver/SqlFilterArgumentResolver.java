@@ -19,8 +19,8 @@ package com.pig4cloud.pigx.common.data.resolver;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -29,6 +29,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -81,31 +86,15 @@ public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver 
 			page.setSize(Long.parseLong(size));
 		}
 
-		page.setAsc(sqlInject(ascs));
-		page.setDesc(sqlInject(descs));
+		List<OrderItem> orderItemList = new ArrayList<>();
+		Optional.ofNullable(ascs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
+				.filter(s1 -> !ArrayUtil.containsIgnoreCase(KEYWORDS, s1))
+				.map(OrderItem::asc).collect(Collectors.toList())));
+		Optional.ofNullable(descs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
+				.filter(s1 -> !ArrayUtil.containsIgnoreCase(KEYWORDS, s1))
+				.map(OrderItem::desc).collect(Collectors.toList())));
+		page.addOrder(orderItemList);
+
 		return page;
-	}
-
-	/**
-	 * SQL注入过滤
-	 *
-	 * @param str 待验证的字符串
-	 */
-	public static String[] sqlInject(String[] str) {
-		if (ArrayUtil.isEmpty(str)) {
-			return null;
-		}
-		//转换成小写
-		String inStr = ArrayUtil.join(str, StrUtil.COMMA).toLowerCase();
-
-		//判断是否包含非法字符
-		for (String keyword : KEYWORDS) {
-			if (inStr.contains(keyword)) {
-				log.error("查询包含非法字符 {}", keyword);
-				throw new CheckedException(keyword + "包含非法字符");
-			}
-		}
-
-		return str;
 	}
 }
