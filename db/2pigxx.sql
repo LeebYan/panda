@@ -323,7 +323,7 @@ CREATE TABLE `sys_menu` (
 BEGIN;
 INSERT INTO `sys_menu` VALUES (1000, '权限管理', NULL, '/user', -1, 'icon-quanxianguanli', 0, '0', '0', '2018-09-28 08:29:53', '2018-09-28 08:53:01', '0');
 INSERT INTO `sys_menu` VALUES (1100, '用户管理', NULL, '/admin/user/index', 1000, 'icon-yonghuguanli', 1, '1', '0', '2017-11-02 22:24:37', '2019-06-24 14:36:36', '0');
-INSERT INTO `sys_menu` VALUES (1101, '用户新增', 'sys_user_add', NULL, 1100, NULL, NULL, '0', '1', '2017-11-08 09:52:09', '2019-11-05 16:23:14', '1');
+INSERT INTO `sys_menu` VALUES (1101, '用户新增', 'sys_user_add', NULL, 1100, NULL, NULL, '0', '1', '2017-11-08 09:52:09', '2018-09-28 09:06:34', '0');
 INSERT INTO `sys_menu` VALUES (1102, '用户修改', 'sys_user_edit', NULL, 1100, NULL, NULL, '0', '1', '2017-11-08 09:52:48', '2018-09-28 09:06:37', '0');
 INSERT INTO `sys_menu` VALUES (1103, '用户删除', 'sys_user_del', NULL, 1100, NULL, NULL, '0', '1', '2017-11-08 09:54:01', '2018-09-28 09:06:42', '0');
 INSERT INTO `sys_menu` VALUES (1200, '菜单管理', NULL, '/admin/menu/index', 1000, 'icon-caidanguanli', 2, '0', '0', '2017-11-08 09:57:27', '2019-06-24 14:42:07', '0');
@@ -339,10 +339,10 @@ INSERT INTO `sys_menu` VALUES (1400, '部门管理', NULL, '/admin/dept/index', 
 INSERT INTO `sys_menu` VALUES (1401, '部门新增', 'sys_dept_add', NULL, 1400, NULL, NULL, '0', '1', '2018-01-20 14:56:16', '2018-09-28 09:08:13', '0');
 INSERT INTO `sys_menu` VALUES (1402, '部门修改', 'sys_dept_edit', NULL, 1400, NULL, NULL, '0', '1', '2018-01-20 14:56:59', '2018-09-28 09:08:16', '0');
 INSERT INTO `sys_menu` VALUES (1403, '部门删除', 'sys_dept_del', NULL, 1400, NULL, NULL, '0', '1', '2018-01-20 14:57:28', '2018-09-28 09:08:18', '0');
-INSERT INTO `sys_menu` VALUES (1500, '租户管理', '', '/admin/tenant/index', 1000, 'icon-erji-zuhushouye', 5, '0', '0', '2018-01-20 13:17:19', '2019-11-05 16:25:21', '1');
-INSERT INTO `sys_menu` VALUES (1501, '租户新增', 'admin_systenant_add', NULL, 1500, '1', 0, '0', '1', '2018-05-15 21:35:18', '2019-11-05 16:25:12', '1');
-INSERT INTO `sys_menu` VALUES (1502, '租户修改', 'admin_systenant_edit', NULL, 1500, '1', 1, '0', '1', '2018-05-15 21:35:18', '2019-11-05 16:25:15', '1');
-INSERT INTO `sys_menu` VALUES (1503, '租户删除', 'admin_systenant_del', NULL, 1500, '1', 2, '0', '1', '2018-05-15 21:35:18', '2019-11-05 16:25:18', '1');
+INSERT INTO `sys_menu` VALUES (1500, '租户管理', '', '/admin/tenant/index', 1000, 'icon-erji-zuhushouye', 5, '0', '0', '2018-01-20 13:17:19', '2019-05-17 15:36:11', '0');
+INSERT INTO `sys_menu` VALUES (1501, '租户新增', 'admin_systenant_add', NULL, 1500, '1', 0, '0', '1', '2018-05-15 21:35:18', '2019-05-17 15:36:34', '0');
+INSERT INTO `sys_menu` VALUES (1502, '租户修改', 'admin_systenant_edit', NULL, 1500, '1', 1, '0', '1', '2018-05-15 21:35:18', '2019-05-17 15:36:53', '0');
+INSERT INTO `sys_menu` VALUES (1503, '租户删除', 'admin_systenant_del', NULL, 1500, '1', 2, '0', '1', '2018-05-15 21:35:18', '2019-05-17 15:37:00', '0');
 INSERT INTO `sys_menu` VALUES (2000, '系统管理', NULL, '/admin', -1, 'icon-xitongguanli', 1, '0', '0', '2017-11-07 20:56:00', '2018-09-28 08:53:18', '0');
 INSERT INTO `sys_menu` VALUES (2100, '日志管理', NULL, '/admin/log/index', 2000, 'icon-rizhiguanli', 5, '0', '0', '2017-11-20 14:06:22', '2018-09-28 09:01:52', '0');
 INSERT INTO `sys_menu` VALUES (2101, '日志删除', 'sys_log_del', NULL, 2100, NULL, NULL, '0', '1', '2017-11-20 20:37:37', '2018-09-28 09:08:44', '0');
@@ -375,12 +375,12 @@ INSERT INTO `sys_menu` VALUES (2850, '任务开始', 'job_sys_job_start_job', NU
 INSERT INTO `sys_menu` VALUES (2860, '任务刷新', 'job_sys_job_refresh_job', NULL, 2800, '1', 0, '0', '1', '2018-05-15 21:35:18', '2019-03-25 11:50:39', '0');
 INSERT INTO `sys_menu` VALUES (2870, '执行任务', 'job_sys_job_run_job', NULL, 2800, '1', 0, '0', '1', '2019-08-08 15:35:18', '2019-08-08 15:50:35', '0');
 INSERT INTO `sys_menu` VALUES (3000, '系统监控', NULL, '/daemon', -1, 'icon-msnui-supervise', 2, '0', '0', '2018-07-27 01:13:21', '2018-09-28 08:53:24', '0');
-INSERT INTO `sys_menu` VALUES (3100, '服务监控', NULL, 'https://monitor.pig4cloud.com/', 3000, 'icon-server', 0, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:54:05', '0');
+INSERT INTO `sys_menu` VALUES (3100, '服务监控', NULL, 'http://127.0.0.1:5001', 3000, 'icon-server', 0, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:54:05', '0');
 INSERT INTO `sys_menu` VALUES (3110, '缓存监控', NULL, '/monitor/redis/index', 3000, 'icon-qingchuhuancun', 1, '1', '0', '2019-05-08 23:51:27', '2019-06-24 15:17:45', '0');
-INSERT INTO `sys_menu` VALUES (3200, '接口文档', NULL, 'https://swagger.pig4cloud.com/swagger-ui.html', 3000, 'icon-wendang', 1, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:57:11', '0');
+INSERT INTO `sys_menu` VALUES (3200, '接口文档', NULL, 'http://127.0.0.1:9999/swagger-ui.html', 3000, 'icon-wendang', 1, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:57:11', '0');
 INSERT INTO `sys_menu` VALUES (3300, '事务监控', NULL, '/tx/index', 3000, 'icon-gtsquanjushiwufuwuGTS', 5, '0', '0', '2018-08-19 11:02:39', '2019-06-24 15:18:04', '0');
 INSERT INTO `sys_menu` VALUES (3400, '在线事务', NULL, '/tx/model', 3000, 'icon-online', 6, '0', '0', '2018-08-19 11:32:04', '2019-06-24 15:18:13', '0');
-INSERT INTO `sys_menu` VALUES (3500, '文档扩展', NULL, 'https://swagger.pig4cloud.com/doc.html', 3000, 'icon-wendang', 2, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:57:42', '0');
+INSERT INTO `sys_menu` VALUES (3500, '文档扩展', NULL, 'http://127.0.0.1:9999/doc.html', 3000, 'icon-wendang', 2, '0', '0', '2018-06-26 10:50:32', '2019-05-01 23:57:42', '0');
 INSERT INTO `sys_menu` VALUES (3600, '任务轨迹', '', '/daemon/status-trace-log/index', 3000, 'icon-guiji', 8, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:18:41', '0');
 INSERT INTO `sys_menu` VALUES (3601, '删除轨迹', 'daemon_status_trace_log_del', NULL, 3600, '1', 2, '0', '1', '2018-05-15 21:35:18', '2019-03-30 09:31:06', '0');
 INSERT INTO `sys_menu` VALUES (3620, 'Quartz日志', '', '/daemon/job-log/index', 3000, 'icon-gtsquanjushiwufuwuGTS', 8, '0', '0', '2018-01-20 13:17:19', '2019-06-24 15:18:54', '0');
@@ -445,9 +445,6 @@ INSERT INTO `sys_menu` VALUES (10005, '表单删除', 'gen_form_del', NULL, 1000
 INSERT INTO `sys_menu` VALUES (10006, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '1', '0', '2019-08-12 09:35:16', '2019-08-12 10:28:35', '0');
 INSERT INTO `sys_menu` VALUES (10007, '数据源管理', NULL, '/gen/datasource', 10006, 'icon-mysql', 0, '1', '0', '2019-08-12 09:42:11', '2019-08-12 10:33:30', '0');
 INSERT INTO `sys_menu` VALUES (10008, '表单设计', NULL, '/gen/design', 10006, 'icon-biaodanbiaoqian', 2, '1', '0', '2019-08-16 10:08:56', NULL, '0');
-INSERT INTO `sys_menu` VALUES (10009, 'XXL控制台', NULL, 'https://xxl.pig4cloud.com/xxl-job-admin', 2000, 'icon-zhifuqudaoguanli', 100, '1', '0', '2019-10-07 10:21:52', '2019-10-26 20:32:52', '0');
-INSERT INTO `sys_menu` VALUES (10010, '配置中心', NULL, 'https://pigx.pig4cloud.com/nacos', 2000, 'icon-caidanguanli', 789, '1', '0', '2019-10-27 21:53:05', '2019-10-27 21:54:09', '0');
-INSERT INTO `sys_menu` VALUES (10013, 'sfsdfd', 'sfsdf', NULL, 1000, NULL, 1, '1', '1', '2019-11-04 16:48:10', '2019-11-05 14:12:39', '1');
 COMMIT;
 
 -- ----------------------------
@@ -698,8 +695,8 @@ INSERT INTO `sys_route_conf` VALUES (6, '分布式事务模块', 'pigx-tx-manage
 INSERT INTO `sys_route_conf` VALUES (7, '通用权限模块', 'pigx-upms-biz', '[{\"args\": {\"_genkey_0\": \"/admin/**\"}, \"name\": \"Path\"}]', '[{\"args\": {\"key-resolver\": \"#{@remoteAddrKeyResolver}\", \"redis-rate-limiter.burstCapacity\": \"1000\", \"redis-rate-limiter.replenishRate\": \"1000\"}, \"name\": \"RequestRateLimiter\"}]', 'lb://pigx-upms-biz', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:05', '0');
 INSERT INTO `sys_route_conf` VALUES (8, '工作流长链接支持1', 'pigx-oa-platform-1', '[{\"args\": {\"_genkey_0\": \"/act/ws/info/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-oa-platform-ws-1', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:07', '0');
 INSERT INTO `sys_route_conf` VALUES (9, '工作流长链接支持2', 'pigx-oa-platform-ws-2', '[{\"args\": {\"_genkey_0\": \"/act/ws/**\"}, \"name\": \"Path\"}]', '[]', 'lb:ws://pigx-oa-platform', 100, '2019-10-16 16:44:41', '2019-11-05 22:37:09', '0');
-INSERT INTO `sys_route_conf` VALUES (10, '微信公众号管理', 'pigx-mp-manager', '[{\"args\": {\"_genkey_0\": \"/mp/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-mp-manager', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:12', '0');
-INSERT INTO `sys_route_conf` VALUES (11, '支付管理', 'pigx-pay', '[{\"args\": {\"_genkey_0\": \"/pay/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-pay', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:13', '0');
+INSERT INTO `sys_route_conf` VALUES (10, '微信公众号管理', 'pigx-mp-platform', '[{\"args\": {\"_genkey_0\": \"/mp/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-mp-platform', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:12', '0');
+INSERT INTO `sys_route_conf` VALUES (11, '支付管理', 'pigx-pay-platform', '[{\"args\": {\"_genkey_0\": \"/pay/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-pay-platform', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:13', '0');
 INSERT INTO `sys_route_conf` VALUES (12, '监控管理', 'pigx-monitor', '[{\"args\": {\"_genkey_0\": \"/monitor/**\"}, \"name\": \"Path\"}]', '[]', 'lb://pigx-monitor', 0, '2019-10-16 16:44:41', '2019-11-05 22:37:17', '0');
 COMMIT;
 
