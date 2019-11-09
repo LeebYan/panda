@@ -778,14 +778,13 @@ CREATE TABLE `sys_user` (
   KEY `user_wx_openid` (`wx_openid`) USING BTREE,
   KEY `user_qq_openid` (`qq_openid`) USING BTREE,
   KEY `user_idx1_username` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_user` VALUES (1, 'admin', '$2a$10$IVzj1Wd.ZQdOIWdb1htQjexU94uoNeuk1crlQ9ExVupPi0Iy1uv.C', '', '17034642888', '/admin/sys-file/lengleng/c5a85e0770cd4fe78bc14b63b3bd05ae.jpg', 1, '2018-04-20 07:15:18', '2019-11-02 22:12:11', '0', '0', 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', 'oBxPy5E-v82xWGsfzZVzkD3wEX64', NULL, 'log4j', '2303656', 1);
-INSERT INTO `sys_user` VALUES (2, 'admin', '$2a$10$cU7NwyNX05YMBmmeX.qK1Orcelw37n.huo0d6iCiTs9mse.JwCEA.', NULL, '17034642119', '/admin/sys-file/lengleng/376220c58bc34593930ca835ebab6090.jpg', 13, '2019-08-27 23:27:36', '2019-10-21 13:31:53', '0', '0', NULL, NULL, NULL, NULL, NULL, 2);
 COMMIT;
 
 -- ----------------------------
@@ -803,7 +802,6 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_user_role` VALUES (1, 1);
-INSERT INTO `sys_user_role` VALUES (2, 2);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
