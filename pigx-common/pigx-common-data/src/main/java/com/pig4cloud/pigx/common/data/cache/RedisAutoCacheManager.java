@@ -21,6 +21,7 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.Cache;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -29,6 +30,7 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.lang.Nullable;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 /**
@@ -61,21 +63,22 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 		}
 
 		if (cacheConfig != null) {
-			long cacheAge = Long.parseLong(cacheArray[1]);
-			cacheConfig = cacheConfig.entryTtl(Duration.ofSeconds(cacheAge));
+			Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+			cacheConfig = cacheConfig.entryTtl(duration);
 		}
 		return super.createRedisCache(name, cacheConfig);
 	}
 
 	/**
 	 * 从上下文中获取租户ID，重写@Cacheable value 值
+	 *
 	 * @param name
 	 * @return
 	 */
 	@Override
 	public Cache getCache(String name) {
 		// see https://gitee.wang/pig/pigx/issues/613
-		if(name.startsWith(CacheConstants.GLOBALLY)){
+		if (name.startsWith(CacheConstants.GLOBALLY)) {
 			return super.getCache(name);
 		}
 		return super.getCache(TenantContextHolder.getTenantId() + StrUtil.COLON + name);
