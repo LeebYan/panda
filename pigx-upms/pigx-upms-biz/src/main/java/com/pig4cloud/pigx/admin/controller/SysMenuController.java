@@ -55,10 +55,11 @@ public class SysMenuController {
 	/**
 	 * 返回当前用户的树形菜单集合
 	 *
+	 * @param parentId 父节点ID
 	 * @return 当前用户的树形菜单
 	 */
 	@GetMapping
-	public R getUserMenu() {
+	public R getUserMenu(Integer parentId) {
 		// 获取符合条件的菜单
 		Set<MenuVO> all = new HashSet<>();
 		SecurityUtils.getRoles()
@@ -68,7 +69,10 @@ public class SysMenuController {
 				.map(MenuTree::new)
 				.sorted(Comparator.comparingInt(MenuTree::getSort))
 				.collect(Collectors.toList());
-		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.MENU_TREE_ROOT_ID));
+
+
+		return R.ok(TreeUtil.build(menuTreeList, parentId == null
+				? CommonConstants.MENU_TREE_ROOT_ID : parentId));
 	}
 
 	/**
