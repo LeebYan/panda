@@ -435,7 +435,6 @@ INSERT INTO `sys_menu` VALUES (6400, '菜单设置', NULL, '/mp/wxmenu/index', 6
 INSERT INTO `sys_menu` VALUES (6401, '保存', 'mp_wxmenu_add', NULL, 6400, NULL, 1, '0', '1', '2019-03-29 15:43:22', '2019-03-29 15:43:30', '0');
 INSERT INTO `sys_menu` VALUES (6402, '发布', 'mp_wxmenu_push', NULL, 6400, NULL, 1, '0', '1', '2019-03-29 15:43:54', NULL, '0');
 INSERT INTO `sys_menu` VALUES (6500, '运营数据', NULL, '/mp/wxstatistics/index', 6000, 'icon-zhexiantu', 7, '1', '0', '2019-04-14 00:15:35', '2019-06-24 15:25:15', '0');
-INSERT INTO `sys_menu` VALUES (9999, '系统官网', NULL, 'https://pig4cloud.com/#', -1, 'icon-guanwangfangwen', 10, '0', '0', '2019-01-17 17:05:19', '2019-08-12 10:25:12', '0');
 INSERT INTO `sys_menu` VALUES (10000, '文件管理', NULL, '/admin/file/index', 2000, 'icon-wenjianguanli', 6, '1', '0', '2019-06-25 12:44:46', NULL, '0');
 INSERT INTO `sys_menu` VALUES (10001, '删除文件', 'sys_file_del', NULL, 10000, NULL, 1, '0', '1', '2019-06-25 13:41:41', NULL, '0');
 INSERT INTO `sys_menu` VALUES (10002, '表单管理', '', '/gen/form', 10006, 'icon-record', 3, '0', '0', '2018-01-20 13:17:19', '2019-08-12 09:36:09', '0');
@@ -652,7 +651,6 @@ INSERT INTO `sys_role_menu` VALUES (1, 6400);
 INSERT INTO `sys_role_menu` VALUES (1, 6401);
 INSERT INTO `sys_role_menu` VALUES (1, 6402);
 INSERT INTO `sys_role_menu` VALUES (1, 6500);
-INSERT INTO `sys_role_menu` VALUES (1, 9999);
 INSERT INTO `sys_role_menu` VALUES (1, 10000);
 INSERT INTO `sys_role_menu` VALUES (1, 10001);
 INSERT INTO `sys_role_menu` VALUES (1, 10002);
