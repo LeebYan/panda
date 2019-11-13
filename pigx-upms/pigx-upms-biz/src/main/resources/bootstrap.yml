@@ -16,11 +16,3 @@ spring:
     exclude: org.springframework.cloud.gateway.config.GatewayAutoConfiguration,org.springframework.cloud.gateway.config.GatewayClassPathWarningAutoConfiguration
   profiles:
     active: @profiles.active@
-
-mybatis-plus:
-  tenant-enable: ture
-  mapper-locations: classpath:/mapper/*Mapper.xml
-  global-config:
-    banner: false
-    db-config:
-      id-type: auto
