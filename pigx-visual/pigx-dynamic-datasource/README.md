@@ -86,6 +86,9 @@ http://localhost:6060/test/getTest3?current=1&size=5
 ![test1数据库](http://i1.fuimg.com/704023/83e168e45242e135.png "test1数据库")
 ![test2数据库](http://i1.fuimg.com/704023/cf8c42fbc3512c32.png "test2数据库")
 ![test3数据库](http://i1.fuimg.com/704023/534483515e3f7cd0.png "test3数据库")
-
+### 切换数据源
+```
+请参考：com/pig4cloud/pigx/dynamic/mapper/TestMapper.java
+```
 ### 联系我
 QQ：55215085
