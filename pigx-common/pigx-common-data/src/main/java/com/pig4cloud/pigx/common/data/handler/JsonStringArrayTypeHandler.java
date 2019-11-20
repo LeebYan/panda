@@ -3,6 +3,7 @@ package com.pig4cloud.pigx.common.data.handler;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.SneakyThrows;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -33,19 +34,22 @@ public class JsonStringArrayTypeHandler extends BaseTypeHandler<String[]> {
 	}
 
 	@Override
-	public String[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
+	@SneakyThrows
+	public String[] getNullableResult(ResultSet rs, String columnName) {
 		String reString = rs.getString(columnName);
 		return Convert.toStrArray(reString);
 	}
 
 	@Override
-	public String[] getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+	@SneakyThrows
+	public String[] getNullableResult(ResultSet rs, int columnIndex) {
 		String reString = rs.getString(columnIndex);
 		return Convert.toStrArray(reString);
 	}
 
 	@Override
-	public String[] getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+	@SneakyThrows
+	public String[] getNullableResult(CallableStatement cs, int columnIndex) {
 		String reString = cs.getString(columnIndex);
 		return Convert.toStrArray(reString);
 	}
