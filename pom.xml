@@ -31,26 +31,16 @@
 		<name>pig4cloud</name>
 		<url>https://www.pig4cloud.com</url>
 	</organization>
-	<developers>
-		<developer>
-			<name>lengleng</name>
-			<email>wangiegie@gmail.com</email>
-		</developer>
-		<developer>
-			<name>lisb</name>
-			<email>121838632@qq.com</email>
-		</developer>
-	</developers>
 
 	<properties>
-		<spring-boot.version>2.1.10.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR4</spring-cloud.version>
+		<spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+		<spring-boot-admin.version>2.2.0</spring-boot-admin.version>
 		<hutool.version>5.0.6</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
