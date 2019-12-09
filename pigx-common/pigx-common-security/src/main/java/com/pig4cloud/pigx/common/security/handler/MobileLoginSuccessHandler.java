@@ -98,7 +98,7 @@ public class MobileLoginSuccessHandler implements AuthenticationSuccessHandler {
 			log.info("获取token 成功：{}", oAuth2AccessToken.getValue());
 
 			response.setCharacterEncoding(CharsetUtil.UTF_8);
-			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			PrintWriter printWriter = response.getWriter();
 			printWriter.append(objectMapper.writeValueAsString(oAuth2AccessToken));
 		} catch (IOException e) {

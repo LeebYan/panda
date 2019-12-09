@@ -16,7 +16,7 @@
 
 package com.pig4cloud.pigx.mp.config;
 
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import me.chanjar.weixin.mp.enums.TicketType;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 微信SDK redis扩展
  */
-public class WxMpInRedisConfigStorage extends WxMpInMemoryConfigStorage {
+public class WxMpInRedisConfigStorage extends WxMpDefaultConfigImpl {
 
 	private final static String ACCESS_TOKEN_KEY = "wechat:access_token_";
 

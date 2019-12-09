@@ -50,7 +50,7 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 						 AuthenticationException authException) {
 		response.setCharacterEncoding(CommonConstants.UTF8);
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		R<String> result = new R<>();
 		result.setCode(CommonConstants.FAIL);
 		if (authException != null) {

@@ -19,9 +19,9 @@ import com.pig4cloud.pigx.pay.service.PayChannelService;
 import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
+import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
@@ -100,7 +100,7 @@ public class PayConfigParmaInitRunner {
 				WxPayApiConfigKit.putApiConfig(wx);
 
 				WxMpService wxMpService = new WxMpServiceImpl();
-				WxMpInMemoryConfigStorage storage = new WxMpInMemoryConfigStorage();
+				WxMpDefaultConfigImpl storage = new WxMpDefaultConfigImpl();
 				storage.setAppId(channel.getAppId());
 				storage.setSecret(params.getStr("secret"));
 				storage.setToken(params.getStr("token"));

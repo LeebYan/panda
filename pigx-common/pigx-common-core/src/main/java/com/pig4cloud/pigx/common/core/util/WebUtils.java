@@ -141,7 +141,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @param result   结果对象
 	 */
 	public void renderJson(HttpServletResponse response, Object result) {
-		renderJson(response, result, MediaType.APPLICATION_JSON_UTF8_VALUE);
+		renderJson(response, result, MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	/**
