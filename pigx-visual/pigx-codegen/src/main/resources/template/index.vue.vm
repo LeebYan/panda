@@ -26,6 +26,8 @@
                        @on-load="getList"
                        @search-change="searchChange"
                        @refresh-change="refreshChange"
+                       @size-change="sizeChange"
+                       @current-change="currentChange"
                        @row-update="handleUpdate"
                        @row-save="handleSave"
                        @row-del="rowDel">
@@ -108,6 +110,12 @@
                 }).catch(() => {
                     loading();
                 });
+            },
+            sizeChange(pageSize){
+                this.page.pageSize = pageSize
+            },
+            currentChange(current){
+                this.page.currentPage = current
             },
             searchChange(form) {
                 this.searchForm = form
