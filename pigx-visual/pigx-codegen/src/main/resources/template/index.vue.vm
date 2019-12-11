@@ -81,7 +81,6 @@
                 })
             },
             rowDel: function (row, index) {
-                var _this = this
                 this.$confirm('是否确认删除ID为' + row.$pk.lowerAttrName, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -89,7 +88,7 @@
                 }).then(function () {
                     return delObj(row.$pk.lowerAttrName)
                 }).then(data => {
-                    _this.$message.success('删除成功')
+                    this.$message.success('删除成功')
                     this.getList(this.page)
                 })
             },
@@ -117,9 +116,10 @@
             currentChange(current){
                 this.page.currentPage = current
             },
-            searchChange(form) {
+            searchChange(form, done) {
                 this.searchForm = form
                 this.getList(this.page, form)
+                done()
             },
             refreshChange() {
                 this.getList(this.page)
