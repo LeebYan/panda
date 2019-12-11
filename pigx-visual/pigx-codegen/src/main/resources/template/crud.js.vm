@@ -5,6 +5,7 @@ export const tableOption = {
   "stripe": true,
   "menuAlign": "center",
   "align": "center",
+  "searchShow": false,
   "column": [
 #foreach ($column in $columns)
 	  {
