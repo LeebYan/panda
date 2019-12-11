@@ -17,10 +17,9 @@
 
 package com.pig4cloud.pigx.gateway.handler;
 
-import com.google.code.kaptcha.Producer;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.wf.captcha.ArithmeticCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -36,9 +35,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,30 +46,25 @@ import java.util.concurrent.TimeUnit;
 @Component
 @AllArgsConstructor
 public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
-	private static final String JPEG = "jpeg";
-	private final Producer producer;
+	private static final Integer DEFAULT_IMAGE_WIDTH = 100;
+	private static final Integer DEFAULT_IMAGE_HEIGHT = 40;
 	private final RedisTemplate redisTemplate;
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		//生成验证码
-		String text = producer.createText();
-		BufferedImage image = producer.createImage(text);
+		ArithmeticCaptcha captcha = new ArithmeticCaptcha(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
+
+		String result = captcha.text();
 
 		//保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.opsForValue().set(CacheConstants.DEFAULT_CODE_KEY + randomStr, text
+		redisTemplate.opsForValue().set(CacheConstants.DEFAULT_CODE_KEY + randomStr, result
 				, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 
 		// 转换流信息写出
 		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-		try {
-			ImageIO.write(image, JPEG, os);
-		} catch (IOException e) {
-			log.error("ImageIO write err", e);
-			return Mono.error(e);
-		}
+		captcha.out(os);
 
 		return ServerResponse
 				.status(HttpStatus.OK)
