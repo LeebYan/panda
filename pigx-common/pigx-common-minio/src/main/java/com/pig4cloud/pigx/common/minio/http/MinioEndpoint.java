@@ -23,7 +23,6 @@ import com.pig4cloud.pigx.common.minio.vo.MinioObject;
 import io.minio.messages.Bucket;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +38,6 @@ import java.util.Map;
  * <p>
  * minio.endpoint.enable
  */
-@ConditionalOnProperty(name = "minio.endpoint.enable", havingValue = "true")
 @RestController
 @AllArgsConstructor
 @RequestMapping("${minio.endpoint.name:/minio}")

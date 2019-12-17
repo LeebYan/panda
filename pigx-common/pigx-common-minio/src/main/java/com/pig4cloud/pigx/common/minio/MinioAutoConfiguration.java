@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.minio;
 
+import com.pig4cloud.pigx.common.minio.http.MinioEndpoint;
 import com.pig4cloud.pigx.common.minio.service.MinioTemplate;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +44,13 @@ public class MinioAutoConfiguration {
 				properties.getAccessKey(),
 				properties.getSecretKey()
 		);
+	}
+
+
+	@Bean
+	@ConditionalOnProperty(name = "minio.endpoint.enable", havingValue = "true")
+	public MinioEndpoint minioEndpoint(MinioTemplate template) {
+		return new MinioEndpoint(template);
 	}
 
 }
