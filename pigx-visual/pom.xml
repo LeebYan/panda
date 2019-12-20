@@ -43,5 +43,6 @@
 		<module>pigx-sentinel-dashboard</module>
 		<module>pigx-tx-manager</module>
 		<module>pigx-dynamic-datasource</module>
+		<module>pigx-code</module>
 	</modules>
 </project>
