@@ -37,6 +37,51 @@ pigxx_codegen数据库中gen_datasource_conf表必须存在一个name为master�
 
 INSERT INTO `gen_datasource_conf` VALUES ('8', 'master', 'jdbc:mysql://pigx-mysql:3306/pigxx_codegen?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true', 'root', 'ZkxR9PxP6sWvasdc9CG9Ww==', '2019-09-18 09:44:55', '2019-12-17 17:07:17', '0', null);
 ```
+### 修改菜单的url
+```
+开发平台菜单下的/gen全部改为/code
+如 /gen/datasource 改为 /code/datasource
+```
+### 修改动态路由
+```
+{
+    "routeId": "pigx-codegen",
+    "routeName": "代码生成模块",
+    "predicates": [
+      {
+        "args": {
+          "_genkey_0": "/gen/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [],
+    "uri": "lb://pigx-codegen",
+    "order": 0,
+    "createTime": "2019-10-16 16:44:41",
+    "updateTime": "2019-11-05 22:36:58",
+    "delFlag": "0"
+  },
+改为
+{
+    "routeId": "pigx-code",
+    "routeName": "多数据源代码生成模块",
+    "predicates": [
+      {
+        "args": {
+          "_genkey_0": "/code/**"
+        },
+        "name": "Path"
+      }
+    ],
+    "filters": [],
+    "uri": "lb://pigx-code",
+    "order": 0,
+    "createTime": "2019-10-16 16:44:41",
+    "updateTime": "2019-11-05 22:36:58",
+    "delFlag": "0"
+  },
+```
 ### yml配置文件切换数据源
 ```
 请参考：https://git.pig4cloud.com/pigx/pigx/src/liuyes_dev/pigx-visual/pigx-dynamic-datasource
