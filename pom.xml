@@ -34,25 +34,25 @@
 
 	<properties>
 		<spring-boot.version>2.2.2.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.2.0</spring-boot-admin.version>
-		<hutool.version>5.0.7</hutool.version>
+		<spring-boot-admin.version>2.2.1</spring-boot-admin.version>
+		<hutool.version>5.1.0</hutool.version>
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<knife4j.version>1.9.6</knife4j.version>
+		<knife4j.version>2.0.1</knife4j.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
-		<jasypt.version>2.1.1</jasypt.version>
-		<ttl.version>2.10.2</ttl.version>
-		<minio.version>6.0.8</minio.version>
+		<jasypt.version>2.1.2</jasypt.version>
+		<ttl.version>2.11.2</ttl.version>
+		<minio.version>6.0.11</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
-		<xxl.job.version>2.1.1</xxl.job.version>
+		<xxl.job.version>2.1.2</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.url>http://192.168.0.13:4243</docker.url>
