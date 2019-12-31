@@ -40,7 +40,7 @@ public class SysJobLogListener {
 	@Order
 	@EventListener(SysJobLogEvent.class)
 	public void saveSysJobLog(SysJobLogEvent event) {
-		SysJobLog sysJobLog = (SysJobLog) event.getSysJobLog();
+		SysJobLog sysJobLog = event.getSysJobLog();
 		sysJobLogService.save(sysJobLog);
 		log.info("执行定时任务日志");
 	}
