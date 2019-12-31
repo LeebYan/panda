@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>3.6.0-snapshot</version>
+	<version>3.6.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -48,7 +48,7 @@
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
-		<jasypt.version>2.1.2</jasypt.version>
+		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.11.2</ttl.version>
 		<minio.version>6.0.11</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
