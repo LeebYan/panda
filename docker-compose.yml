@@ -21,10 +21,12 @@ services:
     command: --lower_case_table_names=1
 
   pigx-zookeeper:
+    container_name: pigx-zookeeper
     image: zookeeper:3.4.13
     restart: always
 
   pigx-xxl:
+    container_name: pigx-xxl
     image: pig4cloud/xxl-job-admin:2.1.1
     restart: always
     environment:
@@ -33,13 +35,14 @@ services:
       - 9080:8080
 
   pigx-redis:
+    container_name: pigx-redis
     image: redis:5.0.7
     restart: always
-    container_name: pigx-redis
     ports:
       - 6379:6379
 
   pigx-minio:
+    container_name: pigx-minio
     image: minio/minio
     command: server /data
     ports:
