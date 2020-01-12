@@ -22,6 +22,7 @@ import com.pig4cloud.pigx.common.gateway.rule.VersionGrayLoadBalancer;
 import com.pig4cloud.pigx.common.gateway.filter.GrayReactiveLoadBalancerClientFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.config.GatewayReactiveLoadBalancerClientAutoConfiguration;
@@ -40,6 +41,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(LoadBalancerProperties.class)
 @ConditionalOnProperty(value = "gray.rule.enabled", havingValue = "true")
 @AutoConfigureBefore(GatewayReactiveLoadBalancerClientAutoConfiguration.class)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class GrayLoadBalancerClientConfiguration {
 
 	@Bean

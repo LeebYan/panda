@@ -41,7 +41,6 @@ import java.util.Map;
 public class GrayRibbonLoadBalancerRule extends AbstractLoadBalancerRule {
 	@Override
 	public void initWithNiwsConfig(IClientConfig iClientConfig) {
-
 	}
 
 	@Override

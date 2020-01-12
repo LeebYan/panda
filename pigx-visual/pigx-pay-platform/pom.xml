@@ -48,6 +48,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-sequence</artifactId>
 		</dependency>
+		<!--灰度支持-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
+		</dependency>
 		<!--feign 接口-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>

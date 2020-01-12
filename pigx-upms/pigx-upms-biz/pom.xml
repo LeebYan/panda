@@ -82,6 +82,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-sentinel</artifactId>
 		</dependency>
+		<!--路由控制-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
+		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>

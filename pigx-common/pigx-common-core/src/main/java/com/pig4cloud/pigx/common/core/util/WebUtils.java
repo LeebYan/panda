@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
@@ -123,7 +124,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 */
 	public HttpServletRequest getRequest() {
 		try {
-			return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+			return ((ServletRequestAttributes) requestAttributes).getRequest();
 		} catch (IllegalStateException e) {
 			return null;
 		}

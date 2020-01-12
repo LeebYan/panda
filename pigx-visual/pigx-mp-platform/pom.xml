@@ -63,6 +63,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-log</artifactId>
 		</dependency>
+		<!--灰度支持-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
+		</dependency>
 		<!--微信依赖-->
 		<dependency>
 			<groupId>com.github.binarywang</groupId>

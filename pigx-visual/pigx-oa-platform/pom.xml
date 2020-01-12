@@ -56,6 +56,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-upms-api</artifactId>
 		</dependency>
+		<!--灰度支持-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
+		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
