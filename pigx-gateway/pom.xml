@@ -47,6 +47,10 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-gateway</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
+		</dependency>
 		<!--注册中心客户端-->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

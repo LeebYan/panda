@@ -5,6 +5,9 @@ spring:
   application:
     name: @artifactId@
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     nacos:
       discovery:
         server-addr: ${NACOS-HOST:pigx-register}:${NACOS-PORT:8848}

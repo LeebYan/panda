@@ -15,12 +15,12 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.job.jobinit;
+package com.pig4cloud.pigx.common.gray.jobinit;
 
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
 import com.dangdang.ddframe.job.config.JobTypeConfiguration;
-import com.dangdang.ddframe.job.config.script.ScriptJobConfiguration;
-import com.pig4cloud.pigx.common.job.properties.ElasticJobProperties;
+import com.dangdang.ddframe.job.config.dataflow.DataflowJobConfiguration;
+import com.pig4cloud.pigx.common.gray.properties.ElasticJobProperties;
 
 import java.util.Map;
 
@@ -28,26 +28,26 @@ import java.util.Map;
 /**
  * @author lengleng
  * @date 2018/7/24
- * 脚本任务初始
+ * 流式任务初始
  */
-public class ScriptJobInitialization extends AbstractJobInitialization {
+public class DataflowJobInitialization extends AbstractJobInitialization {
 
-	private Map<String, ElasticJobProperties.ScriptConfiguration> scriptConfigurationMap;
+	private Map<String, ElasticJobProperties.DataflowConfiguration> dataflowConfigurationMap;
 
-	public ScriptJobInitialization(final Map<String, ElasticJobProperties.ScriptConfiguration> scriptConfigurationMap) {
-		this.scriptConfigurationMap = scriptConfigurationMap;
+	public DataflowJobInitialization(final Map<String, ElasticJobProperties.DataflowConfiguration> dataflowConfigurationMap) {
+		this.dataflowConfigurationMap = dataflowConfigurationMap;
 	}
 
 	public void init() {
-		for (String jobName : scriptConfigurationMap.keySet()) {
-			ElasticJobProperties.ScriptConfiguration configuration = scriptConfigurationMap.get(jobName);
+		for (String jobName : dataflowConfigurationMap.keySet()) {
+			ElasticJobProperties.DataflowConfiguration configuration = dataflowConfigurationMap.get(jobName);
 			initJob(jobName, configuration.getJobType(), configuration);
 		}
 	}
 
 	@Override
 	public JobTypeConfiguration getJobTypeConfiguration(String jobName, JobCoreConfiguration jobCoreConfiguration) {
-		ElasticJobProperties.ScriptConfiguration configuration = scriptConfigurationMap.get(jobName);
-		return new ScriptJobConfiguration(jobCoreConfiguration, configuration.getScriptCommandLine());
+		ElasticJobProperties.DataflowConfiguration configuration = dataflowConfigurationMap.get(jobName);
+		return new DataflowJobConfiguration(jobCoreConfiguration, configuration.getJobClass(), configuration.isStreamingProcess());
 	}
 }

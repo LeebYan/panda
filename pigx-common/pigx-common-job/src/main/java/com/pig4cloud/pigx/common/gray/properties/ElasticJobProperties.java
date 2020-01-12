@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.job.properties;
+package com.pig4cloud.pigx.common.gray.properties;
 
 import com.dangdang.ddframe.job.api.JobType;
 import lombok.Getter;
@@ -25,7 +25,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.pig4cloud.pigx.common.job.ElasticJobAutoConfiguration.DEFAULT_REGISTRY_CENTER_NAME;
+import static com.pig4cloud.pigx.common.gray.ElasticJobAutoConfiguration.DEFAULT_REGISTRY_CENTER_NAME;
 
 
 /**

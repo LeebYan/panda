@@ -15,29 +15,22 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.elastic;
+package com.pig4cloud.pigx.common.gray.annotation;
 
-import com.pig4cloud.pigx.common.gray.annotation.EnablePigxXxlJob;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.pig4cloud.pigx.common.gray.ElasticJobAutoConfiguration;
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
 
 /**
  * @author lengleng
  * @date 2018/7/24
- * 分布式任务调度模块
+ * 开启pigx elastic job
  */
-@EnablePigxXxlJob
-@EnablePigxSwagger2
-@EnablePigxFeignClients
-@SpringCloudApplication
-@EnablePigxResourceServer
-public class PigxDaemonElasticJobApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(PigxDaemonElasticJobApplication.class, args);
-	}
-
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import({ElasticJobAutoConfiguration.class})
+public @interface EnablePigxElasticJob {
 }

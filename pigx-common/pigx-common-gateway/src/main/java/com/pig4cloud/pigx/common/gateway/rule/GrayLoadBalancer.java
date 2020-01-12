@@ -15,22 +15,25 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.job.annotation;
+package com.pig4cloud.pigx.common.gateway.rule;
 
-import com.pig4cloud.pigx.common.job.ElasticJobAutoConfiguration;
-import org.springframework.context.annotation.Import;
-
-import java.lang.annotation.*;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
  * @author lengleng
- * @date 2018/7/24
- * 开启pigx elastic job
+ * @date 2020/1/12
+ * <p>
+ * 灰度路由
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@Import({ElasticJobAutoConfiguration.class})
-public @interface EnablePigxElasticJob {
+public interface GrayLoadBalancer {
+
+	/**
+	 * 根据serviceId 筛选可用服务
+	 *
+	 * @param serviceId 服务ID
+	 * @param request   当前请求
+	 * @return
+	 */
+	ServiceInstance choose(String serviceId, ServerHttpRequest request);
 }

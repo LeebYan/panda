@@ -15,21 +15,23 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.job.properties;
+package com.pig4cloud.pigx.common.gray.annotation;
 
-import lombok.Data;
+import com.pig4cloud.pigx.common.gray.XxlJobAutoConfiguration;
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
 
 /**
  * @author lengleng
  * @date 2019-09-18
  * <p>
- * xxl 管控台相关属性
+ * 开启支持XXL
  */
-@Data
-public class XxlAdminProperties {
-	/**
-	 * 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。
-	 * 执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
-	 */
-	private String addresses = "http://127.0.0.1:8080/xxl-job-admin";
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import({XxlJobAutoConfiguration.class})
+public @interface EnablePigxXxlJob {
 }

@@ -15,29 +15,29 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.elastic;
+package com.pig4cloud.pigx.common.gray;
 
-import com.pig4cloud.pigx.common.gray.annotation.EnablePigxXxlJob;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.pig4cloud.pigx.common.gray.feign.GrayFeignRequestInterceptor;
+import com.pig4cloud.pigx.common.gray.rule.GrayRibbonLoadBalancerRule;
+import feign.RequestInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author lengleng
- * @date 2018/7/24
- * 分布式任务调度模块
+ * @date 2020/1/12
  */
-@EnablePigxXxlJob
-@EnablePigxSwagger2
-@EnablePigxFeignClients
-@SpringCloudApplication
-@EnablePigxResourceServer
-public class PigxDaemonElasticJobApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(PigxDaemonElasticJobApplication.class, args);
+@Configuration
+@ConditionalOnProperty(value = "gray.rule.enabled", havingValue = "true")
+public class GrayRibbonLoadBalancerConfiguration {
+	@Bean
+	public GrayRibbonLoadBalancerRule ribbonLoadBalancerRule() {
+		return new GrayRibbonLoadBalancerRule();
 	}
 
+	@Bean
+	public RequestInterceptor pigxFeignTenantInterceptor() {
+		return new GrayFeignRequestInterceptor();
+	}
 }

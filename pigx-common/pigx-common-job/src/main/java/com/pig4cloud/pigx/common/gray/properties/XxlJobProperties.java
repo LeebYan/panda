@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.job.properties;
+package com.pig4cloud.pigx.common.gray.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

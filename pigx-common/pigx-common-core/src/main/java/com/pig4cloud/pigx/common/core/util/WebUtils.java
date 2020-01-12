@@ -51,8 +51,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {
-	private  final String BASIC_ = "Basic ";
-	private  final String UNKNOWN = "unknown";
+	private final String BASIC_ = "Basic ";
+	private final String UNKNOWN = "unknown";
 
 	/**
 	 * 判断是否ajax请求
@@ -122,7 +122,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return {HttpServletRequest}
 	 */
 	public HttpServletRequest getRequest() {
-		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		try {
+			return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		} catch (IllegalStateException e) {
+			return null;
+		}
 	}
 
 	/**
