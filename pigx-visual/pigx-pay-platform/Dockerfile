@@ -10,6 +10,6 @@ WORKDIR /pigx-pay-platform
 
 EXPOSE 5010
 
-ADD ./pigx-visual/pigx-pay-platform/target/pigx-pay-platform.jar ./
+ADD ./target/pigx-pay-platform.jar ./
 
 CMD sleep 120;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-pay-platform.jar

@@ -7,8 +7,7 @@ version: '2'
 services:
   pigx-mysql:
     build:
-      context: ./
-      dockerfile: ./db/Dockerfile
+      context: ./db
     environment:
       MYSQL_ROOT_PASSWORD: root
     restart: always
@@ -57,8 +56,7 @@ services:
 
   pigx-register:
     build:
-      context: ./
-      dockerfile: ./pigx-register/Dockerfile
+      context: ./pigx-register
     restart: always
     container_name: pigx-register
     image: pigx-register
@@ -67,8 +65,7 @@ services:
 
   pigx-gateway:
     build:
-      context: ./
-      dockerfile: ./pigx-gateway/Dockerfile
+      context: ./pigx-gateway
     restart: always
     container_name: pigx-gateway
     image: pigx-gateway
@@ -77,24 +74,21 @@ services:
 
   pigx-auth:
     build:
-      context: ./
-      dockerfile: ./pigx-auth/Dockerfile
+      context: ./pigx-auth
     restart: always
     container_name: pigx-auth
     image: pigx-auth
 
   pigx-upms:
     build:
-      context: ./
-      dockerfile: ./pigx-upms/pigx-upms-biz/Dockerfile
+      context: ./pigx-upms/pigx-upms-biz
     restart: always
     container_name: pigx-upms
     image: pigx-upms
 
   pigx-monitor:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-monitor/Dockerfile
+      context: ./pigx-visual/pigx-monitor
     restart: always
     image: pigx-monitor
     container_name: pigx-monitor
@@ -103,56 +97,49 @@ services:
 
   pigx-daemon-quartz:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-daemon-quartz/Dockerfile
+      context: ./pigx-visual/pigx-daemon-quartz
     restart: always
     image: pigx-daemon-quartz
     container_name: pigx-daemon-quartz
 
   pigx-daemon-elastic-job:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-daemon-elastic-job/Dockerfile
+      context: ./pigx-visual/pigx-daemon-elastic-job
     restart: always
     image: pigx-daemon-elastic-job
     container_name: pigx-daemon-elastic-job
 
   pigx-codegen:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-codegen/Dockerfile
+      context: ./pigx-visual/pigx-codegen
     restart: always
     image: pigx-codegen
     container_name: pigx-codegen
 
   pigx-mp-platform:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-mp-platform/Dockerfile
+      context: ./pigx-visual/pigx-mp-platform
     restart: always
     image: pigx-mp-platform
     container_name: pigx-mp-platform
 
   pigx-pay-platform:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-pay-platform/Dockerfile
+      context: ./pigx-visual/pigx-pay-platform
     restart: always
     image: pigx-pay-platform
     container_name: pigx-pay-platform
 
   pigx-oa-platform:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-oa-platform/Dockerfile
+      context: ./pigx-visual/pigx-oa-platform
     restart: always
     image: pigx-oa-platform
     container_name: pigx-oa-platform
 
   pigx-tx-manager:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-tx-manager/Dockerfile
+      context: ./pigx-visual/pigx-tx-manager
     restart: always
     image: pigx-tx-manager
     container_name: pigx-tx-manager
@@ -162,8 +149,7 @@ services:
 
   pigx-sentinel:
     build:
-      context: ./
-      dockerfile: ./pigx-visual/pigx-sentinel-dashboard/Dockerfile
+      context: ./pigx-visual/pigx-sentinel-dashboard
     restart: always
     image: pigx-sentinel
     container_name: pigx-sentinel

@@ -10,6 +10,6 @@ WORKDIR /pigx-sentinel-dashboard
 
 EXPOSE 5020
 
-ADD ./pigx-visual/pigx-sentinel-dashboard/target/pigx-sentinel-dashboard.jar ./
+ADD ./target/pigx-sentinel-dashboard.jar ./
 
 CMD sleep 120;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-sentinel-dashboard.jar

@@ -10,6 +10,6 @@ WORKDIR /pigx-oa-platform
 
 EXPOSE 5005
 
-ADD ./pigx-visual/pigx-oa-platform/target/pigx-oa-platform.jar ./
+ADD ./target/pigx-oa-platform.jar ./
 
 CMD sleep 120;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-oa-platform.jar

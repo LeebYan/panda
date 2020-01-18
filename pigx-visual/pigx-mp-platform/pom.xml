@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-visual</artifactId>
-		<version>3.6.0</version>
+		<version>3.7.0</version>
 	</parent>
 
 	<artifactId>pigx-mp-platform</artifactId>
@@ -92,7 +92,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
+				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>

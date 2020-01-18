@@ -68,10 +68,10 @@ public class SysOauthClientDetails extends Model<SysOauthClientDetails> {
 	@ApiModelProperty(value = "作用域")
 	private String scope;
 	/**
-	 * 授权方式（A,B,C）
+	 * 授权方式[A,B,C]
 	 */
 	@ApiModelProperty(value = "授权方式")
-	private String authorizedGrantTypes;
+	private String[] authorizedGrantTypes;
 	/**
 	 * 回调地址
 	 */

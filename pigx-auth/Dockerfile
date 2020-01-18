@@ -10,6 +10,6 @@ WORKDIR /pigx-auth
 
 EXPOSE 3000
 
-ADD ./pigx-auth/target/pigx-auth.jar ./
+ADD ./target/pigx-auth.jar ./
 
 CMD sleep 120;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar pigx-auth.jar
