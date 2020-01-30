@@ -2,7 +2,9 @@ FROM java:8-jre
 
 MAINTAINER wangiegie@gmail.com
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENV TZ=Asia/Shanghai
+
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir -p /pigx-gateway
 

@@ -2,7 +2,9 @@ FROM mysql:8.0.18
 
 MAINTAINER lengleng(wangiegie@gmail.com)
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENV TZ=Asia/Shanghai
+
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY ./1schema.sql /docker-entrypoint-initdb.d
 
