@@ -33,7 +33,7 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.2.3.RELEASE</spring-boot.version>
+		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
@@ -41,7 +41,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.2.1</spring-boot-admin.version>
-		<hutool.version>5.1.0</hutool.version>
+		<hutool.version>5.1.1</hutool.version>
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
 		<knife4j.version>2.0.1</knife4j.version>
@@ -55,8 +55,8 @@
 		<xxl.job.version>2.1.1</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
-		<docker.registry>http://172.17.0.111:2375</docker.registry>
-		<docker.host>172.17.0.111</docker.host>
+		<docker.registry>172.17.0.111</docker.registry>
+		<docker.host>http://172.17.0.111:2375</docker.host>
 		<docker.namespace>library</docker.namespace>
 		<docker.username>admin</docker.username>
 		<docker.password>Harbor12345</docker.password>
@@ -207,7 +207,7 @@
 						</authConfig>
 						<images>
 							<image>
-								<name>${docker.host}/${docker.namespace}/${project.name}:${project.version}</name>
+								<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
 								<build>
 									<dockerFile>${project.basedir}/Dockerfile</dockerFile>
 								</build>
