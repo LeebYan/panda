@@ -78,7 +78,7 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 		Properties prop = new Properties();
 		prop.put("file.resource.loader.class", ClasspathResourceLoader.class.getName());
 		Velocity.init(prop);
-		Template template = Velocity.getTemplate("template/crud.js.vm", CharsetUtil.UTF_8);
+		Template template = Velocity.getTemplate("template/avue/crud.js.vm", CharsetUtil.UTF_8);
 		VelocityContext context = new VelocityContext();
 
 		List<ColumnEntity> columnList = new ArrayList<>();

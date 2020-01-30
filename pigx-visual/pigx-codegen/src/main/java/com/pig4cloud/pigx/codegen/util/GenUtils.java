@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.codegen.entity.GenConfig;
 import com.pig4cloud.pigx.codegen.entity.GenFormConf;
 import com.pig4cloud.pigx.codegen.entity.TableEntity;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.enums.StyleTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -63,11 +64,19 @@ public class GenUtils {
 	private final String CONTROLLER_JAVA_VM = "Controller.java.vm";
 	private final String MAPPER_XML_VM = "Mapper.xml.vm";
 	private final String MENU_SQL_VM = "menu.sql.vm";
-	private final String INDEX_VUE_VM = "index.vue.vm";
-	private final String API_JS_VM = "api.js.vm";
-	private final String CRUD_JS_VM = "crud.js.vm";
+	private final String AVUE_INDEX_VUE_VM = "avue/index.vue.vm";
+	private final String ELE_INDEX_VUE_VM = "element/index.vue.vm";
+	private final String ELE_ADD_UPDATE_VUE_VM = "element/add-or-update.vue.vm";
+	private final String AVUE_API_JS_VM = "avue/api.js.vm";
+	private final String AVUE_CRUD_JS_VM = "avue/crud.js.vm";
 
-	private List<String> getTemplates() {
+	/**
+	 * 配置
+	 *
+	 * @param config
+	 * @return
+	 */
+	private List<String> getTemplates(GenConfig config) {
 		List<String> templates = new ArrayList<>();
 		templates.add("template/Entity.java.vm");
 		templates.add("template/Mapper.java.vm");
@@ -76,10 +85,16 @@ public class GenUtils {
 		templates.add("template/ServiceImpl.java.vm");
 		templates.add("template/Controller.java.vm");
 		templates.add("template/menu.sql.vm");
+		templates.add("template/avue/api.js.vm");
 
-		templates.add("template/index.vue.vm");
-		templates.add("template/api.js.vm");
-		templates.add("template/crud.js.vm");
+		if (StyleTypeEnum.ELEMENT.getStyle().equals(config.getStyle())) {
+			templates.add("template/element/index.vue.vm");
+			templates.add("template/element/add-or-update.vue.vm");
+		} else {
+			templates.add("template/avue/index.vue.vm");
+			templates.add("template/avue/crud.js.vm");
+		}
+
 		return templates;
 	}
 
@@ -199,10 +214,10 @@ public class GenUtils {
 		VelocityContext context = new VelocityContext(map);
 
 		//获取模板列表
-		List<String> templates = getTemplates();
+		List<String> templates = getTemplates(genConfig);
 		for (String template : templates) {
 			// 如果是crud
-			if (template.contains(CRUD_JS_VM) && formConf != null) {
+			if (template.contains(AVUE_CRUD_JS_VM) && formConf != null) {
 				zip.putNextEntry(new ZipEntry(Objects
 						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
 								, map.get("package").toString(), map.get("moduleName").toString()))));
@@ -293,18 +308,23 @@ public class GenUtils {
 			return className.toLowerCase() + "_menu.sql";
 		}
 
-		if (template.contains(INDEX_VUE_VM)) {
+		if (template.contains(AVUE_INDEX_VUE_VM) || template.contains(ELE_INDEX_VUE_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
 					File.separator + moduleName + File.separator + className.toLowerCase() + File.separator + "index.vue";
 		}
 
-		if (template.contains(API_JS_VM)) {
+		if (template.contains(AVUE_API_JS_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator + className.toLowerCase() + ".js";
 		}
 
-		if (template.contains(CRUD_JS_VM)) {
+		if (template.contains(AVUE_CRUD_JS_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const" +
 					File.separator + "crud" + File.separator + className.toLowerCase() + ".js";
+		}
+
+		if (template.contains(ELE_ADD_UPDATE_VUE_VM)) {
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
+					File.separator + moduleName + File.separator + className.toLowerCase() + File.separator + moduleName + "-add-or-update.vue";
 		}
 
 		return null;
