@@ -21,6 +21,9 @@ package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysDept;
+import com.pig4cloud.pigx.common.data.datascope.DataScope;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,4 +35,11 @@ import com.pig4cloud.pigx.admin.api.entity.SysDept;
  */
 public interface SysDeptMapper extends BaseMapper<SysDept> {
 
+	/**
+	 * 根据数据权限查询部门
+	 *
+	 * @param dataScope
+	 * @return
+	 */
+	List<SysDept> listDepts(DataScope dataScope);
 }

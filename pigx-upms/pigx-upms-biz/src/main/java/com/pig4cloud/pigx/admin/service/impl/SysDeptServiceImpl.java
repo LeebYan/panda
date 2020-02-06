@@ -29,6 +29,7 @@ import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysDeptMapper;
 import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
 import com.pig4cloud.pigx.admin.service.SysDeptService;
+import com.pig4cloud.pigx.common.data.datascope.DataScope;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -120,7 +121,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	@Override
 	public List<DeptTree> selectTree() {
-		return getDeptTree(this.list(Wrappers.emptyWrapper()));
+		return getDeptTree(baseMapper.listDepts(new DataScope()));
 	}
 
 
