@@ -21,7 +21,7 @@ import com.pig4cloud.pigx.gateway.handler.ImageCodeHandler;
 import com.pig4cloud.pigx.gateway.handler.SwaggerResourceHandler;
 import com.pig4cloud.pigx.gateway.handler.SwaggerSecurityHandler;
 import com.pig4cloud.pigx.gateway.handler.SwaggerUiHandler;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,12 +37,12 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
  */
 @Slf4j
 @Configuration
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RouterFunctionConfiguration {
 	private final SwaggerResourceHandler swaggerResourceHandler;
 	private final SwaggerSecurityHandler swaggerSecurityHandler;
 	private final SwaggerUiHandler swaggerUiHandler;
-	private ImageCodeHandler imageCodeHandler;
+	private final ImageCodeHandler imageCodeHandler;
 
 	@Bean
 	public RouterFunction routerFunction() {

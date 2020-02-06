@@ -522,7 +522,7 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES (1, '管理员', 'ROLE_ADMIN', '管理员', '3', '2', '2017-10-29 15:45:51', '2018-12-26 14:09:11', '0', 1);
+INSERT INTO `sys_role` VALUES (1, '管理员', 'ROLE_ADMIN', '管理员', '0', '2', '2017-10-29 15:45:51', '2018-12-26 14:09:11', '0', 1);
 COMMIT;
 
 -- ----------------------------
