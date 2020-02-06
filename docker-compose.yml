@@ -35,6 +35,8 @@ services:
   pigx-redis:
     image: redis:5.0.7
     restart: always
+    # 加密
+    #command: redis-server --requirepass lengleng@123
     container_name: pigx-redis
     ports:
       - 6379:6379
