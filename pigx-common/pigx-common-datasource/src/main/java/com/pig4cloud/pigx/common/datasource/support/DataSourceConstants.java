@@ -13,11 +13,6 @@ public interface DataSourceConstants {
 	String QUERY_DS_SQL = "select * from gen_datasource_conf where del_flag = 0";
 
 	/**
-	 * 动态路由KEY
-	 */
-	String DS_ROUTE_KEY = "id";
-
-	/**
 	 * 数据源名称
 	 */
 	String DS_NAME = "name";

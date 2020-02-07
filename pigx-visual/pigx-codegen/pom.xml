@@ -25,6 +25,11 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
+		<!--数据操作-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-data</artifactId>
+		</dependency>
 		<!--动态数据源 数据操作-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>

@@ -18,4 +18,9 @@ public class DruidDataSourceProperties {
 	private String password;
 	private String url;
 	private String driverClassName;
+
+	/**
+	 * 查询数据源的SQL
+	 */
+	private String queryDsSql;
 }

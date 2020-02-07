@@ -27,9 +27,9 @@ import lombok.Data;
 @Data
 public class GenConfig {
 	/**
-	 * 数据源ID
+	 * 数据源name
 	 */
-	private Integer id;
+	private String dsName;
 	/**
 	 * 包名
 	 */

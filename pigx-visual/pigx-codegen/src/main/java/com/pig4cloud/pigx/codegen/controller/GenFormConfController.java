@@ -72,14 +72,14 @@ public class GenFormConfController {
 	/**
 	 * 通过id查询生成记录
 	 *
-	 * @param dsId      数据源ID
+	 * @param dsName      数据源ID
 	 * @param tableName tableName
 	 * @return R
 	 */
 	@ApiOperation(value = "通过tableName查询表单信息")
 	@GetMapping("/info")
-	public R form(Integer dsId, String tableName) {
-		return R.ok(genRecordService.getForm(dsId, tableName));
+	public R form(String dsName, String tableName) {
+		return R.ok(genRecordService.getForm(dsName, tableName));
 	}
 
 	/**

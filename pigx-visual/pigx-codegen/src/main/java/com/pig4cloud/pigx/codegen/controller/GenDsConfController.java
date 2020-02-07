@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 public class GenDsConfController {
 	private final GenDatasourceConfService datasourceConfService;
 
+
 	/**
 	 * 分页查询
 	 *
@@ -87,13 +88,13 @@ public class GenDsConfController {
 	/**
 	 * 修改数据源表
 	 *
-	 * @param sysDatasourceConf 数据源表
+	 * @param conf 数据源表
 	 * @return R
 	 */
 	@SysLog("修改数据源表")
 	@PutMapping
-	public R updateById(@RequestBody GenDatasourceConf sysDatasourceConf) {
-		return R.ok(datasourceConfService.updateDsByEnc(sysDatasourceConf));
+	public R updateById(@RequestBody GenDatasourceConf conf) {
+		return R.ok(datasourceConfService.updateDsByEnc(conf));
 	}
 
 	/**
@@ -105,7 +106,6 @@ public class GenDsConfController {
 	@SysLog("删除数据源表")
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable Integer id) {
-		return R.ok(datasourceConfService.removeById(id));
+		return R.ok(datasourceConfService.removeByDsId(id));
 	}
-
 }

@@ -36,6 +36,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnablePigxResourceServer
 public class PigxCodeGenApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(PigxCodeGenApplication.class, args);
 	}

@@ -1,6 +1,8 @@
 package com.pig4cloud.pigx.common.datasource.annotation;
 
-import com.pig4cloud.pigx.common.datasource.config.DynamicDataSourceConfig;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.pig4cloud.pigx.common.datasource.DynamicDataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -15,6 +17,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({DynamicDataSourceConfig.class})
+@EnableAutoConfiguration(exclude = {DruidDataSourceAutoConfigure.class})
+@Import(DynamicDataSourceAutoConfiguration.class)
 public @interface EnableDynamicDataSource {
 }

@@ -18,7 +18,8 @@
 
 	<properties>
 		<pigx.version>3.7.0</pigx.version>
-		<mybatis-plus.version>3.3.0</mybatis-plus.version>
+		<mybatis-plus.version>3.3.1</mybatis-plus.version>
+		<dynamic-ds.version>3.0.0</dynamic-ds.version>
 		<druid.version>1.1.21</druid.version>
 		<mysql.connector.version>8.0.18</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
@@ -142,6 +143,11 @@
 				<groupId>com.github.binarywang</groupId>
 				<artifactId>weixin-java-common</artifactId>
 				<version>${mp.weixin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+				<version>${dynamic-ds.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

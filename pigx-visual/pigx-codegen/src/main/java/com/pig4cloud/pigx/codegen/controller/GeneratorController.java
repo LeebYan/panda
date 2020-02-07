@@ -45,12 +45,12 @@ public class GeneratorController {
 	 * 列表
 	 *
 	 * @param tableName 参数集
-	 * @param id        数据源编号
+	 * @param dsName    数据源编号
 	 * @return 数据库表
 	 */
 	@GetMapping("/page")
-	public R getPage(Page page, String tableName, Integer id) {
-		return R.ok(generatorService.getPage(page, tableName, id));
+	public R getPage(Page page, String tableName, String dsName) {
+		return R.ok(generatorService.getPage(page, tableName, dsName));
 	}
 
 	/**
