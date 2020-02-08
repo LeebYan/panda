@@ -24,7 +24,6 @@ import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -44,7 +43,6 @@ import java.util.List;
 @Configuration
 @ConditionalOnBean(DataSource.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-@MapperScan("com.pig4cloud.pigx.**.mapper")
 public class MybatisPlusConfig {
 
 	/**

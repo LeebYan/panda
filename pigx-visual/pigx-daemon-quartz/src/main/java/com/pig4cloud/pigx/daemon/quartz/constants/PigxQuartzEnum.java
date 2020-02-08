@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.daemon.quartz.constant.enums;
+package com.pig4cloud.pigx.daemon.quartz.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

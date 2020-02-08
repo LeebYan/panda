@@ -22,6 +22,7 @@ package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysRoleMenu;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -31,6 +32,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysRoleMenu;
  * @author lengleng
  * @since 2017-10-29
  */
+@Mapper
 public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {
 
 }

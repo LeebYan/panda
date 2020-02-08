@@ -36,7 +36,7 @@ import org.quartz.Scheduler;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.pig4cloud.pigx.daemon.quartz.constant.enums.PigxQuartzEnum.*;
+import static com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum.*;
 
 
 /**

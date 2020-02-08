@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.codegen.mapper;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018-07-30
  */
+@Mapper
 public interface GeneratorMapper {
 
 	/**

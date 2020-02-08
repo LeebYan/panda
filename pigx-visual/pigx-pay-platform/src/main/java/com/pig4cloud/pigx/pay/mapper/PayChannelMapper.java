@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.pay.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.pay.entity.PayChannel;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 渠道
@@ -26,6 +27,7 @@ import com.pig4cloud.pigx.pay.entity.PayChannel;
  * @author lengleng
  * @date 2019-05-28 23:57:58
  */
+@Mapper
 public interface PayChannelMapper extends BaseMapper<PayChannel> {
 
 }

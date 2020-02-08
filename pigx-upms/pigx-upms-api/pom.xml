@@ -44,7 +44,7 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 		</dependency>
-		<!--feign-->
+		<!--sentinel-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-sentinel</artifactId>
