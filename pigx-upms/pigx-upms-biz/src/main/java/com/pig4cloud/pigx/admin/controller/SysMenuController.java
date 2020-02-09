@@ -70,7 +70,6 @@ public class SysMenuController {
 				.sorted(Comparator.comparingInt(MenuTree::getSort))
 				.collect(Collectors.toList());
 
-
 		return R.ok(TreeUtil.build(menuTreeList, parentId == null
 				? CommonConstants.MENU_TREE_ROOT_ID : parentId));
 	}
