@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.common.data.mybatis;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
+import com.pig4cloud.pigx.admin.api.feign.RemoteDataScopeService;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
@@ -38,7 +39,7 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2017/10/29
+ * @date 2020-02-08
  */
 @Configuration
 @ConditionalOnBean(DataSource.class)
@@ -82,6 +83,7 @@ public class MybatisPlusConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnBean(RemoteDataScopeService.class)
 	public DataScopeHandle dataScopeHandle() {
 		return new PigxDefaultDatascopeHandle();
 	}
@@ -93,6 +95,7 @@ public class MybatisPlusConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnBean(DataScopeHandle.class)
 	public DataScopeInterceptor dataScopeInterceptor() {
 		return new DataScopeInterceptor(dataScopeHandle());
 	}

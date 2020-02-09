@@ -53,6 +53,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-gray</artifactId>
 		</dependency>
+		<!-- sentinel-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<!--feign 接口-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
@@ -76,12 +81,10 @@
 		<dependency>
 			<groupId>com.github.javen205</groupId>
 			<artifactId>IJPay</artifactId>
-			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-sdk-java</artifactId>
-			<version>3.0.52.ALL</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.binarywang</groupId>

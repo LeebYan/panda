@@ -43,6 +43,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
 		</dependency>
+		<!--feign-->
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+		</dependency>
 		<!--UPMS API-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>

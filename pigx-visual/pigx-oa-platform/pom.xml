@@ -56,6 +56,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-upms-api</artifactId>
 		</dependency>
+		<!--sentinel-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<!--灰度支持-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
@@ -135,6 +140,10 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-feign</artifactId>
 		</dependency>
 		<!--undertow容器-->
 		<dependency>

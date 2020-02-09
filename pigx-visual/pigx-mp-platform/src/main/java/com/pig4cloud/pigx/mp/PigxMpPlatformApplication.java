@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.mp;
 
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
+import com.pig4cloud.pigx.common.feign.annotation.EnablePigxFeignClients;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
 import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
 import org.springframework.boot.SpringApplication;
@@ -29,8 +29,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * 微信公众号管理模块
  */
 @EnablePigxSwagger2
-@SpringCloudApplication
 @EnablePigxFeignClients
+@SpringCloudApplication
 @EnablePigxResourceServer
 public class PigxMpPlatformApplication {
 

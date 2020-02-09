@@ -53,6 +53,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<!--feign 依赖-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-feign</artifactId>
+		</dependency>
 		<!--mysql 驱动-->
 		<dependency>
 			<groupId>mysql</groupId>

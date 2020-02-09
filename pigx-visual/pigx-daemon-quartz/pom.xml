@@ -59,6 +59,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<!-- sentinel-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<!--灰度支持-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>

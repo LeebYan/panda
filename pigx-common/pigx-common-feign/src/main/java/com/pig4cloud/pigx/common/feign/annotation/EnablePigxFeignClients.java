@@ -15,20 +15,23 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.security.annotation;
+package com.pig4cloud.pigx.common.feign.annotation;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.PigxFeignClientsRegistrar;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
 /**
  * @author lengleng
- * @date 2018/9/5
+ * @date 2020-02-08
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @EnableFeignClients
+@Import(PigxFeignClientsRegistrar.class)
 public @interface EnablePigxFeignClients {
 	/**
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation

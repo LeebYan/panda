@@ -15,29 +15,27 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.codegen;
+package com.pig4cloud.pigx.common.sentinel;
 
-import com.pig4cloud.pigx.common.datasource.annotation.EnableDynamicDataSource;
-import com.pig4cloud.pigx.common.feign.annotation.EnablePigxFeignClients;
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
-import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.alibaba.csp.sentinel.adapter.servlet.callback.WebCallbackManager;
+import com.pig4cloud.pigx.common.sentinel.handle.PigxUrlBlockHandler;
+import com.pig4cloud.pigx.common.sentinel.parser.PigxHeaderRequestOriginParser;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author lengleng
- * @date 2018/07/29
- * 代码生成模块
+ * <p>
+ * sentinel 配置
  */
-@EnableDynamicDataSource
-@EnablePigxSwagger2
-@EnablePigxFeignClients
-@SpringCloudApplication
-@EnablePigxResourceServer
-public class PigxCodeGenApplication {
+@Configuration
+public class SentinelAutoConfiguration {
 
-
-	public static void main(String[] args) {
-		SpringApplication.run(PigxCodeGenApplication.class, args);
+	@PostConstruct
+	public void initWebCallbackManager() {
+		WebCallbackManager.setUrlBlockHandler(new PigxUrlBlockHandler());
+		WebCallbackManager.setRequestOriginParser(new PigxHeaderRequestOriginParser());
 	}
+
 }

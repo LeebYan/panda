@@ -15,27 +15,26 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.sentinel;
+package com.pig4cloud.pigx.common.feign;
 
-import com.alibaba.csp.sentinel.adapter.servlet.callback.WebCallbackManager;
-import com.pig4cloud.pigx.common.sentinel.handle.PigxUrlBlockHandler;
-import com.pig4cloud.pigx.common.sentinel.parser.PigxHeaderRequestOriginParser;
+import feign.Feign;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.PigxFeignClientsRegistrar;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author lengleng
+ * @date 2020/2/8
  * <p>
- * sentinel 配置
+ * feign 自动化配置
  */
 @Configuration
-public class SentinelAutoConfigure {
-
-	@PostConstruct
-	public void initWebCallbackManager() {
-		WebCallbackManager.setUrlBlockHandler(new PigxUrlBlockHandler());
-		WebCallbackManager.setRequestOriginParser(new PigxHeaderRequestOriginParser());
-	}
+@ConditionalOnClass(Feign.class)
+@Import(PigxFeignClientsRegistrar.class)
+@AutoConfigureAfter(EnableFeignClients.class)
+public class PigxFeignAutoConfiguration {
 
 }

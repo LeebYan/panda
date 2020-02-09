@@ -20,13 +20,13 @@
 package com.pig4cloud.pigx.auth;
 
 
-import com.pig4cloud.pigx.common.security.annotation.EnablePigxFeignClients;
+import com.pig4cloud.pigx.common.feign.annotation.EnablePigxFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2018年06月21日
+ * @date 2020-02-08
  * 认证授权中心
  */
 @SpringCloudApplication
