@@ -45,14 +45,14 @@
         </el-pagination>
       </div>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <table-form v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></table-form>
     </basic-container>
   </div>
 </template>
 
 <script>
   import {fetchList, delObj} from '@/api/${pathName}'
-  import AddOrUpdate from './${pathName}-add-or-update'
+  import TableForm from './${pathName}-form'
   import {mapGetters} from 'vuex'
   export default {
     data () {
@@ -69,7 +69,7 @@
       }
     },
     components: {
-      AddOrUpdate
+      TableForm
     },
     created () {
       this.getDataList()

@@ -44,7 +44,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnBean(DataSource.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-public class MybatisPlusConfig {
+public class MybatisPlusConfiguration {
 
 	/**
 	 * 创建租户维护处理器对象

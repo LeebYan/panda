@@ -66,7 +66,7 @@ public class GenUtils {
 	private final String MENU_SQL_VM = "menu.sql.vm";
 	private final String AVUE_INDEX_VUE_VM = "avue/index.vue.vm";
 	private final String ELE_INDEX_VUE_VM = "element/index.vue.vm";
-	private final String ELE_ADD_UPDATE_VUE_VM = "element/add-or-update.vue.vm";
+	private final String ELE_ADD_UPDATE_VUE_VM = "element/form.vue.vm";
 	private final String AVUE_API_JS_VM = "avue/api.js.vm";
 	private final String AVUE_CRUD_JS_VM = "avue/crud.js.vm";
 
@@ -89,7 +89,7 @@ public class GenUtils {
 
 		if (StyleTypeEnum.ELEMENT.getStyle().equals(config.getStyle())) {
 			templates.add("template/element/index.vue.vm");
-			templates.add("template/element/add-or-update.vue.vm");
+			templates.add("template/element/form.vue.vm");
 		} else {
 			templates.add("template/avue/index.vue.vm");
 			templates.add("template/avue/crud.js.vm");
@@ -275,7 +275,9 @@ public class GenUtils {
 	 * 获取文件名
 	 */
 	private String getFileName(String template, String className, String packageName, String moduleName) {
-		String packagePath = CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
+		String packagePath = CommonConstants.BACK_END_PROJECT + File.separator + "src"
+				+ File.separator + "main" + File.separator + "java" + File.separator;
+
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
 		}
@@ -301,7 +303,8 @@ public class GenUtils {
 		}
 
 		if (template.contains(MAPPER_XML_VM)) {
-			return CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
+			return CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main"
+					+ File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
 		}
 
 		if (template.contains(MENU_SQL_VM)) {
@@ -314,17 +317,19 @@ public class GenUtils {
 		}
 
 		if (template.contains(AVUE_API_JS_VM)) {
-			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator + className.toLowerCase() + ".js";
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api"
+					+ File.separator + className.toLowerCase() + ".js";
 		}
 
 		if (template.contains(AVUE_CRUD_JS_VM)) {
-			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const" +
-					File.separator + "crud" + File.separator + className.toLowerCase() + ".js";
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const"
+					+ File.separator + "crud" + File.separator + className.toLowerCase() + ".js";
 		}
 
 		if (template.contains(ELE_ADD_UPDATE_VUE_VM)) {
-			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
-					File.separator + moduleName + File.separator + className.toLowerCase() + File.separator + moduleName + "-add-or-update.vue";
+			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views"
+					+ File.separator + moduleName + File.separator + className.toLowerCase()
+					+ File.separator + moduleName + "-form.vue.vm";
 		}
 
 		return null;
