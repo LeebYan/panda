@@ -25,6 +25,7 @@
 		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.6.0</mp.weixin.version>
 		<ijpay.version>1.2.0</ijpay.version>
+		<fastjson.version>1.2.62</fastjson.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 	</properties>
 
@@ -128,6 +129,12 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.connector.version}</version>
+			</dependency>
+			<!--fastjson-->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
 			</dependency>
 			<!--swagger 最新依赖内置版本-->
 			<dependency>

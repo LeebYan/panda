@@ -17,25 +17,32 @@
 
 package com.pig4cloud.pigx.common.sentinel;
 
-import com.alibaba.csp.sentinel.adapter.servlet.callback.WebCallbackManager;
+import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
+import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.RequestOriginParser;
 import com.pig4cloud.pigx.common.sentinel.handle.PigxUrlBlockHandler;
 import com.pig4cloud.pigx.common.sentinel.parser.PigxHeaderRequestOriginParser;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author lengleng
+ * @date 2020-02-12
  * <p>
  * sentinel 配置
  */
 @Configuration
 public class SentinelAutoConfiguration {
 
-	@PostConstruct
-	public void initWebCallbackManager() {
-		WebCallbackManager.setUrlBlockHandler(new PigxUrlBlockHandler());
-		WebCallbackManager.setRequestOriginParser(new PigxHeaderRequestOriginParser());
+	@Bean
+	@ConditionalOnMissingBean
+	public BlockExceptionHandler blockExceptionHandler() {
+		return new PigxUrlBlockHandler();
 	}
 
+	@Bean
+	@ConditionalOnMissingBean
+	public RequestOriginParser requestOriginParser(){
+		return new PigxHeaderRequestOriginParser();
+	}
 }
