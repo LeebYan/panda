@@ -117,6 +117,7 @@ public class TreeUtil {
 			node.setIcon(menu.getIcon());
 			node.setType(menu.getType());
 			node.setSort(menu.getSort());
+			node.setHasChildren(true);
 			node.setKeepAlive(menu.getKeepAlive());
 			trees.add(node);
 		}

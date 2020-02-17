@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * @author lengleng
  * @date 2017年11月9日23:33:27
@@ -32,7 +34,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ApiModel(value = "菜单树")
 @EqualsAndHashCode(callSuper = true)
-public class MenuTree extends TreeNode {
+public class MenuTree extends TreeNode implements Serializable {
 	/**
 	 * 菜单图标
 	 */
@@ -75,6 +77,11 @@ public class MenuTree extends TreeNode {
 	@ApiModelProperty(value = "排序值")
 	private Integer sort;
 
+	/**
+	 * 是否包含子节点
+	 * @since 3.7
+	 */
+	private Boolean hasChildren;
 	public MenuTree() {
 	}
 
