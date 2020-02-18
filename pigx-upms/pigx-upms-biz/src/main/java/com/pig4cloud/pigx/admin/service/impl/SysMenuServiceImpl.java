@@ -22,13 +22,17 @@ package com.pig4cloud.pigx.admin.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.entity.SysRoleMenu;
 import com.pig4cloud.pigx.admin.api.vo.MenuVO;
+import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.constant.enums.MenuTypeEnum;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -36,7 +40,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -68,10 +76,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 			return R.failed("菜单含有下级不能删除");
 		}
 
-		sysRoleMenuMapper
-				.delete(Wrappers.<SysRoleMenu>query()
-						.lambda().eq(SysRoleMenu::getMenuId, id));
-
+		sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query()
+				.lambda().eq(SysRoleMenu::getMenuId, id));
 		//删除当前菜单及其子菜单
 		return R.ok(this.removeById(id));
 	}
@@ -80,5 +86,63 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	@CacheEvict(value = CacheConstants.MENU_DETAILS, allEntries = true)
 	public Boolean updateMenuById(SysMenu sysMenu) {
 		return this.updateById(sysMenu);
+	}
+
+	/**
+	 * 构建树查询
+	 * 1. 不是懒加载情况，查询全部
+	 * 2. 是懒加载，根据parentId 查询
+	 * 2.1 父节点为空，则查询ID -1
+	 *
+	 * @param lazy     是否是懒加载
+	 * @param parentId 父节点ID
+	 * @return
+	 */
+	@Override
+	public List<MenuTree> treeMenu(boolean lazy, Integer parentId) {
+		if (!lazy) {
+			return TreeUtil.buildTree(baseMapper.selectList(Wrappers.<SysMenu>lambdaQuery()
+					.orderByAsc(SysMenu::getSort)), CommonConstants.MENU_TREE_ROOT_ID);
+		}
+
+		Integer parent = parentId == null ? CommonConstants.MENU_TREE_ROOT_ID : parentId;
+		return TreeUtil.buildTree(baseMapper
+				.selectList(Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getParentId, parent)
+						.orderByAsc(SysMenu::getSort)), parent);
+	}
+
+	/**
+	 * 查询菜单
+	 *
+	 * @param all 全部菜单
+	 * @param type 类型
+	 * @param parentId 父节点ID
+	 * @return
+	 */
+	@Override
+	public List<MenuTree> filterMenu(Set<MenuVO> all, String type, Integer parentId) {
+		List<MenuTree> menuTreeList = all.stream()
+				.filter(menuTypePredicate(type))
+				.map(MenuTree::new)
+				.sorted(Comparator.comparingInt(MenuTree::getSort))
+				.collect(Collectors.toList());
+		Integer parent = parentId == null ? CommonConstants.MENU_TREE_ROOT_ID : parentId;
+		return TreeUtil.build(menuTreeList, parent);
+	}
+
+	/**
+	 * menu 类型断言
+	 *
+	 * @param type 类型
+	 * @return Predicate
+	 */
+	private Predicate<MenuVO> menuTypePredicate(String type) {
+		return vo -> {
+			if (MenuTypeEnum.TOP_MENU.getDescription().equals(type)) {
+				return MenuTypeEnum.TOP_MENU.getType().equals(vo.getType());
+			}
+			// 其他查询 左侧 + 顶部
+			return !MenuTypeEnum.BUTTON.getType().equals(vo.getType());
+		};
 	}
 }
