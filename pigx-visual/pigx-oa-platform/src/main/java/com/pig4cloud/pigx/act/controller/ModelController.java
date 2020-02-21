@@ -61,6 +61,6 @@ public class ModelController {
 
 	@PostMapping("/deploy/{id}")
 	public R deploy(@PathVariable("id") String id) {
-		return R.ok(modelService.deploy(id));
+		return modelService.deploy(id) ? R.ok() : R.failed();
 	}
 }

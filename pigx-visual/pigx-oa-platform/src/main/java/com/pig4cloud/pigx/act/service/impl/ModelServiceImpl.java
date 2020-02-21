@@ -174,6 +174,7 @@ public class ModelServiceImpl implements ModelService {
 					repositoryService.setProcessDefinitionCategory(processDefinition.getId(), model.getCategory()));
 		} catch (Exception e) {
 			log.error("部署失败，异常", e);
+			return Boolean.FALSE;
 		}
 		return Boolean.TRUE;
 	}
