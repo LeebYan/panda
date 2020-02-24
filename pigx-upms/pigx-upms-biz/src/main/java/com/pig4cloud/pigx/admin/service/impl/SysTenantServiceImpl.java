@@ -32,13 +32,12 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.annotations.Cacheable;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,9 +74,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	@Cacheable(value = CacheConstants.TENANT_DETAILS)
 	public List<SysTenant> getNormal() {
 		return list(Wrappers.<SysTenant>lambdaQuery()
-				.eq(SysTenant::getStatus, CommonConstants.STATUS_NORMAL)
-				.le(SysTenant::getStartTime, LocalDate.now())
-				.ge(SysTenant::getEndTime, LocalDate.now()));
+				.eq(SysTenant::getStatus, CommonConstants.STATUS_NORMAL));
 	}
 
 	/**
