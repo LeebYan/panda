@@ -124,10 +124,10 @@ public class SysTenantController {
 	@Inner(value = false)
 	@GetMapping("/list")
 	public R list() {
-		final LocalDate today = LocalDate.now();
-		List<SysTenant> tenants = sysTenantService.getNormal()
+		List<SysTenant> tenants = sysTenantService.getNormalTenant()
 				.stream()
-				.filter(sysTenant -> (sysTenant.getStartTime().isAfter(today) && sysTenant.getEndTime().isBefore(today)))
+				.filter(tenant -> tenant.getStartTime().isAfter(LocalDate.now()))
+				.filter(tenant -> tenant.getEndTime().isBefore(LocalDate.now()))
 				.collect(Collectors.toList());
 		return R.ok(tenants);
 	}

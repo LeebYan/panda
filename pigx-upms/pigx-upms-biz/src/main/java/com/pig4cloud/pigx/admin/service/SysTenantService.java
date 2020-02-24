@@ -35,7 +35,7 @@ public interface SysTenantService extends IService<SysTenant> {
 	 *
 	 * @return
 	 */
-	List<SysTenant> getNormal();
+	List<SysTenant> getNormalTenant();
 
 	/**
 	 * 保存租户
