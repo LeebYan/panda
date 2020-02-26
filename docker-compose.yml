@@ -1,4 +1,4 @@
-# 使用说明 V3.6.0
+# 使用说明 V3.7.0
 # 1. 使用docker-compose  宿主机不需要配置host来发现
 # 2. 无需修改源码，根目录  docker-compose up 即可
 # 3. 静静等待服务启动
@@ -29,9 +29,9 @@ services:
     image: pig4cloud/xxl-job-admin:2.1.1
     restart: always
     environment:
-      PARAMS: "--spring.datasource.url=jdbc:mysql://pigx-mysql:3306/pigxx_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=root --spring.datasource.password=root"
+      PARAMS: "--server.port=9080 --spring.datasource.url=jdbc:mysql://pigx-mysql:3306/pigxx_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=root --spring.datasource.password=root"
     ports:
-      - 9080:8080
+      - 9080:9080
 
   pigx-redis:
     container_name: pigx-redis
