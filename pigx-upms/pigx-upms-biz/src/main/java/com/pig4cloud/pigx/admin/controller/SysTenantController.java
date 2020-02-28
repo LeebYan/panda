@@ -126,8 +126,8 @@ public class SysTenantController {
 	public R list() {
 		List<SysTenant> tenants = sysTenantService.getNormalTenant()
 				.stream()
-				.filter(tenant -> tenant.getStartTime().isAfter(LocalDate.now()))
-				.filter(tenant -> tenant.getEndTime().isBefore(LocalDate.now()))
+				.filter(tenant -> tenant.getStartTime().isBefore(LocalDate.now()))
+				.filter(tenant -> tenant.getEndTime().isAfter(LocalDate.now()))
 				.collect(Collectors.toList());
 		return R.ok(tenants);
 	}
