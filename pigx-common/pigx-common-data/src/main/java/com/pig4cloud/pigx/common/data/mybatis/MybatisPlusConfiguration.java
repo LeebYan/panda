@@ -83,7 +83,6 @@ public class MybatisPlusConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnBean(RemoteDataScopeService.class)
 	public DataScopeHandle dataScopeHandle() {
 		return new PigxDefaultDatascopeHandle();
 	}
