@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/10/8
  * 认证失败事件处理器
  */
-public abstract class AbstractAuthenticationFailureEvenHandler implements ApplicationListener<AbstractAuthenticationFailureEvent> {
+public abstract class AbstractAuthenticationFailureEventHandler implements ApplicationListener<AbstractAuthenticationFailureEvent> {
 
 	/**
 	 * Handle an application event.
