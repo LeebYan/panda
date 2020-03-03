@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>3.7.0</version>
+	<version>3.8.0.BUILD-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -33,7 +33,7 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR2</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
@@ -41,7 +41,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.2.2</spring-boot-admin.version>
-		<hutool.version>5.1.4</hutool.version>
+		<hutool.version>5.1.5</hutool.version>
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
 		<knife4j.version>2.0.1</knife4j.version>
