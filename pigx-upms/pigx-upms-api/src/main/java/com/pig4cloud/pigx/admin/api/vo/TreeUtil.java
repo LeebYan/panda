@@ -112,13 +112,13 @@ public class TreeUtil {
 			node.setParentId(menu.getParentId());
 			node.setName(menu.getName());
 			node.setPath(menu.getPath());
-			node.setCode(menu.getPermission());
 			node.setLabel(menu.getName());
 			node.setIcon(menu.getIcon());
 			node.setType(menu.getType());
 			node.setSort(menu.getSort());
 			node.setHasChildren(true);
 			node.setKeepAlive(menu.getKeepAlive());
+			node.setPermission(menu.getPermission());
 			trees.add(node);
 		}
 		return TreeUtil.build(trees, root);
