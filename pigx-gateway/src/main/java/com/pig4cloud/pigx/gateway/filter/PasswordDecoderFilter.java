@@ -80,6 +80,12 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 				return chain.filter(exchange);
 			}
 
+			// 刷新token，直接向下执行
+			String grantType = request.getQueryParams().getFirst("grant_type");
+			if (StrUtil.equals(SecurityConstants.REFRESH_TOKEN, grantType)) {
+				return chain.filter(exchange);
+			}
+
 			Class inClass = String.class;
 			Class outClass = String.class;
 			ServerRequest serverRequest = ServerRequest.create(exchange,
