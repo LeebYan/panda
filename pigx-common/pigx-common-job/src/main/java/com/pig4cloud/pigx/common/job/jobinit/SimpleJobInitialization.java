@@ -15,12 +15,12 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gray.jobinit;
+package com.pig4cloud.pigx.common.job.jobinit;
 
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
 import com.dangdang.ddframe.job.config.JobTypeConfiguration;
-import com.dangdang.ddframe.job.config.script.ScriptJobConfiguration;
-import com.pig4cloud.pigx.common.gray.properties.ElasticJobProperties;
+import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
+import com.pig4cloud.pigx.common.job.properties.ElasticJobProperties;
 
 import java.util.Map;
 
@@ -28,26 +28,26 @@ import java.util.Map;
 /**
  * @author lengleng
  * @date 2018/7/24
- * 脚本任务初始
+ * 简单任务初始
  */
-public class ScriptJobInitialization extends AbstractJobInitialization {
+public class SimpleJobInitialization extends AbstractJobInitialization {
 
-	private Map<String, ElasticJobProperties.ScriptConfiguration> scriptConfigurationMap;
+	private Map<String, ElasticJobProperties.SimpleConfiguration> simpleConfigurationMap;
 
-	public ScriptJobInitialization(final Map<String, ElasticJobProperties.ScriptConfiguration> scriptConfigurationMap) {
-		this.scriptConfigurationMap = scriptConfigurationMap;
+	public SimpleJobInitialization(final Map<String, ElasticJobProperties.SimpleConfiguration> simpleConfigurationMap) {
+		this.simpleConfigurationMap = simpleConfigurationMap;
 	}
 
 	public void init() {
-		for (String jobName : scriptConfigurationMap.keySet()) {
-			ElasticJobProperties.ScriptConfiguration configuration = scriptConfigurationMap.get(jobName);
+		for (String jobName : simpleConfigurationMap.keySet()) {
+			ElasticJobProperties.SimpleConfiguration configuration = simpleConfigurationMap.get(jobName);
 			initJob(jobName, configuration.getJobType(), configuration);
 		}
 	}
 
 	@Override
 	public JobTypeConfiguration getJobTypeConfiguration(String jobName, JobCoreConfiguration jobCoreConfiguration) {
-		ElasticJobProperties.ScriptConfiguration configuration = scriptConfigurationMap.get(jobName);
-		return new ScriptJobConfiguration(jobCoreConfiguration, configuration.getScriptCommandLine());
+		ElasticJobProperties.SimpleConfiguration configuration = simpleConfigurationMap.get(jobName);
+		return new SimpleJobConfiguration(jobCoreConfiguration, configuration.getJobClass());
 	}
 }

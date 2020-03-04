@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gray.jobinit;
+package com.pig4cloud.pigx.common.job.jobinit;
 
 import com.dangdang.ddframe.job.api.ElasticJob;
 import com.dangdang.ddframe.job.api.JobType;
@@ -30,7 +30,7 @@ import com.dangdang.ddframe.job.lite.api.listener.ElasticJobListener;
 import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
-import com.pig4cloud.pigx.common.gray.properties.ElasticJobProperties;
+import com.pig4cloud.pigx.common.job.properties.ElasticJobProperties;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pig4cloud.pigx.common.gray.ElasticJobAutoConfiguration.DEFAULT_REGISTRY_CENTER_NAME;
+import static com.pig4cloud.pigx.common.job.ElasticJobAutoConfiguration.DEFAULT_REGISTRY_CENTER_NAME;
 
 
 /**

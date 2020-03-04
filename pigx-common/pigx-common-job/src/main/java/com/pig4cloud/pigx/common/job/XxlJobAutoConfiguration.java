@@ -15,9 +15,9 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gray;
+package com.pig4cloud.pigx.common.job;
 
-import com.pig4cloud.pigx.common.gray.properties.XxlJobProperties;
+import com.pig4cloud.pigx.common.job.properties.XxlJobProperties;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan("com.pig4cloud.pigx.common.gray.properties")
+@ComponentScan("com.pig4cloud.pigx.common.job.properties")
 public class XxlJobAutoConfiguration {
 
 	@Bean(initMethod = "start", destroyMethod = "destroy")

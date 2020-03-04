@@ -15,14 +15,14 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gray;
+package com.pig4cloud.pigx.common.job;
 
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
-import com.pig4cloud.pigx.common.gray.jobinit.DataflowJobInitialization;
-import com.pig4cloud.pigx.common.gray.jobinit.ScriptJobInitialization;
-import com.pig4cloud.pigx.common.gray.jobinit.SimpleJobInitialization;
-import com.pig4cloud.pigx.common.gray.properties.ElasticJobProperties;
+import com.pig4cloud.pigx.common.job.jobinit.DataflowJobInitialization;
+import com.pig4cloud.pigx.common.job.jobinit.ScriptJobInitialization;
+import com.pig4cloud.pigx.common.job.jobinit.SimpleJobInitialization;
+import com.pig4cloud.pigx.common.job.properties.ElasticJobProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

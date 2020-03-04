@@ -15,23 +15,22 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.gray.annotation;
+package com.pig4cloud.pigx.common.job.annotation;
 
-import com.pig4cloud.pigx.common.gray.XxlJobAutoConfiguration;
+import com.pig4cloud.pigx.common.job.ElasticJobAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
 /**
  * @author lengleng
- * @date 2019-09-18
- * <p>
- * 开启支持XXL
+ * @date 2018/7/24
+ * 开启pigx elastic job
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({XxlJobAutoConfiguration.class})
-public @interface EnablePigxXxlJob {
+@Import({ElasticJobAutoConfiguration.class})
+public @interface EnablePigxElasticJob {
 }
