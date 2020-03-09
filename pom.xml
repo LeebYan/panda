@@ -43,7 +43,7 @@
 		<hutool.version>5.1.5</hutool.version>
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<knife4j.version>2.0.1</knife4j.version>
+		<knife4j.version>2.0.2</knife4j.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
