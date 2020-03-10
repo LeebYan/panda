@@ -41,7 +41,7 @@ public class MenuTree extends TreeNode implements Serializable {
 	@ApiModelProperty(value = "菜单图标")
 	private String icon;
 	/**
-	 *  菜单名称
+	 * 菜单名称
 	 */
 	@ApiModelProperty(value = "菜单名称")
 	private String name;
@@ -60,7 +60,7 @@ public class MenuTree extends TreeNode implements Serializable {
 	 * 权限编码
 	 */
 	@ApiModelProperty(value = "权限编码")
-	private String code;
+	private String permission;
 	/**
 	 * 菜单类型 （0菜单 1按钮）
 	 */
@@ -79,9 +79,11 @@ public class MenuTree extends TreeNode implements Serializable {
 
 	/**
 	 * 是否包含子节点
+	 *
 	 * @since 3.7
 	 */
 	private Boolean hasChildren;
+
 	public MenuTree() {
 	}
 
@@ -106,6 +108,7 @@ public class MenuTree extends TreeNode implements Serializable {
 		this.name = menuVo.getName();
 		this.path = menuVo.getPath();
 		this.type = menuVo.getType();
+		this.permission = menuVo.getPermission();
 		this.label = menuVo.getName();
 		this.sort = menuVo.getSort();
 		this.keepAlive = menuVo.getKeepAlive();
