@@ -70,6 +70,13 @@ public class JdbcDynamicDataSourceProvider extends AbstractJdbcDataSourceProvide
 			property.setUrl(url);
 			map.put(name, property);
 		}
+
+		// 添加默认主数据源
+		DataSourceProperty property = new DataSourceProperty();
+		property.setUsername(properties.getUsername());
+		property.setPassword(properties.getPassword());
+		property.setUrl(properties.getUrl());
+		map.put(DataSourceConstants.DS_MASTER, property);
 		return map;
 	}
 }

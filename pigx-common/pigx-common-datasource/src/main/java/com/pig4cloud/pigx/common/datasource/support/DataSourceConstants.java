@@ -18,6 +18,11 @@ public interface DataSourceConstants {
 	String DS_NAME = "name";
 
 	/**
+	 * 默认数据源（master）
+	 */
+	String DS_MASTER = "master";
+
+	/**
 	 * jdbcurl
 	 */
 	String DS_JDBC_URL = "url";
