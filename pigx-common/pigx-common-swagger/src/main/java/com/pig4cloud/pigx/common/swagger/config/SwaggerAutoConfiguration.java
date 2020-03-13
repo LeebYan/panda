@@ -25,8 +25,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -49,9 +51,9 @@ import java.util.List;
 public class SwaggerAutoConfiguration {
 
 	/**
-	 * 	默认的排除路径，排除Spring Boot默认的错误处理路径和端点
+	 * 默认的排除路径，排除Spring Boot默认的错误处理路径和端点
 	 */
-	private static final List<String> DEFAULT_EXCLUDE_PATH = Arrays.asList("/error","/actuator/**");
+	private static final List<String> DEFAULT_EXCLUDE_PATH = Arrays.asList("/error", "/actuator/**");
 	private static final String BASE_PATH = "/**";
 
 	@Bean
@@ -77,16 +79,26 @@ public class SwaggerAutoConfiguration {
 		List<Predicate<String>> excludePath = new ArrayList<>();
 		swaggerProperties.getExcludePath().forEach(path -> excludePath.add(PathSelectors.ant(path)));
 
+		// 版本请求头处理
+		ParameterBuilder versionPar = new ParameterBuilder();
+		List<Parameter> pars = new ArrayList<>();
+		versionPar.name("VERSION").description("灰度路由版本信息")
+				.modelRef(new ModelRef("string")).parameterType("header")
+				.required(false).build();
+		pars.add(versionPar.build());
+
 		//noinspection Guava
 		return new Docket(DocumentationType.SWAGGER_2)
-			.host(swaggerProperties.getHost())
-			.apiInfo(apiInfo(swaggerProperties)).select()
-			.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
-			.paths(Predicates.and(Predicates.not(Predicates.or(excludePath)), Predicates.or(basePath)))
-			.build()
-			.securitySchemes(Collections.singletonList(securitySchema()))
-			.securityContexts(Collections.singletonList(securityContext()))
-			.pathMapping("/");
+				.host(swaggerProperties.getHost())
+				.apiInfo(apiInfo(swaggerProperties))
+				.globalOperationParameters(pars)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
+				.paths(Predicates.and(Predicates.not(Predicates.or(excludePath)), Predicates.or(basePath)))
+				.build()
+				.securitySchemes(Collections.singletonList(securitySchema()))
+				.securityContexts(Collections.singletonList(securityContext()))
+				.pathMapping("/");
 	}
 
 	/**
@@ -96,9 +108,9 @@ public class SwaggerAutoConfiguration {
 	 */
 	private SecurityContext securityContext() {
 		return SecurityContext.builder()
-			.securityReferences(defaultAuth())
-			.forPaths(PathSelectors.regex(swaggerProperties().getAuthorization().getAuthRegex()))
-			.build();
+				.securityReferences(defaultAuth())
+				.forPaths(PathSelectors.regex(swaggerProperties().getAuthorization().getAuthRegex()))
+				.build();
 	}
 
 	/**
@@ -111,9 +123,9 @@ public class SwaggerAutoConfiguration {
 		swaggerProperties().getAuthorization().getAuthorizationScopeList().forEach(authorizationScope -> authorizationScopeList.add(new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[authorizationScopeList.size()];
 		return Collections.singletonList(SecurityReference.builder()
-			.reference(swaggerProperties().getAuthorization().getName())
-			.scopes(authorizationScopeList.toArray(authorizationScopes))
-			.build());
+				.reference(swaggerProperties().getAuthorization().getName())
+				.scopes(authorizationScopeList.toArray(authorizationScopes))
+				.build());
 	}
 
 
@@ -127,14 +139,14 @@ public class SwaggerAutoConfiguration {
 
 	private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
 		return new ApiInfoBuilder()
-			.title(swaggerProperties.getTitle())
-			.description(swaggerProperties.getDescription())
-			.license(swaggerProperties.getLicense())
-			.licenseUrl(swaggerProperties.getLicenseUrl())
-			.termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
-			.contact(new Contact(swaggerProperties.getContact().getName(), swaggerProperties.getContact().getUrl(), swaggerProperties.getContact().getEmail()))
-			.version(swaggerProperties.getVersion())
-			.build();
+				.title(swaggerProperties.getTitle())
+				.description(swaggerProperties.getDescription())
+				.license(swaggerProperties.getLicense())
+				.licenseUrl(swaggerProperties.getLicenseUrl())
+				.termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
+				.contact(new Contact(swaggerProperties.getContact().getName(), swaggerProperties.getContact().getUrl(), swaggerProperties.getContact().getEmail()))
+				.version(swaggerProperties.getVersion())
+				.build();
 	}
 
 }
