@@ -7,10 +7,6 @@ package com.pig4cloud.pigx.common.datasource.support;
  * 数据源相关常量
  */
 public interface DataSourceConstants {
-	/**
-	 * 查询数据源的SQL
-	 */
-	String QUERY_DS_SQL = "select * from gen_datasource_conf where del_flag = 0";
 
 	/**
 	 * 数据源名称

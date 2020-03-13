@@ -48,6 +48,7 @@ public interface GeneratorMapper {
 	 * 查询表信息
 	 *
 	 * @param tableName 表名称
+	 * @param dsName    数据源名称
 	 * @return
 	 */
 	@DS("#last")
@@ -57,6 +58,7 @@ public interface GeneratorMapper {
 	 * 查询表列信息
 	 *
 	 * @param tableName 表名称
+	 * @param dsName    数据源名称
 	 * @return
 	 */
 	@DS("#last")
