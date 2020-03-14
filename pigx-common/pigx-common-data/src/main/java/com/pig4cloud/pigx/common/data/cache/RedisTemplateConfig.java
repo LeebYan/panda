@@ -78,7 +78,7 @@ public class RedisTemplateConfig {
 
 		// https://github.com/lettuce-io/lettuce-core/wiki/ReadFrom-Settings
 		LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
-				.readFrom(ReadFrom.SLAVE_PREFERRED)
+				.readFrom(ReadFrom.REPLICA_PREFERRED)
 				.clientOptions(clusterClientOptions).build();
 
 		return new LettuceConnectionFactory(redisClusterConfiguration, lettuceClientConfiguration);
