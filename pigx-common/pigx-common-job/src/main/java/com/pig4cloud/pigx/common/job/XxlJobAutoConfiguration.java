@@ -20,7 +20,6 @@ package com.pig4cloud.pigx.common.job;
 import com.pig4cloud.pigx.common.job.properties.XxlJobProperties;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,7 +34,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.pig4cloud.pigx.common.job.properties")
 public class XxlJobAutoConfiguration {
 
-	@Bean(initMethod = "start", destroyMethod = "destroy")
 	public XxlJobSpringExecutor xxlJobSpringExecutor(XxlJobProperties xxlJobProperties) {
 		XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
 		xxlJobSpringExecutor.setAdminAddresses(xxlJobProperties.getAdmin().getAddresses());
