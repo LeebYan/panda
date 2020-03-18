@@ -329,7 +329,7 @@ public class GenUtils {
 		if (template.contains(ELE_ADD_UPDATE_VUE_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views"
 					+ File.separator + moduleName + File.separator + className.toLowerCase()
-					+ File.separator + moduleName + "-form.vue";
+					+ File.separator + className.toLowerCase() + "-form.vue";
 		}
 
 		return null;
