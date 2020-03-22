@@ -87,6 +87,20 @@ public class MenuTree extends TreeNode implements Serializable {
 	public MenuTree() {
 	}
 
+	public MenuTree(int id, String name, int parentId) {
+		this.id = id;
+		this.parentId = parentId;
+		this.name = name;
+		this.label = name;
+	}
+
+	public MenuTree(int id, String name, MenuTree parent) {
+		this.id = id;
+		this.parentId = parent.getId();
+		this.name = name;
+		this.label = name;
+	}
+
 	public MenuTree(MenuVO menuVo) {
 		this.id = menuVo.getMenuId();
 		this.parentId = menuVo.getParentId();
@@ -94,9 +108,9 @@ public class MenuTree extends TreeNode implements Serializable {
 		this.name = menuVo.getName();
 		this.path = menuVo.getPath();
 		this.type = menuVo.getType();
+		this.permission = menuVo.getPermission();
 		this.label = menuVo.getName();
 		this.sort = menuVo.getSort();
-		this.permission = menuVo.getPermission();
 		this.keepAlive = menuVo.getKeepAlive();
 	}
 }

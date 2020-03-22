@@ -9,6 +9,8 @@ package com.pig4cloud.pigx.common.sequence.range;
 public interface BizName {
 	/**
 	 * 生成名称
+	 *
+	 * @return 返回文本序号
 	 */
 	String create();
 
