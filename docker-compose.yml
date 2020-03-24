@@ -19,11 +19,6 @@ services:
       - ./pigx-mysql:/var/lib/mysql
     command: --lower_case_table_names=1
 
-  pigx-zookeeper:
-    container_name: pigx-zookeeper
-    image: zookeeper:3.4.13
-    restart: always
-
   pigx-xxl:
     container_name: pigx-xxl
     image: pig4cloud/xxl-job-admin:2.1.1

@@ -29,7 +29,7 @@
 	<artifactId>pigx-daemon-elastic-job</artifactId>
 	<packaging>jar</packaging>
 
-	<description>基于elastic-job后台跑批定时任务模块</description>
+	<description>基于xxl-job后台跑批定时任务模块</description>
 
 	<dependencies>
 		<!--注册中心客户端-->
