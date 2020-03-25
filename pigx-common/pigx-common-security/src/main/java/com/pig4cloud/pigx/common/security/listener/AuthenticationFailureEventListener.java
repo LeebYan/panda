@@ -15,12 +15,16 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.security.handler;
+package com.pig4cloud.pigx.common.security.listener;
 
+import com.pig4cloud.pigx.common.security.handler.AuthenticationFailureHandler;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,10 +33,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
- * @date 2018/10/8
- * 认证失败事件处理器
+ * @date 2020/03/25
+ * 认证失败事件监听器
  */
-public abstract class AbstractAuthenticationFailureEventHandler implements ApplicationListener<AbstractAuthenticationFailureEvent> {
+public class AuthenticationFailureEventListener implements ApplicationListener<AbstractAuthenticationFailureEvent> {
+	@Autowired(required = false)
+	private AuthenticationFailureHandler failureHandler;
 
 	/**
 	 * Handle an application event.
@@ -49,18 +55,9 @@ public abstract class AbstractAuthenticationFailureEventHandler implements Appli
 		AuthenticationException authenticationException = event.getException();
 		Authentication authentication = (Authentication) event.getSource();
 
-		handle(authenticationException, authentication, request, response);
+		// 调用自定义业务实现
+		if (failureHandler != null) {
+			failureHandler.handle(authenticationException, authentication, request, response);
+		}
 	}
-
-	/**
-	 * 处理登录失败方法
-	 * <p>
-	 *
-	 * @param authenticationException 登录的authentication 对象
-	 * @param authentication          登录的authenticationException 对象
-	 * @param request                 请求
-	 * @param response                响应
-	 */
-	public abstract void handle(AuthenticationException authenticationException, Authentication authentication
-			, HttpServletRequest request, HttpServletResponse response);
 }

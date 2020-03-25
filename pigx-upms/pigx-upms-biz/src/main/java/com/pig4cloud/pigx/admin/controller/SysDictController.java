@@ -84,7 +84,7 @@ public class SysDictController {
 	 * @return 同类型字典
 	 */
 	@GetMapping("/type/{type}")
-	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result.data.size == 0")
+	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result.data.size() == 0")
 	public R getDictByType(@PathVariable String type) {
 		return R.ok(sysDictItemService.list(Wrappers
 				.<SysDictItem>query().lambda()

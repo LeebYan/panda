@@ -56,6 +56,19 @@ public class SysLogUtils {
 		return sysLog;
 	}
 
+	public SysLog getSysLog(HttpServletRequest request, String username) {
+		SysLog sysLog = new SysLog();
+		sysLog.setCreateBy(username);
+		sysLog.setType(CommonConstants.STATUS_NORMAL);
+		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
+		sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
+		sysLog.setMethod(request.getMethod());
+		sysLog.setUserAgent(request.getHeader("user-agent"));
+		sysLog.setParams(HttpUtil.toParams(request.getParameterMap()));
+		sysLog.setServiceId(getClientId());
+		return sysLog;
+	}
+
 	/**
 	 * 获取客户端
 	 *

@@ -17,6 +17,11 @@
 
 package com.pig4cloud.pigx.admin;
 
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author lengleng
  * @date 2018/10/7
@@ -24,4 +29,9 @@ package com.pig4cloud.pigx.admin;
  */
 public class PigxAdminApplicationTest {
 
+	@Test
+	public void test(){
+		ArrayList<String> stringList = new ArrayList<>();
+		stringList.size();
+	}
 }

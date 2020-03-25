@@ -20,34 +20,28 @@
 package com.pig4cloud.pigx.auth.config;
 
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
-import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
-import javax.sql.DataSource;
 
 /**
  * @author lengleng
@@ -58,17 +52,16 @@ import javax.sql.DataSource;
 @AllArgsConstructor
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-	private final DataSource dataSource;
-	private final TokenEnhancer pigxTokenEnhancer;
-	private final PigxUserDetailsService pigxUserDetailsService;
+	private final ClientDetailsService pigxClientDetailsServiceImpl;
 	private final AuthenticationManager authenticationManagerBean;
 	private final RedisConnectionFactory redisConnectionFactory;
+	private final UserDetailsService pigxUserDetailsService;
+	private final TokenEnhancer pigxTokenEnhancer;
 
 	@Override
 	@SneakyThrows
 	public void configure(ClientDetailsServiceConfigurer clients) {
-		PigxClientDetailsService clientDetailsService = new PigxClientDetailsService(dataSource);
-		clients.withClientDetails(clientDetailsService);
+		clients.withClientDetails(pigxClientDetailsServiceImpl);
 	}
 
 	@Override
@@ -106,30 +99,3 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	}
 }
 
-/**
- * @author lengleng
- * @date 2020/03/25
- * <p>
- * 扩展 JdbcClientDetailsService 支持多租户
- */
-class PigxClientDetailsService extends JdbcClientDetailsService {
-
-	public PigxClientDetailsService(DataSource dataSource) {
-		super(dataSource);
-	}
-
-	/**
-	 * 重写原生方法支持redis缓存
-	 *
-	 * @param clientId
-	 * @return ClientDetails
-	 * @throws InvalidClientException
-	 */
-	@Override
-	@Cacheable(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId", unless = "#result == null")
-	public ClientDetails loadClientByClientId(String clientId) {
-		super.setSelectClientDetailsSql(String.format(SecurityConstants.DEFAULT_SELECT_STATEMENT
-				, TenantContextHolder.getTenantId()));
-		return super.loadClientByClientId(clientId);
-	}
-}

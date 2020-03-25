@@ -48,10 +48,10 @@
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-core</artifactId>
 		</dependency>
-		<!--UPMS API-->
+		<!--aop-->
 		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-upms-api</artifactId>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
 		</dependency>
 	</dependencies>
 </project>

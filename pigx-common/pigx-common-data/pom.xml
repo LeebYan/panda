@@ -49,6 +49,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<!--feign client-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-upms-api</artifactId>
+		</dependency>
 		<!--缓存依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -48,6 +48,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-upms-api</artifactId>
 		</dependency>
+		<!--log-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-log</artifactId>
+		</dependency>
 		<!--security-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>

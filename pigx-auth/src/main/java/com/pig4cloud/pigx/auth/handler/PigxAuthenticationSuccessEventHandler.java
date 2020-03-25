@@ -17,13 +17,24 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
-import com.pig4cloud.pigx.common.security.handler.AbstractAuthenticationSuccessEventHandler;
+import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
+import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.core.util.WebUtils;
+import com.pig4cloud.pigx.common.log.util.SysLogUtils;
+import com.pig4cloud.pigx.common.security.handler.AuthenticationSuccessHandler;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author lengleng
@@ -31,7 +42,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Component
-public class PigxAuthenticationSuccessEventHandler extends AbstractAuthenticationSuccessEventHandler {
+@AllArgsConstructor
+public class PigxAuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
+	private final RemoteLogService logService;
 
 	/**
 	 * 处理登录成功方法
@@ -42,8 +55,16 @@ public class PigxAuthenticationSuccessEventHandler extends AbstractAuthenticatio
 	 * @param request        请求
 	 * @param response       返回
 	 */
+	@Async
 	@Override
 	public void handle(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
-		log.info("用户：{} 登录成功", authentication.getPrincipal());
+		String username = authentication.getName();
+		SysLog sysLog = SysLogUtils.getSysLog(request, username);
+		sysLog.setTitle(username + "用户登录");
+		sysLog.setParams(username);
+		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+		sysLog.setServiceId(WebUtils.getClientId(header)[0]);
+		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
+		log.info("用户：{} 登录成功", username);
 	}
 }
