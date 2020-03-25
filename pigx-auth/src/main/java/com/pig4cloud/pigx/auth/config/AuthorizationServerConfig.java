@@ -20,24 +20,28 @@
 package com.pig4cloud.pigx.auth.config;
 
 import cn.hutool.core.util.StrUtil;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
-import com.pig4cloud.pigx.common.security.service.PigxClientDetailsService;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -64,8 +68,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@SneakyThrows
 	public void configure(ClientDetailsServiceConfigurer clients) {
 		PigxClientDetailsService clientDetailsService = new PigxClientDetailsService(dataSource);
-		clientDetailsService.setSelectClientDetailsSql(SecurityConstants.DEFAULT_SELECT_STATEMENT);
-		clientDetailsService.setFindClientDetailsSql(SecurityConstants.DEFAULT_FIND_STATEMENT);
 		clients.withClientDetails(clientDetailsService);
 	}
 
@@ -101,5 +103,33 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			}
 		});
 		return tokenStore;
+	}
+}
+
+/**
+ * @author lengleng
+ * @date 2020/03/25
+ * <p>
+ * 扩展 JdbcClientDetailsService 支持多租户
+ */
+class PigxClientDetailsService extends JdbcClientDetailsService {
+
+	public PigxClientDetailsService(DataSource dataSource) {
+		super(dataSource);
+	}
+
+	/**
+	 * 重写原生方法支持redis缓存
+	 *
+	 * @param clientId
+	 * @return ClientDetails
+	 * @throws InvalidClientException
+	 */
+	@Override
+	@Cacheable(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId", unless = "#result == null")
+	public ClientDetails loadClientByClientId(String clientId) {
+		super.setSelectClientDetailsSql(String.format(SecurityConstants.DEFAULT_SELECT_STATEMENT
+				, TenantContextHolder.getTenantId()));
+		return super.loadClientByClientId(clientId);
 	}
 }

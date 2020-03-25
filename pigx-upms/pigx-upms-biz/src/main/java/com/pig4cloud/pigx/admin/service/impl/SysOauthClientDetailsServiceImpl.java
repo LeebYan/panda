@@ -19,6 +19,7 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
 import com.pig4cloud.pigx.admin.mapper.SysOauthClientDetailsMapper;
@@ -46,8 +47,9 @@ public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClient
 	 */
 	@Override
 	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#id")
-	public Boolean removeClientDetailsById(String id) {
-		return this.removeById(id);
+	public Boolean removeByClientId(String id) {
+		return this.remove(Wrappers.<SysOauthClientDetails>lambdaQuery()
+				.eq(SysOauthClientDetails::getClientId, id));
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClient
 	 */
 	@Override
 	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientDetails.clientId")
-	public Boolean updateClientDetailsById(SysOauthClientDetails clientDetails) {
+	public Boolean updateClientById(SysOauthClientDetails clientDetails) {
 		return this.updateById(clientDetails);
 	}
 }

@@ -21,6 +21,7 @@ package com.pig4cloud.pigx.admin.api.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -43,11 +44,15 @@ import javax.validation.constraints.NotBlank;
 public class SysOauthClientDetails extends Model<SysOauthClientDetails> {
 
 	private static final long serialVersionUID = 1L;
+
+	@TableId(value = "id", type = IdType.AUTO)
+	@ApiModelProperty(value = "id")
+	private Integer id;
+
 	/**
 	 * 客户端ID
 	 */
 	@NotBlank(message = "client_id 不能为空")
-	@TableId(value = "client_id", type = IdType.INPUT)
 	@ApiModelProperty(value = "客户端id")
 	private String clientId;
 	/**
@@ -102,4 +107,10 @@ public class SysOauthClientDetails extends Model<SysOauthClientDetails> {
 	 */
 	@ApiModelProperty(value = "是否自动放行")
 	private String autoapprove;
+	/**
+	 * 删除标记
+	 */
+	@TableLogic
+	@ApiModelProperty(value = "删除标记,1:已删除,0:正常")
+	private String delFlag;
 }

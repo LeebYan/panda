@@ -61,7 +61,7 @@ public class DynamicRouteInitRunner {
 		Boolean result = redisTemplate.delete(CacheConstants.ROUTE_KEY);
 		log.info("初始化网关路由 {} ", result);
 
-		routeConfService.routes().forEach(route -> {
+		routeConfService.list().forEach(route -> {
 			RouteDefinitionVo vo = new RouteDefinitionVo();
 			vo.setRouteName(route.getRouteName());
 			vo.setId(route.getRouteId());

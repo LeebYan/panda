@@ -62,19 +62,6 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 
 
 	/**
-	 * 获取全部路由
-	 * <p>
-	 * RedisRouteDefinitionWriter.java
-	 * PropertiesRouteDefinitionLocator.java
-	 *
-	 * @return
-	 */
-	@Override
-	public List<SysRouteConf> routes() {
-		return baseMapper.selectList(Wrappers.emptyWrapper());
-	}
-
-	/**
 	 * 更新路由信息
 	 *
 	 * @param routes 路由信息

@@ -24,7 +24,8 @@
 <mapper namespace="com.pig4cloud.pigx.admin.mapper.SysOauthClientDetailsMapper">
 
 	<resultMap id="sysOauthClientDetailsMap" type="com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails">
-		<id property="clientId" column="client_id"/>
+		<id property="id" column="id"/>
+		<result property="clientId" column="client_id"/>
 		<result property="resourceIds" column="resource_ids"/>
 		<result property="clientSecret" column="client_secret"/>
 		<result property="scope" column="scope"/>

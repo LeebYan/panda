@@ -74,9 +74,9 @@ public interface SysMenuService extends IService<SysMenu> {
 	/**
 	 * 查询菜单
 	 *
-	 * @param menuVOSet
+	 * @param voSet
 	 * @param parentId
 	 * @return
 	 */
-	List<MenuTree> filterMenu(Set<MenuVO> menuVOSet, String type, Integer parentId);
+	List<MenuTree> filterMenu(Set<MenuVO> voSet, String type, Integer parentId);
 }

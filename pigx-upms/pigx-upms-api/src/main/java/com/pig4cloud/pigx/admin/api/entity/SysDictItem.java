@@ -94,10 +94,4 @@ public class SysDictItem extends Model<SysDictItem> {
 	@TableLogic
 	@ApiModelProperty(value = "删除标记,1:已删除,0:正常")
 	private String delFlag;
-	/**
-	 * 所属租户
-	 */
-	@ApiModelProperty(value = "所属租户id")
-	private Integer tenantId;
-
 }

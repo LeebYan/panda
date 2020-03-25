@@ -38,6 +38,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements SysTenantService {
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+	private final SysOauthClientDetailsService clientServices;
 	private final SysDeptRelationService deptRelationService;
+	private final SysRouteConfService routeConfService;
 	private final SysUserRoleService userRoleService;
 	private final SysRoleMenuService roleMenuService;
 	private final SysDictItemService dictItemService;
@@ -84,10 +87,12 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	 * 2. 初始化权限相关表
 	 * - sys_user
 	 * - sys_role
+	 * - sys_menu
 	 * - sys_user_role
 	 * - sys_role_menu
 	 * - sys_dict
 	 * - sys_dict_item
+	 * - sys_client_details
 	 *
 	 * @param sysTenant 租户实体
 	 * @return
@@ -99,24 +104,19 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		this.save(sysTenant);
 
 		// 查询系统内置字典
-		List<SysDict> dictList = dictService.list(Wrappers.<SysDict>lambdaQuery()
-				.eq(SysDict::getSystem, DictTypeEnum.SYSTEM.getType()))
-				.stream().map(dict -> {
-					SysDict sysDict = new SysDict();
-					BeanUtils.copyProperties(dict, sysDict, "tenantId");
-					return sysDict;
-				}).collect(Collectors.toList());
+		List<SysDict> dictList = new ArrayList<>(dictService.list());
 		// 查询系统内置字典项目
 		List<Integer> dictIdList = dictList.stream().map(SysDict::getId)
 				.collect(Collectors.toList());
-		List<SysDictItem> dictItemList = dictItemService.list(Wrappers.<SysDictItem>lambdaQuery()
-				.in(SysDictItem::getDictId, dictIdList))
-				.stream().map(item -> {
-					SysDictItem sysDictItem = new SysDictItem();
-					BeanUtils.copyProperties(item, sysDictItem, "tenantId");
-					return sysDictItem;
-				}).collect(Collectors.toList());
-
+		List<SysDictItem> dictItemList = new ArrayList<>(dictItemService
+				.list(Wrappers.<SysDictItem>lambdaQuery()
+						.in(SysDictItem::getDictId, dictIdList)));
+		// 查询当前租户菜单
+		List<SysMenu> menuList = menuService.list();
+		// 查询客户端配置
+		List<SysOauthClientDetails> clientDetailsList = clientServices.list();
+		// 查询路由配置
+		List<SysRouteConf> routeConfList = routeConfService.list();
 		// 保证插入租户为新的租户
 		TenantContextHolder.setTenantId(sysTenant.getId());
 		Configuration config = getConfig();
@@ -139,19 +139,20 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		role.setRoleCode(config.getString("defaultRoleCode"));
 		role.setRoleName(config.getString("defaultRoleName"));
 		roleService.save(role);
+		// 插入新的菜单
+		menuService.saveBatch(menuList);
 		// 用户角色关系
 		SysUserRole userRole = new SysUserRole();
 		userRole.setUserId(user.getUserId());
 		userRole.setRoleId(role.getRoleId());
 		userRoleService.save(userRole);
 		// 查询全部菜单,构造角色菜单关系
-		List<SysRoleMenu> collect = menuService.list()
-				.stream().map(menu -> {
-					SysRoleMenu roleMenu = new SysRoleMenu();
-					roleMenu.setRoleId(role.getRoleId());
-					roleMenu.setMenuId(menu.getMenuId());
-					return roleMenu;
-				}).collect(Collectors.toList());
+		List<SysRoleMenu> collect = menuList.stream().map(menu -> {
+			SysRoleMenu roleMenu = new SysRoleMenu();
+			roleMenu.setRoleId(role.getRoleId());
+			roleMenu.setMenuId(menu.getMenuId());
+			return roleMenu;
+		}).collect(Collectors.toList());
 		roleMenuService.saveBatch(collect);
 		// 插入系统字典
 		dictService.saveBatch(dictList);
@@ -161,6 +162,11 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 						.filter(item -> item.getType().equals(dict.getType()))
 						.peek(item -> item.setDictId(dict.getId())))
 				.collect(Collectors.toList());
+
+		//插入客户端
+		clientServices.saveBatch(clientDetailsList);
+		// 插入路由
+		routeConfService.saveBatch(routeConfList);
 		return dictItemService.saveBatch(itemList);
 	}
 
