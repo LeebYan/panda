@@ -149,7 +149,7 @@ public class ActTaskServiceImpl implements ActTaskService {
 		Authentication.setAuthenticatedUserId(SecurityUtils.getUser().getUsername());
 		taskService.addComment(taskId, processInstanceId, message);
 
-		Map<String, Object> variables = new HashMap<>(1);
+		Map<String, Object> variables = new HashMap<>(4);
 		variables.put("flag", leaveBillDto.getTaskFlag());
 		variables.put("days", leaveBillDto.getDays());
 
