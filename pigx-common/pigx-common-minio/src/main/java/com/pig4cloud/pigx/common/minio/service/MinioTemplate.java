@@ -97,8 +97,8 @@ public class MinioTemplate implements InitializingBean {
 		Iterable<Result<Item>> objectsIterator = client
 				.listObjects(bucketName, prefix, recursive);
 
-		while (objectsIterator.iterator().hasNext()) {
-			objectList.add(new MinioItem(objectsIterator.iterator().next().get()));
+		for (Result<Item> itemResult : objectsIterator) {
+			objectList.add(new MinioItem(itemResult.get()));
 		}
 		return objectList;
 	}
