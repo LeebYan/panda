@@ -73,7 +73,7 @@ public class DynamicRouteInitRunner {
 			JSONArray predicateObj = JSONUtil.parseArray(route.getPredicates());
 			vo.setPredicates(predicateObj.toList(PredicateDefinition.class));
 
-			log.info("加载租户 {}，路由ID：{},{}", route.getTenantId(), route.getRouteId(), vo);
+			log.info("加载路由ID：{},{}", route.getRouteId(), vo);
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
 			redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, route.getRouteId(), vo);
 		});
