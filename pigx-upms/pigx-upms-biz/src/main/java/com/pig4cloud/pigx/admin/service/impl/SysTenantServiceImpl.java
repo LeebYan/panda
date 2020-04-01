@@ -54,7 +54,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 	private final SysOauthClientDetailsService clientServices;
 	private final SysDeptRelationService deptRelationService;
-	private final SysRouteConfService routeConfService;
 	private final SysUserRoleService userRoleService;
 	private final SysRoleMenuService roleMenuService;
 	private final SysDictItemService dictItemService;
@@ -115,8 +114,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		List<SysMenu> menuList = menuService.list();
 		// 查询客户端配置
 		List<SysOauthClientDetails> clientDetailsList = clientServices.list();
-		// 查询路由配置
-		List<SysRouteConf> routeConfList = routeConfService.list();
 		// 保证插入租户为新的租户
 		TenantContextHolder.setTenantId(sysTenant.getId());
 		Configuration config = getConfig();
@@ -165,8 +162,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 		//插入客户端
 		clientServices.saveBatch(clientDetailsList);
-		// 插入路由
-		routeConfService.saveBatch(routeConfList);
 		return dictItemService.saveBatch(itemList);
 	}
 

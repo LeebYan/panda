@@ -92,8 +92,4 @@ public class SysRouteConf extends Model<SysRouteConf> {
 	@TableLogic
 	@ApiModelProperty(value = "删除标记,1:已删除,0:正常")
 	private String delFlag;
-	/**
-	 * 租户ID
-	 */
-	private Integer tenantId;
 }
