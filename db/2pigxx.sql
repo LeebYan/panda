@@ -411,6 +411,7 @@ CREATE TABLE `sys_oauth_client_details` (
   `refresh_token_validity` int(11) DEFAULT NULL,
   `additional_information` varchar(4096) DEFAULT NULL,
   `autoapprove` varchar(256) DEFAULT NULL,
+  `del_flag` char(1) DEFAULT '0',
   `tenant_id` int(11) NOT NULL DEFAULT '0' COMMENT '所属租户',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='终端信息表';
