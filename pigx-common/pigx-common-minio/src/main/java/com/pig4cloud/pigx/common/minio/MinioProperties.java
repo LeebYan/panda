@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.common.minio;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * minio 配置信息
@@ -27,7 +26,6 @@ import org.springframework.context.annotation.Configuration;
  * @author lengleng
  */
 @Data
-@Configuration
 @ConfigurationProperties(prefix = "minio")
 public class MinioProperties {
 	/**
