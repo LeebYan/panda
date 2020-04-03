@@ -42,14 +42,14 @@ public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClient
 	/**
 	 * 通过ID删除客户端
 	 *
-	 * @param id
+	 * @param clientId
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#id")
-	public Boolean removeByClientId(String id) {
+	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId")
+	public Boolean removeByClientId(String clientId) {
 		return this.remove(Wrappers.<SysOauthClientDetails>lambdaQuery()
-				.eq(SysOauthClientDetails::getClientId, id));
+				.eq(SysOauthClientDetails::getClientId, clientId));
 	}
 
 	/**

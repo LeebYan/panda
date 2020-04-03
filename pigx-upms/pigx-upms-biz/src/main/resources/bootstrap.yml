@@ -7,9 +7,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS-HOST:pigx-register}:${NACOS-PORT:8848}
-        metadata:
-          VERSION: lengleng
+        server-addr: ${NACOS_HOST:pigx-register}:${NACOS_PORT:8848}
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yml
