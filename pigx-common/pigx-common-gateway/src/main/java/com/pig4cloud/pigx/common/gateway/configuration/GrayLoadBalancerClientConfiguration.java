@@ -17,9 +17,9 @@
 
 package com.pig4cloud.pigx.common.gateway.configuration;
 
+import com.pig4cloud.pigx.common.gateway.filter.GrayReactiveLoadBalancerClientFilter;
 import com.pig4cloud.pigx.common.gateway.rule.GrayLoadBalancer;
 import com.pig4cloud.pigx.common.gateway.rule.VersionGrayLoadBalancer;
-import com.pig4cloud.pigx.common.gateway.filter.GrayReactiveLoadBalancerClientFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

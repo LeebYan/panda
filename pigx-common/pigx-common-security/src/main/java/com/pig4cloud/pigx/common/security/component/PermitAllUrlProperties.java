@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.common.security.component;
 
 import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.Getter;
 import lombok.Setter;

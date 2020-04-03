@@ -20,7 +20,6 @@ package com.pig4cloud.pigx.admin;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author lengleng

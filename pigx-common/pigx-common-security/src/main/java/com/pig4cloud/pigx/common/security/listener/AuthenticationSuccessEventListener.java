@@ -19,12 +19,10 @@ package com.pig4cloud.pigx.common.security.listener;
 
 import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.security.handler.AuthenticationSuccessHandler;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
