@@ -110,7 +110,8 @@ public class SysMenuController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_add')")
 	public R save(@Valid @RequestBody SysMenu sysMenu) {
-		return R.ok(sysMenuService.save(sysMenu));
+		sysMenuService.save(sysMenu);
+		return R.ok(sysMenu);
 	}
 
 	/**
