@@ -210,7 +210,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return
 	 */
 	@SneakyThrows
-	public String[] getClientId(String header) {
+	public String getClientId(String header) {
 
 		if (header == null || !header.startsWith(BASIC_)) {
 			throw new CheckedException("请求头中client信息为空");
@@ -231,7 +231,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		if (delim == -1) {
 			throw new CheckedException("Invalid basic authentication token");
 		}
-		return new String[]{token.substring(0, delim), token.substring(delim + 1)};
+		return token.substring(0, delim);
 	}
 
 }

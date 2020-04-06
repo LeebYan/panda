@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
+import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
@@ -64,9 +65,12 @@ public class PigxAuthenticationFailureEventHandler implements AuthenticationFail
 		sysLog.setTitle(username + "用户登录");
 		sysLog.setType(CommonConstants.STATUS_LOCK);
 		sysLog.setParams(username);
-		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-		sysLog.setServiceId(WebUtils.getClientId(header)[0]);
 		sysLog.setException(authenticationException.getLocalizedMessage());
+		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+		if (StrUtil.isNotBlank(header)) {
+			sysLog.setServiceId(WebUtils.getClientId(header));
+		}
+
 		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
 
 		log.info("用户：{} 登录失败，异常：{}", username, authenticationException.getLocalizedMessage());

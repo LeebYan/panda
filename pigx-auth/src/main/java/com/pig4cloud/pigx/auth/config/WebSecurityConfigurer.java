@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -53,6 +54,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.loginPage("/token/login")
 				.loginProcessingUrl("/token/form")
 				.failureHandler(authenticationFailureHandler())
+				.and()
+				.logout()
+				.logoutSuccessHandler((request, response, authentication) -> {
+					String referer = request.getHeader(HttpHeaders.REFERER);
+					response.sendRedirect(referer);
+				})
+				.deleteCookies("JSESSIONID")
+				.invalidateHttpSession(true)
 				.and()
 				.authorizeRequests()
 				.antMatchers(
