@@ -16,9 +16,12 @@
  */
 package com.pig4cloud.pigx.admin.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.*;
+import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
 import com.pig4cloud.pigx.admin.service.*;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
@@ -29,6 +32,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -134,15 +138,17 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		role.setRoleCode(config.getString("defaultRoleCode"));
 		role.setRoleName(config.getString("defaultRoleName"));
 		roleService.save(role);
-		// 插入新的菜单
-		menuService.saveBatch(menuList);
 		// 用户角色关系
 		SysUserRole userRole = new SysUserRole();
 		userRole.setUserId(user.getUserId());
 		userRole.setRoleId(role.getRoleId());
 		userRoleService.save(userRole);
+		// 插入新的菜单
+		saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID), CommonConstants.MENU_TREE_ROOT_ID);
+		List<SysMenu> newMenuList = menuService.list();
+
 		// 查询全部菜单,构造角色菜单关系
-		List<SysRoleMenu> collect = menuList.stream().map(menu -> {
+		List<SysRoleMenu> collect = newMenuList.stream().map(menu -> {
 			SysRoleMenu roleMenu = new SysRoleMenu();
 			roleMenu.setRoleId(role.getRoleId());
 			roleMenu.setMenuId(menu.getMenuId());
@@ -162,6 +168,27 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		clientServices.saveBatch(clientDetailsList);
 		return dictItemService.saveBatch(itemList);
 	}
+
+	/**
+	 * 保存新的租户菜单，维护成新的菜单
+	 *
+	 * @param nodeList 节点树
+	 * @param parent   上级
+	 */
+	private void saveTenantMenu(List<MenuTree> nodeList, Integer parent) {
+		for (MenuTree node : nodeList) {
+			SysMenu menu = new SysMenu();
+			BeanUtils.copyProperties(node, menu, "parentId");
+			menu.setParentId(parent);
+			menuService.save(menu);
+			if (CollUtil.isNotEmpty(node.getChildren())) {
+				List<MenuTree> childrenList = node.getChildren().stream()
+						.map(treeNode -> (MenuTree) treeNode).collect(Collectors.toList());
+				saveTenantMenu(childrenList, menu.getMenuId());
+			}
+		}
+	}
+
 
 	/**
 	 * 获取配置信息
