@@ -18,50 +18,22 @@
 package com.pig4cloud.pigx.admin.api.vo;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
  * @author lengleng
- * @date 2018/8/27
- * 前端日志vo
+ * @date 2020/2/10
  */
 @Data
-@ApiModel(value = "前端日志展示对象")
-public class PreLogVo {
+@ApiModel(value = "前端角色展示对象")
+public class RoleVO {
 	/**
-	 * 请求url
+	 * 角色id
 	 */
-	@ApiModelProperty(value = "请求url")
-	private String url;
+	private Integer roleId;
+
 	/**
-	 * 请求耗时
+	 * 菜单列表
 	 */
-	@ApiModelProperty(value = "请求耗时")
-	private String time;
-	/**
-	 * 请求用户
-	 */
-	@ApiModelProperty(value = "请求用户")
-	private String user;
-	/**
-	 * 请求结果
-	 */
-	@ApiModelProperty(value = "请求结果0:成功9:失败")
-	private String type;
-	/**
-	 * 请求传递参数
-	 */
-	@ApiModelProperty(value = "请求传递参数")
-	private String message;
-	/**
-	 * 异常信息
-	 */
-	@ApiModelProperty(value = "异常信息")
-	private String stack;
-	/**
-	 * 日志标题
-	 */
-	@ApiModelProperty(value = "日志标题")
-	private String info;
+	private String menuIds;
 }
