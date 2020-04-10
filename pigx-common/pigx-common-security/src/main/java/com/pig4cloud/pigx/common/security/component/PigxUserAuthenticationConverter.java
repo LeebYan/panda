@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -76,10 +77,10 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 		if (map.containsKey(USERNAME)) {
 			validateTenantId(map);
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-			String username = (String) map.get(USERNAME);
-			Integer id = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
-			Integer deptId = (Integer) map.get(SecurityConstants.DETAILS_DEPT_ID);
-			Integer tenantId = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
+			String username = MapUtil.getStr(map, USERNAME);
+			Integer id = MapUtil.getInt(map, SecurityConstants.DETAILS_USER_ID);
+			Integer deptId = MapUtil.getInt(map, SecurityConstants.DETAILS_DEPT_ID);
+			Integer tenantId = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
 			PigxUser user = new PigxUser(id, deptId, tenantId, username, N_A, true
 					, true, true, true, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
@@ -99,13 +100,13 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 		throw new IllegalArgumentException("Authorities must be either a String or a Collection");
 	}
 
-	private void validateTenantId(Map<String, ?> map){
-		String headerValue =  getCurrentTenantId();
-		Integer userValue = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
-		if(StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)){
-			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致",headerValue,userValue);
+	private void validateTenantId(Map<String, ?> map) {
+		String headerValue = getCurrentTenantId();
+		Integer userValue = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
+		if (StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)) {
+			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致", headerValue, userValue);
 			// TODO: 不要提示租户ID不对，可能被穷举
-			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId","Bad tenant ID"));
+			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId", "Bad tenant ID"));
 		}
 	}
 
