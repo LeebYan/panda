@@ -45,13 +45,13 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 	 */
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
-		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
-				RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
-		HttpServletResponse response = requestAttributes.getResponse();
-
 		Authentication authentication = (Authentication) event.getSource();
 		if (CollUtil.isNotEmpty(authentication.getAuthorities()) && successHandler != null) {
+			ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
+					RequestContextHolder.getRequestAttributes();
+			HttpServletRequest request = requestAttributes.getRequest();
+			HttpServletResponse response = requestAttributes.getResponse();
+
 			successHandler.handle(authentication, request, response);
 		}
 	}
