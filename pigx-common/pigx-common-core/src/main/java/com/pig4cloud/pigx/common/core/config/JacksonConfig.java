@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.ZoneId;
 import java.util.Locale;
 import java.util.TimeZone;
 
