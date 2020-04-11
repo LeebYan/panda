@@ -21,7 +21,7 @@ package com.pig4cloud.pigx.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
-import com.pig4cloud.pigx.admin.api.vo.PreLogVo;
+import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 
 import java.util.List;
 
@@ -42,5 +42,5 @@ public interface SysLogService extends IService<SysLog> {
 	 * @param preLogVoList 日志信息
 	 * @return true/false
 	 */
-	Boolean saveBatchLogs(List<PreLogVo> preLogVoList);
+	Boolean saveBatchLogs(List<PreLogVO> preLogVoList);
 }
