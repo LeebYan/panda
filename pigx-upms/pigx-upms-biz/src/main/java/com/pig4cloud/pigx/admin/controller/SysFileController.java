@@ -20,7 +20,6 @@ package com.pig4cloud.pigx.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
-import com.pig4cloud.pigx.admin.api.feign.RemoteFileService;
 import com.pig4cloud.pigx.admin.service.SysFileService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -47,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "sys-file", tags = "文件管理")
 public class SysFileController {
 	private final SysFileService sysFileService;
-	private final RemoteFileService fileService;
 
 	/**
 	 * 分页查询
@@ -86,12 +84,6 @@ public class SysFileController {
 	 */
 	@PostMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file) {
-		return fileService.saveLog(file);
-
-	}
-
-	@PostMapping("/upload2")
-	public R upload2(@RequestParam("file") MultipartFile file) {
 		return sysFileService.uploadFile(file);
 	}
 
