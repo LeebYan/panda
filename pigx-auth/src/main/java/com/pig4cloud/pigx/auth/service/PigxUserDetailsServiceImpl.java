@@ -117,7 +117,9 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 		boolean enabled = StrUtil.equals(user.getLockFlag(), CommonConstants.STATUS_NORMAL);
 		// 构造security用户
 
-		return new PigxUser(user.getUserId(), user.getDeptId(), user.getTenantId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(), enabled,
-				true, true, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
+		return new PigxUser(user.getUserId(), user.getDeptId(), user.getPhone(), user.getAvatar(), user.getTenantId()
+				, user.getUsername(), SecurityConstants.BCRYPT + user.getPassword()
+				, enabled, true, true
+				, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
 	}
 }
