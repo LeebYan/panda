@@ -69,19 +69,22 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 	/**
 	 * Inverse of {@link #convertUserAuthentication(Authentication)}. Extracts an Authentication from a map.
 	 *
-	 * @param map a map of user information
+	 * @param responseMap a map of user information
 	 * @return an Authentication representing the user or null if there is none
 	 */
 	@Override
-	public Authentication extractAuthentication(Map<String, ?> map) {
-		if (map.containsKey(USERNAME)) {
+	public Authentication extractAuthentication(Map<String, ?> responseMap) {
+		if (responseMap.containsKey(USERNAME)) {
+			Collection<? extends GrantedAuthority> authorities = getAuthorities(responseMap);
+			Map<String, ?> map = MapUtil.get(responseMap, SecurityConstants.DETAILS_USER, Map.class);
 			validateTenantId(map);
-			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-			String username = MapUtil.getStr(map, USERNAME);
+			String username = MapUtil.getStr(map, SecurityConstants.DETAILS_USERNAME);
 			Integer id = MapUtil.getInt(map, SecurityConstants.DETAILS_USER_ID);
 			Integer deptId = MapUtil.getInt(map, SecurityConstants.DETAILS_DEPT_ID);
 			Integer tenantId = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
-			PigxUser user = new PigxUser(id, deptId, tenantId, username, N_A, true
+			String phone = MapUtil.getStr(map, SecurityConstants.DETAILS_PHONE);
+			String avatar = MapUtil.getStr(map, SecurityConstants.DETAILS_AVATAR);
+			PigxUser user = new PigxUser(id, deptId, phone, avatar, tenantId, username, N_A, true
 					, true, true, true, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}

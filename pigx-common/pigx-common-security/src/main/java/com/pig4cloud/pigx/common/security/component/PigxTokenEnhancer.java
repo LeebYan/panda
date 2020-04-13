@@ -51,10 +51,7 @@ public class PigxTokenEnhancer implements TokenEnhancer {
 
 		final Map<String, Object> additionalInfo = new HashMap<>(8);
 		PigxUser pigxUser = (PigxUser) authentication.getUserAuthentication().getPrincipal();
-		additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pigxUser.getId());
-		additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pigxUser.getUsername());
-		additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, pigxUser.getDeptId());
-		additionalInfo.put(SecurityConstants.DETAILS_TENANT_ID, pigxUser.getTenantId());
+		additionalInfo.put(SecurityConstants.DETAILS_USER, pigxUser);
 		additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.PIGX_LICENSE);
 		additionalInfo.put(SecurityConstants.ACTIVE, Boolean.TRUE);
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);

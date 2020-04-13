@@ -42,10 +42,23 @@ public class PigxUser extends User {
 	private Integer deptId;
 
 	/**
+	 * 手机号
+	 */
+	@Getter
+	private String phone;
+
+	/**
+	 * 头像
+	 */
+	@Getter
+	private String avatar;
+
+	/**
 	 * 租户ID
 	 */
 	@Getter
 	private Integer tenantId;
+
 
 	/**
 	 * Construct the <code>User</code> with the details required by
@@ -68,10 +81,12 @@ public class PigxUser extends User {
 	 * @throws IllegalArgumentException if a <code>null</code> value was passed either as
 	 *                                  a parameter or as an element in the <code>GrantedAuthority</code> collection
 	 */
-	public PigxUser(Integer id, Integer deptId, Integer tenantId, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public PigxUser(Integer id, Integer deptId, String phone, String avatar, Integer tenantId, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
 		this.deptId = deptId;
+		this.phone = phone;
+		this.avatar = avatar;
 		this.tenantId = tenantId;
 	}
 }
