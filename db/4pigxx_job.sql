@@ -282,7 +282,7 @@ CREATE TABLE `xxl_job_group` (
 -- Records of xxl_job_group
 -- ----------------------------
 BEGIN;
-INSERT INTO `xxl_job_group` VALUES (1, 'xxl-job-executor-sample', '示例执行器', 1, 0, NULL);
+INSERT INTO `xxl_job_group` VALUES (1, 'xxl-job-executor', '示例执行器', 1, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -319,7 +319,7 @@ CREATE TABLE `xxl_job_info` (
 -- Records of xxl_job_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `xxl_job_info` VALUES (1, 1, '0 0 0 * * ? *', '测试任务1', '2018-11-03 22:21:31', '2018-11-03 22:21:31', 'XXL', '', 'FIRST', 'demoJobHandler', '', 'SERIAL_EXECUTION', 0, 0, 'BEAN', '', 'GLUE代码初始化', '2018-11-03 22:21:31', '', 0, 0, 0);
+INSERT INTO `xxl_job_info`(`id`, `job_group`, `job_cron`, `job_desc`, `add_time`, `update_time`, `author`, `alarm_email`, `executor_route_strategy`, `executor_handler`, `executor_param`, `executor_block_strategy`, `executor_timeout`, `executor_fail_retry_count`, `glue_type`, `glue_source`, `glue_remark`, `glue_updatetime`, `child_jobid`, `trigger_status`, `trigger_last_time`, `trigger_next_time`) VALUES (1, 1, '0 0 0 * * ? *', '测试任务1', '2018-11-03 22:21:31', '2020-04-15 13:58:35', 'lengleng', '', 'ROUND', 'demoJobHandler', '', 'DISCARD_LATER', 0, 0, 'BEAN', '', 'GLUE代码初始化', '2018-11-03 22:21:31', '', 0, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -375,16 +375,7 @@ CREATE TABLE `xxl_job_log_report` (
   `fail_count` int(11) NOT NULL DEFAULT '0' COMMENT '执行失败-日志数量',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_trigger_day` (`trigger_day`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- ----------------------------
--- Records of xxl_job_log_report
--- ----------------------------
-BEGIN;
-INSERT INTO `xxl_job_log_report` VALUES (1, '2019-12-09 00:00:00', 0, 0, 0);
-INSERT INTO `xxl_job_log_report` VALUES (2, '2019-12-08 00:00:00', 0, 0, 0);
-INSERT INTO `xxl_job_log_report` VALUES (3, '2019-12-07 00:00:00', 0, 0, 0);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for xxl_job_logglue

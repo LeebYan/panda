@@ -49,8 +49,8 @@
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.11.2</ttl.version>
-		<minio.version>6.0.11</minio.version>
-		<xxl.job.version>2.1.1</xxl.job.version>
+		<minio.version>6.0.13</minio.version>
+		<xxl.job.version>2.2.0</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.registry>172.17.0.111</docker.registry>
