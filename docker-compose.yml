@@ -21,7 +21,7 @@ services:
 
   pigx-xxl:
     container_name: pigx-xxl
-    image: pig4cloud/xxl-job-admin:2.2.0
+    image: xuxueli/xxl-job-admin:2.2.0
     restart: always
     environment:
       PARAMS: "--server.port=9080 --spring.datasource.url=jdbc:mysql://pigx-mysql:3306/pigxx_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=root --spring.datasource.password=root"
