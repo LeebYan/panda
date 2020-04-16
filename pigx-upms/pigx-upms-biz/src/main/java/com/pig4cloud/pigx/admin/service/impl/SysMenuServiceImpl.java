@@ -60,7 +60,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	private final SysRoleMenuMapper sysRoleMenuMapper;
 
 	@Override
-	@Cacheable(value = CacheConstants.MENU_DETAILS, key = "#roleId  + '_menu'")
+	@Cacheable(value = CacheConstants.MENU_DETAILS, key = "#roleId  + '_menu'", unless = "#result.isEmpty()")
 	public List<MenuVO> findMenuByRoleId(Integer roleId) {
 		return baseMapper.listMenusByRoleId(roleId);
 	}
@@ -114,8 +114,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	/**
 	 * 查询菜单
 	 *
-	 * @param all 全部菜单
-	 * @param type 类型
+	 * @param all      全部菜单
+	 * @param type     类型
 	 * @param parentId 父节点ID
 	 * @return
 	 */
