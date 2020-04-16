@@ -20,16 +20,20 @@ package com.pig4cloud.pigx.common.security.service;
 import lombok.Getter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
 /**
  * @author lengleng
- * @date 2018/8/20
+ * @date 2020/4/16
  * 扩展用户信息
  */
 public class PigxUser extends User {
+
+	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+
 	/**
 	 * 用户ID
 	 */
