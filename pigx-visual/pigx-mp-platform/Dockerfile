@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM pig4cloud/java:8-jre
 
 MAINTAINER wangiegie@gmail.com
 
