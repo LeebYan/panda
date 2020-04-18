@@ -75,11 +75,25 @@ public class GlobalExceptionHandlerResolver {
 	 * @param exception
 	 * @return R
 	 */
-	@ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
+	@ExceptionHandler({MethodArgumentNotValidException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R handleBodyValidException(MethodArgumentNotValidException exception) {
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-		log.error("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
+		log.warn("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
+		return R.failed(fieldErrors.get(0).getDefaultMessage());
+	}
+
+	/**
+	 * validation Exception (以form-data形式传参)
+	 *
+	 * @param exception
+	 * @return R
+	 */
+	@ExceptionHandler({BindException.class})
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public R bindExceptionHandler(BindException exception) {
+		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+		log.warn("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
 		return R.failed(fieldErrors.get(0).getDefaultMessage());
 	}
 }
