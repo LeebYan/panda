@@ -49,8 +49,8 @@ import reactor.core.publisher.Mono;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -126,7 +126,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 					new IvParameterSpec(encodeKey.getBytes()));
 
 			// 获取请求密码并解密
-			HashMap<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.UTF_8);
+			Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
 			byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD)
 					.getBytes(StandardCharsets.UTF_8)));
 			String password = new String(result, StandardCharsets.UTF_8);
