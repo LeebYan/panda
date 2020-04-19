@@ -44,11 +44,10 @@
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
 		<knife4j.version>2.0.2</knife4j.version>
-		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
-		<ttl.version>2.11.2</ttl.version>
+		<ttl.version>2.11.4</ttl.version>
 		<minio.version>6.0.13</minio.version>
 		<xxl.job.version>2.2.0</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
