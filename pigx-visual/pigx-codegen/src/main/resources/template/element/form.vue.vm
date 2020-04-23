@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import {addObj, getObj, putObj} from '@/api/'
+    import {getObj, addObj, putObj} from '@/api/${pathName}'
 
     export default {
     data () {
