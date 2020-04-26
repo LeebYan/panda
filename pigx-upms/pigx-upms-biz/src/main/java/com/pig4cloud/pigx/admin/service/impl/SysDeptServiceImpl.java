@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 	private final SysDeptRelationService sysDeptRelationService;
+	private final SysDeptMapper deptMapper;
 
 	/**
 	 * 添加信息部门
@@ -121,7 +122,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	@Override
 	public List<DeptTree> selectTree() {
-		return getDeptTree(baseMapper.listDepts(new DataScope()));
+		return getDeptTree(deptMapper.selectListByScope(Wrappers.emptyWrapper(), new DataScope()));
 	}
 
 

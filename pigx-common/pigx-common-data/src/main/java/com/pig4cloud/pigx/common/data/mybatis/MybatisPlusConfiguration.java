@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
+import com.pig4cloud.pigx.common.data.datascope.DataScopeSqlInjector;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -96,5 +97,11 @@ public class MybatisPlusConfiguration {
 	@ConditionalOnBean(DataScopeHandle.class)
 	public DataScopeInterceptor dataScopeInterceptor() {
 		return new DataScopeInterceptor(dataScopeHandle());
+	}
+
+	@Bean
+	@ConditionalOnBean(DataScopeHandle.class)
+	public DataScopeSqlInjector dataScopeSqlInjector() {
+		return new DataScopeSqlInjector();
 	}
 }

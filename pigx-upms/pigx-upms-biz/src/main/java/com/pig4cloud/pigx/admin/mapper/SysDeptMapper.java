@@ -19,12 +19,9 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysDept;
-import com.pig4cloud.pigx.common.data.datascope.DataScope;
+import com.pig4cloud.pigx.common.data.datascope.DataScopeMapper;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
  * <p>
@@ -35,13 +32,5 @@ import java.util.List;
  * @since 2018-01-20
  */
 @Mapper
-public interface SysDeptMapper extends BaseMapper<SysDept> {
-
-	/**
-	 * 根据数据权限查询部门
-	 *
-	 * @param dataScope
-	 * @return
-	 */
-	List<SysDept> listDepts(DataScope dataScope);
+public interface SysDeptMapper extends DataScopeMapper<SysDept> {
 }
