@@ -1,5 +1,10 @@
 package com.pig4cloud.pigx.mp.handler;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.pig4cloud.pigx.mp.constant.SubStatusEnum;
+import com.pig4cloud.pigx.mp.entity.WxAccountFans;
+import com.pig4cloud.pigx.mp.mapper.WxAccountFansMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -14,7 +19,9 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+@AllArgsConstructor
 public class UnsubscribeHandler extends AbstractHandler {
+	private final WxAccountFansMapper wxAccountFansMapper;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
@@ -22,7 +29,10 @@ public class UnsubscribeHandler extends AbstractHandler {
                                     WxSessionManager sessionManager) {
         String openId = wxMessage.getFromUser();
         log.info("取消关注用户 OPENID: " + openId);
-        // TODO 可以更新本地数据库为取消关注状态
+		WxAccountFans fans = new WxAccountFans();
+		fans.setSubscribeStatus(SubStatusEnum.UNSUB.getType());
+		wxAccountFansMapper.update(fans, Wrappers
+				.<WxAccountFans>lambdaUpdate().eq(WxAccountFans::getOpenid,openId));
         return null;
     }
 

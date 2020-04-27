@@ -1,10 +1,15 @@
 package com.pig4cloud.pigx.mp.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
+import com.pig4cloud.pigx.mp.entity.WxAccount;
+import com.pig4cloud.pigx.mp.service.WxAccountService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -21,8 +26,10 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Inner(value = false)
 @RestController
+@AllArgsConstructor
 @RequestMapping("/{appId}/portal")
 public class WxPortalController {
+	private final WxAccountService accountService;
 
 	/**
 	 * 微信接入校验处理
@@ -82,6 +89,9 @@ public class WxPortalController {
 					   @RequestParam(name = "encrypt_type", required = false) String encType,
 					   @RequestParam(name = "msg_signature", required = false) String msgSignature) {
 
+		WxAccount wxAccount = accountService.getOne(Wrappers.<WxAccount>lambdaQuery()
+				.eq(WxAccount::getAppid, appId));
+		TenantContextHolder.setTenantId(wxAccount.getTenantId());
 		WxMpContextHolder.setAppId(appId);
 		final WxMpService wxService = WxMpConfiguration.getMpServices().get(appId);
 

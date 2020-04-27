@@ -17,6 +17,7 @@
 package com.pig4cloud.pigx.mp.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -105,7 +106,7 @@ public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, W
 							}
 
 							wxAccountFans.setOpenid(wxMpUser.getOpenId());
-							wxAccountFans.setSubscribeStatus(wxMpUser.getSubscribe() ? "1" : "0");
+							wxAccountFans.setSubscribeStatus(String.valueOf(BooleanUtil.toInt(wxMpUser.getSubscribe())));
 							wxAccountFans.setSubscribeTime(LocalDateTime
 									.ofInstant(Instant.ofEpochMilli(wxMpUser.getSubscribeTime() * 1000L)
 											, ZoneId.systemDefault()));

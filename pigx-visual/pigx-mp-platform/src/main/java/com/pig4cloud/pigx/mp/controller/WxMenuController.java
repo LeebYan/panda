@@ -17,11 +17,8 @@
 package com.pig4cloud.pigx.mp.controller;
 
 import cn.hutool.json.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.mp.entity.WxMpMenu;
 import com.pig4cloud.pigx.mp.service.WxMenuService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,18 +37,6 @@ import org.springframework.web.bind.annotation.*;
 public class WxMenuController {
 
 	private final WxMenuService wxMenuService;
-
-	/**
-	 * 分页查询
-	 *
-	 * @param page   分页对象
-	 * @param wxMpMenu
-	 * @return
-	 */
-	@GetMapping("/page")
-	public R getWxMpMenuPage(Page page, WxMpMenu wxMpMenu) {
-		return R.ok(wxMenuService.page(page, Wrappers.query(wxMpMenu)));
-	}
 
 
 	/**
@@ -95,6 +80,4 @@ public class WxMenuController {
 	public R delete(@PathVariable("appId") String appId) {
 		return wxMenuService.delete(appId);
 	}
-
-
 }
