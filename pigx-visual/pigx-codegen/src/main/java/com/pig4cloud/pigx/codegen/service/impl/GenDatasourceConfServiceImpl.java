@@ -30,6 +30,7 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -134,11 +135,18 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 */
 	@Override
 	public Boolean checkDataSource(GenDatasourceConf conf) {
+		Connection connection =null;
 		try {
-			DriverManager.getConnection(conf.getUrl(),conf.getUsername(),conf.getPassword());
+			connection = DriverManager.getConnection(conf.getUrl(), conf.getUsername(), conf.getPassword());
 		} catch (SQLException e) {
 			log.error("数据源配置 {} , 获取链接失败", conf.getName(), e);
 			return Boolean.FALSE;
+		}finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return Boolean.TRUE;
 	}
