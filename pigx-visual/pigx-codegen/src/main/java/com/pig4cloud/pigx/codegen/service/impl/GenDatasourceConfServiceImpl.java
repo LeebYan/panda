@@ -135,18 +135,11 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 */
 	@Override
 	public Boolean checkDataSource(GenDatasourceConf conf) {
-		Connection connection =null;
-		try {
-			connection = DriverManager.getConnection(conf.getUrl(), conf.getUsername(), conf.getPassword());
+		try (Connection connection = DriverManager.getConnection(
+				conf.getUrl(), conf.getUsername(), conf.getPassword())) {
 		} catch (SQLException e) {
 			log.error("数据源配置 {} , 获取链接失败", conf.getName(), e);
 			return Boolean.FALSE;
-		}finally {
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 		return Boolean.TRUE;
 	}
