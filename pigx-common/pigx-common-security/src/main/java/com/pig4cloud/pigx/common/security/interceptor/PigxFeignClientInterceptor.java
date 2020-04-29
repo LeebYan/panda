@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.security.feign;
+package com.pig4cloud.pigx.common.security.interceptor;
 
 import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;

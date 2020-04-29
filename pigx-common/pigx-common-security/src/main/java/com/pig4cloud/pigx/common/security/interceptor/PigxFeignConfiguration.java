@@ -15,21 +15,33 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.data.tenant;
+package com.pig4cloud.pigx.common.security.interceptor;
 
+import feign.Feign;
 import feign.RequestInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.security.oauth2.client.AccessTokenContextRelay;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 /**
- * @author lengleng
- * @date 2018/9/14
- * feign 租户信息拦截
+ * fegin 配置增强
+ *
+ * @author L.cm
  */
 @Configuration
-public class PigxFeignTenantConfiguration {
+@ConditionalOnClass(Feign.class)
+public class PigxFeignConfiguration {
+
 	@Bean
-	public RequestInterceptor pigxFeignTenantInterceptor() {
-		return new PigxFeignTenantInterceptor();
+	@ConditionalOnProperty("security.oauth2.client.client-id")
+	public RequestInterceptor oauth2FeignRequestInterceptor(OAuth2ClientContext oAuth2ClientContext,
+															OAuth2ProtectedResourceDetails resource,
+															AccessTokenContextRelay accessTokenContextRelay) {
+		return new PigxFeignClientInterceptor(oAuth2ClientContext, resource, accessTokenContextRelay);
 	}
+
 }
