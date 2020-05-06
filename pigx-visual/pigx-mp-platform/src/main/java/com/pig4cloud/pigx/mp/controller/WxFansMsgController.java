@@ -139,15 +139,15 @@ public class WxFansMsgController {
 			}
 			if (WxConsts.KefuMsgType.NEWS.equals(wxMsg.getRepType())) {
 				List<WxMpKefuMessage.WxArticle> list = new ArrayList<>();
-				JSONArray jSONArray = JSONUtil.parseObj(wxMsg.getContent()).getJSONArray("articles");
+				JSONArray articles = JSONUtil.parseObj(wxMsg.getContent()).getJSONArray("articles");
 				WxMpKefuMessage.WxArticle t;
-				for (Object object : jSONArray) {
-					JSONObject jSONObject = JSONUtil.parseObj(JSONUtil.toJsonStr(object));
+				for (Object object : articles) {
+					JSONObject obj = JSONUtil.parseObj(JSONUtil.toJsonStr(object));
 					t = new WxMpKefuMessage.WxArticle();
-					t.setTitle(jSONObject.getStr("title"));
-					t.setDescription(jSONObject.getStr("digest"));
-					t.setPicUrl(jSONObject.getStr("thumbUrl"));
-					t.setUrl(jSONObject.getStr("url"));
+					t.setTitle(obj.getStr("title"));
+					t.setDescription(obj.getStr("digest"));
+					t.setPicUrl(obj.getStr("thumbUrl"));
+					t.setUrl(obj.getStr("url"));
 					list.add(t);
 				}
 				wxMsg.setRepName(wxMsg.getRepName());

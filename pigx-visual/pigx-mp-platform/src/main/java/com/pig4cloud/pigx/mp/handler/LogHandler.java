@@ -63,6 +63,15 @@ public class LogHandler extends AbstractHandler {
 		if (WxConsts.XmlMsgType.TEXT.equals(wxMessage.getMsgType())) {
 			wxMsg.setRepContent(wxMessage.getContent());
 		}
+
+		if (WxConsts.MenuButtonType.VIEW.equalsIgnoreCase(wxMessage.getEvent())) {
+			wxMsg.setRepUrl(wxMessage.getEventKey());
+		}
+
+		if (WxConsts.MenuButtonType.CLICK.equalsIgnoreCase(wxMessage.getEvent())) {
+			wxMsg.setRepName(wxMessage.getEventKey());
+		}
+
 		if (WxConsts.XmlMsgType.VOICE.equals(wxMessage.getMsgType())) {
 			wxMsg.setRepName(wxMessage.getMediaId() + "." + wxMessage.getFormat());
 			wxMsg.setRepContent(wxMessage.getRecognition());
