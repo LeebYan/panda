@@ -192,6 +192,15 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- nothing to do, but we need this to run docker:build form project root -->
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.32.0</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	
