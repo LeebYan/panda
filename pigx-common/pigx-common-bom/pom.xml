@@ -21,10 +21,12 @@
 		<mybatis-plus.version>3.3.1</mybatis-plus.version>
 		<dynamic-ds.version>3.0.0</dynamic-ds.version>
 		<druid.version>1.1.21</druid.version>
-		<mysql.connector.version>8.0.19</mysql.connector.version>
+		<mysql.connector.version>8.0.20</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.7.0</mp.weixin.version>
 		<ijpay.version>1.2.0</ijpay.version>
+		<groovy.version>3.0.3</groovy.version>
+		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<fastjson.version>1.2.67</fastjson.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 	</properties>
@@ -118,6 +120,11 @@
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis-plus.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+				<version>${dynamic-ds.version}</version>
+			</dependency>
 			<!-- druid 连接池 -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
@@ -158,6 +165,7 @@
 				<artifactId>weixin-java-common</artifactId>
 				<version>${mp.weixin.version}</version>
 			</dependency>
+			<!--支付相关SDK-->
 			<dependency>
 				<groupId>com.github.javen205</groupId>
 				<artifactId>IJPay</artifactId>
@@ -168,10 +176,17 @@
 				<artifactId>alipay-sdk-java</artifactId>
 				<version>${aliyun.version}</version>
 			</dependency>
+			<!--定义groovy 版本-->
 			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-				<version>${dynamic-ds.version}</version>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy</artifactId>
+				<version>${groovy.version}</version>
+			</dependency>
+			<!--稳定版本，替代spring security bom内置-->
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${security.oauth.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

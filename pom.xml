@@ -50,7 +50,6 @@
 		<ttl.version>2.11.4</ttl.version>
 		<minio.version>6.0.13</minio.version>
 		<xxl.job.version>2.2.0</xxl.job.version>
-		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.registry>172.17.0.111</docker.registry>
 		<docker.host>http://172.17.0.111:2375</docker.host>
@@ -111,6 +110,15 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!--pigx 公共版本定义-->
+			<dependency>
+				<groupId>com.pig4cloud</groupId>
+				<artifactId>pigx-common-bom</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--spring boot 公共版本定义-->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -118,17 +126,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!--spring cloud 公共版本定义-->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.pig4cloud</groupId>
-				<artifactId>pigx-common-bom</artifactId>
-				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -139,12 +141,6 @@
 				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<!--稳定版本，替代spring security bom内置-->
-			<dependency>
-				<groupId>org.springframework.security.oauth</groupId>
-				<artifactId>spring-security-oauth2</artifactId>
-				<version>${security.oauth.version}</version>
 			</dependency>
 			<!--web 模块-->
 			<dependency>
