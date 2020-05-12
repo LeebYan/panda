@@ -24,19 +24,9 @@
 	<artifactId>pigx-register</artifactId>
 	<packaging>jar</packaging>
 	<name>pigx-register</name>
-	<description>nacos 注册配置中</description>
+	<description>nacos 注册配置中心</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.pig4cloud.nacos</groupId>
-			<artifactId>nacos-config</artifactId>
-			<version>1.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<version>7.0.59</version>
-		</dependency>
 		<dependency>
 			<groupId>com.pig4cloud.nacos</groupId>
 			<artifactId>nacos-naming</artifactId>
@@ -47,6 +37,29 @@
 			<groupId>com.pig4cloud.nacos</groupId>
 			<artifactId>nacos-istio</artifactId>
 			<version>1.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.pig4cloud.nacos</groupId>
+			<artifactId>nacos-config</artifactId>
+			<version>1.2.1</version>
+			<exclusions>
+				<!--排除 tomcat-->
+				<exclusion>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>tomcat-embed-core</artifactId>
+					<groupId>org.apache.tomcat.embed</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!--undertow容器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 
 		<dependency>
