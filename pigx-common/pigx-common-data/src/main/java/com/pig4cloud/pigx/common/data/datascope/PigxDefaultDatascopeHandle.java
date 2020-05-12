@@ -22,7 +22,6 @@ import com.pig4cloud.pigx.admin.api.entity.SysDeptRelation;
 import com.pig4cloud.pigx.admin.api.entity.SysRole;
 import com.pig4cloud.pigx.admin.api.feign.RemoteDataScopeService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.enums.DataScopeTypeEnum;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

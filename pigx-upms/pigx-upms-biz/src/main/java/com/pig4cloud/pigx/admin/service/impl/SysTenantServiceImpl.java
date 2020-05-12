@@ -26,12 +26,9 @@ import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
 import com.pig4cloud.pigx.admin.service.*;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
-import com.pig4cloud.pigx.common.core.exception.CheckedException;
+import com.pig4cloud.pigx.common.data.resolver.ParamResolver;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.AllArgsConstructor;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -59,6 +56,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	private final SysUserRoleService userRoleService;
 	private final SysRoleMenuService roleMenuService;
 	private final SysDictItemService dictItemService;
+	private final SysPublicParamService paramService;
 	private final SysUserService userService;
 	private final SysRoleService roleService;
 	private final SysMenuService menuService;
@@ -94,6 +92,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	 * - sys_dict
 	 * - sys_dict_item
 	 * - sys_client_details
+	 * - sys_public_params
 	 *
 	 * @param sysTenant 租户实体
 	 * @return
@@ -103,8 +102,16 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	@CacheEvict(value = CacheConstants.TENANT_DETAILS)
 	public Boolean saveTenant(SysTenant sysTenant) {
 		this.save(sysTenant);
+		// 查询系统默认租户配置参数
+		Integer defaultId = ParamResolver.getInt("TENANT_DEFAULT_ID", 1);
+		String defaultDeptName = ParamResolver.getStr("TENANT_DEFAULT_DEPTNAME", "租户默认部门");
+		String defaultUsername = ParamResolver.getStr("TENANT_DEFAULT_USERNAME", "admin");
+		String defaultPassword = ParamResolver.getStr("TENANT_DEFAULT_PASSWORD", "123456");
+		String defaultRoleCode = ParamResolver.getStr("TENANT_DEFAULT_ROLECODE", "ROLE_ADMIN");
+		String defaultRoleName = ParamResolver.getStr("TENANT_DEFAULT_ROLENAME", "租户默认角色");
 
 		// 查询系统内置字典
+		TenantContextHolder.setTenantId(defaultId);
 		List<SysDict> dictList = new ArrayList<>(dictService.list());
 		// 查询系统内置字典项目
 		List<Integer> dictIdList = dictList.stream().map(SysDict::getId)
@@ -116,27 +123,28 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		List<SysMenu> menuList = menuService.list();
 		// 查询客户端配置
 		List<SysOauthClientDetails> clientDetailsList = clientServices.list();
+		// 查询系统参数配置
+		List<SysPublicParam> publicParamList = paramService.list();
 		// 保证插入租户为新的租户
 		TenantContextHolder.setTenantId(sysTenant.getId());
-		Configuration config = getConfig();
 
 		// 插入部门
 		SysDept dept = new SysDept();
-		dept.setName(config.getString("defaultDeptName"));
+		dept.setName(defaultDeptName);
 		dept.setParentId(0);
 		deptService.save(dept);
 		//维护部门关系
 		deptRelationService.insertDeptRelation(dept);
 		// 构造初始化用户
 		SysUser user = new SysUser();
-		user.setUsername(config.getString("defaultUsername"));
-		user.setPassword(ENCODER.encode(config.getString("defaultPassword")));
+		user.setUsername(defaultUsername);
+		user.setPassword(ENCODER.encode(defaultPassword));
 		user.setDeptId(dept.getDeptId());
 		userService.save(user);
 		// 构造新角色
 		SysRole role = new SysRole();
-		role.setRoleCode(config.getString("defaultRoleCode"));
-		role.setRoleName(config.getString("defaultRoleName"));
+		role.setRoleCode(defaultRoleCode);
+		role.setRoleName(defaultRoleName);
 		roleService.save(role);
 		// 用户角色关系
 		SysUserRole userRole = new SysUserRole();
@@ -166,6 +174,8 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 		//插入客户端
 		clientServices.saveBatch(clientDetailsList);
+		// 插入系统配置
+		paramService.saveBatch(publicParamList);
 		return dictItemService.saveBatch(itemList);
 	}
 
@@ -186,18 +196,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 						.map(treeNode -> (MenuTree) treeNode).collect(Collectors.toList());
 				saveTenantMenu(childrenList, menu.getMenuId());
 			}
-		}
-	}
-
-
-	/**
-	 * 获取配置信息
-	 */
-	private Configuration getConfig() {
-		try {
-			return new PropertiesConfiguration("tenant/tenant.properties");
-		} catch (ConfigurationException e) {
-			throw new CheckedException("获取配置文件失败，", e);
 		}
 	}
 }

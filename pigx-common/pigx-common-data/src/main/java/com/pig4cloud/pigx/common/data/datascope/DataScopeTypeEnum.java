@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.data.enums;
+package com.pig4cloud.pigx.common.data.datascope;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
