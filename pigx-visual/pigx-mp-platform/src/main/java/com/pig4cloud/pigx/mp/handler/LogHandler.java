@@ -18,7 +18,6 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -28,6 +27,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+
 @AllArgsConstructor
 public class LogHandler extends AbstractHandler {
 	private final WxAccountFansMapper fansMapper;
@@ -97,8 +97,6 @@ public class LogHandler extends AbstractHandler {
 			wxMsg.setRepScale(wxMessage.getScale());
 			wxMsg.setRepContent(wxMessage.getLabel());
 		}
-		LocalDateTime now = LocalDateTime.now();
-		wxMsg.setCreateTime(now);
 		msgMapper.insert(wxMsg);
 		log.debug("保存微信用户信息成功 {}", wxMsg);
 		return null;

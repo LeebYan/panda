@@ -1,17 +1,29 @@
 package com.pig4cloud.pigx.mp.config;
 
 import com.google.common.collect.Maps;
+import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.handler.*;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.constant.WxMpEventConstants;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,56 +35,50 @@ import static me.chanjar.weixin.common.api.WxConsts.*;
  * <p>
  * 微信公众号基础配置，初始化配置
  */
+@Slf4j
 @Configuration
-public class WxMpConfiguration {
-	public static Map<String, WxMpMessageRouter> getRouters() {
-		return routers;
-	}
-
-	public static Map<String, WxMpService> getMpServices() {
-		return mpServices;
-	}
-
-	private WxAccountService accountService;
-	private LogHandler logHandler;
-	private NullHandler nullHandler;
-	private KfSessionHandler kfSessionHandler;
-	private StoreCheckNotifyHandler storeCheckNotifyHandler;
-	private LocationHandler locationHandler;
-	private MenuHandler menuHandler;
-	private MsgHandler msgHandler;
-	private UnsubscribeHandler unsubscribeHandler;
-	private SubscribeHandler subscribeHandler;
-	private ScanHandler scanHandler;
-	private RedisTemplate redisTemplate;
-
+@RequiredArgsConstructor
+public class WxMpInitConfigRunner {
+	/**
+	 * 保存 appid-router 的对应关系
+	 */
 	private static Map<String, WxMpMessageRouter> routers = Maps.newHashMap();
+
+	/**
+	 * 保存 appid-mpservice 的对应关系
+	 */
 	private static Map<String, WxMpService> mpServices = Maps.newHashMap();
 
-	@Autowired
-	public WxMpConfiguration(WxAccountService accountService, LogHandler logHandler, NullHandler nullHandler
-			, KfSessionHandler kfSessionHandler, StoreCheckNotifyHandler storeCheckNotifyHandler
-			, LocationHandler locationHandler, MenuHandler menuHandler
-			, MsgHandler msgHandler, UnsubscribeHandler unsubscribeHandler
-			, SubscribeHandler subscribeHandler, ScanHandler scanHandler
-			, RedisTemplate redisTemplate) {
-		this.accountService = accountService;
-		this.logHandler = logHandler;
-		this.nullHandler = nullHandler;
-		this.kfSessionHandler = kfSessionHandler;
-		this.storeCheckNotifyHandler = storeCheckNotifyHandler;
-		this.locationHandler = locationHandler;
-		this.menuHandler = menuHandler;
-		this.msgHandler = msgHandler;
-		this.unsubscribeHandler = unsubscribeHandler;
-		this.subscribeHandler = subscribeHandler;
-		this.scanHandler = scanHandler;
-		this.redisTemplate = redisTemplate;
-	}
+	/**
+	 * 保存 appid-tenantId 的对应关系
+	 */
+	private static Map<String, Integer> tenants = Maps.newHashMap();
+
+	private final RemoteTenantService tenantService;
+	private final WxAccountService accountService;
+	private final LogHandler logHandler;
+	private final NullHandler nullHandler;
+	private final KfSessionHandler kfSessionHandler;
+	private final StoreCheckNotifyHandler storeCheckNotifyHandler;
+	private final LocationHandler locationHandler;
+	private final MenuHandler menuHandler;
+	private final MsgHandler msgHandler;
+	private final UnsubscribeHandler unsubscribeHandler;
+	private final SubscribeHandler subscribeHandler;
+	private final ScanHandler scanHandler;
+	private final RedisTemplate redisTemplate;
 
 	@PostConstruct
 	public void initServices() {
-		mpServices = accountService.list().stream().map(a -> {
+		// 获取全部租户 遍历所有租户对应的公众号列表
+		List<WxAccount> accountList = new ArrayList<>();
+		tenantService.list(SecurityConstants.FROM_IN).getData()
+				.forEach(tenant -> {
+					TenantContextHolder.setTenantId(tenant.getId());
+					accountList.addAll(accountService.list());
+				});
+
+		mpServices = accountList.stream().map(a -> {
 			WxMpInRedisConfigStorage configStorage = new WxMpInRedisConfigStorage(redisTemplate);
 			configStorage.setAppId(a.getAppid());
 			configStorage.setSecret(a.getAppsecret());
@@ -82,6 +88,7 @@ public class WxMpConfiguration {
 			WxMpService service = new WxMpServiceImpl();
 			service.setWxMpConfigStorage(configStorage);
 			routers.put(a.getAppid(), this.newRouter(service));
+			tenants.put(a.getAppid(), a.getTenantId());
 			return service;
 		}).collect(Collectors.toMap(s -> s.getWxMpConfigStorage().getAppId(), a -> a));
 	}
@@ -146,4 +153,34 @@ public class WxMpConfiguration {
 		return newRouter;
 	}
 
+
+	/**
+	 * redis 监听配置,监听 mp_redis_reload_topic,重新加载配置
+	 *
+	 * @param redisConnectionFactory redis 配置
+	 * @return
+	 */
+	@Bean
+	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
+		RedisMessageListenerContainer container
+				= new RedisMessageListenerContainer();
+		container.setConnectionFactory(redisConnectionFactory);
+		container.addMessageListener((message, bytes) -> {
+			log.warn("接收到重新加载公众号配置事件");
+			initServices();
+		}, new ChannelTopic(CacheConstants.MP_REDIS_RELOAD_TOPIC));
+		return container;
+	}
+
+	public static Map<String, Integer> getTenants() {
+		return tenants;
+	}
+
+	public static Map<String, WxMpMessageRouter> getRouters() {
+		return routers;
+	}
+
+	public static Map<String, WxMpService> getMpServices() {
+		return mpServices;
+	}
 }

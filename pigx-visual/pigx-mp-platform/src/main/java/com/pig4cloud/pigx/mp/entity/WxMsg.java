@@ -28,17 +28,9 @@ public class WxMsg extends Model<WxMsg> {
 	@TableId
 	private Integer id;
 	/**
-	 * 创建者
-	 */
-	private String createId;
-	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
-	/**
-	 * 更新者
-	 */
-	private String updateId;
 	/**
 	 * 更新时间
 	 */

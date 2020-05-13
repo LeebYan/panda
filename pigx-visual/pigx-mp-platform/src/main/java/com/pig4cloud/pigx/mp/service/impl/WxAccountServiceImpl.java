@@ -20,7 +20,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
+import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.mapper.WxAccountMapper;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
@@ -59,7 +59,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 
 	@Override
 	public R generateQr(String appId) {
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		try {
 			WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(1);
 			String url = wxMpService.getQrcodeService().qrCodePictureUrl(ticket.getTicket());
@@ -90,7 +90,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 		Date start = new Date(Long.parseLong(split[0]));
 		Date end = new Date(Long.parseLong(split[1]));
 
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpDataCubeService cubeService = wxMpService.getDataCubeService();
 
 		List<List<Object>> result = new ArrayList<>();

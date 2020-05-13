@@ -1,13 +1,11 @@
 package com.pig4cloud.pigx.mp.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
-import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
-import com.pig4cloud.pigx.mp.entity.WxAccount;
+import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +52,7 @@ public class WxPortalController {
 			throw new IllegalArgumentException("请求参数非法，请核实!");
 		}
 
-		final WxMpService wxService = WxMpConfiguration.getMpServices().get(appId);
+		final WxMpService wxService = WxMpInitConfigRunner.getMpServices().get(appId);
 
 		if (wxService == null) {
 			throw new IllegalArgumentException(String.format("未找到对应appid=[%d]的配置，请核实！", appId));
@@ -88,12 +86,12 @@ public class WxPortalController {
 					   @RequestParam("openid") String openid,
 					   @RequestParam(name = "encrypt_type", required = false) String encType,
 					   @RequestParam(name = "msg_signature", required = false) String msgSignature) {
-
-		WxAccount wxAccount = accountService.getOne(Wrappers.<WxAccount>lambdaQuery()
-				.eq(WxAccount::getAppid, appId));
-		TenantContextHolder.setTenantId(wxAccount.getTenantId());
+		// 查询当前 appId 对应的租户 保存到TTL 中
+		Integer tenantId = WxMpInitConfigRunner.getTenants().get(appId);
+		TenantContextHolder.setTenantId(tenantId);
 		WxMpContextHolder.setAppId(appId);
-		final WxMpService wxService = WxMpConfiguration.getMpServices().get(appId);
+
+		final WxMpService wxService = WxMpInitConfigRunner.getMpServices().get(appId);
 
 		log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
 						+ " timestamp=[{}], nonce=[{}], requestBody=[{}] ",
@@ -108,7 +106,7 @@ public class WxPortalController {
 		// 明文模式
 		if (StrUtil.isBlank(encType)) {
 			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-			WxMpXmlOutMessage outMessage = WxMpConfiguration.getRouters().get(appId).route(inMessage);
+			WxMpXmlOutMessage outMessage = WxMpInitConfigRunner.getRouters().get(appId).route(inMessage);
 			if (outMessage != null) {
 				out = outMessage.toXml();
 			}
@@ -121,7 +119,7 @@ public class WxPortalController {
 
 			log.debug("消息解密后内容为：{} ", inMessage.toString());
 
-			WxMpXmlOutMessage outMessage = WxMpConfiguration.getRouters().get(appId).route(inMessage);
+			WxMpXmlOutMessage outMessage = WxMpInitConfigRunner.getRouters().get(appId).route(inMessage);
 			if (outMessage != null) {
 				out = outMessage.toEncryptedXml(wxService.getWxMpConfigStorage());
 			}

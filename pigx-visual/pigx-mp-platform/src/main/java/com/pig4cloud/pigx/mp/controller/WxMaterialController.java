@@ -6,7 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
+import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -65,7 +65,7 @@ public class WxMaterialController {
 			mulFile.transferTo(file);
 			material.setFile(file);
 
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialFileUpload(mediaType, material);
 			WxMpMaterialFileBatchGetResult.WxMaterialFileBatchGetNewsItem wxMpMaterialFileBatchGetResult = new WxMpMaterialFileBatchGetResult.WxMaterialFileBatchGetNewsItem();
@@ -98,7 +98,7 @@ public class WxMaterialController {
 			news.setArticles(articles);
 
 			String appId = data.getStr("appId");
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialNewsUpload(news);
 			return R.ok(wxMpMaterialUploadResult);
@@ -124,7 +124,7 @@ public class WxMaterialController {
 			JSONArray jSONArray = data.getJSONArray("articles");
 			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
 			String appId = data.getStr("appId");
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			WxMpMaterialArticleUpdate wxMpMaterialArticleUpdate = new WxMpMaterialArticleUpdate();
 			wxMpMaterialArticleUpdate.setMediaId(mediaId);
@@ -155,10 +155,10 @@ public class WxMaterialController {
 	public String newsImgUpload(@RequestParam("file") MultipartFile mulFile, @RequestParam String appId) throws Exception {
 		File file = FileUtil.createTempFile(FileUtil.getTmpDir());
 		mulFile.transferTo(file);
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 		WxMediaImgUploadResult wxMediaImgUploadResult = wxMpMaterialService.mediaImgUpload(file);
-		Map<Object, Object> responseData = new HashMap<>();
+		Map<Object, Object> responseData = new HashMap<>(2);
 		responseData.put("link", wxMediaImgUploadResult.getUrl());
 		FileUtil.del(file);
 		return JSONUtil.toJsonStr(responseData);
@@ -172,7 +172,7 @@ public class WxMaterialController {
 	 */
 	@DeleteMapping
 	public R materialDel(String appId, String id) {
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 		try {
 			return R.ok(wxMpMaterialService.materialDelete(id));
@@ -192,7 +192,7 @@ public class WxMaterialController {
 	@GetMapping("/page")
 	public R getWxMaterialPage(Page page, String type, String appId) {
 		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			int count = (int) page.getSize();
 			int offset = (int) page.getCurrent() * count - count;
@@ -216,7 +216,7 @@ public class WxMaterialController {
 	 */
 	@GetMapping("/materialVideo")
 	public R getMaterialVideo(String mediaId, String appId) {
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 		try {
 			return R.ok(wxMpMaterialService.materialVideoInfo(mediaId));
@@ -235,7 +235,7 @@ public class WxMaterialController {
 	@GetMapping("/materialOther")
 	public ResponseEntity<byte[]> getMaterialOther(String appId, String mediaId, String fileName) throws Exception {
 		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			//获取文件
 			InputStream is = wxMpMaterialService.materialImageOrVoiceDownload(mediaId);
@@ -265,7 +265,7 @@ public class WxMaterialController {
 	@GetMapping("/tempMaterialOther")
 	public ResponseEntity<byte[]> getTempMaterialOther(String appId, String mediaId, String fileName) throws Exception {
 		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			//获取文件
 			InputStream is = new FileInputStream(wxMpMaterialService.mediaDownload(mediaId));

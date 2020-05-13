@@ -21,7 +21,7 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
+import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.entity.WxMpMenu;
 import com.pig4cloud.pigx.mp.mapper.WxAccountMapper;
@@ -94,7 +94,7 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 		if (PUB_ED.equals(wxMpMenu.getPubFlag())) {
 			return R.failed("微信菜单配置已发布，不要重复发布");
 		}
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpMenuService menuService = wxMpService.getMenuService();
 
 		// 给数据库保存的加一层
@@ -136,7 +136,7 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 	 */
 	@Override
 	public R delete(String appId) {
-		WxMpService wxMpService = WxMpConfiguration.getMpServices().get(appId);
+		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpMenuService menuService = wxMpService.getMenuService();
 		try {
 			menuService.menuDelete();

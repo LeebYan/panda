@@ -64,6 +64,11 @@ public interface CacheConstants {
 	String ROUTE_JVM_RELOAD_TOPIC = "gateway_jvm_route_reload_topic";
 
 	/**
+	 * 公众号 reload
+	 */
+	String MP_REDIS_RELOAD_TOPIC = "mp_redis_reload_topic";
+
+	/**
 	 * 参数缓存
 	 */
 	String PARAMS_DETAILS = "params_details";

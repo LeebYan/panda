@@ -32,17 +32,9 @@ public class WxAutoReply extends Model<WxAutoReply> {
 	 */
 	private String appId;
 	/**
-	 * 创建者
-	 */
-	private String createId;
-	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
-	/**
-	 * 更新者
-	 */
-	private String updateId;
 	/**
 	 * 更新时间
 	 */

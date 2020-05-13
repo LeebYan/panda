@@ -1,6 +1,7 @@
 package com.pig4cloud.pigx.mp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.mp.entity.WxMsg;
 
 /**
@@ -11,4 +12,11 @@ import com.pig4cloud.pigx.mp.entity.WxMsg;
  */
 public interface WxMsgService extends IService<WxMsg> {
 
+	/**
+	 * 保存信息并向用户推送
+	 *
+	 * @param wxMsg
+	 * @return
+	 */
+	R saveAndPushMsg(WxMsg wxMsg);
 }

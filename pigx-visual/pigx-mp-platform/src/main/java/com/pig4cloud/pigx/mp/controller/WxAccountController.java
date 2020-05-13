@@ -18,12 +18,13 @@ package com.pig4cloud.pigx.mp.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
-import com.pig4cloud.pigx.mp.config.WxMpConfiguration;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +39,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/wxaccount")
 public class WxAccountController {
-	private final WxMpConfiguration wxMpConfiguration;
 	private final WxAccountService wxAccountService;
+	private final RedisTemplate redisTemplate;
 
 	/**
 	 * 分页查询
@@ -76,7 +77,7 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_add')")
 	public R save(@RequestBody WxAccount wxAccount) {
 		wxAccountService.save(wxAccount);
-		wxMpConfiguration.initServices();
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
 		return R.ok();
 	}
 
@@ -91,7 +92,7 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_edit')")
 	public R updateById(@RequestBody WxAccount wxAccount) {
 		wxAccountService.updateById(wxAccount);
-		wxMpConfiguration.initServices();
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
 		return R.ok();
 	}
 
@@ -106,7 +107,7 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_del')")
 	public R removeById(@PathVariable Integer id) {
 		wxAccountService.removeById(id);
-		wxMpConfiguration.initServices();
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
 		return R.ok();
 	}
 

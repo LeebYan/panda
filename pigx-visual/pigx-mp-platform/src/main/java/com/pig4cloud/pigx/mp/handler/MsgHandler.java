@@ -168,14 +168,14 @@ public class MsgHandler extends AbstractHandler {
 				List<WxMpXmlOutNewsMessage.Item> list = new ArrayList<>();
 
 				JSONObject content = JSONUtil.parseObj(wxAutoReply.getContent());
-				List<JSONObject> listJSONObject = content.getJSONArray("articles").toList(JSONObject.class);
+				List<JSONObject> jsonObjectList = content.getJSONArray("articles").toList(JSONObject.class);
 				WxMpXmlOutNewsMessage.Item t;
-				for (JSONObject jSONObject : listJSONObject) {
+				for (JSONObject jsonObject : jsonObjectList) {
 					t = new WxMpXmlOutNewsMessage.Item();
-					t.setTitle(jSONObject.getStr("title"));
-					t.setDescription(jSONObject.getStr("digest"));
-					t.setPicUrl(jSONObject.getStr("thumbUrl"));
-					t.setUrl(jSONObject.getStr("url"));
+					t.setTitle(jsonObject.getStr("title"));
+					t.setDescription(jsonObject.getStr("digest"));
+					t.setPicUrl(jsonObject.getStr("thumbUrl"));
+					t.setUrl(jsonObject.getStr("url"));
 					list.add(t);
 				}
 				wxMsg.setRepName(wxAutoReply.getRepName());
