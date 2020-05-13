@@ -1,8 +1,7 @@
 server:
   port: 8848
-  undertow:
-    accesslog:
-      enabled: false
+  tomcat:
+    basedir: logs
 
 db:
   num: 1
