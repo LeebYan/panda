@@ -143,6 +143,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 					node.setName(dept.getName());
 					return node;
 				}).collect(Collectors.toList());
-		return TreeUtil.build(treeList, 0);
+		return TreeUtil.build(treeList, depts.stream()
+				.sorted(Comparator.comparingInt(SysDept::getDeptId))
+				.findFirst().get().getParentId());
 	}
 }
