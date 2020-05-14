@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.handler;
 
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
 import lombok.SneakyThrows;
@@ -26,7 +27,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.Charset;
 
 /**
  * @author lengleng
@@ -47,7 +47,7 @@ public class FormAuthenticationFailureHandler implements AuthenticationFailureHa
 	@SneakyThrows
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
 		log.debug("表单登录失败:{}", exception.getLocalizedMessage());
-		String url = HttpUtil.encodeParams(String.format("/token/login?error=%s", exception.getMessage()), Charset.defaultCharset());
+		String url = HttpUtil.encodeParams(String.format("/token/login?error=%s", exception.getMessage()), CharsetUtil.CHARSET_UTF_8);
 		WebUtils.getResponse().sendRedirect(url);
 	}
 }
