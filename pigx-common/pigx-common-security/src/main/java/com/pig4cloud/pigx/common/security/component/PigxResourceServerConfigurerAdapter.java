@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
@@ -45,6 +46,8 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 	@Autowired
 	private PermitAllUrlProperties permitAllUrlProperties;
 	@Autowired
+	private TokenExtractor tokenExtractor;
+	@Autowired
 	private RestTemplate lbRestTemplate;
 
 	/**
@@ -58,12 +61,12 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 		//允许使用iframe 嵌套，避免swagger-ui 不被加载的问题
 		httpSecurity.headers().frameOptions().disable();
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>
-			.ExpressionInterceptUrlRegistry registry = httpSecurity
-			.authorizeRequests();
+				.ExpressionInterceptUrlRegistry registry = httpSecurity
+				.authorizeRequests();
 		permitAllUrlProperties.getIgnoreUrls()
-			.forEach(url -> registry.antMatchers(url).permitAll());
+				.forEach(url -> registry.antMatchers(url).permitAll());
 		registry.anyRequest().authenticated()
-			.and().csrf().disable();
+				.and().csrf().disable();
 	}
 
 	@Override
@@ -75,6 +78,7 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 		remoteTokenServices.setRestTemplate(lbRestTemplate);
 		remoteTokenServices.setAccessTokenConverter(accessTokenConverter);
 		resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint)
+				.tokenExtractor(tokenExtractor)
 				.tokenServices(remoteTokenServices);
 	}
 }
