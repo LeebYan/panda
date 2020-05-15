@@ -11,6 +11,7 @@ import com.jpay.alipay.AliPayApiConfigKit;
 import com.jpay.weixin.api.WxPayApiConfig;
 import com.jpay.weixin.api.WxPayApiConfigKit;
 import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
@@ -23,9 +24,13 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.ArrayList;
@@ -110,5 +115,23 @@ public class PayConfigParmaInitRunner {
 				log.info("新增微信支付参数 {} {}", wx, wxMpService);
 			}
 		});
+	}
+
+	/**
+	 * redis 监听配置,监听 pay_redis_route_reload_topic,重新加载配置
+	 *
+	 * @param redisConnectionFactory redis 配置
+	 * @return
+	 */
+	@Bean
+	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
+		RedisMessageListenerContainer container
+				= new RedisMessageListenerContainer();
+		container.setConnectionFactory(redisConnectionFactory);
+		container.addMessageListener((message, bytes) -> {
+			log.warn("接收到Redis 事件 重新加载支付参数事件");
+			initPayConfig();
+		}, new ChannelTopic(CacheConstants.PAY_REDIS_RELOAD_TOPIC));
+		return container;
 	}
 }

@@ -68,6 +68,13 @@ public interface CacheConstants {
 	 */
 	String MP_REDIS_RELOAD_TOPIC = "mp_redis_reload_topic";
 
+
+	/**
+	 * 支付 reload 事件
+	 */
+	String PAY_REDIS_RELOAD_TOPIC = "pay_redis_reload_topic";
+
+
 	/**
 	 * 参数缓存
 	 */
