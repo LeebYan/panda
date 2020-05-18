@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
 import com.pig4cloud.pigx.codegen.entity.GenFormConf;
 import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
-import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
+import com.pig4cloud.pigx.codegen.mapper.GenTableColumnMapper;
 import com.pig4cloud.pigx.codegen.service.GenFormConfService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,6 @@ import org.springframework.stereotype.Service;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -50,7 +49,7 @@ import java.util.Properties;
 @Service
 @AllArgsConstructor
 public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFormConf> implements GenFormConfService {
-	private final GeneratorMapper generatorMapper;
+	private final GenTableColumnMapper tableColumnMapper;
 
 	/**
 	 * 1. 根据数据源、表名称，查询已配置表单信息
@@ -71,7 +70,7 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 			return form.getFormInfo();
 		}
 
-		List<Map<String, String>> columns = generatorMapper.queryColumns(tableName,dsName);
+		List<ColumnEntity> columns = tableColumnMapper.selectTableColumn(tableName, dsName);
 		//设置velocity资源加载器
 		Properties prop = new Properties();
 		prop.put("file.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -80,10 +79,10 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 		VelocityContext context = new VelocityContext();
 
 		List<ColumnEntity> columnList = new ArrayList<>();
-		for (Map<String, String> column : columns) {
+		for (ColumnEntity column : columns) {
 			ColumnEntity columnEntity = new ColumnEntity();
-			columnEntity.setComments(column.get("columnComment"));
-			columnEntity.setLowerAttrName(StringUtils.uncapitalize(GenUtils.columnToJava(column.get("columnName"))));
+			columnEntity.setComments(column.getComments());
+			columnEntity.setLowerAttrName(StringUtils.uncapitalize(GenUtils.columnToJava(column.getColumnName())));
 			columnList.add(columnEntity);
 		}
 		context.put("columns", columnList);

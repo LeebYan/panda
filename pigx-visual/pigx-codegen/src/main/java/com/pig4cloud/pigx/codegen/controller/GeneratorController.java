@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.codegen.controller;
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
+import com.pig4cloud.pigx.codegen.service.GenTableColumnService;
 import com.pig4cloud.pigx.codegen.service.GeneratorService;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/generator")
 public class GeneratorController {
 	private final GeneratorService generatorService;
+	private final GenTableColumnService columnService;
 
 	/**
 	 * 列表
@@ -54,7 +56,33 @@ public class GeneratorController {
 	}
 
 	/**
+	 * 预览代码
+	 *
+	 * @param genConfig 数据表配置
+	 * @return
+	 */
+	@GetMapping("/preview")
+	public R previewCode(GenConfig genConfig) {
+		return R.ok(generatorService.previewCode(genConfig));
+	}
+
+	/**
+	 * 查询表的列信息
+	 *
+	 * @param page      分页
+	 * @param genConfig 数据表配置
+	 * @return
+	 */
+	@GetMapping("/table")
+	public R getTable(Page page, GenConfig genConfig) {
+		return R.ok(columnService.listTable(page, genConfig));
+	}
+
+
+	/**
 	 * 生成代码
+	 *
+	 * @param genConfig 数据表配置
 	 */
 	@SneakyThrows
 	@PostMapping("/code")

@@ -35,6 +35,10 @@ public class ColumnEntity {
 	 */
 	private String dataType;
 	/**
+	 * JAVA 数据类型
+	 */
+	private String javaType;
+	/**
 	 * 备注
 	 */
 	private String comments;

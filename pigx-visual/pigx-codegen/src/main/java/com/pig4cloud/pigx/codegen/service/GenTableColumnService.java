@@ -19,39 +19,24 @@ package com.pig4cloud.pigx.codegen.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
 
-import java.util.List;
-import java.util.Map;
-
 /**
+ * 表字段管理
+ *
  * @author lengleng
- * @date 2018/7/29
+ * @date 2020-05-18
  */
-public interface GeneratorService {
-	/**
-	 * 生成代码
-	 *
-	 * @param genConfig 生成信息
-	 * @return
-	 */
-	byte[] generatorCode(GenConfig genConfig);
+public interface GenTableColumnService extends IService<ColumnEntity> {
 
 	/**
-	 * 分页查询表
+	 * 查询表的字段信息
 	 *
-	 * @param page      分页信息
-	 * @param tableName 表名
-	 * @param name      数据源ID
+	 * @param page
+	 * @param genConfig 查询条件
 	 * @return
 	 */
-	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String name);
-
-	/**
-	 * 预览代码
-	 *
-	 * @param genConfig 生成信息
-	 * @return
-	 */
-	Map<String, String> previewCode(GenConfig genConfig);
+	IPage<ColumnEntity> listTable(Page page, GenConfig genConfig);
 }

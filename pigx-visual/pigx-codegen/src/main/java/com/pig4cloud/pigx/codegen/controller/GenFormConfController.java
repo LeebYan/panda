@@ -72,7 +72,7 @@ public class GenFormConfController {
 	/**
 	 * 通过id查询生成记录
 	 *
-	 * @param dsName      数据源ID
+	 * @param dsName    数据源ID
 	 * @param tableName tableName
 	 * @return R
 	 */
