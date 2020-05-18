@@ -16,5 +16,3 @@ insert into `sys_menu` ( `parent_id`, `permission`, `type`, `path`, `icon`, `del
     SELECT @parentId, '${moduleName}_${pathName}_del', '1', null, '1',  '0', '2018-05-15 21:35:18', '2', '2018-07-29 13:38:59', '${comments}删除', 1;
 insert into `sys_menu` ( `parent_id`, `permission`, `type`, `path`, `icon`, `del_flag`, `create_time`, `sort`, `update_time`, `name`, `tenant_id`)
     SELECT @parentId, '${moduleName}_${pathName}_get', '1', null, '1',  '0', '2018-05-15 21:35:18', '2', '2018-07-29 13:38:59', '${comments}获取', 1;
-insert into `sys_menu` ( `parent_id`, `permission`, `type`, `path`, `icon`, `del_flag`, `create_time`, `sort`, `update_time`, `name`, `tenant_id`)
-    SELECT @parentId, '${moduleName}_${pathName}_page', '1', null, '1',  '0', '2018-05-15 21:35:18', '2', '2018-07-29 13:38:59', '${comments}列表', 1;
