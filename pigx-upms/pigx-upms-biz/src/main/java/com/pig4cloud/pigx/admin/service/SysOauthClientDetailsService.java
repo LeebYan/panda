@@ -34,16 +34,16 @@ public interface SysOauthClientDetailsService extends IService<SysOauthClientDet
 	/**
 	 * 通过ID删除客户端
 	 *
-	 * @param id
+	 * @param clientId
 	 * @return
 	 */
-	Boolean removeClientDetailsById(String id);
+	Boolean removeByClientId(String clientId);
 
 	/**
 	 * 根据客户端信息
 	 *
-	 * @param sysOauthClientDetails
+	 * @param clientDetails
 	 * @return
 	 */
-	Boolean updateClientDetailsById(SysOauthClientDetails sysOauthClientDetails);
+	Boolean updateClientById(SysOauthClientDetails clientDetails);
 }

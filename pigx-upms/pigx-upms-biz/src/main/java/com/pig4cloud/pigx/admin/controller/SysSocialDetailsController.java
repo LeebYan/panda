@@ -62,12 +62,14 @@ public class SysSocialDetailsController {
 	/**
 	 * 信息
 	 *
-	 * @param id
+	 * @param type 类型
 	 * @return R
 	 */
-	@GetMapping("/{id}")
-	public R getById(@PathVariable("id") Integer id) {
-		return R.ok(sysSocialDetailsService.getById(id));
+	@GetMapping("/{type}")
+	public R getByType(@PathVariable("type") String type) {
+		return R.ok(sysSocialDetailsService
+				.list(Wrappers.<SysSocialDetails>lambdaQuery()
+				.eq(SysSocialDetails::getType, type)));
 	}
 
 	/**

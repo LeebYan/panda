@@ -26,11 +26,10 @@ import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
@@ -51,8 +50,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {
-	private  final String BASIC_ = "Basic ";
-	private  final String UNKNOWN = "unknown";
+	private final String BASIC_ = "Basic ";
+	private final String UNKNOWN = "unknown";
 
 	/**
 	 * 判断是否ajax请求
@@ -122,7 +121,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return {HttpServletRequest}
 	 */
 	public HttpServletRequest getRequest() {
-		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		try {
+			RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+			return ((ServletRequestAttributes) requestAttributes).getRequest();
+		} catch (IllegalStateException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -206,8 +210,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return
 	 */
 	@SneakyThrows
-	public String[] getClientId(ServerHttpRequest request) {
-		String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+	public String getClientId(String header) {
 
 		if (header == null || !header.startsWith(BASIC_)) {
 			throw new CheckedException("请求头中client信息为空");
@@ -228,7 +231,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		if (delim == -1) {
 			throw new CheckedException("Invalid basic authentication token");
 		}
-		return new String[]{token.substring(0, delim), token.substring(delim + 1)};
+		return token.substring(0, delim);
 	}
 
 }

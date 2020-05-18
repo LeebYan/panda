@@ -124,7 +124,19 @@ public class PigxTokenEndpoint {
 		}
 
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
-		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+		return delToken(tokenValue);
+	}
+
+	/**
+	 * 令牌管理调用
+	 *
+	 * @param token token
+	 * @return
+	 */
+	@Inner
+	@DeleteMapping("/{token}")
+	public R<Boolean> delToken(@PathVariable("token") String token) {
+		OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
 			return R.ok(Boolean.TRUE, "退出失败，token 无效");
 		}
@@ -140,21 +152,7 @@ public class PigxTokenEndpoint {
 		// 清空 refresh token
 		OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
 		tokenStore.removeRefreshToken(refreshToken);
-		return R.ok(Boolean.TRUE);
-	}
-
-	/**
-	 * 令牌管理调用
-	 *
-	 * @param token token
-	 * @return
-	 */
-	@Inner
-	@DeleteMapping("/{token}")
-	public R<Boolean> delToken(@PathVariable("token") String token) {
-		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
-		tokenStore.removeAccessToken(oAuth2AccessToken);
-		return new R<>();
+		return R.ok();
 	}
 
 
@@ -176,7 +174,7 @@ public class PigxTokenEndpoint {
 		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
 		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
 		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
-		result.setTotal((long) redisTemplate.keys(key).size());
+		result.setTotal(redisTemplate.keys(key).size());
 		return R.ok(result);
 	}
 

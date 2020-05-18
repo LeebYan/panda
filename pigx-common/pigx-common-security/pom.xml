@@ -23,7 +23,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-common</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-common-security</artifactId>
@@ -43,10 +43,15 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
 		</dependency>
-		<!--UPMS API-->
+		<!--feign-->
 		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-upms-api</artifactId>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+		</dependency>
+		<!--aop-->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
 		</dependency>
 	</dependencies>
 </project>

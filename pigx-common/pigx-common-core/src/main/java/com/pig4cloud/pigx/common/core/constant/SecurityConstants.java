@@ -135,14 +135,9 @@ public interface SecurityConstants {
 			+ " from sys_oauth_client_details";
 
 	/**
-	 * 默认的查询语句
-	 */
-	String DEFAULT_FIND_STATEMENT = BASE_FIND_STATEMENT + " order by client_id";
-
-	/**
 	 * 按条件client_id 查询
 	 */
-	String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where client_id = ?";
+	String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where client_id = ? and del_flag = 0 and tenant_id = %s";
 
 	/**
 	 * 资源服务器默认bean名称
@@ -157,22 +152,36 @@ public interface SecurityConstants {
 	/**
 	 * 用户ID字段
 	 */
-	String DETAILS_USER_ID = "user_id";
+	String DETAILS_USER_ID = "id";
 
 	/**
-	 * 用户名字段
+	 * 用户名
 	 */
 	String DETAILS_USERNAME = "username";
 
 	/**
+	 * 用户基本信息
+	 */
+	String DETAILS_USER = "user_info";
+
+	/**
+	 * 用户名phone
+	 */
+	String DETAILS_PHONE = "phone";
+
+	/**
+	 * 头像
+	 */
+	String DETAILS_AVATAR = "avatar";
+	/**
 	 * 用户部门字段
 	 */
-	String DETAILS_DEPT_ID = "dept_id";
+	String DETAILS_DEPT_ID = "deptId";
 
 	/**
 	 * 租户ID 字段
 	 */
-	String DETAILS_TENANT_ID = "tenant_id";
+	String DETAILS_TENANT_ID = "tenantId";
 
 	/**
 	 * 协议字段

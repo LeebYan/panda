@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>3.6.0</version>
+	<version>3.9.0-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -33,31 +33,31 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.2.2.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-		<spring-cloud-alibaba.version>2.1.1.RELEASE</spring-cloud-alibaba.version>
-		<spring-platform.version>Cairo-SR8</spring-platform.version>
+		<spring-boot.version>2.2.6.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+		<spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.2.1</spring-boot-admin.version>
-		<hutool.version>5.1.0</hutool.version>
+		<spring-boot-admin.version>2.2.2</spring-boot-admin.version>
+		<hutool.version>5.3.2</hutool.version>
 		<kaptcha.version>1.6.2</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
-		<knife4j.version>2.0.1</knife4j.version>
-		<curator.version>2.10.0</curator.version>
+		<knife4j.version>2.0.2</knife4j.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
-		<ttl.version>2.11.2</ttl.version>
-		<minio.version>6.0.11</minio.version>
-		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
-		<xxl.job.version>2.1.1</xxl.job.version>
+		<ttl.version>2.11.4</ttl.version>
+		<minio.version>6.0.13</minio.version>
+		<xxl.job.version>2.2.0</xxl.job.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<activiti.version>5.22.0</activiti.version>
-		<docker.url>http://192.168.0.13:4243</docker.url>
-		<docker.plugin.version>0.4.12</docker.plugin.version>
-		<registry.url>192.168.0.13:5000</registry.url>
+		<docker.registry>172.17.0.111</docker.registry>
+		<docker.host>http://172.17.0.111:2375</docker.host>
+		<docker.namespace>library</docker.namespace>
+		<docker.username>admin</docker.username>
+		<docker.password>Harbor12345</docker.password>
+		<docker.plugin.version>0.32.0</docker.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -113,13 +113,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
 				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.spring.platform</groupId>
-				<artifactId>platform-bom</artifactId>
-				<version>${spring-platform.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -190,22 +183,26 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>com.spotify</groupId>
+					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
 					<version>${docker.plugin.version}</version>
 					<configuration>
-						<imageName>${registry.url}/${project.name}:0.0.1</imageName>
-						<dockerHost>${docker.url}</dockerHost>
-						<dockerDirectory>${project.basedir}</dockerDirectory>
-						<resources>
-							<resource>
-								<targetPath>/</targetPath>
-								<directory>${project.build.directory}</directory>
-								<include>${project.build.finalName}.jar</include>
-							</resource>
-						</resources>
-						<serverId>docker-hub</serverId>
-						<registryUrl>https://index.docker.io/v1/</registryUrl>
+						<dockerHost>${docker.host}</dockerHost>
+						<registry>${docker.registry}</registry>
+						<authConfig>
+							<push>
+								<username>${docker.username}</username>
+								<password>${docker.password}</password>
+							</push>
+						</authConfig>
+						<images>
+							<image>
+								<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
+								<build>
+									<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+								</build>
+							</image>
+						</images>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -228,6 +225,19 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun-plugin</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<repositories>
 		<!--阿里云代理-->

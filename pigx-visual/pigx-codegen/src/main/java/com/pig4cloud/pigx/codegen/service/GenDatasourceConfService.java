@@ -41,4 +41,29 @@ public interface GenDatasourceConfService extends IService<GenDatasourceConf> {
 	 * @return
 	 */
 	Boolean updateDsByEnc(GenDatasourceConf genDatasourceConf);
+
+	/**
+	 * 更新动态数据的数据源列表
+	 *
+	 * @param datasourceConf
+	 * @return
+	 */
+	void addDynamicDataSource(GenDatasourceConf datasourceConf);
+
+
+	/**
+	 * 校验数据源配置是否有效
+	 *
+	 * @param datasourceConf 数据源信息
+	 * @return 有效/无效
+	 */
+	Boolean checkDataSource(GenDatasourceConf datasourceConf);
+
+	/**
+	 * 通过数据源名称删除
+	 *
+	 * @param dsId 数据源ID
+	 * @return
+	 */
+	Boolean removeByDsId(Integer dsId);
 }

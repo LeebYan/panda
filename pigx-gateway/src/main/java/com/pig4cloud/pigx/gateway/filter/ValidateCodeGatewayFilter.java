@@ -34,6 +34,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -74,8 +75,9 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 			// 终端设置不校验， 直接向下执行
 			try {
-				String[] clientInfos = WebUtils.getClientId(request);
-				if (filterIgnorePropertiesConfig.getClients().contains(clientInfos[0])) {
+				String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+				String clientId = WebUtils.getClientId(header);
+				if (filterIgnorePropertiesConfig.getClients().contains(clientId)) {
 					return chain.filter(exchange);
 				}
 

@@ -19,13 +19,9 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.vo.MenuVO;
-import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -35,9 +31,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -55,36 +49,30 @@ public class SysMenuController {
 	/**
 	 * 返回当前用户的树形菜单集合
 	 *
+	 * @param type     类型
 	 * @param parentId 父节点ID
 	 * @return 当前用户的树形菜单
 	 */
 	@GetMapping
-	public R getUserMenu(Integer parentId) {
+	public R getUserMenu(String type, Integer parentId) {
+
 		// 获取符合条件的菜单
 		Set<MenuVO> all = new HashSet<>();
 		SecurityUtils.getRoles()
 				.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
-		List<MenuTree> menuTreeList = all.stream()
-				.filter(menuVo -> CommonConstants.MENU.equals(menuVo.getType()))
-				.map(MenuTree::new)
-				.sorted(Comparator.comparingInt(MenuTree::getSort))
-				.collect(Collectors.toList());
-
-
-		return R.ok(TreeUtil.build(menuTreeList, parentId == null
-				? CommonConstants.MENU_TREE_ROOT_ID : parentId));
+		return R.ok(sysMenuService.filterMenu(all,type,parentId));
 	}
 
 	/**
 	 * 返回树形菜单集合
 	 *
+	 * @param lazy     是否是懒加载
+	 * @param parentId 父节点ID
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/tree")
-	public R getTree() {
-		return R.ok(TreeUtil.buildTree(sysMenuService
-				.list(Wrappers.<SysMenu>lambdaQuery()
-						.orderByAsc(SysMenu::getSort)), CommonConstants.MENU_TREE_ROOT_ID));
+	public R getTree(boolean lazy, Integer parentId) {
+		return R.ok(sysMenuService.treeMenu(lazy, parentId));
 	}
 
 	/**
@@ -122,7 +110,8 @@ public class SysMenuController {
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_add')")
 	public R save(@Valid @RequestBody SysMenu sysMenu) {
-		return R.ok(sysMenuService.save(sysMenu));
+		sysMenuService.save(sysMenu);
+		return R.ok(sysMenu);
 	}
 
 	/**

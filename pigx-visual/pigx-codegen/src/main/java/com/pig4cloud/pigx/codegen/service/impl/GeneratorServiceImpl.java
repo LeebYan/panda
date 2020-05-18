@@ -20,6 +20,8 @@ package com.pig4cloud.pigx.codegen.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -29,7 +31,6 @@ import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
 import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.GeneratorService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
-import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,12 +55,12 @@ public class GeneratorServiceImpl implements GeneratorService {
 	 * 分页查询表
 	 *
 	 * @param tableName 查询条件
-	 * @param id
+	 * @param dsName
 	 * @return
 	 */
 	@Override
-	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id) {
-		DynamicDataSourceContextHolder.setDataSourceType(id);
+	@DS("#last")
+	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String dsName) {
 		return generatorMapper.queryList(page, tableName);
 	}
 
@@ -76,16 +77,16 @@ public class GeneratorServiceImpl implements GeneratorService {
 				.eq(GenFormConf::getTableName, genConfig.getTableName())
 				.orderByDesc(GenFormConf::getCreateTime));
 
-		DynamicDataSourceContextHolder.setDataSourceType(genConfig.getId());
+		DynamicDataSourceContextHolder.push(genConfig.getDsName());
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
 
 		String tableNames = genConfig.getTableName();
 		for (String tableName : StrUtil.split(tableNames, StrUtil.DASHED)) {
 			//查询表信息
-			Map<String, String> table = queryTable(tableName);
+			Map<String, String> table = generatorMapper.queryTable(tableName,genConfig.getDsName());
 			//查询列信息
-			List<Map<String, String>> columns = queryColumns(tableName);
+			List<Map<String, String>> columns = generatorMapper.queryColumns(tableName, genConfig.getDsName());
 			//生成代码
 			if (CollUtil.isNotEmpty(formConfList)) {
 				GenUtils.generatorCode(genConfig, table, columns, zip, formConfList.get(0));
@@ -95,13 +96,5 @@ public class GeneratorServiceImpl implements GeneratorService {
 		}
 		IoUtil.close(zip);
 		return outputStream.toByteArray();
-	}
-
-	private Map<String, String> queryTable(String tableName) {
-		return generatorMapper.queryTable(tableName);
-	}
-
-	private List<Map<String, String>> queryColumns(String tableName) {
-		return generatorMapper.queryColumns(tableName);
 	}
 }

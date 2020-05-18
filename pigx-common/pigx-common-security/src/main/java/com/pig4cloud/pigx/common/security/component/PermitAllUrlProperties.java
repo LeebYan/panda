@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.common.security.component;
 
 import cn.hutool.core.util.ReUtil;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,13 +70,13 @@ public class PermitAllUrlProperties implements InitializingBean {
 			Inner method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Inner.class);
 			Optional.ofNullable(method)
 					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
+							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
 
 			// 获取类上边的注解, 替代path variable 为 *
 			Inner controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Inner.class);
 			Optional.ofNullable(controller)
 					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
+							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
 		});
 
 	}

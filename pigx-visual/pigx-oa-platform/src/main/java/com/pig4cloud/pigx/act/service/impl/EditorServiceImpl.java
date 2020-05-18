@@ -56,7 +56,7 @@ public class EditorServiceImpl implements EditorService {
 	public Object getStencilset() {
 		InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
 		try {
-			return IOUtils.toString(stencilsetStream, StandardCharsets.UTF_8);
+			return IOUtils.toString(stencilsetStream, StandardCharsets.UTF_8.name());
 		} catch (Exception e) {
 			log.error("Error while loading stencil set", e);
 			throw new ActivitiException("Error while loading stencil set", e);

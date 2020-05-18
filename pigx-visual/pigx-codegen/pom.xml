@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-visual</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-codegen</artifactId>
@@ -24,6 +24,11 @@
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--数据操作-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-data</artifactId>
 		</dependency>
 		<!--动态数据源 数据操作-->
 		<dependency>
@@ -59,9 +64,19 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<!--sentinel-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-log</artifactId>
+		</dependency>
+		<!--灰度支持-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
 		</dependency>
 		<!--代码生成模板引擎-->
 		<dependency>
@@ -88,7 +103,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
+				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>

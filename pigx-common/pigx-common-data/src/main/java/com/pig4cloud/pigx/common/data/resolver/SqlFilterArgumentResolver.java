@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.data.resolver;
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -88,13 +88,28 @@ public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver 
 
 		List<OrderItem> orderItemList = new ArrayList<>();
 		Optional.ofNullable(ascs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
-				.filter(s1 -> !ArrayUtil.containsIgnoreCase(KEYWORDS, s1))
+				.filter(sqlInjectPredicate())
 				.map(OrderItem::asc).collect(Collectors.toList())));
 		Optional.ofNullable(descs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
-				.filter(s1 -> !ArrayUtil.containsIgnoreCase(KEYWORDS, s1))
+				.filter(sqlInjectPredicate())
 				.map(OrderItem::desc).collect(Collectors.toList())));
 		page.addOrder(orderItemList);
 
 		return page;
+	}
+
+	/**
+	 *  判断用户输入里面有没有关键字
+	 * @return Predicate
+	 */
+	private Predicate<String> sqlInjectPredicate() {
+		return sql -> {
+			for (String keyword : KEYWORDS) {
+				if (StrUtil.containsIgnoreCase(sql, keyword)){
+					return false;
+				}
+			}
+			return true;
+		};
 	}
 }

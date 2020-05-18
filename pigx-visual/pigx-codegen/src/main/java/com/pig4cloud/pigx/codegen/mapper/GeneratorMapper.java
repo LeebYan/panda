@@ -17,8 +17,10 @@
 
 package com.pig4cloud.pigx.codegen.mapper;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2018-07-30
  */
+@Mapper
 public interface GeneratorMapper {
 
 	/**
@@ -45,15 +48,19 @@ public interface GeneratorMapper {
 	 * 查询表信息
 	 *
 	 * @param tableName 表名称
+	 * @param dsName    数据源名称
 	 * @return
 	 */
-	Map<String, String> queryTable(String tableName);
+	@DS("#last")
+	Map<String, String> queryTable(@Param("tableName") String tableName, String dsName);
 
 	/**
 	 * 查询表列信息
 	 *
 	 * @param tableName 表名称
+	 * @param dsName    数据源名称
 	 * @return
 	 */
-	List<Map<String, String>> queryColumns(String tableName);
+	@DS("#last")
+	List<Map<String, String>> queryColumns(@Param("tableName") String tableName, String dsName);
 }

@@ -26,7 +26,6 @@ import com.pig4cloud.pigx.codegen.mapper.GenFormConfMapper;
 import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
 import com.pig4cloud.pigx.codegen.service.GenFormConfService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
-import com.pig4cloud.pigx.common.datasource.support.DynamicDataSourceContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
@@ -57,13 +56,13 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 	 * 1. 根据数据源、表名称，查询已配置表单信息
 	 * 2. 不存在调用模板生成
 	 *
-	 * @param dsId      数据源ID
+	 * @param dsName    数据源ID
 	 * @param tableName 表名称
 	 * @return
 	 */
 	@Override
 	@SneakyThrows
-	public String getForm(Integer dsId, String tableName) {
+	public String getForm(String dsName, String tableName) {
 		GenFormConf form = getOne(Wrappers.<GenFormConf>lambdaQuery()
 				.eq(GenFormConf::getTableName, tableName)
 				.orderByDesc(GenFormConf::getCreateTime), false);
@@ -72,13 +71,12 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 			return form.getFormInfo();
 		}
 
-		DynamicDataSourceContextHolder.setDataSourceType(dsId);
-		List<Map<String, String>> columns = generatorMapper.queryColumns(tableName);
+		List<Map<String, String>> columns = generatorMapper.queryColumns(tableName,dsName);
 		//设置velocity资源加载器
 		Properties prop = new Properties();
 		prop.put("file.resource.loader.class", ClasspathResourceLoader.class.getName());
 		Velocity.init(prop);
-		Template template = Velocity.getTemplate("template/crud.js.vm", CharsetUtil.UTF_8);
+		Template template = Velocity.getTemplate("template/avue/crud.js.vm", CharsetUtil.UTF_8);
 		VelocityContext context = new VelocityContext();
 
 		List<ColumnEntity> columnList = new ArrayList<>();

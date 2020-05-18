@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-visual</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-sentinel-dashboard</artifactId>
@@ -20,7 +20,6 @@
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-web-servlet</artifactId>
-			<version>1.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
@@ -29,14 +28,11 @@
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-parameter-flow-control</artifactId>
-			<version>1.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-api-gateway-adapter-common</artifactId>
-			<version>1.6.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -50,6 +46,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -82,11 +79,6 @@
 			<artifactId>httpcore-nio</artifactId>
 			<version>4.4.6</version>
 		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.58</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -109,7 +101,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
+				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>

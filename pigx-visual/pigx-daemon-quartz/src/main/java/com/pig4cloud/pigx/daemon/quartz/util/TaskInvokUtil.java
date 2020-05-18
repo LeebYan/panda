@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.daemon.quartz.util;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.daemon.quartz.constant.enums.PigxQuartzEnum;
+import com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJobLog;
 import com.pig4cloud.pigx.daemon.quartz.event.SysJobLogEvent;

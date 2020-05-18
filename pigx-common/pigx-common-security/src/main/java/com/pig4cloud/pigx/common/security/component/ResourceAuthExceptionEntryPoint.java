@@ -26,6 +26,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +55,9 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		R<String> result = new R<>();
 		result.setCode(CommonConstants.FAIL);
 		if (authException != null) {
-			result.setMsg(authException.getMessage());
+			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
+			result.setMsg(msg);
 			result.setData(authException.getMessage());
 		}
 		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);

@@ -21,11 +21,13 @@ package com.pig4cloud.pigx.admin.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.common.core.util.R;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -59,4 +61,22 @@ public interface SysMenuService extends IService<SysMenu> {
 	 * @return 成功、失败
 	 */
 	Boolean updateMenuById(SysMenu sysMenu);
+
+	/**
+	 * 构建树
+	 *
+	 * @param lazy     是否是懒加载
+	 * @param parentId 父节点ID
+	 * @return
+	 */
+	List<MenuTree> treeMenu(boolean lazy, Integer parentId);
+
+	/**
+	 * 查询菜单
+	 *
+	 * @param voSet
+	 * @param parentId
+	 * @return
+	 */
+	List<MenuTree> filterMenu(Set<MenuVO> voSet, String type, Integer parentId);
 }

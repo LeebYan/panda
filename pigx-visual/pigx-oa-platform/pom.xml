@@ -23,7 +23,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-visual</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-oa-platform</artifactId>
@@ -55,6 +55,16 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-upms-api</artifactId>
+		</dependency>
+		<!--sentinel-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-sentinel</artifactId>
+		</dependency>
+		<!--灰度支持-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-gray</artifactId>
 		</dependency>
 		<!--mybatis-->
 		<dependency>
@@ -131,6 +141,10 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-feign</artifactId>
+		</dependency>
 		<!--undertow容器-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -145,7 +159,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
+				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>

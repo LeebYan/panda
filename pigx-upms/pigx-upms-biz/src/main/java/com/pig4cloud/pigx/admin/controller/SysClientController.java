@@ -50,12 +50,14 @@ public class SysClientController {
 	/**
 	 * 通过ID查询
 	 *
-	 * @param id ID
+	 * @param clientId clientId
 	 * @return SysOauthClientDetails
 	 */
-	@GetMapping("/{id}")
-	public R getById(@PathVariable Integer id) {
-		return R.ok(clientDetailsService.getById(id));
+	@GetMapping("/{clientId}")
+	public R getByClientId(@PathVariable String clientId) {
+		return R.ok(clientDetailsService.list(Wrappers
+				.<SysOauthClientDetails>lambdaQuery()
+				.eq(SysOauthClientDetails::getClientId, clientId)));
 	}
 
 
@@ -87,14 +89,14 @@ public class SysClientController {
 	/**
 	 * 删除
 	 *
-	 * @param id ID
+	 * @param clientId ID
 	 * @return success/false
 	 */
 	@SysLog("删除终端")
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{clientId}")
 	@PreAuthorize("@pms.hasPermission('sys_client_del')")
-	public R removeById(@PathVariable String id) {
-		return R.ok(clientDetailsService.removeClientDetailsById(id));
+	public R removeById(@PathVariable String clientId) {
+		return R.ok(clientDetailsService.removeByClientId(clientId));
 	}
 
 	/**
@@ -107,6 +109,6 @@ public class SysClientController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
 	public R update(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
-		return R.ok(clientDetailsService.updateClientDetailsById(sysOauthClientDetails));
+		return R.ok(clientDetailsService.updateClientById(sysOauthClientDetails));
 	}
 }

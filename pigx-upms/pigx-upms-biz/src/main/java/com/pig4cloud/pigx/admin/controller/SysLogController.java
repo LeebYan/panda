@@ -23,7 +23,7 @@ package com.pig4cloud.pigx.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
-import com.pig4cloud.pigx.admin.api.vo.PreLogVo;
+import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 import com.pig4cloud.pigx.admin.service.SysLogService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
@@ -93,7 +93,7 @@ public class SysLogController {
 	 * @return success/false
 	 */
 	@PostMapping("/logs")
-	public R saveBatchLogs(@RequestBody List<PreLogVo> preLogVoList) {
+	public R saveBatchLogs(@RequestBody List<PreLogVO> preLogVoList) {
 		return R.ok(sysLogService.saveBatchLogs(preLogVoList));
 	}
 }

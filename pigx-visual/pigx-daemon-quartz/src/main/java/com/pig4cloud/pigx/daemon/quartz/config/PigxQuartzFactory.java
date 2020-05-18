@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.daemon.quartz.config;
 
-import com.pig4cloud.pigx.daemon.quartz.constant.enums.PigxQuartzEnum;
+import com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

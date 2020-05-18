@@ -20,7 +20,6 @@ package com.pig4cloud.pigx.admin.service.impl;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysRouteConf;
 import com.pig4cloud.pigx.admin.mapper.SysRouteConfMapper;
@@ -60,19 +59,6 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 	private final RedisTemplate redisTemplate;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
-
-	/**
-	 * 获取全部路由
-	 * <p>
-	 * RedisRouteDefinitionWriter.java
-	 * PropertiesRouteDefinitionLocator.java
-	 *
-	 * @return
-	 */
-	@Override
-	public List<SysRouteConf> routes() {
-		return baseMapper.selectList(Wrappers.emptyWrapper());
-	}
 
 	/**
 	 * 更新路由信息

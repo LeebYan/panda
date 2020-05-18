@@ -18,6 +18,7 @@ package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 字典项
@@ -25,6 +26,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysDictItem;
  * @author lengleng
  * @date 2019/03/19
  */
+@Mapper
 public interface SysDictItemMapper extends BaseMapper<SysDictItem> {
 
 }

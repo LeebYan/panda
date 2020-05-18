@@ -21,6 +21,7 @@ package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -30,5 +31,6 @@ import com.pig4cloud.pigx.admin.api.entity.SysLog;
  * @author lengleng
  * @since 2017-11-20
  */
+@Mapper
 public interface SysLogMapper extends BaseMapper<SysLog> {
 }

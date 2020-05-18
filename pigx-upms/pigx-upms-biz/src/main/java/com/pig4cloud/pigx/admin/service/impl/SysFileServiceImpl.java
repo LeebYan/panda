@@ -91,7 +91,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			IoUtil.copy(inputStream, response.getOutputStream());
 		} catch (Exception e) {
-			log.error("文件读取异常", e);
+			log.error("文件读取异常: {}", e.getLocalizedMessage());
 		}
 	}
 

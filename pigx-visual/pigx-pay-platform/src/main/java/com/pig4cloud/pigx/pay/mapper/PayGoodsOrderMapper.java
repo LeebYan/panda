@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.pay.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 商品
@@ -26,6 +27,7 @@ import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
  * @author lengleng
  * @date 2019-05-28 23:58:27
  */
+@Mapper
 public interface PayGoodsOrderMapper extends BaseMapper<PayGoodsOrder> {
 
 }

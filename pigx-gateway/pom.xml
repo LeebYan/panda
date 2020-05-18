@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-gateway</artifactId>
@@ -103,7 +103,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
+				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>

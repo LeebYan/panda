@@ -18,6 +18,7 @@ package com.pig4cloud.pigx.codegen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 数据源表
@@ -25,6 +26,7 @@ import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
  * @author lengleng
  * @date 2019-03-31 16:00:20
  */
+@Mapper
 public interface GenDatasourceConfMapper extends BaseMapper<GenDatasourceConf> {
 
 }

@@ -18,9 +18,10 @@
 package com.pig4cloud.pigx.common.transaction.tx.springcloud.interceptor;
 
 import com.codingapi.tx.aop.service.AspectBeforeService;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -34,17 +35,23 @@ import javax.servlet.http.HttpServletRequest;
  * @since 4.1.0
  */
 
+@Slf4j
 @Component
+@AllArgsConstructor
 public class TxManagerInterceptor {
-
-	@Autowired
-	private AspectBeforeService aspectBeforeService;
+	private final AspectBeforeService aspectBeforeService;
 
 	@SneakyThrows
 	public Object around(ProceedingJoinPoint point) {
-		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-		String groupId = request.getHeader("tx-group");
+		RequestAttributes requestAttributes;
+		String groupId = null;
+		try {
+			requestAttributes = RequestContextHolder.currentRequestAttributes();
+			HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+			groupId = request.getHeader("tx-group");
+		} catch (IllegalStateException e) {
+			log.info("非web 环境调用 不包含请求上下文");
+		}
 		return aspectBeforeService.around(groupId, point);
 	}
 }

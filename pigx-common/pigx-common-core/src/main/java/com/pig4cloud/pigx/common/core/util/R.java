@@ -33,6 +33,7 @@ import java.io.Serializable;
  * @param <T>
  * @author lengleng
  */
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * @author lengleng
  * @date 2017年11月9日23:33:27
@@ -32,14 +34,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @ApiModel(value = "菜单树")
 @EqualsAndHashCode(callSuper = true)
-public class MenuTree extends TreeNode {
+public class MenuTree extends TreeNode implements Serializable {
 	/**
 	 * 菜单图标
 	 */
 	@ApiModelProperty(value = "菜单图标")
 	private String icon;
 	/**
-	 *  菜单名称
+	 * 菜单名称
 	 */
 	@ApiModelProperty(value = "菜单名称")
 	private String name;
@@ -58,7 +60,7 @@ public class MenuTree extends TreeNode {
 	 * 权限编码
 	 */
 	@ApiModelProperty(value = "权限编码")
-	private String code;
+	private String permission;
 	/**
 	 * 菜单类型 （0菜单 1按钮）
 	 */
@@ -74,6 +76,13 @@ public class MenuTree extends TreeNode {
 	 */
 	@ApiModelProperty(value = "排序值")
 	private Integer sort;
+
+	/**
+	 * 是否包含子节点
+	 *
+	 * @since 3.7
+	 */
+	private Boolean hasChildren;
 
 	public MenuTree() {
 	}
@@ -99,6 +108,7 @@ public class MenuTree extends TreeNode {
 		this.name = menuVo.getName();
 		this.path = menuVo.getPath();
 		this.type = menuVo.getType();
+		this.permission = menuVo.getPermission();
 		this.label = menuVo.getName();
 		this.sort = menuVo.getSort();
 		this.keepAlive = menuVo.getKeepAlive();

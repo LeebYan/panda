@@ -18,8 +18,8 @@
 package com.pig4cloud.pigx.sso;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
@@ -30,7 +30,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * 2. 再启动一个实例： http://localhost:4041/sso1/ 不需要登录即可获取当前用户信息
  */
 @EnableOAuth2Sso
-@SpringCloudApplication
+@SpringBootApplication
 public class PigxSsoClientDemoApplication {
 
 	public static void main(String[] args) {

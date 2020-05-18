@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx-upms</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-upms-api</artifactId>
@@ -44,10 +44,10 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 		</dependency>
-		<!--feign-->
+		<!--feign 工具类-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-sentinel</artifactId>
+			<artifactId>pigx-common-feign</artifactId>
 		</dependency>
 	</dependencies>
 </project>

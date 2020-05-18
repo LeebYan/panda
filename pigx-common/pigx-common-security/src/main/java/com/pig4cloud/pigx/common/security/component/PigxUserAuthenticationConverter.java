@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -34,7 +35,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author lengleng
@@ -65,19 +69,22 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 	/**
 	 * Inverse of {@link #convertUserAuthentication(Authentication)}. Extracts an Authentication from a map.
 	 *
-	 * @param map a map of user information
+	 * @param responseMap a map of user information
 	 * @return an Authentication representing the user or null if there is none
 	 */
 	@Override
-	public Authentication extractAuthentication(Map<String, ?> map) {
-		if (map.containsKey(USERNAME)) {
+	public Authentication extractAuthentication(Map<String, ?> responseMap) {
+		if (responseMap.containsKey(USERNAME)) {
+			Collection<? extends GrantedAuthority> authorities = getAuthorities(responseMap);
+			Map<String, ?> map = MapUtil.get(responseMap, SecurityConstants.DETAILS_USER, Map.class);
 			validateTenantId(map);
-			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
-			String username = (String) map.get(USERNAME);
-			Integer id = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
-			Integer deptId = (Integer) map.get(SecurityConstants.DETAILS_DEPT_ID);
-			Integer tenantId = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
-			PigxUser user = new PigxUser(id, deptId, tenantId, username, N_A, true
+			String username = MapUtil.getStr(map, SecurityConstants.DETAILS_USERNAME);
+			Integer id = MapUtil.getInt(map, SecurityConstants.DETAILS_USER_ID);
+			Integer deptId = MapUtil.getInt(map, SecurityConstants.DETAILS_DEPT_ID);
+			Integer tenantId = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
+			String phone = MapUtil.getStr(map, SecurityConstants.DETAILS_PHONE);
+			String avatar = MapUtil.getStr(map, SecurityConstants.DETAILS_AVATAR);
+			PigxUser user = new PigxUser(id, deptId, phone, avatar, tenantId, username, N_A, true
 					, true, true, true, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}
@@ -96,13 +103,13 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 		throw new IllegalArgumentException("Authorities must be either a String or a Collection");
 	}
 
-	private void validateTenantId(Map<String, ?> map){
-		String headerValue =  getCurrentTenantId();
-		Integer userValue = (Integer) map.get(SecurityConstants.DETAILS_TENANT_ID);
-		if(StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)){
-			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致",headerValue,userValue);
+	private void validateTenantId(Map<String, ?> map) {
+		String headerValue = getCurrentTenantId();
+		Integer userValue = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
+		if (StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)) {
+			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致", headerValue, userValue);
 			// TODO: 不要提示租户ID不对，可能被穷举
-			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId","Bad tenant ID"));
+			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId", "Bad tenant ID"));
 		}
 	}
 

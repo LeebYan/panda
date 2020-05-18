@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2017年11月9日23:34:11
+ * @date 2020-02-09
  */
 @UtilityClass
 public class TreeUtil {
@@ -112,9 +112,12 @@ public class TreeUtil {
 			node.setParentId(menu.getParentId());
 			node.setName(menu.getName());
 			node.setPath(menu.getPath());
-			node.setCode(menu.getPermission());
+			node.setPermission(menu.getPermission());
 			node.setLabel(menu.getName());
 			node.setIcon(menu.getIcon());
+			node.setType(menu.getType());
+			node.setSort(menu.getSort());
+			node.setHasChildren(true);
 			node.setKeepAlive(menu.getKeepAlive());
 			trees.add(node);
 		}

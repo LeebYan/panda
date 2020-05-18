@@ -28,7 +28,6 @@ import com.pig4cloud.pigx.admin.service.SysUserService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
-import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -48,22 +47,6 @@ import javax.validation.Valid;
 @Api(value = "user", tags = "用户管理模块")
 public class SysUserController {
 	private final SysUserService userService;
-
-	/**
-	 * 获取当前用户全部信息
-	 *
-	 * @return 用户信息
-	 */
-	@GetMapping(value = {"/info"})
-	public R info() {
-		String username = SecurityUtils.getUser().getUsername();
-		SysUser user = userService.getOne(Wrappers.<SysUser>query()
-				.lambda().eq(SysUser::getUsername, username));
-		if (user == null) {
-			return R.failed(null, "获取当前用户信息失败");
-		}
-		return R.ok(userService.findUserInfo(user));
-	}
 
 	/**
 	 * 获取指定用户全部信息

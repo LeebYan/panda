@@ -21,6 +21,7 @@ package com.pig4cloud.pigx.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysDict;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -30,6 +31,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysDict;
  * @author lengleng
  * @since 2017-11-19
  */
+@Mapper
 public interface SysDictMapper extends BaseMapper<SysDict> {
 
 }

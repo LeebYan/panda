@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.pig4cloud</groupId>
 		<artifactId>pigx</artifactId>
-		<version>3.6.0</version>
+		<version>3.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>pigx-common</artifactId>
@@ -37,7 +37,9 @@
 		<module>pigx-common-core</module>
 		<module>pigx-common-data</module>
 		<module>pigx-common-datasource</module>
+		<module>pigx-common-feign</module>
 		<module>pigx-common-gateway</module>
+		<module>pigx-common-gray</module>
 		<module>pigx-common-job</module>
 		<module>pigx-common-log</module>
 		<module>pigx-common-minio</module>

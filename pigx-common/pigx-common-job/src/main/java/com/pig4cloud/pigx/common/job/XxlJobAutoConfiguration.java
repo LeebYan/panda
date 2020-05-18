@@ -35,11 +35,12 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.pig4cloud.pigx.common.job.properties")
 public class XxlJobAutoConfiguration {
 
-	@Bean(initMethod = "start", destroyMethod = "destroy")
+	@Bean
 	public XxlJobSpringExecutor xxlJobSpringExecutor(XxlJobProperties xxlJobProperties) {
 		XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
 		xxlJobSpringExecutor.setAdminAddresses(xxlJobProperties.getAdmin().getAddresses());
-		xxlJobSpringExecutor.setAppName(xxlJobProperties.getExecutor().getAppName());
+		xxlJobSpringExecutor.setAppname(xxlJobProperties.getExecutor().getAppname());
+		xxlJobSpringExecutor.setAddress(xxlJobProperties.getExecutor().getAddress());
 		xxlJobSpringExecutor.setIp(xxlJobProperties.getExecutor().getIp());
 		xxlJobSpringExecutor.setPort(xxlJobProperties.getExecutor().getPort());
 		xxlJobSpringExecutor.setAccessToken(xxlJobProperties.getExecutor().getAccessToken());
