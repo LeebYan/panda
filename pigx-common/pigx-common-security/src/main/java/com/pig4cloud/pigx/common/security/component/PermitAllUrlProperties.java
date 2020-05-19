@@ -20,10 +20,10 @@ package com.pig4cloud.pigx.common.security.component;
 import cn.hutool.core.util.ReUtil;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -47,12 +47,12 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 @ConditionalOnExpression("!'${security.oauth2.client.ignore-urls}'.isEmpty()")
 @ConfigurationProperties(prefix = "security.oauth2.client")
 public class PermitAllUrlProperties implements InitializingBean {
 	private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
-	@Autowired
-	private WebApplicationContext applicationContext;
+	private final WebApplicationContext applicationContext;
 
 	@Getter
 	@Setter
