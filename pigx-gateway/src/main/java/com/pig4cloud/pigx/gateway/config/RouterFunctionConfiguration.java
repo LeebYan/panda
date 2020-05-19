@@ -47,7 +47,7 @@ public class RouterFunctionConfiguration {
 		return RouterFunctions.route(
 				RequestPredicates.path("/code")
 						.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeCreateHandler)
-				.andRoute(RequestPredicates.POST("/check")
+				.andRoute(RequestPredicates.POST("/code/check")
 						.and(RequestPredicates.accept(MediaType.ALL)), imageCodeCheckHandler)
 				.andRoute(RequestPredicates.GET("/swagger-resources")
 						.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler)
