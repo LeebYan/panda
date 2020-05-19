@@ -378,8 +378,8 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
         };
 
         var tenantId  = 1
-        if (sessionStorage.getItem('tenantId')) {
-          tenantId = sessionStorage.getItem('tenantId')
+        if (localStorage.getItem('pigx-tenantId')) {
+          tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
         }
 
         // Update
@@ -389,7 +389,7 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
             headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                      'TENANT_ID': tenantId
+                      'TENANT-ID': tenantId
             },
             transformRequest: function (obj) {
                 var str = [];

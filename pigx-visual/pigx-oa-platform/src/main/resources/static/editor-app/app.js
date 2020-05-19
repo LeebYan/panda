@@ -95,8 +95,8 @@ activitiModeler
             /* Helper method to fetch model from server (always needed) */
             function fetchModel(modelId) {
                 var tenantId  = 1
-                if (sessionStorage.getItem('tenantId')) {
-                  tenantId = sessionStorage.getItem('tenantId')
+                if (localStorage.getItem('pigx-tenantId')) {
+                  tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
                 }
 
                 var modelUrl = KISBPM.URL.getModel(modelId);
@@ -104,7 +104,7 @@ activitiModeler
                 $http({method: 'GET',
                     url: modelUrl,
                    headers: {
-                    'TENANT_ID': tenantId
+                    'TENANT-ID': tenantId
                    }
                 }).
                     success(function (data, status, headers, config) {

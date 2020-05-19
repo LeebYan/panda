@@ -63,14 +63,14 @@ angular.module('activitiModeler')
              StencilSet items
              */
             var tenantId  = 1
-            if (sessionStorage.getItem('tenantId')) {
-              tenantId = sessionStorage.getItem('tenantId')
+            if (localStorage.getItem('pigx-tenantId')) {
+              tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
             }
 
             $http({method: 'GET',
                 url: KISBPM.URL.getStencilSet(),
                 headers: {
-                  'TENANT_ID': tenantId
+                  'TENANT-ID': tenantId
                 }
             }).success(function (data, status, headers, config) {
 
