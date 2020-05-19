@@ -18,13 +18,17 @@
 package com.pig4cloud.pigx.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.ValidateCodeException;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
 import com.pig4cloud.pigx.gateway.config.FilterIgnorePropertiesConfig;
 import lombok.AllArgsConstructor;
@@ -44,8 +48,8 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author lengleng
- * @date 2018/7/4
- * 验证码处理
+ * @date 2020/5/19
+ * 登录逻辑验证码处理
  */
 @Slf4j
 @Component
@@ -124,6 +128,18 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 		}
 
 		String randomStr = request.getQueryParams().getFirst("randomStr");
+
+		// 若是滑块登录
+		if (CommonConstants.IMAGE_CODE_TYPE.equalsIgnoreCase(randomStr)) {
+			CaptchaService captchaService = SpringContextHolder.getBean(CaptchaService.class);
+			CaptchaVO vo = new CaptchaVO();
+			vo.setCaptchaVerification(code);
+			if (!captchaService.verification(vo).isSuccess()) {
+				throw new ValidateCodeException("验证码不能为空");
+			}
+
+			return;
+		}
 
 		//https://gitee.com/log4j/pig/issues/IWA0D
 		String mobile = request.getQueryParams().getFirst("mobile");

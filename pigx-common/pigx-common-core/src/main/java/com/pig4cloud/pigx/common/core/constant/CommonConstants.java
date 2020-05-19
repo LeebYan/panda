@@ -91,4 +91,9 @@ public interface CommonConstants {
 	 * 默认存储bucket
 	 */
 	String BUCKET_NAME = "lengleng";
+
+	/**
+	 * 滑块验证码
+	 */
+	String IMAGE_CODE_TYPE = "blockPuzzle";
 }

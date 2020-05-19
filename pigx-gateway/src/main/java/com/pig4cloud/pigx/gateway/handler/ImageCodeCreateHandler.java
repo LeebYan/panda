@@ -17,58 +17,47 @@
 
 package com.pig4cloud.pigx.gateway.handler;
 
-import com.pig4cloud.pigx.common.core.constant.CacheConstants;
-import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.wf.captcha.ArithmeticCaptcha;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author lengleng
- * @date 2018/7/5
+ * @date 2020/5/19
  * 验证码生成逻辑处理类
  */
 @Slf4j
 @Component
 @AllArgsConstructor
-public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
-	private static final Integer DEFAULT_IMAGE_WIDTH = 100;
-	private static final Integer DEFAULT_IMAGE_HEIGHT = 40;
-	private final RedisTemplate redisTemplate;
+public class ImageCodeCreateHandler implements HandlerFunction<ServerResponse> {
+	private final ObjectMapper objectMapper;
+
 
 	@Override
+	@SneakyThrows
 	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		ArithmeticCaptcha captcha = new ArithmeticCaptcha(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
+		CaptchaVO vo = new CaptchaVO();
+		vo.setCaptchaType(CommonConstants.IMAGE_CODE_TYPE);
+		CaptchaService captchaService = SpringContextHolder.getBean(CaptchaService.class);
+		ResponseModel responseModel = captchaService.get(vo);
 
-		String result = captcha.text();
-
-		//保存验证码信息
-		String randomStr = serverRequest.queryParam("randomStr").get();
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.opsForValue().set(CacheConstants.DEFAULT_CODE_KEY + randomStr, result
-				, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
-
-		// 转换流信息写出
-		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-		captcha.out(os);
-
-		return ServerResponse
-				.status(HttpStatus.OK)
-				.contentType(MediaType.IMAGE_JPEG)
-				.body(BodyInserters.fromResource(new ByteArrayResource(os.toByteArray())));
+		return ServerResponse.status(HttpStatus.OK)
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(BodyInserters.fromValue(objectMapper.writeValueAsString(R.ok(responseModel))));
 	}
 }

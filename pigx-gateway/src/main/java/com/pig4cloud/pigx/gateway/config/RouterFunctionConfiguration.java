@@ -17,10 +17,7 @@
 
 package com.pig4cloud.pigx.gateway.config;
 
-import com.pig4cloud.pigx.gateway.handler.ImageCodeHandler;
-import com.pig4cloud.pigx.gateway.handler.SwaggerResourceHandler;
-import com.pig4cloud.pigx.gateway.handler.SwaggerSecurityHandler;
-import com.pig4cloud.pigx.gateway.handler.SwaggerUiHandler;
+import com.pig4cloud.pigx.gateway.handler.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -39,16 +36,19 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 @Configuration
 @AllArgsConstructor
 public class RouterFunctionConfiguration {
+	private final ImageCodeCheckHandler imageCodeCheckHandler;
+	private final ImageCodeCreateHandler imageCodeCreateHandler;
 	private final SwaggerResourceHandler swaggerResourceHandler;
 	private final SwaggerSecurityHandler swaggerSecurityHandler;
 	private final SwaggerUiHandler swaggerUiHandler;
-	private final ImageCodeHandler imageCodeHandler;
 
 	@Bean
 	public RouterFunction routerFunction() {
 		return RouterFunctions.route(
 				RequestPredicates.path("/code")
-						.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
+						.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeCreateHandler)
+				.andRoute(RequestPredicates.POST("/check")
+						.and(RequestPredicates.accept(MediaType.ALL)), imageCodeCheckHandler)
 				.andRoute(RequestPredicates.GET("/swagger-resources")
 						.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler)
 				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
