@@ -78,8 +78,13 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		if (CollUtil.isEmpty(deptIds) && dataScopeHandle.calcScope(deptIds)) {
 			return invocation.proceed();
 		}
-		String join = CollectionUtil.join(deptIds, ",");
-		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
+
+		if(deptIds.isEmpty()){
+			originalSql = "select * from (" + originalSql + ") temp_data_scope where 1 = 2";
+		}else{
+			String join = CollectionUtil.join(deptIds, ",");
+			originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
+		}
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}
