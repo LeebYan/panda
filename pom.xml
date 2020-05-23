@@ -49,6 +49,7 @@
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.11.4</ttl.version>
 		<minio.version>6.0.13</minio.version>
+		<aws.version>1.11.543</aws.version>
 		<xxl.job.version>2.2.0</xxl.job.version>
 		<activiti.version>5.22.0</activiti.version>
 		<docker.registry>172.17.0.111</docker.registry>
