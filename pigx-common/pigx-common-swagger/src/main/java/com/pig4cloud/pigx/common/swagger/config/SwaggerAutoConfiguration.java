@@ -43,6 +43,8 @@ import java.util.List;
 /**
  * @author lengleng
  * swagger配置
+ * 禁用方法1：使用注解@Profile({"dev","test"}) 表示在开发或测试环境开启，而在生产关闭。（推荐使用）
+ * 禁用方法2：使用注解@ConditionalOnProperty(name = "swagger.enable", havingValue = "true") 然后在测试配置或者开发配置中添加swagger.enable=true即可开启，生产环境不填则默认关闭Swagger.
  */
 @Configuration
 @EnableSwagger2
