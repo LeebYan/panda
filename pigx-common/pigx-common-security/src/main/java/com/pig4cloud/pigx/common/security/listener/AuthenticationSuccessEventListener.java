@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -46,7 +47,7 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
 		Authentication authentication = (Authentication) event.getSource();
-		if (CollUtil.isNotEmpty(authentication.getAuthorities()) && successHandler != null) {
+		if (successHandler != null && isUserAuthentication(authentication)) {
 			ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
 					RequestContextHolder.getRequestAttributes();
 			HttpServletRequest request = requestAttributes.getRequest();
@@ -54,6 +55,10 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 
 			successHandler.handle(authentication, request, response);
 		}
+	}
+
+	private boolean isUserAuthentication(Authentication authentication){
+		return authentication instanceof User || CollUtil.isNotEmpty(authentication.getAuthorities());
 	}
 
 }
