@@ -15,10 +15,10 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.aws;
+package com.pig4cloud.pigx.common.oss;
 
-import com.pig4cloud.pigx.common.aws.http.AwsEndpoint;
-import com.pig4cloud.pigx.common.aws.service.AwsTemplate;
+import com.pig4cloud.pigx.common.oss.http.OssEndpoint;
+import com.pig4cloud.pigx.common.oss.service.OssTemplate;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,21 +32,21 @@ import org.springframework.context.annotation.Bean;
  * @author 858695266
  */
 @AllArgsConstructor
-@EnableConfigurationProperties({AwsProperties.class})
-public class AwsAutoConfiguration {
-	private final AwsProperties properties;
+@EnableConfigurationProperties({OssProperties.class})
+public class OssAutoConfiguration {
+	private final OssProperties properties;
 
 	@Bean
-	@ConditionalOnMissingBean(AwsTemplate.class)
+	@ConditionalOnMissingBean(OssTemplate.class)
 	@ConditionalOnProperty(name = "oss.endpoint")
-	AwsTemplate awsTemplate() {
-		return new AwsTemplate(properties);
+	OssTemplate awsTemplate() {
+		return new OssTemplate(properties);
 	}
 
 	@Bean
 	@ConditionalOnProperty(name = "oss.enable", havingValue = "true")
-	public AwsEndpoint awsEndpoint(AwsTemplate template) {
-		return new AwsEndpoint(template);
+	public OssEndpoint awsEndpoint(OssTemplate template) {
+		return new OssEndpoint(template);
 	}
 
 }

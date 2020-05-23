@@ -70,12 +70,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.pig4cloud</groupId>
-				<artifactId>pigx-common-minio</artifactId>
-				<version>${pigx.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.pig4cloud</groupId>
-				<artifactId>pigx-common-aws</artifactId>
+				<artifactId>pigx-common-oss</artifactId>
 				<version>${pigx.version}</version>
 			</dependency>
 			<dependency>
@@ -223,7 +218,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>aliyun-plugin</id>

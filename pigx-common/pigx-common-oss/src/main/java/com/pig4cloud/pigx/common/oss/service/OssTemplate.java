@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.aws.service;
+package com.pig4cloud.pigx.common.oss.service;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
@@ -27,7 +27,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import com.pig4cloud.pigx.common.aws.AwsProperties;
+import com.pig4cloud.pigx.common.oss.OssProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,8 +48,8 @@ import java.util.*;
  * @since 1.0
  */
 @RequiredArgsConstructor
-public class AwsTemplate implements InitializingBean {
-	private final AwsProperties ossProperties;
+public class OssTemplate implements InitializingBean {
+	private final OssProperties ossProperties;
 
 	private AmazonS3 amazonS3;
 
@@ -115,8 +115,8 @@ public class AwsTemplate implements InitializingBean {
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @param expires    过期时间 <=7
-	 * @see AmazonS3#generatePresignedUrl(String bucketName, String key, Date expiration)
 	 * @return url
+	 * @see AmazonS3#generatePresignedUrl(String bucketName, String key, Date expiration)
 	 */
 	@SneakyThrows
 	public String getObjectURL(String bucketName, String objectName, Integer expires) {
@@ -133,8 +133,8 @@ public class AwsTemplate implements InitializingBean {
 	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
 	 * @return 二进制流
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
 	 */
 	@SneakyThrows
 	public InputStream getObject(String bucketName, String objectName) {
@@ -161,8 +161,8 @@ public class AwsTemplate implements InitializingBean {
 	 * @param stream      文件流
 	 * @param size        大小
 	 * @param contextType 类型
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/PutObject">AWS API Documentation</a>
 	 * @throws Exception
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/PutObject">AWS API Documentation</a>
 	 */
 	public PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws Exception {
 //		String fileName = getFileName(objectName);
@@ -181,8 +181,8 @@ public class AwsTemplate implements InitializingBean {
 	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
 	 * @throws Exception
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
 	 */
 	public S3Object getObjectInfo(String bucketName, String objectName) throws Exception {
 		return amazonS3.getObject(bucketName, objectName);
@@ -193,8 +193,8 @@ public class AwsTemplate implements InitializingBean {
 	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteObject">AWS API Documentation</a>
 	 * @throws Exception
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteObject">AWS API Documentation</a>
 	 */
 	public void removeObject(String bucketName, String objectName) throws Exception {
 		amazonS3.deleteObject(bucketName, objectName);

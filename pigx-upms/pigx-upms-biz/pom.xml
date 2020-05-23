@@ -55,7 +55,7 @@
 		<!--文件系统-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-aws</artifactId>
+			<artifactId>pigx-common-oss</artifactId>
 		</dependency>
 		<!--注册中心客户端-->
 		<dependency>

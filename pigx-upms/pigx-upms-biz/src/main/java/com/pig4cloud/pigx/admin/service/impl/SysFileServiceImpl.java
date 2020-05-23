@@ -24,10 +24,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
 import com.pig4cloud.pigx.admin.mapper.SysFileMapper;
 import com.pig4cloud.pigx.admin.service.SysFileService;
-import com.pig4cloud.pigx.common.aws.AwsProperties;
-import com.pig4cloud.pigx.common.aws.service.AwsTemplate;
-import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.oss.OssProperties;
+import com.pig4cloud.pigx.common.oss.service.OssTemplate;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -51,8 +50,8 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> implements SysFileService {
-	private final AwsTemplate minioTemplate;
-	private final AwsProperties awsProperties;
+	private final OssProperties ossProperties;
+	private final OssTemplate minioTemplate;
 
 
 	/**
@@ -65,12 +64,12 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	public R uploadFile(MultipartFile file) {
 		String fileName = IdUtil.simpleUUID() + StrUtil.DOT + FileUtil.extName(file.getOriginalFilename());
 		Map<String, String> resultMap = new HashMap<>(4);
-		resultMap.put("bucketName", awsProperties.getBucketName());
+		resultMap.put("bucketName", ossProperties.getBucketName());
 		resultMap.put("fileName", fileName);
-		resultMap.put("url", String.format("/admin/sys-file/%s/%s", awsProperties.getBucketName(), fileName));
+		resultMap.put("url", String.format("/admin/sys-file/%s/%s", ossProperties.getBucketName(), fileName));
 
 		try {
-			minioTemplate.putObject(awsProperties.getBucketName(), fileName, file.getInputStream());
+			minioTemplate.putObject(ossProperties.getBucketName(), fileName, file.getInputStream());
 			//文件管理数据记录,收集管理追踪文件
 			fileLog(file, fileName);
 		} catch (Exception e) {
@@ -109,7 +108,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean deleteFile(Long id) {
 		SysFile file = this.getById(id);
-		minioTemplate.removeObject(awsProperties.getBucketName(), file.getFileName());
+		minioTemplate.removeObject(ossProperties.getBucketName(), file.getFileName());
 		return this.removeById(id);
 	}
 
@@ -127,7 +126,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 		sysFile.setOriginal(original);
 		sysFile.setFileSize(file.getSize());
 		sysFile.setType(FileUtil.extName(original));
-		sysFile.setBucketName(awsProperties.getBucketName());
+		sysFile.setBucketName(ossProperties.getBucketName());
 		sysFile.setCreateUser(SecurityUtils.getUser().getUsername());
 		this.save(sysFile);
 	}

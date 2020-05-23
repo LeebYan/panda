@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.aws;
+package com.pig4cloud.pigx.common.oss;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -27,19 +27,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author 858695266
  * 配置文件添加：
  * oss:
- *   enable: true
- *   endpoint: http://127.0.0.1:9000
- *   access-key: lengleng
- *   secret-key: lengleng
- *   bucket-name: lengleng
- *   region:
- *   custom-domain: https://oss.xxx.com/lengleng
- *
+ * enable: true
+ * endpoint: http://127.0.0.1:9000
+ * access-key: lengleng
+ * secret-key: lengleng
+ * bucket-name: lengleng
+ * region:
+ * custom-domain: https://oss.xxx.com/lengleng
+ * <p>
  * bucket 设置公共读权限
  */
 @Data
 @ConfigurationProperties(prefix = "oss")
-public class AwsProperties {
+public class OssProperties {
 	/**
 	 * 对象存储服务的URL
 	 */

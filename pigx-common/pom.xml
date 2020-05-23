@@ -42,8 +42,7 @@
 		<module>pigx-common-gray</module>
 		<module>pigx-common-job</module>
 		<module>pigx-common-log</module>
-		<module>pigx-common-minio</module>
-		<module>pigx-common-aws</module>
+		<module>pigx-common-oss</module>
 		<module>pigx-common-security</module>
 		<module>pigx-common-sentinel</module>
 		<module>pigx-common-sequence</module>

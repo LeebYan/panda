@@ -15,12 +15,12 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.minio.http;
+package com.pig4cloud.pigx.common.oss.http;
 
-import com.pig4cloud.pigx.common.minio.service.MinioTemplate;
-import com.pig4cloud.pigx.common.minio.vo.MinioItem;
-import com.pig4cloud.pigx.common.minio.vo.MinioObject;
-import io.minio.messages.Bucket;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.pig4cloud.pigx.common.oss.service.OssTemplate;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -32,17 +32,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * minio 对外提供服务端点
+ * aws 对外提供服务端点
  *
  * @author lengleng
+ * @author 858695266
  * <p>
- * minio.endpoint.enable
+ * oss.enable
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("${minio.endpoint.name:/minio}")
-public class MinioEndpoint {
-	private final MinioTemplate template;
+@RequestMapping("/aws")
+public class OssEndpoint {
+	private final OssTemplate template;
 
 	/**
 	 * Bucket Endpoints
@@ -80,24 +81,24 @@ public class MinioEndpoint {
 	 */
 	@SneakyThrows
 	@PostMapping("/object/{bucketName}")
-	public MinioObject createObject(@RequestBody MultipartFile object, @PathVariable String bucketName) {
+	public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName) {
 		String name = object.getOriginalFilename();
 		template.putObject(bucketName, name, object.getInputStream(), object.getSize(), object.getContentType());
-		return new MinioObject(template.getObjectInfo(bucketName, name));
+		return template.getObjectInfo(bucketName, name);
 
 	}
 
 	@SneakyThrows
 	@PostMapping("/object/{bucketName}/{objectName}")
-	public MinioObject createObject(@RequestBody MultipartFile object, @PathVariable String bucketName, @PathVariable String objectName) {
+	public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName, @PathVariable String objectName) {
 		template.putObject(bucketName, objectName, object.getInputStream(), object.getSize(), object.getContentType());
-		return new MinioObject(template.getObjectInfo(bucketName, objectName));
+		return template.getObjectInfo(bucketName, objectName);
 
 	}
 
 	@SneakyThrows
 	@GetMapping("/object/{bucketName}/{objectName}")
-	public List<MinioItem> filterObject(@PathVariable String bucketName, @PathVariable String objectName) {
+	public List<S3ObjectSummary> filterObject(@PathVariable String bucketName, @PathVariable String objectName) {
 
 		return template.getAllObjectsByPrefix(bucketName, objectName, true);
 
