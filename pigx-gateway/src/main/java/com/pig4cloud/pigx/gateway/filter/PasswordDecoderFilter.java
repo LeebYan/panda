@@ -127,12 +127,16 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 			// 获取请求密码并解密
 			Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
-			byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD)
-					.getBytes(StandardCharsets.UTF_8)));
-			String password = new String(result, StandardCharsets.UTF_8);
+			if(inParamsMap.containsKey(PASSWORD)){
+				byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD)
+						.getBytes(StandardCharsets.UTF_8)));
+				String password = new String(result, StandardCharsets.UTF_8);
 
-			// 返回修改后报文字符
-			inParamsMap.put(PASSWORD, password.trim());
+				// 返回修改后报文字符
+				inParamsMap.put(PASSWORD, password.trim());
+			} else {
+				log.error("非法请求数据:{}",s);
+			}
 			return Mono.just(HttpUtil.toParams(inParamsMap));
 		};
 	}
