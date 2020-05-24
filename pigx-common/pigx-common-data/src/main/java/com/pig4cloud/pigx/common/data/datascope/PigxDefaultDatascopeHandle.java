@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pigx.common.data.datascope;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysDeptRelation;
 import com.pig4cloud.pigx.admin.api.entity.SysRole;
@@ -56,10 +57,16 @@ public class PigxDefaultDatascopeHandle implements DataScopeHandle {
 				.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
 				.map(authority -> authority.split(StrUtil.UNDERLINE)[1])
 				.collect(Collectors.toList());
-
+		// 当前用户的角色为空
+		if(CollectionUtil.isEmpty(roleIdList)){
+			return false;
+		}
 		SysRole role = dataScopeService.getRoleList(roleIdList).getData().stream()
-				.min(Comparator.comparingInt(SysRole::getDsType)).get();
-
+				.min(Comparator.comparingInt(SysRole::getDsType)).orElse(null);
+		// 角色有可能已经删除了
+		if(role == null){
+			return false;
+		}
 		Integer dsType = role.getDsType();
 		// 查询全部
 		if (DataScopeTypeEnum.ALL.getType() == dsType) {
