@@ -212,7 +212,7 @@ public class OssTemplate implements InitializingBean {
 				.withClientConfiguration(clientConfiguration)
 				.withCredentials(awsCredentialsProvider)
 				.disableChunkedEncoding()
-				.withPathStyleAccessEnabled(false)
+				.withPathStyleAccessEnabled(ossProperties.getPathStyleAccess())
 				.build();
 	}
 }

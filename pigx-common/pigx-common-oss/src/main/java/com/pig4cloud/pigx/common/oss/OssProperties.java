@@ -29,6 +29,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * oss:
  * enable: true
  * endpoint: http://127.0.0.1:9000
+ * # pathStyleAccess 采用nginx反向代理或者AWS S3 配置成true，支持第三方云存储配置成false
+ * pathStyleAccess: false
  * access-key: lengleng
  * secret-key: lengleng
  * bucket-name: lengleng
@@ -49,6 +51,14 @@ public class OssProperties {
 	 * 自定义域名
 	 */
 	private String customDomain;
+
+	/**
+	 * true path-style
+	 *      nginx 反向代理和S3默认支持 pathStyle {http://endpoint/bucketname}
+	 * false supports virtual-hosted-style 阿里云等需要配置为
+	 * virtual-hosted-style 模式{http://bucketname.endpoint}
+	 */
+	private Boolean pathStyleAccess;
 
 	/**
 	 * 应用ID
