@@ -29,7 +29,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * oss:
  * enable: true
  * endpoint: http://127.0.0.1:9000
- * # pathStyleAccess 采用非nginx但想代理或者AWS S3 配置成true，支持第三方云存储配置成false
+ * # pathStyleAccess 采用nginx反向代理或者AWS S3 配置成true，支持第三方云存储配置成false
  * pathStyleAccess: false
  * access-key: lengleng
  * secret-key: lengleng
