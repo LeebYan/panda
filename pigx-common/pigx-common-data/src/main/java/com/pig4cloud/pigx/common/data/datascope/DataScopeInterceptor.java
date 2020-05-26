@@ -83,31 +83,7 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}
-
-
-	/**
-	 * 生成拦截对象的代理
-	 *
-	 * @param target 目标对象
-	 * @return 代理对象
-	 */
-	@Override
-	public Object plugin(Object target) {
-		if (target instanceof StatementHandler) {
-			return Plugin.wrap(target, this);
-		}
-		return target;
-	}
-
-	/**
-	 * mybatis配置的属性
-	 *
-	 * @param properties mybatis配置的属性
-	 */
-	@Override
-	public void setProperties(Properties properties) {
-
-	}
+	
 
 	/**
 	 * 查找参数是否包括DataScope对象
