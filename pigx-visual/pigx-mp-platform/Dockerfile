@@ -15,4 +15,4 @@ EXPOSE 6000
 
 ADD ./target/pigx-mp-platform.jar ./
 
-CMD sleep 120;java $JAVA_OPTS -jar pigx-mp-platform.jar
+CMD sleep 180;java $JAVA_OPTS -jar pigx-mp-platform.jar
