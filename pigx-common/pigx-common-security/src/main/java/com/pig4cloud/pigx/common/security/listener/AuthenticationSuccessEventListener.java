@@ -19,11 +19,11 @@ package com.pig4cloud.pigx.common.security.listener;
 
 import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.security.handler.AuthenticationSuccessHandler;
+import com.pig4cloud.pigx.common.security.service.PigxUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -58,7 +58,7 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 	}
 
 	private boolean isUserAuthentication(Authentication authentication){
-		return authentication instanceof User || CollUtil.isNotEmpty(authentication.getAuthorities());
+		return authentication.getPrincipal() instanceof PigxUser || CollUtil.isNotEmpty(authentication.getAuthorities());
 	}
 
 }
