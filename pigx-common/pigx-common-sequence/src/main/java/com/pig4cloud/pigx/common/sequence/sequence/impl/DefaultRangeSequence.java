@@ -10,6 +10,8 @@ import com.pig4cloud.pigx.common.sequence.range.SeqRangeMgr;
 import com.pig4cloud.pigx.common.sequence.sequence.RangeSequence;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -37,6 +39,8 @@ public class DefaultRangeSequence implements RangeSequence {
 	 */
 	private volatile SeqRange currentRange;
 
+	private static Map<String, SeqRange> seqRangeMap = new ConcurrentHashMap<>(8);
+
 	/**
 	 * 需要获取区间的业务名称
 	 */
@@ -46,12 +50,14 @@ public class DefaultRangeSequence implements RangeSequence {
 	public long nextValue() throws SeqException {
 		String name = bizName.create();
 
+		currentRange = seqRangeMap.get(name);
 		//当前区间不存在，重新获取一个区间
 		if (null == currentRange) {
 			lock.lock();
 			try {
 				if (null == currentRange) {
 					currentRange = seqRangeMgr.nextRange(name);
+					seqRangeMap.put(name, currentRange);
 				}
 			} finally {
 				lock.unlock();
@@ -109,3 +115,4 @@ public class DefaultRangeSequence implements RangeSequence {
 	}
 
 }
+
