@@ -23,7 +23,6 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -40,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 
 /**
@@ -205,23 +205,24 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * 从request 获取CLIENT_ID
-	 *
-	 * @return
+	 * 解析 client id
+	 * @param header
+	 * @param defVal
+	 * @return 如果解析失败返回默认值
 	 */
-	@SneakyThrows
-	public String getClientId(String header) {
+	public String extractClientId(String header,final String defVal) {
 
 		if (header == null || !header.startsWith(BASIC_)) {
-			throw new CheckedException("请求头中client信息为空");
+			log.debug("请求头中client信息为空: {}",header);
+			return defVal;
 		}
-		byte[] base64Token = header.substring(6).getBytes("UTF-8");
+		byte[] base64Token = header.substring(6).getBytes(StandardCharsets.UTF_8);
 		byte[] decoded;
 		try {
 			decoded = Base64.decode(base64Token);
 		} catch (IllegalArgumentException e) {
-			throw new CheckedException(
-					"Failed to decode basic authentication token");
+			log.debug("Failed to decode basic authentication token: {}",header);
+			return defVal;
 		}
 
 		String token = new String(decoded, StandardCharsets.UTF_8);
@@ -229,9 +230,30 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		int delim = token.indexOf(":");
 
 		if (delim == -1) {
-			throw new CheckedException("Invalid basic authentication token");
+			log.debug("Invalid basic authentication token: {}",header);
+			return defVal;
 		}
 		return token.substring(0, delim);
 	}
 
+	/**
+	 * 从请求头中解析 client id
+	 * @param header
+	 * @return
+	 */
+	public Optional<String> extractClientId(String header){
+		return Optional.ofNullable(extractClientId(header,null));
+	}
+	/**
+	 * 从request 获取CLIENT_ID
+	 *
+	 * @return
+	 */
+	public String getClientId(String header) {
+		String clientId = extractClientId(header,null);
+		if(clientId == null){
+			throw new CheckedException("Invalid basic authentication token");
+		}
+		return clientId;
+	}
 }

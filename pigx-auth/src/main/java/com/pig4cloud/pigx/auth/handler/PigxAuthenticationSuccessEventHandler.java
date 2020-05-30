@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
-import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -61,9 +60,7 @@ public class PigxAuthenticationSuccessEventHandler implements AuthenticationSucc
 		sysLog.setTitle(username + "用户登录");
 		sysLog.setParams(username);
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if (StrUtil.isNotBlank(header)) {
-			sysLog.setServiceId(WebUtils.getClientId(header));
-		}
+		sysLog.setServiceId(WebUtils.extractClientId(header).orElse("N/A"));
 
 		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
 		log.info("用户：{} 登录成功", username);
