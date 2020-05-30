@@ -81,7 +81,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			try {
 				String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 				String clientId = WebUtils.extractClientId(header).orElse(null);
-				if (clientId != null &&  filterIgnorePropertiesConfig.getClients().contains(clientId)) {
+				if (StrUtil.isNotBlank(clientId) && filterIgnorePropertiesConfig.getClients().contains(clientId)) {
 					return chain.filter(exchange);
 				}
 

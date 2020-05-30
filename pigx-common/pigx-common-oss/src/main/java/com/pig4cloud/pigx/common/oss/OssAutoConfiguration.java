@@ -38,14 +38,14 @@ public class OssAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(OssTemplate.class)
-	@ConditionalOnProperty(name = "oss.endpoint")
-	OssTemplate awsTemplate() {
+	@ConditionalOnProperty(name = "oss.enable", havingValue = "true", matchIfMissing = true)
+	public OssTemplate ossTemplate() {
 		return new OssTemplate(properties);
 	}
 
 	@Bean
-	@ConditionalOnProperty(name = "oss.enable", havingValue = "true")
-	public OssEndpoint awsEndpoint(OssTemplate template) {
+	@ConditionalOnProperty(name = "oss.public", havingValue = "true", matchIfMissing = true)
+	public OssEndpoint ossEndpoint(OssTemplate template) {
 		return new OssEndpoint(template);
 	}
 

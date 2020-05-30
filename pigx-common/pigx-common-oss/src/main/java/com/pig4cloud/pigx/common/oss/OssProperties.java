@@ -58,7 +58,7 @@ public class OssProperties {
 	 * false supports virtual-hosted-style 阿里云等需要配置为
 	 * virtual-hosted-style 模式{http://bucketname.endpoint}
 	 */
-	private Boolean pathStyleAccess;
+	private Boolean pathStyleAccess = true;
 
 	/**
 	 * 应用ID
