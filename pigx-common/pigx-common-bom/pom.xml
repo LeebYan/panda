@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>pigx-cloud-dependencies-parent</artifactId>
 		<groupId>com.pig4cloud</groupId>
-		<version>Hoxton.SR4</version>
+		<version>Hoxton.SR5</version>
 		<relativePath/>
 	</parent>
 
@@ -18,7 +18,7 @@
 
 	<properties>
 		<pigx.version>3.9.0-SNAPSHOT</pigx.version>
-		<mybatis-plus.version>3.3.1</mybatis-plus.version>
+		<mybatis-plus.version>3.3.2</mybatis-plus.version>
 		<dynamic-ds.version>3.0.0</dynamic-ds.version>
 		<druid.version>1.1.21</druid.version>
 		<mysql.connector.version>8.0.20</mysql.connector.version>
@@ -27,7 +27,7 @@
 		<ijpay.version>1.2.0</ijpay.version>
 		<groovy.version>3.0.3</groovy.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
-		<fastjson.version>1.2.67</fastjson.version>
+		<fastjson.version>1.2.69</fastjson.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 	</properties>
 

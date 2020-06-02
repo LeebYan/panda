@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
 import com.pig4cloud.pigx.codegen.mapper.GenDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.service.GenDatasourceConfService;
+import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
@@ -44,9 +45,8 @@ import java.sql.SQLException;
 @Service
 @AllArgsConstructor
 public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfMapper, GenDatasourceConf> implements GenDatasourceConfService {
-	private DynamicRoutingDataSource dynamicRoutingDataSource;
 	private final StringEncryptor stringEncryptor;
-	private DataSourceCreator dataSourceCreator;
+	private final DataSourceCreator dataSourceCreator;
 
 	/**
 	 * 保存数据源并且加密
@@ -82,6 +82,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 			return Boolean.FALSE;
 		}
 		//先移除
+		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
 		dynamicRoutingDataSource.removeDataSource(
 				baseMapper.selectById(conf.getId()).getName());
 
@@ -105,6 +106,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 */
 	@Override
 	public Boolean removeByDsId(Integer dsId) {
+		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
 		dynamicRoutingDataSource.removeDataSource(
 				baseMapper.selectById(dsId).getName());
 		this.baseMapper.deleteById(dsId);
@@ -124,6 +126,8 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 		dataSourceProperty.setUsername(conf.getUsername());
 		dataSourceProperty.setPassword(conf.getPassword());
 		DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+
+		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
 		dynamicRoutingDataSource.addDataSource(dataSourceProperty.getPollName(), dataSource);
 	}
 

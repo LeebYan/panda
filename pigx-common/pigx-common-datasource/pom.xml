@@ -17,6 +17,10 @@
 	<description>pigx 动态切换数据源</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-core</artifactId>
+		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
