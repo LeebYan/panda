@@ -229,7 +229,7 @@ CREATE TABLE `sys_log` (
   `type` char(1) DEFAULT '0',
   `title` varchar(255) DEFAULT NULL,
   `service_id` varchar(32) DEFAULT NULL,
-  `create_by` varchar(64) DEFAULT NULL,
+  `create_by` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `remote_addr` varchar(255) DEFAULT NULL,

@@ -25,8 +25,10 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -53,13 +55,22 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		R<String> result = new R<>();
+		result.setMsg(authException.getMessage());
+		result.setData(authException.getMessage());
 		result.setCode(CommonConstants.FAIL);
-		if (authException != null) {
+
+		if (authException instanceof CredentialsExpiredException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
 					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
 			result.setMsg(msg);
-			result.setData(authException.getMessage());
 		}
+
+		if (authException instanceof UsernameNotFoundException) {
+			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage());
+			result.setMsg(msg);
+		}
+
 		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));
