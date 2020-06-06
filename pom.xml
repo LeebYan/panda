@@ -39,6 +39,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<git.commit.version>2.2.5</git.commit.version>
 		<spring-boot-admin.version>2.2.3</spring-boot-admin.version>
 		<hutool.version>5.3.6</hutool.version>
 		<kaptcha.version>1.2.0</kaptcha.version>
@@ -207,8 +209,9 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>${maven.compiler.version}</version>
 				<configuration>
 					<target>${maven.compiler.target}</target>
 					<source>${maven.compiler.source}</source>
@@ -219,7 +222,7 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
-				<version>2.2.5</version>
+				<version>${git.commit.version}</version>
 			</plugin>
 		</plugins>
 	</build>
