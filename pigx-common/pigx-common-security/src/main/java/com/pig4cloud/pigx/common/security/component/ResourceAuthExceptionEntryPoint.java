@@ -26,6 +26,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,7 +60,8 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		result.setData(authException.getMessage());
 		result.setCode(CommonConstants.FAIL);
 
-		if (authException instanceof CredentialsExpiredException) {
+		if (authException instanceof CredentialsExpiredException
+				|| authException instanceof InsufficientAuthenticationException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
 					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
 			result.setMsg(msg);

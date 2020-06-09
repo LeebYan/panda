@@ -8,6 +8,7 @@ import com.pig4cloud.pigx.mp.constant.ReplyTypeEnum;
 import com.pig4cloud.pigx.mp.entity.WxAutoReply;
 import com.pig4cloud.pigx.mp.service.WxAutoReplyService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public class WxAutoReplyController {
 	 * @return R
 	 */
 	@PostMapping
+	@PreAuthorize("@pms.hasPermission('mp_wxautoreply_add')")
 	public R save(@RequestBody WxAutoReply wxAutoReply) {
 		this.jude(wxAutoReply);
 		return R.ok(wxAutoReplyService.save(wxAutoReply));
@@ -68,6 +70,7 @@ public class WxAutoReplyController {
 	 * @return R
 	 */
 	@PutMapping
+	@PreAuthorize("@pms.hasPermission('mp_wxautoreply_edit')")
 	public R updateById(@RequestBody WxAutoReply wxAutoReply) {
 		this.jude(wxAutoReply);
 		return R.ok(wxAutoReplyService.updateById(wxAutoReply));
@@ -80,6 +83,7 @@ public class WxAutoReplyController {
 	 * @return R
 	 */
 	@DeleteMapping("/{id}")
+	@PreAuthorize("@pms.hasPermission('mp_wxautoreply_del')")
 	public R removeById(@PathVariable String id) {
 		return R.ok(wxAutoReplyService.removeById(id));
 	}

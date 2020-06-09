@@ -110,6 +110,7 @@ public class WxAccountFansController {
 	 * @return
 	 */
 	@PostMapping("/sync/{appId}")
+	@PreAuthorize("@pms.hasPermission('mp_wxaccountfans_sync')")
 	public R sync(@PathVariable String appId) {
 		return R.ok(wxAccountFansService.syncAccountFans(appId));
 	}

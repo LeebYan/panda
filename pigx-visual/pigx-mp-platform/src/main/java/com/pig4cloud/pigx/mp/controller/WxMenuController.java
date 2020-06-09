@@ -77,6 +77,7 @@ public class WxMenuController {
 	}
 
 	@DeleteMapping("/{appId}")
+	@PreAuthorize("@pms.hasPermission('mp_wxmenu_del')")
 	public R delete(@PathVariable("appId") String appId) {
 		return wxMenuService.delete(appId);
 	}
