@@ -17,13 +17,19 @@
 
 package com.pig4cloud.pigx.common.sentinel;
 
+import com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.RequestOriginParser;
+import com.pig4cloud.pigx.common.sentinel.feign.PigxSentinelFeign;
 import com.pig4cloud.pigx.common.sentinel.handle.PigxUrlBlockHandler;
 import com.pig4cloud.pigx.common.sentinel.parser.PigxHeaderRequestOriginParser;
+import feign.Feign;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author lengleng
@@ -31,8 +37,17 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * sentinel 配置
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
+@AutoConfigureBefore(SentinelFeignAutoConfiguration.class)
 public class SentinelAutoConfiguration {
+
+	@Bean
+	@Scope("prototype")
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "feign.sentinel.enabled")
+	public Feign.Builder feignSentinelBuilder() {
+		return PigxSentinelFeign.builder();
+	}
 
 	@Bean
 	@ConditionalOnMissingBean
@@ -42,7 +57,7 @@ public class SentinelAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RequestOriginParser requestOriginParser(){
+	public RequestOriginParser requestOriginParser() {
 		return new PigxHeaderRequestOriginParser();
 	}
 }
