@@ -75,6 +75,10 @@
 		</dependency>
 		<!--sentinel 依赖-->
 		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-sentinel</artifactId>
 		</dependency>
