@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.daemon.quartz.util;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJobLog;
@@ -76,9 +77,10 @@ public class TaskInvokUtil {
 		sysJobLog.setCronExpression(sysJob.getCronExpression());
 		sysJobLog.setTenantId(sysJob.getTenantId());
 		try {
-			//执行任务
+			// 执行任务
 			ITaskInvok iTaskInvok = TaskInvokFactory.getInvoker(sysJob.getJobType());
-			iTaskInvok.invokMethod(sysJob);
+			// 确保租户上下文有值，使得当前线程中的多租户特性生效。
+			TenantBroker.runAs(sysJob.getTenantId(),tenantId -> iTaskInvok.invokMethod(sysJob)); ;
 
 			//记录成功状态
 			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getDescription());

@@ -17,7 +17,9 @@
 
 package com.pig4cloud.pigx.daemon.quartz.util;
 
+import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
 import com.pig4cloud.pigx.daemon.quartz.exception.TaskException;
 import lombok.AllArgsConstructor;
@@ -37,8 +39,11 @@ public class RestTaskInvok implements ITaskInvok {
 	@Override
 	public void invokMethod(SysJob sysJob) throws TaskException {
 		try {
-			HttpUtil.createGet(sysJob.getExecutePath())
-					.execute();
+			HttpRequest request = HttpUtil.createGet(sysJob.getExecutePath());
+			if(sysJob.getTenantId() != null){
+				request.header(CommonConstants.TENANT_ID, sysJob.getTenantId().toString());
+			}
+			request.execute();
 		} catch (Exception e) {
 			log.error("定时任务restTaskInvok异常,执行任务：{}", sysJob.getExecutePath());
 			throw new TaskException("定时任务restTaskInvok业务执行失败,任务：" + sysJob.getExecutePath());
