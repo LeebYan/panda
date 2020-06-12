@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.handler.*;
 import com.pig4cloud.pigx.mp.service.WxAccountService;
@@ -73,10 +73,7 @@ public class WxMpInitConfigRunner {
 		// 获取全部租户 遍历所有租户对应的公众号列表
 		List<WxAccount> accountList = new ArrayList<>();
 		tenantService.list(SecurityConstants.FROM_IN).getData()
-				.forEach(tenant -> {
-					TenantContextHolder.setTenantId(tenant.getId());
-					accountList.addAll(accountService.list());
-				});
+				.forEach( tenant -> TenantBroker.runAs(tenant.getId(), (id) -> accountList.addAll(accountService.list())));
 
 		mpServices = accountList.stream().map(a -> {
 			WxMpInRedisConfigStorage configStorage = new WxMpInRedisConfigStorage(redisTemplate);

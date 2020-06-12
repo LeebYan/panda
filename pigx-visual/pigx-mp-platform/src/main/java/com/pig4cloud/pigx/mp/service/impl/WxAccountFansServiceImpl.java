@@ -21,7 +21,7 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
 import com.pig4cloud.pigx.mp.entity.WxAccount;
 import com.pig4cloud.pigx.mp.entity.WxAccountFans;
@@ -77,11 +77,7 @@ public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, W
 		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpUserService wxMpUserService = wxMpService.getUserService();
 
-		// 获取对应公众号租户ID
-		Integer tenantId = WxMpInitConfigRunner.getTenants().get(appId);
-		TenantContextHolder.setTenantId(tenantId);
-
-		fetchUser(null, wxAccount, wxMpUserService);
+		TenantBroker.runAs(()->WxMpInitConfigRunner.getTenants().get(appId),(id)->fetchUser(null, wxAccount, wxMpUserService));
 		return Boolean.TRUE;
 	}
 

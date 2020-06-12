@@ -2,7 +2,7 @@ package com.pig4cloud.pigx.mp.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
 import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
@@ -86,9 +86,33 @@ public class WxPortalController {
 					   @RequestParam("openid") String openid,
 					   @RequestParam(name = "encrypt_type", required = false) String encType,
 					   @RequestParam(name = "msg_signature", required = false) String msgSignature) {
-		// 查询当前 appId 对应的租户 保存到TTL 中
-		Integer tenantId = WxMpInitConfigRunner.getTenants().get(appId);
-		TenantContextHolder.setTenantId(tenantId);
+		return TenantBroker.applyAs(
+				() -> WxMpInitConfigRunner.getTenants().get(appId),
+				(id) -> handleMessage(appId,requestBody,signature,timestamp,nonce,openid,encType,msgSignature)
+		);
+	}
+
+	/**
+	 * 微信消息处理
+	 *
+	 * @param appId        多公众号标志位
+	 * @param requestBody  请求报文体
+	 * @param signature    微信签名
+	 * @param encType      加签方式
+	 * @param msgSignature 微信签名
+	 * @param timestamp    时间戳
+	 * @param nonce        随机数
+	 * @return
+	 */
+	public String handleMessage(String appId,
+								String requestBody,
+								String signature,
+								String timestamp,
+								String nonce,
+								String openid,
+								String encType,
+								String msgSignature) {
+
 		WxMpContextHolder.setAppId(appId);
 
 		final WxMpService wxService = WxMpInitConfigRunner.getMpServices().get(appId);

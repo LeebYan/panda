@@ -32,9 +32,10 @@ public class TenantContextHolder {
 
 
 	/**
-	 * TTL 设置租户ID
-	 *
+	 * TTL 设置租户ID<br/>
+	 * <b>谨慎使用此方法,避免嵌套调用。尽量使用 {@code TenantBroker} </b>
 	 * @param tenantId
+	 * @see TenantBroker
 	 */
 	public void setTenantId(Integer tenantId) {
 		THREAD_LOCAL_TENANT.set(tenantId);

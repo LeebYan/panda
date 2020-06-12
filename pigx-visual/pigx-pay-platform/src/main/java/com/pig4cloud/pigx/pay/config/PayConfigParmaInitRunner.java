@@ -14,7 +14,7 @@ import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.service.PayChannelService;
 import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
@@ -61,13 +61,12 @@ public class PayConfigParmaInitRunner {
 
 		List<PayChannel> channelList = new ArrayList<>();
 		tenantService.list(SecurityConstants.FROM_IN).getData()
-				.forEach(tenant -> {
-					TenantContextHolder.setTenantId(tenant.getId());
+				.forEach(tenant -> TenantBroker.runAs(tenant.getId(), (id) -> {
 					List<PayChannel> payChannelList = channelService
 							.list(Wrappers.<PayChannel>lambdaQuery()
 									.eq(PayChannel::getState, CommonConstants.STATUS_NORMAL));
 					channelList.addAll(payChannelList);
-				});
+				}));
 
 		channelList.forEach(channel -> {
 			JSONObject params = JSONUtil.parseObj(channel.getParam());

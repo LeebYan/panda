@@ -27,7 +27,7 @@ import com.pig4cloud.pigx.admin.service.*;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.data.resolver.ParamResolver;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -110,73 +110,84 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		String defaultRoleCode = ParamResolver.getStr("TENANT_DEFAULT_ROLECODE", "ROLE_ADMIN");
 		String defaultRoleName = ParamResolver.getStr("TENANT_DEFAULT_ROLENAME", "租户默认角色");
 
-		// 查询系统内置字典
-		TenantContextHolder.setTenantId(defaultId);
-		List<SysDict> dictList = new ArrayList<>(dictService.list());
-		// 查询系统内置字典项目
-		List<Integer> dictIdList = dictList.stream().map(SysDict::getId)
-				.collect(Collectors.toList());
-		List<SysDictItem> dictItemList = new ArrayList<>(dictItemService
-				.list(Wrappers.<SysDictItem>lambdaQuery()
-						.in(SysDictItem::getDictId, dictIdList)));
-		// 查询当前租户菜单
-		List<SysMenu> menuList = menuService.list();
-		// 查询客户端配置
-		List<SysOauthClientDetails> clientDetailsList = clientServices.list();
-		// 查询系统参数配置
-		List<SysPublicParam> publicParamList = paramService.list();
+		List<SysDict> dictList = new ArrayList<>(32);
+		List<Integer> dictIdList = new ArrayList<>(32);
+		List<SysDictItem> dictItemList = new ArrayList<>(64);
+		List<SysMenu> menuList = new ArrayList<>(128);
+		List<SysOauthClientDetails> clientDetailsList = new ArrayList<>(16);
+		List<SysPublicParam> publicParamList = new ArrayList<>(64);
+
+		TenantBroker.runAs(defaultId,(id) -> {
+			// 查询系统内置字典
+			dictList.addAll(dictService.list());
+			// 查询系统内置字典项目
+			dictIdList.addAll(dictList.stream().map(SysDict::getId)
+					.collect(Collectors.toList()));
+			dictItemList.addAll(dictItemService
+					.list(Wrappers.<SysDictItem>lambdaQuery()
+							.in(SysDictItem::getDictId, dictIdList)));
+			// 查询当前租户菜单
+			menuList.addAll(menuService.list());
+			// 查询客户端配置
+			clientDetailsList.addAll(clientServices.list());
+			// 查询系统参数配置
+			publicParamList.addAll(paramService.list());
+		});
+
 		// 保证插入租户为新的租户
-		TenantContextHolder.setTenantId(sysTenant.getId());
+		return TenantBroker.applyAs(sysTenant.getId(),(id -> {
 
-		// 插入部门
-		SysDept dept = new SysDept();
-		dept.setName(defaultDeptName);
-		dept.setParentId(0);
-		deptService.save(dept);
-		//维护部门关系
-		deptRelationService.insertDeptRelation(dept);
-		// 构造初始化用户
-		SysUser user = new SysUser();
-		user.setUsername(defaultUsername);
-		user.setPassword(ENCODER.encode(defaultPassword));
-		user.setDeptId(dept.getDeptId());
-		userService.save(user);
-		// 构造新角色
-		SysRole role = new SysRole();
-		role.setRoleCode(defaultRoleCode);
-		role.setRoleName(defaultRoleName);
-		roleService.save(role);
-		// 用户角色关系
-		SysUserRole userRole = new SysUserRole();
-		userRole.setUserId(user.getUserId());
-		userRole.setRoleId(role.getRoleId());
-		userRoleService.save(userRole);
-		// 插入新的菜单
-		saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID), CommonConstants.MENU_TREE_ROOT_ID);
-		List<SysMenu> newMenuList = menuService.list();
+			// 插入部门
+			SysDept dept = new SysDept();
+			dept.setName(defaultDeptName);
+			dept.setParentId(0);
+			deptService.save(dept);
+			//维护部门关系
+			deptRelationService.insertDeptRelation(dept);
+			// 构造初始化用户
+			SysUser user = new SysUser();
+			user.setUsername(defaultUsername);
+			user.setPassword(ENCODER.encode(defaultPassword));
+			user.setDeptId(dept.getDeptId());
+			userService.save(user);
+			// 构造新角色
+			SysRole role = new SysRole();
+			role.setRoleCode(defaultRoleCode);
+			role.setRoleName(defaultRoleName);
+			roleService.save(role);
+			// 用户角色关系
+			SysUserRole userRole = new SysUserRole();
+			userRole.setUserId(user.getUserId());
+			userRole.setRoleId(role.getRoleId());
+			userRoleService.save(userRole);
+			// 插入新的菜单
+			saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID), CommonConstants.MENU_TREE_ROOT_ID);
+			List<SysMenu> newMenuList = menuService.list();
 
-		// 查询全部菜单,构造角色菜单关系
-		List<SysRoleMenu> collect = newMenuList.stream().map(menu -> {
-			SysRoleMenu roleMenu = new SysRoleMenu();
-			roleMenu.setRoleId(role.getRoleId());
-			roleMenu.setMenuId(menu.getMenuId());
-			return roleMenu;
-		}).collect(Collectors.toList());
-		roleMenuService.saveBatch(collect);
-		// 插入系统字典
-		dictService.saveBatch(dictList);
-		// 处理字典项最新关联的字典ID
-		List<SysDictItem> itemList = dictList.stream()
-				.flatMap(dict -> dictItemList.stream()
-						.filter(item -> item.getType().equals(dict.getType()))
-						.peek(item -> item.setDictId(dict.getId())))
-				.collect(Collectors.toList());
+			// 查询全部菜单,构造角色菜单关系
+			List<SysRoleMenu> collect = newMenuList.stream().map(menu -> {
+				SysRoleMenu roleMenu = new SysRoleMenu();
+				roleMenu.setRoleId(role.getRoleId());
+				roleMenu.setMenuId(menu.getMenuId());
+				return roleMenu;
+			}).collect(Collectors.toList());
+			roleMenuService.saveBatch(collect);
+			// 插入系统字典
+			dictService.saveBatch(dictList);
+			// 处理字典项最新关联的字典ID
+			List<SysDictItem> itemList = dictList.stream()
+					.flatMap(dict -> dictItemList.stream()
+							.filter(item -> item.getType().equals(dict.getType()))
+							.peek(item -> item.setDictId(dict.getId())))
+					.collect(Collectors.toList());
 
-		//插入客户端
-		clientServices.saveBatch(clientDetailsList);
-		// 插入系统配置
-		paramService.saveBatch(publicParamList);
-		return dictItemService.saveBatch(itemList);
+			//插入客户端
+			clientServices.saveBatch(clientDetailsList);
+			// 插入系统配置
+			paramService.saveBatch(publicParamList);
+			return dictItemService.saveBatch(itemList);
+		}));
+
 	}
 
 	/**
