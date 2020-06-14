@@ -36,12 +36,13 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.Locale;
 
 /**
+ * 客户端异常处理  {@link org.springframework.security.core.AuthenticationException } 不同细化异常处理
+ *
  * @author lengleng
- * @date 2018/7/8
- * 客户端异常处理
- * 1. 可以根据 AuthenticationException 不同细化异常处理
+ * @date 2020-06-14
  */
 @Slf4j
 @Component
@@ -63,13 +64,15 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		if (authException instanceof CredentialsExpiredException
 				|| authException instanceof InsufficientAuthenticationException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
+					"AbstractUserDetailsAuthenticationProvider.credentialsExpired"
+					, authException.getMessage(), Locale.CHINA);
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof UsernameNotFoundException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage());
+					"AbstractUserDetailsAuthenticationProvider.noopBindAccount"
+					, authException.getMessage(), Locale.CHINA);
 			result.setMsg(msg);
 		}
 
