@@ -36,4 +36,5 @@ public class NettyServiceImpl implements NettyService {
 	public IActionService getActionService(String action) {
 		return spring.getBean(action, IActionService.class);
 	}
+
 }

@@ -19,10 +19,12 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "pigx.xsequence.db")
 public class SequenceDbProperties extends BaseSequenceProperties {
+
 	/**
 	 * 表名称
 	 */
 	private String tableName = "pigx_sequence";
+
 	/**
 	 * 重试次数
 	 */

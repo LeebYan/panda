@@ -31,16 +31,14 @@ public interface WxMenuService extends IService<WxMpMenu> {
 
 	/**
 	 * 新增微信公众号按钮
-	 *
 	 * @param wxMenus json
-	 * @param appId   公众号信息
+	 * @param appId 公众号信息
 	 * @return
 	 */
 	Boolean save(JSONObject wxMenus, String appId);
 
 	/**
 	 * 发布到微信
-	 *
 	 * @param appId 公众号信息
 	 * @return
 	 */
@@ -48,7 +46,6 @@ public interface WxMenuService extends IService<WxMpMenu> {
 
 	/**
 	 * 通过appid 查询菜单信息
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -60,4 +57,5 @@ public interface WxMenuService extends IService<WxMpMenu> {
 	 * @return
 	 */
 	R delete(String appId);
+
 }

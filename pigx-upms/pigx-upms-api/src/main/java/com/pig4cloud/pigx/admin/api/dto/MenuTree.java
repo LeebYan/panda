@@ -35,42 +35,51 @@ import java.io.Serializable;
 @ApiModel(value = "菜单树")
 @EqualsAndHashCode(callSuper = true)
 public class MenuTree extends TreeNode implements Serializable {
+
 	/**
 	 * 菜单图标
 	 */
 	@ApiModelProperty(value = "菜单图标")
 	private String icon;
+
 	/**
 	 * 菜单名称
 	 */
 	@ApiModelProperty(value = "菜单名称")
 	private String name;
+
 	private boolean spread = false;
+
 	/**
 	 * 前端路由标识路径
 	 */
 	@ApiModelProperty(value = "前端路由标识路径")
 	private String path;
+
 	/**
 	 * 路由缓冲
 	 */
 	@ApiModelProperty(value = "路由缓冲")
 	private String keepAlive;
+
 	/**
 	 * 权限编码
 	 */
 	@ApiModelProperty(value = "权限编码")
 	private String permission;
+
 	/**
 	 * 菜单类型 （0菜单 1按钮）
 	 */
 	@ApiModelProperty(value = "菜单类型,0:菜单 1:按钮")
 	private String type;
+
 	/**
 	 * 菜单标签
 	 */
 	@ApiModelProperty(value = "菜单标签")
 	private String label;
+
 	/**
 	 * 排序值
 	 */
@@ -113,4 +122,5 @@ public class MenuTree extends TreeNode implements Serializable {
 		this.sort = menuVo.getSort();
 		this.keepAlive = menuVo.getKeepAlive();
 	}
+
 }

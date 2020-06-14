@@ -48,11 +48,12 @@ import java.util.Optional;
  */
 @Slf4j
 public class PigxUserAuthenticationConverter implements UserAuthenticationConverter {
+
 	private static final String N_A = "N/A";
 
 	/**
-	 * Extract information about the user to be used in an access token (i.e. for resource servers).
-	 *
+	 * Extract information about the user to be used in an access token (i.e. for resource
+	 * servers).
 	 * @param authentication an authentication representing a user
 	 * @return a map of key values representing the unique information about the user
 	 */
@@ -67,8 +68,8 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 	}
 
 	/**
-	 * Inverse of {@link #convertUserAuthentication(Authentication)}. Extracts an Authentication from a map.
-	 *
+	 * Inverse of {@link #convertUserAuthentication(Authentication)}. Extracts an
+	 * Authentication from a map.
 	 * @param responseMap a map of user information
 	 * @return an Authentication representing the user or null if there is none
 	 */
@@ -84,8 +85,8 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 			Integer tenantId = MapUtil.getInt(map, SecurityConstants.DETAILS_TENANT_ID);
 			String phone = MapUtil.getStr(map, SecurityConstants.DETAILS_PHONE);
 			String avatar = MapUtil.getStr(map, SecurityConstants.DETAILS_AVATAR);
-			PigxUser user = new PigxUser(id, deptId, phone, avatar, tenantId, username, N_A, true
-					, true, true, true, authorities);
+			PigxUser user = new PigxUser(id, deptId, phone, avatar, tenantId, username, N_A, true, true, true, true,
+					authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}
 		return null;
@@ -97,8 +98,8 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 			return AuthorityUtils.commaSeparatedStringToAuthorityList((String) authorities);
 		}
 		if (authorities instanceof Collection) {
-			return AuthorityUtils.commaSeparatedStringToAuthorityList(StringUtils
-					.collectionToCommaDelimitedString((Collection<?>) authorities));
+			return AuthorityUtils.commaSeparatedStringToAuthorityList(
+					StringUtils.collectionToCommaDelimitedString((Collection<?>) authorities));
 		}
 		return AuthorityUtils.NO_AUTHORITIES;
 	}
@@ -109,18 +110,21 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 		if (StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)) {
 			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致", headerValue, userValue);
 			// TODO: 不要提示租户ID不对，可能被穷举
-			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId", "Bad tenant ID"));
+			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor()
+					.getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId", "Bad tenant ID"));
 		}
 	}
 
 	private Optional<HttpServletRequest> getCurrentHttpRequest() {
-		return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
-				.filter(requestAttributes -> ServletRequestAttributes.class.isAssignableFrom(requestAttributes.getClass()))
+		return Optional.ofNullable(RequestContextHolder.getRequestAttributes()).filter(
+				requestAttributes -> ServletRequestAttributes.class.isAssignableFrom(requestAttributes.getClass()))
 				.map(requestAttributes -> ((ServletRequestAttributes) requestAttributes))
 				.map(ServletRequestAttributes::getRequest);
 	}
 
 	private String getCurrentTenantId() {
-		return getCurrentHttpRequest().map(httpServletRequest -> httpServletRequest.getHeader(CommonConstants.TENANT_ID)).orElse(null);
+		return getCurrentHttpRequest()
+				.map(httpServletRequest -> httpServletRequest.getHeader(CommonConstants.TENANT_ID)).orElse(null);
 	}
+
 }

@@ -29,6 +29,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum DataScopeTypeEnum {
+
 	/**
 	 * 查询全部数据
 	 */
@@ -53,8 +54,10 @@ public enum DataScopeTypeEnum {
 	 * 类型
 	 */
 	private final int type;
+
 	/**
 	 * 描述
 	 */
 	private final String description;
+
 }

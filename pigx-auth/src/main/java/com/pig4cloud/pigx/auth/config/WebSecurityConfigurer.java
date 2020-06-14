@@ -39,43 +39,28 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 /**
  * @author lengleng
- * @date 2018/6/22
- * 认证相关配置
+ * @date 2018/6/22 认证相关配置
  */
 @Primary
 @Order(90)
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http
-				.formLogin()
-				.loginPage("/token/login")
-				.loginProcessingUrl("/token/form")
-				.failureHandler(authenticationFailureHandler())
-				.and()
-				.logout()
+		http.formLogin().loginPage("/token/login").loginProcessingUrl("/token/form")
+				.failureHandler(authenticationFailureHandler()).and().logout()
 				.logoutSuccessHandler((request, response, authentication) -> {
 					String referer = request.getHeader(HttpHeaders.REFERER);
 					response.sendRedirect(referer);
-				})
-				.deleteCookies("JSESSIONID")
-				.invalidateHttpSession(true)
-				.and()
-				.authorizeRequests()
-				.antMatchers(
-						"/token/**",
-						"/actuator/**",
-						"/mobile/**").permitAll()
-				.anyRequest().authenticated()
-				.and().csrf().disable()
-				.apply(mobileSecurityConfigurer());
+				}).deleteCookies("JSESSIONID").invalidateHttpSession(true).and().authorizeRequests()
+				.antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll().anyRequest().authenticated().and()
+				.csrf().disable().apply(mobileSecurityConfigurer());
 	}
 
 	/**
 	 * 不拦截静态资源
-	 *
 	 * @param web
 	 */
 	@Override
@@ -105,11 +90,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		return new MobileSecurityConfigurer();
 	}
 
-
 	/**
 	 * https://spring.io/blog/2017/11/01/spring-security-5-0-0-rc1-released#password-storage-updated
 	 * Encoded password does not look like BCrypt
-	 *
 	 * @return PasswordEncoder
 	 */
 	@Bean

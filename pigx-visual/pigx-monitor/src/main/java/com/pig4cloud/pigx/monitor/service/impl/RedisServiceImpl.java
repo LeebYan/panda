@@ -20,17 +20,18 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class RedisServiceImpl implements RedisService {
+
 	private RedisTemplate redisTemplate;
 
 	/**
 	 * 获取内存信息
-	 *
 	 * @return
 	 */
 	@Override
 	public Map<String, Object> getInfo() {
 		Properties info = (Properties) redisTemplate.execute((RedisCallback) redisConnection -> redisConnection.info());
-		Properties commandStats = (Properties) redisTemplate.execute((RedisCallback) redisConnection -> redisConnection.info("commandstats"));
+		Properties commandStats = (Properties) redisTemplate
+				.execute((RedisCallback) redisConnection -> redisConnection.info("commandstats"));
 		Object dbSize = redisTemplate.execute((RedisCallback) redisConnection -> redisConnection.dbSize());
 
 		Map<String, Object> result = new HashMap<>(4);
@@ -49,4 +50,5 @@ public class RedisServiceImpl implements RedisService {
 		result.put("commandStats", pieList);
 		return result;
 	}
+
 }

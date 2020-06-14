@@ -40,4 +40,5 @@ public class DemoJob {
 		XxlJobLogger.log("This is a demo job." + shardingVO);
 		return SUCCESS;
 	}
+
 }

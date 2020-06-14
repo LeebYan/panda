@@ -40,7 +40,6 @@ public interface RemoteDataScopeService {
 
 	/**
 	 * 通过角色ID 查询角色列表
-	 *
 	 * @param roleIdList 角色ID
 	 * @return
 	 */
@@ -49,10 +48,10 @@ public interface RemoteDataScopeService {
 
 	/**
 	 * 获取子级部门
-	 *
 	 * @param deptId 部门ID
 	 * @return
 	 */
 	@GetMapping("/dept/getDescendantList/{deptId}")
 	R<List<SysDeptRelation>> getDescendantList(@PathVariable("deptId") Integer deptId);
+
 }

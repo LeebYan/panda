@@ -45,17 +45,21 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 
 /**
  * @author lengleng
- * @date 2018/6/22
- * 认证服务器配置
+ * @date 2018/6/22 认证服务器配置
  */
 @Configuration
 @AllArgsConstructor
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
 	private final ClientDetailsService pigxClientDetailsServiceImpl;
+
 	private final AuthenticationManager authenticationManagerBean;
+
 	private final RedisConnectionFactory redisConnectionFactory;
+
 	private final UserDetailsService pigxUserDetailsService;
+
 	private final TokenEnhancer pigxTokenEnhancer;
 
 	@Override
@@ -66,24 +70,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-		oauthServer
-				.allowFormAuthenticationForClients()
-				.checkTokenAccess("isAuthenticated()");
+		oauthServer.allowFormAuthenticationForClients().checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-		endpoints
-				.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-				.tokenStore(tokenStore())
-				.tokenEnhancer(pigxTokenEnhancer)
-				.userDetailsService(pigxUserDetailsService)
-				.authenticationManager(authenticationManagerBean)
-				.reuseRefreshTokens(false)
+		endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(tokenStore())
+				.tokenEnhancer(pigxTokenEnhancer).userDetailsService(pigxUserDetailsService)
+				.authenticationManager(authenticationManagerBean).reuseRefreshTokens(false)
 				.pathMapping("/oauth/confirm_access", "/token/confirm_access")
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
 	}
-
 
 	@Bean
 	public TokenStore tokenStore() {
@@ -97,5 +94,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		});
 		return tokenStore;
 	}
-}
 
+}

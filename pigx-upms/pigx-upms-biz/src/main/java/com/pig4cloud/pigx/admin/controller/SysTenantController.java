@@ -35,7 +35,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 /**
  * 租户管理
  *
@@ -52,8 +51,7 @@ public class SysTenantController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page      分页对象
+	 * @param page 分页对象
 	 * @param sysTenant 租户
 	 * @return
 	 */
@@ -62,10 +60,8 @@ public class SysTenantController {
 		return R.ok(sysTenantService.page(page, Wrappers.query(sysTenant)));
 	}
 
-
 	/**
 	 * 通过id查询租户
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -76,7 +72,6 @@ public class SysTenantController {
 
 	/**
 	 * 新增租户
-	 *
 	 * @param sysTenant 租户
 	 * @return R
 	 */
@@ -90,7 +85,6 @@ public class SysTenantController {
 
 	/**
 	 * 修改租户
-	 *
 	 * @param sysTenant 租户
 	 * @return R
 	 */
@@ -104,7 +98,6 @@ public class SysTenantController {
 
 	/**
 	 * 通过id删除租户
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -118,17 +111,14 @@ public class SysTenantController {
 
 	/**
 	 * 查询全部有效的租户
-	 *
 	 * @return
 	 */
 	@Inner(value = false)
 	@GetMapping("/list")
 	public R list() {
-		List<SysTenant> tenants = sysTenantService.getNormalTenant()
-				.stream()
+		List<SysTenant> tenants = sysTenantService.getNormalTenant().stream()
 				.filter(tenant -> tenant.getStartTime().isBefore(LocalDate.now()))
-				.filter(tenant -> tenant.getEndTime().isAfter(LocalDate.now()))
-				.collect(Collectors.toList());
+				.filter(tenant -> tenant.getEndTime().isAfter(LocalDate.now())).collect(Collectors.toList());
 		return R.ok(tenants);
 	}
 

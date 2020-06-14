@@ -28,8 +28,7 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2018/7/22
- * 网关不校验终端配置
+ * @date 2018/7/22 网关不校验终端配置
  */
 @Data
 @Configuration
@@ -37,6 +36,9 @@ import java.util.List;
 @ConditionalOnExpression("!'${ignore}'.isEmpty()")
 @ConfigurationProperties(prefix = "ignore")
 public class FilterIgnorePropertiesConfig {
+
 	private List<String> clients = new ArrayList<>();
-	private List<String> swaggerProviders=new ArrayList<>();
+
+	private List<String> swaggerProviders = new ArrayList<>();
+
 }

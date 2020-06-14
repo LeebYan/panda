@@ -48,17 +48,23 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class NettyServerServiceImpl implements NettyServerService, DisposableBean {
+
 	private Logger logger = LoggerFactory.getLogger(NettyServerServiceImpl.class);
+
 	private EventLoopGroup bossGroup;
+
 	private EventLoopGroup workerGroup;
+
 	private TxCoreServerHandler txCoreServerHandler;
+
 	@Autowired
 	private NettyService nettyService;
+
 	@Autowired
 	private Executor threadPool;
+
 	@Autowired
 	private ConfigReader configReader;
-
 
 	@Override
 	public void start() {
@@ -68,14 +74,12 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 		workerGroup = new NioEventLoopGroup();
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(bossGroup, workerGroup)
-					.channel(NioServerSocketChannel.class)
-					.option(ChannelOption.SO_BACKLOG, 100)
-					.handler(new LoggingHandler(LogLevel.INFO))
-					.childHandler(new ChannelInitializer<SocketChannel>() {
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 100)
+					.handler(new LoggingHandler(LogLevel.INFO)).childHandler(new ChannelInitializer<SocketChannel>() {
 						@Override
 						public void initChannel(SocketChannel ch) {
-							ch.pipeline().addLast("timeout", new IdleStateHandler(heartTime, heartTime, heartTime, TimeUnit.SECONDS));
+							ch.pipeline().addLast("timeout",
+									new IdleStateHandler(heartTime, heartTime, heartTime, TimeUnit.SECONDS));
 
 							ch.pipeline().addLast(new LengthFieldPrepender(4, false));
 							ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
@@ -88,7 +92,8 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 			b.bind(Constants.socketPort);
 			logger.info("Socket started on port(s): " + Constants.socketPort + " (socket)");
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// Shut down all event loops to terminate all threads.
 			e.printStackTrace();
 		}
@@ -109,4 +114,5 @@ public class NettyServerServiceImpl implements NettyServerService, DisposableBea
 	public void destroy() {
 		close();
 	}
+
 }

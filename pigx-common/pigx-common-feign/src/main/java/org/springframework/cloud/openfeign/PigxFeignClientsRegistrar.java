@@ -44,9 +44,12 @@ import java.util.Map;
  * <p>
  * feign 自动配置功能 from mica
  */
-public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar, BeanClassLoaderAware, EnvironmentAware {
+public class PigxFeignClientsRegistrar
+		implements ImportBeanDefinitionRegistrar, BeanClassLoaderAware, EnvironmentAware {
+
 	@Getter
 	private ClassLoader beanClassLoader;
+
 	@Getter
 	private Environment environment;
 
@@ -61,7 +64,8 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 	}
 
 	private void registerFeignClients(BeanDefinitionRegistry registry) {
-		List<String> feignClients = SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
+		List<String> feignClients = SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(),
+				getBeanClassLoader());
 		// 如果 spring.factories 里为空
 		if (feignClients.isEmpty()) {
 			return;
@@ -69,7 +73,8 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 		for (String className : feignClients) {
 			try {
 				Class<?> clazz = beanClassLoader.loadClass(className);
-				AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(clazz, FeignClient.class);
+				AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(clazz,
+						FeignClient.class);
 				if (attributes == null) {
 					continue;
 				}
@@ -80,7 +85,8 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 				registerClientConfiguration(registry, getClientName(attributes), attributes.get("configuration"));
 
 				validate(attributes);
-				BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(FeignClientFactoryBean.class);
+				BeanDefinitionBuilder definition = BeanDefinitionBuilder
+						.genericBeanDefinition(FeignClientFactoryBean.class);
 				definition.addPropertyValue("url", getUrl(attributes));
 				definition.addPropertyValue("path", getPath(attributes));
 				String name = getName(attributes);
@@ -92,7 +98,8 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 					String contextId = getContextId(attributes);
 					aliasBuilder.append(contextId);
 					definition.addPropertyValue("contextId", contextId);
-				} else {
+				}
+				else {
 					aliasBuilder.append(name);
 				}
 
@@ -117,10 +124,12 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 					alias = qualifier;
 				}
 
-				BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className, new String[]{alias});
+				BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className,
+						new String[] { alias });
 				BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
 
-			} catch (ClassNotFoundException e) {
+			}
+			catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -129,7 +138,6 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 	/**
 	 * Return the class used by {@link SpringFactoriesLoader} to load configuration
 	 * candidates.
-	 *
 	 * @return the factory class
 	 */
 	private Class<?> getSpringFactoriesLoaderFactoryClass() {
@@ -213,14 +221,16 @@ public class PigxFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 			return value;
 		}
 
-		throw new IllegalStateException("Either 'name' or 'value' must be provided in @" + FeignClient.class.getSimpleName());
+		throw new IllegalStateException(
+				"Either 'name' or 'value' must be provided in @" + FeignClient.class.getSimpleName());
 	}
 
 	private void registerClientConfiguration(BeanDefinitionRegistry registry, Object name, Object configuration) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FeignClientSpecification.class);
 		builder.addConstructorArgValue(name);
 		builder.addConstructorArgValue(configuration);
-		registry.registerBeanDefinition(name + "." + FeignClientSpecification.class.getSimpleName(), builder.getBeanDefinition());
+		registry.registerBeanDefinition(name + "." + FeignClientSpecification.class.getSimpleName(),
+				builder.getBeanDefinition());
 	}
 
 	@Override

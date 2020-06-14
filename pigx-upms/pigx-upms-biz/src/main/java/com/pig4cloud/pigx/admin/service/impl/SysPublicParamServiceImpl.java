@@ -38,14 +38,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper, SysPublicParam> implements SysPublicParamService {
+public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper, SysPublicParam>
+		implements SysPublicParamService {
 
 	@Override
 	@Cacheable(value = CacheConstants.PARAMS_DETAILS, key = "#publicKey", unless = "#result == null ")
 	public String getSysPublicParamKeyToValue(String publicKey) {
 		SysPublicParam sysPublicParam = this.baseMapper
-				.selectOne(Wrappers.<SysPublicParam>lambdaQuery()
-						.eq(SysPublicParam::getPublicKey, publicKey));
+				.selectOne(Wrappers.<SysPublicParam>lambdaQuery().eq(SysPublicParam::getPublicKey, publicKey));
 
 		if (sysPublicParam != null) {
 			return sysPublicParam.getPublicValue();
@@ -55,7 +55,6 @@ public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper,
 
 	/**
 	 * 更新参数
-	 *
 	 * @param sysPublicParam
 	 * @return
 	 */
@@ -72,7 +71,6 @@ public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper,
 
 	/**
 	 * 删除参数
-	 *
 	 * @param publicId
 	 * @return
 	 */
@@ -86,4 +84,5 @@ public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper,
 		}
 		return R.ok(this.removeById(publicId));
 	}
+
 }

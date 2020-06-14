@@ -41,6 +41,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/task")
 public class TaskController {
+
 	private final ActTaskService actTaskService;
 
 	@GetMapping("/todo")
@@ -71,6 +72,5 @@ public class TaskController {
 	public R commitList(@PathVariable String id) {
 		return R.ok(actTaskService.getCommentByTaskId(id));
 	}
-
 
 }

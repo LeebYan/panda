@@ -54,13 +54,15 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, WxAccountFans> implements WxAccountFansService {
+public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, WxAccountFans>
+		implements WxAccountFansService {
+
 	private static final int SIZE = 100;
+
 	private final WxAccountMapper wxAccountMapper;
 
 	/**
 	 * 获取公众号粉丝，生产建议异步
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -70,68 +72,65 @@ public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, W
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean syncAccountFans(String appId) {
 		WxAccount wxAccount = wxAccountMapper
-				.selectOne(Wrappers.<WxAccount>query().lambda()
-						.eq(WxAccount::getAppid, appId));
+				.selectOne(Wrappers.<WxAccount>query().lambda().eq(WxAccount::getAppid, appId));
 
 		// 获取操作微信接口类
 		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 		WxMpUserService wxMpUserService = wxMpService.getUserService();
 
-		TenantBroker.runAs(()->WxMpInitConfigRunner.getTenants().get(appId),(id)->fetchUser(null, wxAccount, wxMpUserService));
+		TenantBroker.runAs(() -> WxMpInitConfigRunner.getTenants().get(appId),
+				(id) -> fetchUser(null, wxAccount, wxMpUserService));
 		return Boolean.TRUE;
 	}
 
 	/**
 	 * 获取微信用户
-	 *
 	 * @param nextOpenid
 	 * @param wxAccount
 	 * @param wxMpUserService
 	 * @throws WxErrorException
 	 */
-	private void fetchUser(String nextOpenid, WxAccount wxAccount, WxMpUserService wxMpUserService) throws WxErrorException {
+	private void fetchUser(String nextOpenid, WxAccount wxAccount, WxMpUserService wxMpUserService)
+			throws WxErrorException {
 		WxMpUserList wxMpUserList = wxMpUserService.userList(nextOpenid);
 
 		// openId 分组 每组 100个 openid
-		CollUtil.split(wxMpUserList.getOpenids(), SIZE)
-				.stream().filter(CollUtil::isNotEmpty)
-				.forEach(openIdList -> {
-					log.info("开始批量获取用户信息 {}", openIdList);
-					List<WxAccountFans> wxAccountFansList = new ArrayList<>();
-					try {
-						wxMpUserService.userInfoList(openIdList).forEach(wxMpUser -> {
-							WxAccountFans wxAccountFans = baseMapper
-									.selectOne(Wrappers.<WxAccountFans>query().lambda()
-											.eq(WxAccountFans::getOpenid, wxMpUser.getOpenId()));
-							// 为空初始化一个新的对象
-							if (wxAccountFans == null) {
-								wxAccountFans = new WxAccountFans();
-							}
-
-							wxAccountFans.setOpenid(wxMpUser.getOpenId());
-							wxAccountFans.setSubscribeStatus(String.valueOf(BooleanUtil.toInt(wxMpUser.getSubscribe())));
-							wxAccountFans.setSubscribeTime(LocalDateTime
-									.ofInstant(Instant.ofEpochMilli(wxMpUser.getSubscribeTime() * 1000L)
-											, ZoneId.systemDefault()));
-							wxAccountFans.setNickname(wxMpUser.getNickname());
-							wxAccountFans.setGender(String.valueOf(wxMpUser.getSex()));
-							wxAccountFans.setLanguage(wxMpUser.getLanguage());
-							wxAccountFans.setCountry(wxMpUser.getCountry());
-							wxAccountFans.setProvince(wxMpUser.getProvince());
-							wxAccountFans.setCity(wxMpUser.getCity());
-							wxAccountFans.setHeadimgUrl(wxMpUser.getHeadImgUrl());
-							wxAccountFans.setRemark(wxMpUser.getRemark());
-							wxAccountFans.setWxAccountId(wxAccount.getId());
-							wxAccountFans.setWxAccountAppid(wxAccount.getAppid());
-							wxAccountFans.setWxAccountName(wxAccount.getName());
-							wxAccountFansList.add(wxAccountFans);
-						});
-						this.saveOrUpdateBatch(wxAccountFansList);
-						log.info("批量插入用户信息完成 {}", openIdList);
-					} catch (WxErrorException e) {
-						log.error("批量同步粉丝失败", e);
+		CollUtil.split(wxMpUserList.getOpenids(), SIZE).stream().filter(CollUtil::isNotEmpty).forEach(openIdList -> {
+			log.info("开始批量获取用户信息 {}", openIdList);
+			List<WxAccountFans> wxAccountFansList = new ArrayList<>();
+			try {
+				wxMpUserService.userInfoList(openIdList).forEach(wxMpUser -> {
+					WxAccountFans wxAccountFans = baseMapper.selectOne(Wrappers.<WxAccountFans>query().lambda()
+							.eq(WxAccountFans::getOpenid, wxMpUser.getOpenId()));
+					// 为空初始化一个新的对象
+					if (wxAccountFans == null) {
+						wxAccountFans = new WxAccountFans();
 					}
+
+					wxAccountFans.setOpenid(wxMpUser.getOpenId());
+					wxAccountFans.setSubscribeStatus(String.valueOf(BooleanUtil.toInt(wxMpUser.getSubscribe())));
+					wxAccountFans.setSubscribeTime(LocalDateTime.ofInstant(
+							Instant.ofEpochMilli(wxMpUser.getSubscribeTime() * 1000L), ZoneId.systemDefault()));
+					wxAccountFans.setNickname(wxMpUser.getNickname());
+					wxAccountFans.setGender(String.valueOf(wxMpUser.getSex()));
+					wxAccountFans.setLanguage(wxMpUser.getLanguage());
+					wxAccountFans.setCountry(wxMpUser.getCountry());
+					wxAccountFans.setProvince(wxMpUser.getProvince());
+					wxAccountFans.setCity(wxMpUser.getCity());
+					wxAccountFans.setHeadimgUrl(wxMpUser.getHeadImgUrl());
+					wxAccountFans.setRemark(wxMpUser.getRemark());
+					wxAccountFans.setWxAccountId(wxAccount.getId());
+					wxAccountFans.setWxAccountAppid(wxAccount.getAppid());
+					wxAccountFans.setWxAccountName(wxAccount.getName());
+					wxAccountFansList.add(wxAccountFans);
 				});
+				this.saveOrUpdateBatch(wxAccountFansList);
+				log.info("批量插入用户信息完成 {}", openIdList);
+			}
+			catch (WxErrorException e) {
+				log.error("批量同步粉丝失败", e);
+			}
+		});
 
 		// 如果nextOpenId 不为空，则继续获取
 		if (StrUtil.isNotBlank(wxMpUserList.getNextOpenid())) {
@@ -140,4 +139,5 @@ public class WxAccountFansServiceImpl extends ServiceImpl<WxAccountFansMapper, W
 
 		log.info("批量同步微信用户信息完成");
 	}
+
 }

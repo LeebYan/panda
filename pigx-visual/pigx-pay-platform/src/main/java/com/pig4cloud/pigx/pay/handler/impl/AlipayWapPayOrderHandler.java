@@ -49,15 +49,19 @@ import java.io.IOException;
 @Service("ALIPAY_WAP")
 @AllArgsConstructor
 public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
+
 	private final PayCommonProperties payCommonProperties;
+
 	private final PayTradeOrderMapper tradeOrderMapper;
+
 	private final PayGoodsOrderMapper goodsOrderMapper;
+
 	private final HttpServletRequest request;
+
 	private final HttpServletResponse response;
 
 	/**
 	 * 创建交易订单
-	 *
 	 * @param goodsOrder
 	 * @return
 	 */
@@ -79,7 +83,6 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 
 	/**
 	 * 调起渠道支付
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -91,20 +94,22 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		model.setOutTradeNo(tradeOrder.getOrderId());
 		model.setTimeoutExpress(payCommonProperties.getAliPayConfig().getExpireTime() + "m");
 
-		//分转成元 并且保留两位
+		// 分转成元 并且保留两位
 		model.setTotalAmount(NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString());
 		model.setProductCode(goodsOrder.getGoodsId());
 		model.setPassbackParams(String.valueOf(TenantContextHolder.getTenantId()));
 		try {
-			AliPayApi.wapPay(response, model, payCommonProperties.getAliPayConfig().getReturnUrl()
-					, payCommonProperties.getAliPayConfig().getNotifyUrl());
-		} catch (AlipayApiException e) {
+			AliPayApi.wapPay(response, model, payCommonProperties.getAliPayConfig().getReturnUrl(),
+					payCommonProperties.getAliPayConfig().getNotifyUrl());
+		}
+		catch (AlipayApiException e) {
 			log.error("支付宝手机支付失败", e);
 			tradeOrder.setErrMsg(e.getErrMsg());
 			tradeOrder.setErrCode(e.getErrCode());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 			goodsOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.error("支付宝手机支付失败", e);
 			tradeOrder.setErrMsg(e.getMessage());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
@@ -115,7 +120,6 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 
 	/**
 	 * 更新订单信息
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -124,4 +128,5 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		tradeOrderMapper.updateById(tradeOrder);
 		goodsOrderMapper.updateById(goodsOrder);
 	}
+
 }

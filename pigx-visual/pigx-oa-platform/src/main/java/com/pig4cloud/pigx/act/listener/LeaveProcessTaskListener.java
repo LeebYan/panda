@@ -35,15 +35,13 @@ import java.util.stream.Collectors;
 
 /**
  * @author lengleng
- * @date 2018/9/27
- * 请假流程监听器
+ * @date 2018/9/27 请假流程监听器
  */
 @Slf4j
 public class LeaveProcessTaskListener implements TaskListener {
 
 	/**
 	 * 查询提交人的上级
-	 *
 	 * @param delegateTask
 	 */
 	@Override
@@ -58,7 +56,8 @@ public class LeaveProcessTaskListener implements TaskListener {
 			log.info("用户 {} 不存在上级,任务单由当前用户审批", SecurityUtils.getUser().getUsername());
 			delegateTask.addCandidateUser(SecurityUtils.getUser().getUsername());
 			remindUserList.add(SecurityUtils.getUser().getUsername());
-		} else {
+		}
+		else {
 			List<String> userList = result.getData().stream().map(SysUser::getUsername).collect(Collectors.toList());
 			log.info("当前任务 {}，由 {}处理", delegateTask.getId(), userList);
 			delegateTask.addCandidateUsers(userList);
@@ -66,8 +65,10 @@ public class LeaveProcessTaskListener implements TaskListener {
 		}
 
 		remindUserList.forEach(user -> {
-			String target = String.format("%s-%s", SecurityUtils.getUser().getUsername(), TenantContextHolder.getTenantId());
+			String target = String.format("%s-%s", SecurityUtils.getUser().getUsername(),
+					TenantContextHolder.getTenantId());
 			simpMessagingTemplate.convertAndSendToUser(target, "/remind", delegateTask.getName());
 		});
 	}
+
 }

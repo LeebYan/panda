@@ -31,6 +31,7 @@ import lombok.SneakyThrows;
  * OAuth2 异常格式化
  */
 public class PigxAuth2ExceptionSerializer extends StdSerializer<PigxAuth2Exception> {
+
 	public PigxAuth2ExceptionSerializer() {
 		super(PigxAuth2Exception.class);
 	}
@@ -44,4 +45,5 @@ public class PigxAuth2ExceptionSerializer extends StdSerializer<PigxAuth2Excepti
 		gen.writeStringField("data", value.getErrorCode());
 		gen.writeEndObject();
 	}
+
 }

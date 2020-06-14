@@ -33,10 +33,10 @@ public interface GenTableColumnService extends IService<ColumnEntity> {
 
 	/**
 	 * 查询表的字段信息
-	 *
 	 * @param page
 	 * @param genConfig 查询条件
 	 * @return
 	 */
 	IPage<ColumnEntity> listTable(Page page, GenConfig genConfig);
+
 }

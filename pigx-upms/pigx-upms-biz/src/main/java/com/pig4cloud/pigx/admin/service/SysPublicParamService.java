@@ -31,7 +31,6 @@ public interface SysPublicParamService extends IService<SysPublicParam> {
 
 	/**
 	 * 通过key查询公共参数指定值
-	 *
 	 * @param publicKey
 	 * @return
 	 */
@@ -39,7 +38,6 @@ public interface SysPublicParamService extends IService<SysPublicParam> {
 
 	/**
 	 * 更新参数
-	 *
 	 * @param sysPublicParam
 	 * @return
 	 */
@@ -47,9 +45,9 @@ public interface SysPublicParamService extends IService<SysPublicParam> {
 
 	/**
 	 * 删除参数
-	 *
 	 * @param publicId
 	 * @return
 	 */
 	R removeParam(Long publicId);
+
 }

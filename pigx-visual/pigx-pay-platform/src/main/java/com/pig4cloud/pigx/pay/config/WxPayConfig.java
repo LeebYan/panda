@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class WxPayConfig {
+
 	/**
 	 * 服务端回调地址
 	 */
@@ -17,4 +18,5 @@ public class WxPayConfig {
 	 * 订单过期时间
 	 */
 	private String expireTime;
+
 }

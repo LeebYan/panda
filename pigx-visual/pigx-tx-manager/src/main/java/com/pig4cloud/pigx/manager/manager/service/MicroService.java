@@ -30,4 +30,5 @@ public interface MicroService {
 	TxServer getServer();
 
 	TxState getState();
+
 }

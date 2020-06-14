@@ -27,6 +27,7 @@ public class RedisSeqRangeMgr implements SeqRangeMgr {
 	 * IP
 	 */
 	private String ip;
+
 	/**
 	 * PORT
 	 */
@@ -48,8 +49,7 @@ public class RedisSeqRangeMgr implements SeqRangeMgr {
 	private long stepStart = 0;
 
 	/**
-	 * 标记业务key是否存在，如果false，在取nextRange时，会取check一把
-	 * 这个boolean只为提高性能，不用每次都取redis check
+	 * 标记业务key是否存在，如果false，在取nextRange时，会取check一把 这个boolean只为提高性能，不用每次都取redis check
 	 */
 	private volatile boolean keyAlreadyExist;
 
@@ -58,7 +58,7 @@ public class RedisSeqRangeMgr implements SeqRangeMgr {
 		if (!keyAlreadyExist) {
 			Boolean isExists = jedis.exists(getRealKey(name));
 			if (!isExists) {
-				//第一次不存在，进行初始化,setnx不存在就set，存在就忽略
+				// 第一次不存在，进行初始化,setnx不存在就set，存在就忽略
 				jedis.setnx(getRealKey(name), String.valueOf(stepStart));
 			}
 			keyAlreadyExist = true;
@@ -134,4 +134,5 @@ public class RedisSeqRangeMgr implements SeqRangeMgr {
 	public void setStepStart(long stepStart) {
 		this.stepStart = stepStart;
 	}
+
 }

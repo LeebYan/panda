@@ -44,21 +44,22 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @AllArgsConstructor
 public class PigxAuthenticationFailureEventHandler implements AuthenticationFailureHandler {
+
 	private final RemoteLogService logService;
 
 	/**
 	 * 异步处理，登录失败方法
 	 * <p>
-	 *
 	 * @param authenticationException 登录的authentication 对象
-	 * @param authentication          登录的authenticationException 对象
-	 * @param request                 请求
-	 * @param response                响应
+	 * @param authentication 登录的authenticationException 对象
+	 * @param request 请求
+	 * @param response 响应
 	 */
 	@Async
 	@Override
 	@SneakyThrows
-	public void handle(AuthenticationException authenticationException, Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+	public void handle(AuthenticationException authenticationException, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response) {
 		String username = authentication.getName();
 		SysLog sysLog = SysLogUtils.getSysLog(request, username);
 		sysLog.setTitle(username + "用户登录");
@@ -72,4 +73,5 @@ public class PigxAuthenticationFailureEventHandler implements AuthenticationFail
 
 		log.info("用户：{} 登录失败，异常：{}", username, authenticationException.getLocalizedMessage());
 	}
+
 }

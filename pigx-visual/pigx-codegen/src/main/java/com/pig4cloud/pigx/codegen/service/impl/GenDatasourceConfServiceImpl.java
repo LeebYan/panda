@@ -44,13 +44,15 @@ import java.sql.SQLException;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfMapper, GenDatasourceConf> implements GenDatasourceConfService {
+public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfMapper, GenDatasourceConf>
+		implements GenDatasourceConfService {
+
 	private final StringEncryptor stringEncryptor;
+
 	private final DataSourceCreator dataSourceCreator;
 
 	/**
 	 * 保存数据源并且加密
-	 *
 	 * @param conf
 	 * @return
 	 */
@@ -61,7 +63,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 			return Boolean.FALSE;
 		}
 
-		//添加动态数据源
+		// 添加动态数据源
 		addDynamicDataSource(conf);
 
 		// 更新数据库配置
@@ -72,7 +74,6 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 
 	/**
 	 * 更新数据源
-	 *
 	 * @param conf 数据源信息
 	 * @return
 	 */
@@ -81,12 +82,11 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 		if (!checkDataSource(conf)) {
 			return Boolean.FALSE;
 		}
-		//先移除
+		// 先移除
 		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
-		dynamicRoutingDataSource.removeDataSource(
-				baseMapper.selectById(conf.getId()).getName());
+		dynamicRoutingDataSource.removeDataSource(baseMapper.selectById(conf.getId()).getName());
 
-		//再添加
+		// 再添加
 		addDynamicDataSource(conf);
 
 		// 更新数据库配置
@@ -97,25 +97,21 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 		return Boolean.TRUE;
 	}
 
-
 	/**
 	 * 通过数据源名称删除
-	 *
 	 * @param dsId 数据源ID
 	 * @return
 	 */
 	@Override
 	public Boolean removeByDsId(Integer dsId) {
 		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
-		dynamicRoutingDataSource.removeDataSource(
-				baseMapper.selectById(dsId).getName());
+		dynamicRoutingDataSource.removeDataSource(baseMapper.selectById(dsId).getName());
 		this.baseMapper.deleteById(dsId);
 		return Boolean.TRUE;
 	}
 
 	/**
 	 * 添加动态数据源
-	 *
 	 * @param conf 数据源信息
 	 */
 	@Override
@@ -133,18 +129,19 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 
 	/**
 	 * 校验数据源配置是否有效
-	 *
 	 * @param conf 数据源信息
 	 * @return 有效/无效
 	 */
 	@Override
 	public Boolean checkDataSource(GenDatasourceConf conf) {
-		try (Connection connection = DriverManager.getConnection(
-				conf.getUrl(), conf.getUsername(), conf.getPassword())) {
-		} catch (SQLException e) {
+		try (Connection connection = DriverManager.getConnection(conf.getUrl(), conf.getUsername(),
+				conf.getPassword())) {
+		}
+		catch (SQLException e) {
 			log.error("数据源配置 {} , 获取链接失败", conf.getName(), e);
 			return Boolean.FALSE;
 		}
 		return Boolean.TRUE;
 	}
+
 }

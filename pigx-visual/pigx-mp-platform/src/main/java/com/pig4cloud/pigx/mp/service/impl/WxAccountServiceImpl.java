@@ -52,7 +52,6 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 
 	/**
 	 * 生成公众号二维码
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -65,11 +64,11 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 			String url = wxMpService.getQrcodeService().qrCodePictureUrl(ticket.getTicket());
 
 			WxAccount wxAccount = baseMapper
-					.selectOne(Wrappers.<WxAccount>query().lambda()
-							.eq(WxAccount::getAppid, appId));
+					.selectOne(Wrappers.<WxAccount>query().lambda().eq(WxAccount::getAppid, appId));
 			wxAccount.setQrUrl(url);
 			baseMapper.updateById(wxAccount);
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error(" 获取公众号二维码失败", e);
 			return R.failed("更新公众号二维码失败");
 		}
@@ -79,8 +78,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 
 	/**
 	 * 获取公众号统计数据
-	 *
-	 * @param appId    公众号信息
+	 * @param appId 公众号信息
 	 * @param interval 时间间隔
 	 * @return
 	 */
@@ -97,39 +95,36 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 		try {
 			// 获取累计用户数据
 			List<Object> cumulateList = cubeService.getUserCumulate(start, end).stream()
-					.map(WxDataCubeUserCumulate::getCumulateUser)
-					.collect(Collectors.toList());
+					.map(WxDataCubeUserCumulate::getCumulateUser).collect(Collectors.toList());
 			result.add(cumulateList);
 
 			// 获取用户分享数据
 			List<Object> shareList = cubeService.getUserShare(start, end).stream()
-					.map(WxDataCubeArticleResult::getShareCount)
-					.collect(Collectors.toList());
+					.map(WxDataCubeArticleResult::getShareCount).collect(Collectors.toList());
 			result.add(shareList);
 
 			// 获取消息发送概况数据
 			List<Object> upstreamList = cubeService.getUpstreamMsg(start, end).stream()
-					.map(WxDataCubeMsgResult::getMsgCount)
-					.collect(Collectors.toList());
+					.map(WxDataCubeMsgResult::getMsgCount).collect(Collectors.toList());
 			result.add(upstreamList);
 
 			// 获取接口调用概况数据
 			List<WxDataCubeInterfaceResult> interfaceSummaryList = cubeService.getInterfaceSummary(start, end);
-			List<Object> interfaceList = interfaceSummaryList.stream()
-					.map(WxDataCubeInterfaceResult::getCallbackCount)
+			List<Object> interfaceList = interfaceSummaryList.stream().map(WxDataCubeInterfaceResult::getCallbackCount)
 					.collect(Collectors.toList());
 			result.add(interfaceList);
 
 			// 接口日期保存
-			List<Object> dateList = interfaceSummaryList.stream()
-					.map(WxDataCubeInterfaceResult::getRefDate)
+			List<Object> dateList = interfaceSummaryList.stream().map(WxDataCubeInterfaceResult::getRefDate)
 					.collect(Collectors.toList());
 			result.add(dateList);
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error(" 获取公众号统计数据报错", e);
 			return R.failed("获取公众号数据失败:" + e.getError().getErrorMsg());
 		}
 
 		return R.ok();
 	}
+
 }

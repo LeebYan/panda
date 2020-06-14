@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "商品")
 public class PayGoodsOrder extends Model<PayGoodsOrder> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,43 +46,53 @@ public class PayGoodsOrder extends Model<PayGoodsOrder> {
 	 */
 	@TableId
 	private String goodsOrderId;
+
 	/**
 	 * 商品ID
 	 */
 	private String goodsId;
+
 	/**
 	 * 商品名称
 	 */
 	private String goodsName;
+
 	/**
 	 * 金额,单位分
 	 */
 	private String amount;
+
 	/**
 	 * 用户ID
 	 */
 	private String userId;
+
 	/**
 	 * 订单状态,订单生成(0),支付成功(1),处理完成(2),处理失败(-1)
 	 */
 	private String status;
+
 	/**
 	 * 支付订单号
 	 */
 	private String payOrderId;
+
 	/**
 	 * 0-正常,1-删除
 	 */
 	@TableLogic
 	private String delFlag;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
+
 	/**
 	 * 租户ID
 	 */

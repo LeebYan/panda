@@ -27,10 +27,15 @@ import javax.validation.constraints.NotEmpty;
  */
 @Data
 public class StartTaskForm {
+
 	@NotEmpty
 	public String procDefKey;
+
 	public String entityId;
+
 	@NotEmpty
 	public String title;
+
 	public String comment;
+
 }

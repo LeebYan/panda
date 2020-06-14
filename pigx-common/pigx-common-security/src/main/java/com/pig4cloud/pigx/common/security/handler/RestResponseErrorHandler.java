@@ -13,10 +13,12 @@ import java.io.IOException;
  * 重写默认的 响应失败处理器，400 不作为异常
  */
 public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
+
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
 		if (response.getRawStatusCode() != HttpStatus.BAD_REQUEST.value()) {
 			super.handleError(response);
 		}
 	}
+
 }

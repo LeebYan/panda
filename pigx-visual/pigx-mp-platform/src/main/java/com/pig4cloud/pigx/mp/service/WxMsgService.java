@@ -14,9 +14,9 @@ public interface WxMsgService extends IService<WxMsg> {
 
 	/**
 	 * 保存信息并向用户推送
-	 *
 	 * @param wxMsg
 	 * @return
 	 */
 	R saveAndPushMsg(WxMsg wxMsg);
+
 }

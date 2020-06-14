@@ -19,7 +19,6 @@
 
 package com.pig4cloud.pigx.admin.api.vo;
 
-
 import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.dto.TreeNode;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
@@ -34,9 +33,9 @@ import java.util.List;
  */
 @UtilityClass
 public class TreeUtil {
+
 	/**
 	 * 两层循环实现建树
-	 *
 	 * @param treeNodes 传入的树节点列表
 	 * @return
 	 */
@@ -64,7 +63,6 @@ public class TreeUtil {
 
 	/**
 	 * 使用递归方法建树
-	 *
 	 * @param treeNodes
 	 * @return
 	 */
@@ -80,7 +78,6 @@ public class TreeUtil {
 
 	/**
 	 * 递归查找子节点
-	 *
 	 * @param treeNodes
 	 * @return
 	 */
@@ -98,7 +95,6 @@ public class TreeUtil {
 
 	/**
 	 * 通过sysMenu创建树形节点
-	 *
 	 * @param menus
 	 * @param root
 	 * @return
@@ -123,4 +119,5 @@ public class TreeUtil {
 		}
 		return TreeUtil.build(trees, root);
 	}
+
 }

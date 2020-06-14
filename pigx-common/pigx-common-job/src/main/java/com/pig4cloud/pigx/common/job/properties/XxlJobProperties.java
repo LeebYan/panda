@@ -29,7 +29,9 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "xxl.job")
 public class XxlJobProperties {
+
 	private XxlAdminProperties admin = new XxlAdminProperties();
 
 	private XxlExecutorProperties executor = new XxlExecutorProperties();
+
 }

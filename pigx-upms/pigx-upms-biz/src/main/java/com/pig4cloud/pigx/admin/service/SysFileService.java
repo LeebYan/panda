@@ -34,7 +34,6 @@ public interface SysFileService extends IService<SysFile> {
 
 	/**
 	 * 上传文件
-	 *
 	 * @param file
 	 * @return
 	 */
@@ -42,8 +41,7 @@ public interface SysFileService extends IService<SysFile> {
 
 	/**
 	 * 读取文件
-	 *
-	 * @param bucket   桶名称
+	 * @param bucket 桶名称
 	 * @param fileName 文件名称
 	 * @param response 输出流
 	 */
@@ -51,9 +49,9 @@ public interface SysFileService extends IService<SysFile> {
 
 	/**
 	 * 删除文件
-	 *
 	 * @param id
 	 * @return
 	 */
 	Boolean deleteFile(Long id);
+
 }

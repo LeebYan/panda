@@ -42,20 +42,26 @@ import java.util.Properties;
  * @author 郑健楠
  */
 @Configuration
-@ConditionalOnClass({Scheduler.class, SchedulerFactoryBean.class})
-@EnableConfigurationProperties({QuartzProperties.class})
+@ConditionalOnClass({ Scheduler.class, SchedulerFactoryBean.class })
+@EnableConfigurationProperties({ QuartzProperties.class })
 public class PigxQuartzConfig {
+
 	private final QuartzProperties properties;
+
 	private final List<SchedulerFactoryBeanCustomizer> customizers;
+
 	private final JobDetail[] jobDetails;
+
 	private final Map<String, Calendar> calendars;
+
 	private final Trigger[] triggers;
+
 	private final ApplicationContext applicationContext;
 
 	public PigxQuartzConfig(QuartzProperties properties,
-								ObjectProvider<List<SchedulerFactoryBeanCustomizer>> customizers,
-								ObjectProvider<JobDetail[]> jobDetails, ObjectProvider<Map<String, Calendar>> calendars
-			, ObjectProvider<Trigger[]> triggers, ApplicationContext applicationContext) {
+			ObjectProvider<List<SchedulerFactoryBeanCustomizer>> customizers, ObjectProvider<JobDetail[]> jobDetails,
+			ObjectProvider<Map<String, Calendar>> calendars, ObjectProvider<Trigger[]> triggers,
+			ApplicationContext applicationContext) {
 		this.properties = properties;
 		this.customizers = customizers.getIfAvailable();
 		this.jobDetails = jobDetails.getIfAvailable();
@@ -68,8 +74,8 @@ public class PigxQuartzConfig {
 	@ConditionalOnMissingBean
 	public SchedulerFactoryBean quartzScheduler() {
 		SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-		schedulerFactoryBean.setJobFactory(new AutowireCapableBeanJobFactory(
-				this.applicationContext.getAutowireCapableBeanFactory()));
+		schedulerFactoryBean.setJobFactory(
+				new AutowireCapableBeanJobFactory(this.applicationContext.getAutowireCapableBeanFactory()));
 		if (!this.properties.getProperties().isEmpty()) {
 			schedulerFactoryBean.setQuartzProperties(this.asProperties(this.properties.getProperties()));
 		}
@@ -110,7 +116,6 @@ public class PigxQuartzConfig {
 
 	/**
 	 * 初始化监听器
-	 *
 	 * @return
 	 */
 	@Bean
@@ -120,11 +125,11 @@ public class PigxQuartzConfig {
 
 	/**
 	 * 通过SchedulerFactoryBean获取Scheduler的实例
-	 *
 	 * @return
 	 */
 	@Bean
 	public Scheduler scheduler() {
 		return quartzScheduler().getScheduler();
 	}
+
 }

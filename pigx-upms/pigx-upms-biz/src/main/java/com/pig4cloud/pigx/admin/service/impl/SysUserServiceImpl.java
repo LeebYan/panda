@@ -61,16 +61,21 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
 	private final SysMenuService sysMenuService;
+
 	private final SysRoleService sysRoleService;
+
 	private final SysDeptService sysDeptService;
+
 	private final SysUserRoleService sysUserRoleService;
+
 	private final SysDeptRelationService sysDeptRelationService;
 
 	/**
 	 * 保存用户信息
-	 *
 	 * @param userDto DTO 对象
 	 * @return success/fail
 	 */
@@ -82,19 +87,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
 		sysUser.setPassword(ENCODER.encode(userDto.getPassword()));
 		baseMapper.insert(sysUser);
-		List<SysUserRole> userRoleList = userDto.getRole()
-				.stream().map(roleId -> {
-					SysUserRole userRole = new SysUserRole();
-					userRole.setUserId(sysUser.getUserId());
-					userRole.setRoleId(roleId);
-					return userRole;
-				}).collect(Collectors.toList());
+		List<SysUserRole> userRoleList = userDto.getRole().stream().map(roleId -> {
+			SysUserRole userRole = new SysUserRole();
+			userRole.setUserId(sysUser.getUserId());
+			userRole.setRoleId(roleId);
+			return userRole;
+		}).collect(Collectors.toList());
 		return sysUserRoleService.saveBatch(userRoleList);
 	}
 
 	/**
 	 * 通过查用户的全部信息
-	 *
 	 * @param sysUser 用户
 	 * @return
 	 */
@@ -102,20 +105,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	public UserInfo findUserInfo(SysUser sysUser) {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUser);
-		//设置角色列表  （ID）
-		List<Integer> roleIds = sysRoleService.findRolesByUserId(sysUser.getUserId())
-				.stream()
-				.map(SysRole::getRoleId)
+		// 设置角色列表 （ID）
+		List<Integer> roleIds = sysRoleService.findRolesByUserId(sysUser.getUserId()).stream().map(SysRole::getRoleId)
 				.collect(Collectors.toList());
 		userInfo.setRoles(ArrayUtil.toArray(roleIds, Integer.class));
 
-		//设置权限列表（menu.permission）
+		// 设置权限列表（menu.permission）
 		Set<String> permissions = new HashSet<>();
 		roleIds.forEach(roleId -> {
-			List<String> permissionList = sysMenuService.findMenuByRoleId(roleId)
-					.stream()
-					.filter(menuVo -> StringUtils.isNotEmpty(menuVo.getPermission()))
-					.map(MenuVO::getPermission)
+			List<String> permissionList = sysMenuService.findMenuByRoleId(roleId).stream()
+					.filter(menuVo -> StringUtils.isNotEmpty(menuVo.getPermission())).map(MenuVO::getPermission)
 					.collect(Collectors.toList());
 			permissions.addAll(permissionList);
 		});
@@ -125,8 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 分页查询用户信息（含有角色信息）
-	 *
-	 * @param page    分页对象
+	 * @param page 分页对象
 	 * @param userDTO 参数列表
 	 * @return
 	 */
@@ -137,7 +135,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 通过ID查询用户信息
-	 *
 	 * @param id 用户ID
 	 * @return 用户信息
 	 */
@@ -148,7 +145,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 删除用户
-	 *
 	 * @param sysUser 用户
 	 * @return Boolean
 	 */
@@ -165,11 +161,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	public R<Boolean> updateUserInfo(UserDTO userDto) {
 		UserVO userVO = baseMapper.getUserVoByUsername(userDto.getUsername());
 		SysUser sysUser = new SysUser();
-		if (StrUtil.isNotBlank(userDto.getPassword())
-				&& StrUtil.isNotBlank(userDto.getNewpassword1())) {
+		if (StrUtil.isNotBlank(userDto.getPassword()) && StrUtil.isNotBlank(userDto.getNewpassword1())) {
 			if (ENCODER.matches(userDto.getPassword(), userVO.getPassword())) {
 				sysUser.setPassword(ENCODER.encode(userDto.getNewpassword1()));
-			} else {
+			}
+			else {
 				log.info("原密码错误，修改密码失败:{}", userDto.getUsername());
 				return R.failed("原密码错误，修改失败");
 			}
@@ -192,8 +188,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		}
 		this.updateById(sysUser);
 
-		sysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
-				.eq(SysUserRole::getUserId, userDto.getUserId()));
+		sysUserRoleService
+				.remove(Wrappers.<SysUserRole>update().lambda().eq(SysUserRole::getUserId, userDto.getUserId()));
 		userDto.getRole().forEach(roleId -> {
 			SysUserRole userRole = new SysUserRole();
 			userRole.setUserId(sysUser.getUserId());
@@ -205,14 +201,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 查询上级部门的用户信息
-	 *
 	 * @param username 用户名
 	 * @return R
 	 */
 	@Override
 	public List<SysUser> listAncestorUsers(String username) {
-		SysUser sysUser = this.getOne(Wrappers.<SysUser>query().lambda()
-				.eq(SysUser::getUsername, username));
+		SysUser sysUser = this.getOne(Wrappers.<SysUser>query().lambda().eq(SysUser::getUsername, username));
 
 		SysDept sysDept = sysDeptService.getById(sysUser.getDeptId());
 		if (sysDept == null) {
@@ -220,24 +214,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		}
 
 		Integer parentId = sysDept.getParentId();
-		return this.list(Wrappers.<SysUser>query().lambda()
-				.eq(SysUser::getDeptId, parentId));
+		return this.list(Wrappers.<SysUser>query().lambda().eq(SysUser::getDeptId, parentId));
 	}
 
 	/**
 	 * 获取当前用户的子部门信息
-	 *
 	 * @return 子部门列表
 	 */
 	private List<Integer> getChildDepts() {
 		Integer deptId = SecurityUtils.getUser().getDeptId();
-		//获取当前部门的子部门
+		// 获取当前部门的子部门
 		return sysDeptRelationService
-				.list(Wrappers.<SysDeptRelation>query().lambda()
-						.eq(SysDeptRelation::getAncestor, deptId))
-				.stream()
-				.map(SysDeptRelation::getDescendant)
-				.collect(Collectors.toList());
+				.list(Wrappers.<SysDeptRelation>query().lambda().eq(SysDeptRelation::getAncestor, deptId)).stream()
+				.map(SysDeptRelation::getDescendant).collect(Collectors.toList());
 	}
 
 }

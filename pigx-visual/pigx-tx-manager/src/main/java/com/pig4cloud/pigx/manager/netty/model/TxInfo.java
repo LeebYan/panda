@@ -22,7 +22,7 @@ import com.lorne.core.framework.model.JsonModel;
 import com.pig4cloud.pigx.manager.model.ChannelSender;
 
 /**
- *@author LCN on 2017/6/7.
+ * @author LCN on 2017/6/7.
  */
 public class TxInfo extends JsonModel {
 
@@ -42,8 +42,7 @@ public class TxInfo extends JsonModel {
 	private int notify;
 
 	/**
-	 * 0 不组合
-	 * 1 组合
+	 * 0 不组合 1 组合
 	 */
 	private int isGroup;
 
@@ -57,12 +56,10 @@ public class TxInfo extends JsonModel {
 	 */
 	private String uniqueKey;
 
-
 	/**
 	 * 管道发送数据
 	 */
 	private ChannelSender channel;
-
 
 	/**
 	 * 业务方法名称
@@ -188,4 +185,5 @@ public class TxInfo extends JsonModel {
 
 		return jsonObject.toString();
 	}
+
 }

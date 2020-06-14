@@ -39,14 +39,17 @@ import lombok.EqualsAndHashCode;
 public class SysRoleMenu extends Model<SysRoleMenu> {
 
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 角色ID
 	 */
 	@ApiModelProperty(value = "角色id")
 	private Integer roleId;
+
 	/**
 	 * 菜单ID
 	 */
 	@ApiModelProperty(value = "菜单id")
 	private Integer menuId;
+
 }

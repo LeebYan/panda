@@ -23,13 +23,14 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author lengleng
- * @date 2018/8/16
- * RestTemplate
+ * @date 2018/8/16 RestTemplate
  */
 @Configuration
 public class RestTemplateConfig {
+
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
 }

@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 public class StatusChangeNotifier extends AbstractEventNotifier {
+
 	protected StatusChangeNotifier(InstanceRepository repository) {
 		super(repository);
 	}
@@ -28,10 +29,12 @@ public class StatusChangeNotifier extends AbstractEventNotifier {
 			if (event instanceof InstanceStatusChangedEvent) {
 				log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
 						((InstanceStatusChangedEvent) event).getStatusInfo().getStatus());
-			} else {
+			}
+			else {
 				log.info("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
 						event.getType());
 			}
 		});
 	}
+
 }

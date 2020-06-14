@@ -44,12 +44,13 @@ import java.util.List;
 @RequestMapping("/role")
 @Api(value = "role", tags = "角色管理模块")
 public class SysRoleController {
+
 	private final SysRoleService sysRoleService;
+
 	private final SysRoleMenuService sysRoleMenuService;
 
 	/**
 	 * 通过ID查询角色信息
-	 *
 	 * @param id ID
 	 * @return 角色信息
 	 */
@@ -60,7 +61,6 @@ public class SysRoleController {
 
 	/**
 	 * 添加角色
-	 *
 	 * @param sysRole 角色信息
 	 * @return success、false
 	 */
@@ -73,7 +73,6 @@ public class SysRoleController {
 
 	/**
 	 * 修改角色
-	 *
 	 * @param sysRole 角色信息
 	 * @return success/false
 	 */
@@ -86,7 +85,6 @@ public class SysRoleController {
 
 	/**
 	 * 删除角色
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -99,7 +97,6 @@ public class SysRoleController {
 
 	/**
 	 * 获取角色列表
-	 *
 	 * @return 角色列表
 	 */
 	@GetMapping("/list")
@@ -109,7 +106,6 @@ public class SysRoleController {
 
 	/**
 	 * 分页查询角色信息
-	 *
 	 * @param page 分页对象
 	 * @return 分页对象
 	 */
@@ -120,7 +116,6 @@ public class SysRoleController {
 
 	/**
 	 * 更新角色菜单
-	 *
 	 * @param roleVo 角色对象
 	 * @return success、false
 	 */
@@ -129,13 +124,11 @@ public class SysRoleController {
 	@PreAuthorize("@pms.hasPermission('sys_role_perm')")
 	public R saveRoleMenus(@RequestBody RoleVO roleVo) {
 		SysRole sysRole = sysRoleService.getById(roleVo.getRoleId());
-		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode()
-				, roleVo.getRoleId(), roleVo.getMenuIds()));
+		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleVo.getRoleId(), roleVo.getMenuIds()));
 	}
 
 	/**
 	 * 通过角色ID 查询角色列表
-	 *
 	 * @param roleIdList 角色ID
 	 * @return
 	 */
@@ -143,4 +136,5 @@ public class SysRoleController {
 	public R getRoleList(@RequestBody List<String> roleIdList) {
 		return R.ok(sysRoleService.listByIds(roleIdList));
 	}
+
 }

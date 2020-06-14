@@ -43,4 +43,5 @@ public interface CompensateDao {
 	void deleteCompensateByKey(String key);
 
 	boolean hasCompensate();
+
 }

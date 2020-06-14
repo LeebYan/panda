@@ -51,7 +51,9 @@ import java.util.regex.Pattern;
 @ConditionalOnExpression("!'${security.oauth2.client.ignore-urls}'.isEmpty()")
 @ConfigurationProperties(prefix = "security.oauth2.client")
 public class PermitAllUrlProperties implements InitializingBean {
+
 	private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
+
 	private final WebApplicationContext applicationContext;
 
 	@Getter
@@ -68,16 +70,15 @@ public class PermitAllUrlProperties implements InitializingBean {
 
 			// 获取方法上边的注解 替代path variable 为 *
 			Inner method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Inner.class);
-			Optional.ofNullable(method)
-					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
+			Optional.ofNullable(method).ifPresent(inner -> info.getPatternsCondition().getPatterns()
+					.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
 
 			// 获取类上边的注解, 替代path variable 为 *
 			Inner controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Inner.class);
-			Optional.ofNullable(controller)
-					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
+			Optional.ofNullable(controller).ifPresent(inner -> info.getPatternsCondition().getPatterns()
+					.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, "*"))));
 		});
 
 	}
+
 }

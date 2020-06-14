@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @AllArgsConstructor
 public class CaptchaCacheServiceProvider implements CaptchaCacheService {
+
 	private final StringRedisTemplate stringRedisTemplate;
 
 	@Override
@@ -39,4 +40,5 @@ public class CaptchaCacheServiceProvider implements CaptchaCacheService {
 	public String get(String key) {
 		return stringRedisTemplate.opsForValue().get(key);
 	}
+
 }

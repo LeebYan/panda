@@ -33,13 +33,11 @@ import org.springframework.stereotype.Component;
 @Component("SMS")
 @AllArgsConstructor
 public class SmsLoginHandler extends AbstractLoginHandler {
+
 	private final SysUserService sysUserService;
 
-
 	/**
-	 * 验证码登录传入为手机号
-	 * 不用不处理
-	 *
+	 * 验证码登录传入为手机号 不用不处理
 	 * @param mobile
 	 * @return
 	 */
@@ -50,15 +48,12 @@ public class SmsLoginHandler extends AbstractLoginHandler {
 
 	/**
 	 * 通过mobile 获取用户信息
-	 *
 	 * @param identify
 	 * @return
 	 */
 	@Override
 	public UserInfo info(String identify) {
-		SysUser user = sysUserService
-				.getOne(Wrappers.<SysUser>query()
-						.lambda().eq(SysUser::getPhone, identify));
+		SysUser user = sysUserService.getOne(Wrappers.<SysUser>query().lambda().eq(SysUser::getPhone, identify));
 
 		if (user == null) {
 			log.info("手机号未注册:{}", identify);
@@ -66,4 +61,5 @@ public class SmsLoginHandler extends AbstractLoginHandler {
 		}
 		return sysUserService.findUserInfo(user);
 	}
+
 }

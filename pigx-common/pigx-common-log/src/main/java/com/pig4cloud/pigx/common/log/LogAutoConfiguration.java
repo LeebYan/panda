@@ -40,6 +40,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @AllArgsConstructor
 @ConditionalOnWebApplication
 public class LogAutoConfiguration {
+
 	private final RemoteLogService remoteLogService;
 
 	@Bean
@@ -51,4 +52,5 @@ public class LogAutoConfiguration {
 	public SysLogAspect sysLogAspect(ApplicationEventPublisher publisher) {
 		return new SysLogAspect(publisher);
 	}
+
 }

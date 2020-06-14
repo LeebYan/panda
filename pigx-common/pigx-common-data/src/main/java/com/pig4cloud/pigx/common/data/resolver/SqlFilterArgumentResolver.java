@@ -43,12 +43,12 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver {
-	private final static String[] KEYWORDS = {"master", "truncate", "insert", "select"
-			, "delete", "update", "declare", "alter", "drop", "sleep"};
+
+	private final static String[] KEYWORDS = { "master", "truncate", "insert", "select", "delete", "update", "declare",
+			"alter", "drop", "sleep" };
 
 	/**
 	 * 判断Controller是否包含page 参数
-	 *
 	 * @param parameter 参数
 	 * @return 是否过滤
 	 */
@@ -58,17 +58,17 @@ public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver 
 	}
 
 	/**
-	 * @param parameter     入参集合
-	 * @param mavContainer  model 和 view
-	 * @param webRequest    web相关
+	 * @param parameter 入参集合
+	 * @param mavContainer model 和 view
+	 * @param webRequest web相关
 	 * @param binderFactory 入参解析
 	 * @return 检查后新的page对象
 	 * <p>
 	 * page 只支持查询 GET .如需解析POST获取请求报文体处理
 	 */
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer
-			, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
@@ -87,29 +87,28 @@ public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver 
 		}
 
 		List<OrderItem> orderItemList = new ArrayList<>();
-		Optional.ofNullable(ascs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
-				.filter(sqlInjectPredicate())
-				.map(OrderItem::asc).collect(Collectors.toList())));
-		Optional.ofNullable(descs).ifPresent(s -> orderItemList.addAll(Arrays.stream(s)
-				.filter(sqlInjectPredicate())
-				.map(OrderItem::desc).collect(Collectors.toList())));
+		Optional.ofNullable(ascs).ifPresent(s -> orderItemList.addAll(
+				Arrays.stream(s).filter(sqlInjectPredicate()).map(OrderItem::asc).collect(Collectors.toList())));
+		Optional.ofNullable(descs).ifPresent(s -> orderItemList.addAll(
+				Arrays.stream(s).filter(sqlInjectPredicate()).map(OrderItem::desc).collect(Collectors.toList())));
 		page.addOrder(orderItemList);
 
 		return page;
 	}
 
 	/**
-	 *  判断用户输入里面有没有关键字
+	 * 判断用户输入里面有没有关键字
 	 * @return Predicate
 	 */
 	private Predicate<String> sqlInjectPredicate() {
 		return sql -> {
 			for (String keyword : KEYWORDS) {
-				if (StrUtil.containsIgnoreCase(sql, keyword)){
+				if (StrUtil.containsIgnoreCase(sql, keyword)) {
 					return false;
 				}
 			}
 			return true;
 		};
 	}
+
 }

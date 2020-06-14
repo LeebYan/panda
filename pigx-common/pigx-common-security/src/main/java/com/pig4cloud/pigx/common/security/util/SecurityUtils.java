@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.security.util;
 
-
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
@@ -37,6 +36,7 @@ import java.util.List;
  */
 @UtilityClass
 public class SecurityUtils {
+
 	/**
 	 * 获取Authentication
 	 */
@@ -46,7 +46,6 @@ public class SecurityUtils {
 
 	/**
 	 * 获取用户
-	 *
 	 * @param authentication
 	 * @return PigxUser
 	 * <p>
@@ -69,7 +68,6 @@ public class SecurityUtils {
 
 	/**
 	 * 获取用户角色信息
-	 *
 	 * @return 角色集合
 	 */
 	public List<Integer> getRoles() {
@@ -77,8 +75,7 @@ public class SecurityUtils {
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
 		List<Integer> roleIds = new ArrayList<>();
-		authorities.stream()
-				.filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstants.ROLE))
+		authorities.stream().filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstants.ROLE))
 				.forEach(granted -> {
 					String id = StrUtil.removePrefix(granted.getAuthority(), SecurityConstants.ROLE);
 					roleIds.add(Integer.parseInt(id));

@@ -29,14 +29,12 @@ public interface PayNotifyCallbakHandler {
 
 	/**
 	 * 初始化执行
-	 *
 	 * @param params
 	 */
 	void before(Map<String, String> params);
 
 	/**
 	 * 去重处理
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
@@ -44,7 +42,6 @@ public interface PayNotifyCallbakHandler {
 
 	/**
 	 * 验签逻辑
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
@@ -52,7 +49,6 @@ public interface PayNotifyCallbakHandler {
 
 	/**
 	 * 解析报文
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -60,7 +56,6 @@ public interface PayNotifyCallbakHandler {
 
 	/**
 	 * 调用入口
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -68,9 +63,9 @@ public interface PayNotifyCallbakHandler {
 
 	/**
 	 * 保存回调记录
-	 *
 	 * @param result 处理结果
 	 * @param params 回调报文
 	 */
 	void saveNotifyRecord(Map<String, String> params, String result);
+
 }

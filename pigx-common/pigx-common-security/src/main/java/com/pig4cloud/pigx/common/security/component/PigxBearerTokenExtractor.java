@@ -16,7 +16,6 @@
  *
  */
 
-
 package com.pig4cloud.pigx.common.security.component;
 
 import lombok.RequiredArgsConstructor;
@@ -37,14 +36,17 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @RequiredArgsConstructor
 public class PigxBearerTokenExtractor extends BearerTokenExtractor {
+
 	private final PathMatcher pathMatcher = new AntPathMatcher();
+
 	private final PermitAllUrlProperties urlProperties;
 
 	@Override
 	public Authentication extract(HttpServletRequest request) {
 		boolean match = urlProperties.getIgnoreUrls().stream()
-			.anyMatch(url -> pathMatcher.match(url, request.getRequestURI()));
+				.anyMatch(url -> pathMatcher.match(url, request.getRequestURI()));
 
 		return match ? null : super.extract(request);
 	}
+
 }

@@ -31,7 +31,6 @@ public class CorsConfig {
 
 	/**
 	 * 跨域过滤器
-	 *
 	 * @return
 	 */
 	private CorsConfiguration buildConfig() {
@@ -42,10 +41,8 @@ public class CorsConfig {
 		return corsConfiguration;
 	}
 
-
 	/**
 	 * 跨域过滤器
-	 *
 	 * @return
 	 */
 	@Bean
@@ -54,4 +51,5 @@ public class CorsConfig {
 		source.registerCorsConfiguration("/**", buildConfig());
 		return new CorsFilter(source);
 	}
+
 }

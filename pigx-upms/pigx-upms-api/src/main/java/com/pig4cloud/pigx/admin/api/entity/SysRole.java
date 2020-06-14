@@ -65,21 +65,25 @@ public class SysRole extends Model<SysRole> {
 	@NotNull(message = "数据权限类型不能为空")
 	@ApiModelProperty(value = "数据权限类型")
 	private Integer dsType;
+
 	/**
 	 * 数据权限作用范围
 	 */
 	@ApiModelProperty(value = "数据权限作用范围")
 	private String dsScope;
+
 	/**
 	 * 创建时间
 	 */
 	@ApiModelProperty(value = "创建时间")
 	private LocalDateTime createTime;
+
 	/**
 	 * 修改时间
 	 */
 	@ApiModelProperty(value = "修改时间")
 	private LocalDateTime updateTime;
+
 	/**
 	 * 删除标识（0-正常,1-删除）
 	 */

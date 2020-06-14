@@ -32,7 +32,6 @@ public interface PayGoodsOrderService extends IService<PayGoodsOrder> {
 
 	/**
 	 * 购买商品
-	 *
 	 * @param goodsOrder goods
 	 * @return
 	 */

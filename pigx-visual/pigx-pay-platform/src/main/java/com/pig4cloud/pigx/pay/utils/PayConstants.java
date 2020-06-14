@@ -33,5 +33,4 @@ public interface PayConstants {
 	 */
 	String TRADE_STATUS = "trade_status";
 
-
 }

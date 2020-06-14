@@ -39,6 +39,7 @@ import static me.chanjar.weixin.common.api.WxConsts.*;
 @Configuration
 @RequiredArgsConstructor
 public class WxMpInitConfigRunner {
+
 	/**
 	 * 保存 appid-router 的对应关系
 	 */
@@ -55,25 +56,37 @@ public class WxMpInitConfigRunner {
 	private static Map<String, Integer> tenants = Maps.newHashMap();
 
 	private final RemoteTenantService tenantService;
+
 	private final WxAccountService accountService;
+
 	private final LogHandler logHandler;
+
 	private final NullHandler nullHandler;
+
 	private final KfSessionHandler kfSessionHandler;
+
 	private final StoreCheckNotifyHandler storeCheckNotifyHandler;
+
 	private final LocationHandler locationHandler;
+
 	private final MenuHandler menuHandler;
+
 	private final MsgHandler msgHandler;
+
 	private final UnsubscribeHandler unsubscribeHandler;
+
 	private final SubscribeHandler subscribeHandler;
+
 	private final ScanHandler scanHandler;
+
 	private final RedisTemplate redisTemplate;
 
 	@PostConstruct
 	public void initServices() {
 		// 获取全部租户 遍历所有租户对应的公众号列表
 		List<WxAccount> accountList = new ArrayList<>();
-		tenantService.list(SecurityConstants.FROM_IN).getData()
-				.forEach( tenant -> TenantBroker.runAs(tenant.getId(), (id) -> accountList.addAll(accountService.list())));
+		tenantService.list(SecurityConstants.FROM_IN).getData().forEach(
+				tenant -> TenantBroker.runAs(tenant.getId(), (id) -> accountList.addAll(accountService.list())));
 
 		mpServices = accountList.stream().map(a -> {
 			WxMpInRedisConfigStorage configStorage = new WxMpInRedisConfigStorage(redisTemplate);
@@ -98,51 +111,41 @@ public class WxMpInitConfigRunner {
 
 		// 接收客服会话管理事件
 		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION)
-				.handler(this.kfSessionHandler).end();
+				.event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION).handler(this.kfSessionHandler).end();
 		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION)
-				.handler(this.kfSessionHandler)
-				.end();
+				.event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION).handler(this.kfSessionHandler).end();
 		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
-				.handler(this.kfSessionHandler).end();
+				.event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION).handler(this.kfSessionHandler).end();
 
 		// 门店审核事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(WxMpEventConstants.POI_CHECK_NOTIFY)
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(WxMpEventConstants.POI_CHECK_NOTIFY)
 				.handler(this.storeCheckNotifyHandler).end();
 
 		// 自定义菜单事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(MenuButtonType.CLICK).handler(this.menuHandler).end();
-
-		// 点击菜单连接事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(MenuButtonType.VIEW).handler(this.nullHandler).end();
-
-		// 关注事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(EventType.SUBSCRIBE).handler(this.subscribeHandler)
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(MenuButtonType.CLICK).handler(this.menuHandler)
 				.end();
 
+		// 点击菜单连接事件
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(MenuButtonType.VIEW).handler(this.nullHandler)
+				.end();
+
+		// 关注事件
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(EventType.SUBSCRIBE)
+				.handler(this.subscribeHandler).end();
+
 		// 取消关注事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(EventType.UNSUBSCRIBE)
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(EventType.UNSUBSCRIBE)
 				.handler(this.unsubscribeHandler).end();
 
 		// 上报地理位置事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(EventType.LOCATION).handler(this.locationHandler)
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(EventType.LOCATION).handler(this.locationHandler)
 				.end();
 
 		// 接收地理位置消息
-		newRouter.rule().async(false).msgType(XmlMsgType.LOCATION)
-				.handler(this.locationHandler).end();
+		newRouter.rule().async(false).msgType(XmlMsgType.LOCATION).handler(this.locationHandler).end();
 
 		// 扫码事件
-		newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-				.event(EventType.SCAN).handler(this.scanHandler).end();
+		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(EventType.SCAN).handler(this.scanHandler).end();
 
 		// 默认
 		newRouter.rule().async(false).handler(this.msgHandler).end();
@@ -150,17 +153,14 @@ public class WxMpInitConfigRunner {
 		return newRouter;
 	}
 
-
 	/**
 	 * redis 监听配置,监听 mp_redis_reload_topic,重新加载配置
-	 *
 	 * @param redisConnectionFactory redis 配置
 	 * @return
 	 */
 	@Bean
 	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
-		RedisMessageListenerContainer container
-				= new RedisMessageListenerContainer();
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(redisConnectionFactory);
 		container.addMessageListener((message, bytes) -> {
 			log.warn("接收到重新加载公众号配置事件");
@@ -180,4 +180,5 @@ public class WxMpInitConfigRunner {
 	public static Map<String, WxMpService> getMpServices() {
 		return mpServices;
 	}
+
 }

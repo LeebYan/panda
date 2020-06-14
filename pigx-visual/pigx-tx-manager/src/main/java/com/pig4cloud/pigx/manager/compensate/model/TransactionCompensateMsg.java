@@ -25,24 +25,31 @@ import com.pig4cloud.pigx.manager.netty.model.TxGroup;
 public class TransactionCompensateMsg {
 
 	private long currentTime;
+
 	private String groupId;
+
 	private String model;
+
 	private String address;
+
 	private String uniqueKey;
+
 	private String className;
+
 	private String methodStr;
+
 	private String data;
+
 	private int time;
+
 	private int startError;
 
 	private TxGroup txGroup;
 
 	private int state;
 
-
-	public TransactionCompensateMsg(long currentTime, String groupId, String model, String address,
-									String uniqueKey, String className,
-									String methodStr, String data, int time, int state, int startError) {
+	public TransactionCompensateMsg(long currentTime, String groupId, String model, String address, String uniqueKey,
+			String className, String methodStr, String data, int time, int state, int startError) {
 		this.currentTime = currentTime;
 		this.groupId = groupId;
 		this.model = model;
@@ -128,7 +135,6 @@ public class TransactionCompensateMsg {
 		this.className = className;
 	}
 
-
 	public String getMethodStr() {
 		return methodStr;
 	}
@@ -152,4 +158,5 @@ public class TransactionCompensateMsg {
 	public void setTime(int time) {
 		this.time = time;
 	}
+
 }

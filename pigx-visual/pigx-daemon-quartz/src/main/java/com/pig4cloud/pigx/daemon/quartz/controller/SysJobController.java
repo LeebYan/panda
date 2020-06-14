@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum.*;
 
-
 /**
  * @author frwcloud
  * @date 2019-01-27 10:04:42
@@ -50,15 +49,18 @@ import static com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum.*;
 @RequestMapping("/sys-job")
 @Api(value = "sys-job", tags = "定时任务")
 public class SysJobController {
+
 	private final SysJobService sysJobService;
+
 	private final SysJobLogService sysJobLogService;
+
 	private final TaskUtil taskUtil;
+
 	private final Scheduler scheduler;
 
 	/**
 	 * 定时任务分页查询
-	 *
-	 * @param page   分页对象
+	 * @param page 分页对象
 	 * @param sysJob 定时任务调度表
 	 * @return
 	 */
@@ -68,10 +70,8 @@ public class SysJobController {
 		return R.ok(sysJobService.page(page, Wrappers.query(sysJob)));
 	}
 
-
 	/**
 	 * 通过id查询定时任务
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -83,7 +83,6 @@ public class SysJobController {
 
 	/**
 	 * 新增定时任务
-	 *
 	 * @param sysJob 定时任务调度表
 	 * @return R
 	 */
@@ -99,7 +98,6 @@ public class SysJobController {
 
 	/**
 	 * 修改定时任务
-	 *
 	 * @param sysJob 定时任务调度表
 	 * @return R
 	 */
@@ -113,7 +111,8 @@ public class SysJobController {
 		if (JOB_STATUS_NOT_RUNNING.getType().equals(querySysJob.getJobStatus())) {
 			this.taskUtil.addOrUpateJob(sysJob, scheduler);
 			sysJobService.updateById(sysJob);
-		} else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
+		}
+		else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
 			sysJobService.updateById(sysJob);
 		}
 		return R.ok();
@@ -121,7 +120,6 @@ public class SysJobController {
 
 	/**
 	 * 通过id删除定时任务
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -134,7 +132,8 @@ public class SysJobController {
 		if (JOB_STATUS_NOT_RUNNING.getType().equals(querySysJob.getJobStatus())) {
 			this.taskUtil.removeJob(querySysJob, scheduler);
 			this.sysJobService.removeById(id);
-		} else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
+		}
+		else if (JOB_STATUS_RELEASE.getType().equals(querySysJob.getJobStatus())) {
 			this.sysJobService.removeById(id);
 		}
 		return R.ok();
@@ -142,7 +141,6 @@ public class SysJobController {
 
 	/**
 	 * 暂停全部定时任务
-	 *
 	 * @return
 	 */
 	@SysLog("暂停全部定时任务")
@@ -151,22 +149,21 @@ public class SysJobController {
 	@ApiOperation(value = "暂停全部定时任务")
 	public R shutdownJobs() {
 		taskUtil.pauseJobs(scheduler);
-		int count = this.sysJobService.count(new LambdaQueryWrapper<SysJob>()
-				.eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
+		int count = this.sysJobService
+				.count(new LambdaQueryWrapper<SysJob>().eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
 		if (count <= 0) {
 			return R.ok("无正在运行定时任务");
-		} else {
-			//更新定时任务状态条件，运行状态2更新为暂停状态2
-			this.sysJobService.update(SysJob.builder()
-					.jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build(), new UpdateWrapper<SysJob>()
-					.lambda().eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
+		}
+		else {
+			// 更新定时任务状态条件，运行状态2更新为暂停状态2
+			this.sysJobService.update(SysJob.builder().jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build(),
+					new UpdateWrapper<SysJob>().lambda().eq(SysJob::getJobStatus, JOB_STATUS_RUNNING.getType()));
 			return R.ok("暂停成功");
 		}
 	}
 
 	/**
 	 * 启动全部定时任务
-	 *
 	 * @return
 	 */
 	@SysLog("启动全部定时任务")
@@ -174,17 +171,15 @@ public class SysJobController {
 	@PreAuthorize("@pms.hasPermission('job_sys_job_start_job')")
 	@ApiOperation(value = "启动全部定时任务")
 	public R startJobs() {
-		//更新定时任务状态条件，暂停状态3更新为运行状态2
-		this.sysJobService.update(SysJob.builder().jobStatus(JOB_STATUS_RUNNING
-				.getType()).build(), new UpdateWrapper<SysJob>().lambda()
-				.eq(SysJob::getJobStatus, JOB_STATUS_NOT_RUNNING.getType()));
+		// 更新定时任务状态条件，暂停状态3更新为运行状态2
+		this.sysJobService.update(SysJob.builder().jobStatus(JOB_STATUS_RUNNING.getType()).build(),
+				new UpdateWrapper<SysJob>().lambda().eq(SysJob::getJobStatus, JOB_STATUS_NOT_RUNNING.getType()));
 		taskUtil.startJobs(scheduler);
 		return R.ok();
 	}
 
 	/**
 	 * 刷新全部定时任务
-	 *
 	 * @return
 	 */
 	@SysLog("刷新全部定时任务")
@@ -196,10 +191,12 @@ public class SysJobController {
 			if (JOB_STATUS_RELEASE.getType().equals(sysjob.getJobStatus())
 					|| JOB_STATUS_DEL.getType().equals(sysjob.getJobStatus())) {
 				taskUtil.removeJob(sysjob, scheduler);
-			} else if (JOB_STATUS_RUNNING.getType().equals(sysjob.getJobStatus())
+			}
+			else if (JOB_STATUS_RUNNING.getType().equals(sysjob.getJobStatus())
 					|| JOB_STATUS_NOT_RUNNING.getType().equals(sysjob.getJobStatus())) {
 				taskUtil.addOrUpateJob(sysjob, scheduler);
-			} else {
+			}
+			else {
 				taskUtil.removeJob(sysjob, scheduler);
 			}
 		});
@@ -208,7 +205,6 @@ public class SysJobController {
 
 	/**
 	 * 启动定时任务
-	 *
 	 * @param jobId
 	 * @return
 	 */
@@ -218,22 +214,19 @@ public class SysJobController {
 	@ApiOperation(value = "启动定时任务")
 	public R startJob(@PathVariable("id") Integer jobId) {
 		SysJob querySysJob = this.sysJobService.getById(jobId);
-		if (querySysJob != null && JOB_LOG_STATUS_FAIL.getType()
-				.equals(querySysJob.getJobStatus())) {
+		if (querySysJob != null && JOB_LOG_STATUS_FAIL.getType().equals(querySysJob.getJobStatus())) {
 			taskUtil.addOrUpateJob(querySysJob, scheduler);
-		} else {
+		}
+		else {
 			taskUtil.resumeJob(querySysJob, scheduler);
 		}
-		//更新定时任务状态条件，暂停状态3更新为运行状态2
-		this.sysJobService.updateById(SysJob.builder().jobId(jobId)
-				.jobStatus(JOB_STATUS_RUNNING.getType()).build());
+		// 更新定时任务状态条件，暂停状态3更新为运行状态2
+		this.sysJobService.updateById(SysJob.builder().jobId(jobId).jobStatus(JOB_STATUS_RUNNING.getType()).build());
 		return R.ok();
 	}
 
-
 	/**
 	 * 启动定时任务
-	 *
 	 * @param jobId
 	 * @return
 	 */
@@ -243,14 +236,11 @@ public class SysJobController {
 	@ApiOperation(value = "立刻执行定时任务")
 	public R runJob(@PathVariable("id") Integer jobId) {
 		SysJob querySysJob = this.sysJobService.getById(jobId);
-		return TaskUtil.runOnce(scheduler, querySysJob)? R.ok(): R.failed();
+		return TaskUtil.runOnce(scheduler, querySysJob) ? R.ok() : R.failed();
 	}
-
-
 
 	/**
 	 * 暂停定时任务
-	 *
 	 * @return
 	 */
 	@SysLog("暂停定时任务")
@@ -259,16 +249,15 @@ public class SysJobController {
 	@ApiOperation(value = "暂停定时任务")
 	public R shutdownJob(@PathVariable("id") Integer id) {
 		SysJob querySysJob = this.sysJobService.getById(id);
-		//更新定时任务状态条件，运行状态2更新为暂停状态3
-		this.sysJobService.updateById(SysJob.builder().jobId(querySysJob.getJobId())
-				.jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build());
+		// 更新定时任务状态条件，运行状态2更新为暂停状态3
+		this.sysJobService.updateById(
+				SysJob.builder().jobId(querySysJob.getJobId()).jobStatus(JOB_STATUS_NOT_RUNNING.getType()).build());
 		taskUtil.pauseJob(querySysJob, scheduler);
 		return R.ok();
 	}
 
 	/**
 	 * 唯一标识查询定时执行日志
-	 *
 	 * @return
 	 */
 	@GetMapping("/job-log")
@@ -279,14 +268,14 @@ public class SysJobController {
 
 	/**
 	 * 检验任务名称和任务组联合是否唯一
-	 *
 	 * @return
 	 */
 	@GetMapping("/is-valid-task-name")
 	@ApiOperation(value = "检验任务名称和任务组联合是否唯一")
 	public R isValidTaskName(@RequestParam String jobName, @RequestParam String jobGroup) {
 		return this.sysJobService
-				.count(Wrappers.query(SysJob.builder().jobName(jobName).jobGroup(jobGroup).build())) > 0
-				? R.failed() : R.ok();
+				.count(Wrappers.query(SysJob.builder().jobName(jobName).jobGroup(jobGroup).build())) > 0 ? R.failed()
+						: R.ok();
 	}
+
 }

@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class WxAccount extends Model<WxAccount> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -40,49 +41,59 @@ public class WxAccount extends Model<WxAccount> {
 	 */
 	@TableId
 	private Integer id;
+
 	/**
 	 * 公众号名称
 	 */
 	private String name;
+
 	/**
 	 * 公众号账户
 	 */
 	private String account;
+
 	/**
 	 * 公众号appid
 	 */
 	private String appid;
+
 	/**
 	 * 公众号密钥
 	 */
 	private String appsecret;
+
 	/**
 	 * 公众号url
 	 */
 	private String url;
+
 	/**
 	 * 公众号token
 	 */
 	private String token;
+
 	/**
 	 * 加密密钥
 	 */
 	private String aeskey;
+
 	/**
 	 * 二维码图片URL
 	 */
 	private String qrUrl;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
 
 	/**
-	 * 是否删除  -1：已删除  0：正常
+	 * 是否删除 -1：已删除 0：正常
 	 */
 	@TableLogic
 	private String delFlag;
@@ -91,4 +102,5 @@ public class WxAccount extends Model<WxAccount> {
 	 * 租户
 	 */
 	private Integer tenantId;
+
 }

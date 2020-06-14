@@ -44,12 +44,13 @@ import static org.activiti.editor.constants.ModelDataJsonConstants.*;
 @Service
 @AllArgsConstructor
 public class EditorServiceImpl implements EditorService {
+
 	private final RepositoryService repositoryService;
+
 	private final ObjectMapper objectMapper;
 
 	/**
 	 * 获取设计器页面的json
-	 *
 	 * @return
 	 */
 	@Override
@@ -57,7 +58,8 @@ public class EditorServiceImpl implements EditorService {
 		InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
 		try {
 			return IOUtils.toString(stencilsetStream, StandardCharsets.UTF_8.name());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error while loading stencil set", e);
 			throw new ActivitiException("Error while loading stencil set", e);
 		}
@@ -65,7 +67,6 @@ public class EditorServiceImpl implements EditorService {
 
 	/**
 	 * 根据modelId获取model
-	 *
 	 * @param modelId
 	 * @return
 	 */
@@ -77,16 +78,19 @@ public class EditorServiceImpl implements EditorService {
 			try {
 				if (StringUtils.isNotEmpty(model.getMetaInfo())) {
 					modelNode = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
-				} else {
+				}
+				else {
 					modelNode = objectMapper.createObjectNode();
 					modelNode.put(MODEL_NAME, model.getName());
 				}
 				byte[] source = repositoryService.getModelEditorSource(model.getId());
 				modelNode.put(MODEL_ID, model.getId());
-				ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(new String(source, StandardCharsets.UTF_8));
+				ObjectNode editorJsonNode = (ObjectNode) objectMapper
+						.readTree(new String(source, StandardCharsets.UTF_8));
 				modelNode.set("model", editorJsonNode);
 				return modelNode;
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.error("Error creating model JSON", e);
 				throw new ActivitiException("Error creating model JSON", e);
 			}
@@ -96,7 +100,6 @@ public class EditorServiceImpl implements EditorService {
 
 	/**
 	 * 保存model信息
-	 *
 	 * @param modelId
 	 * @param name
 	 * @param description
@@ -120,9 +123,11 @@ public class EditorServiceImpl implements EditorService {
 			final byte[] result = outStream.toByteArray();
 			repositoryService.addModelEditorSourceExtra(model.getId(), result);
 			outStream.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error saving model", e);
 			throw new ActivitiException("Error saving model", e);
 		}
 	}
+
 }

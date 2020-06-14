@@ -31,7 +31,6 @@ public interface ProcessService {
 
 	/**
 	 * 分页流程列表
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -39,7 +38,6 @@ public interface ProcessService {
 
 	/**
 	 * 读取xml/image资源
-	 *
 	 * @param procDefId
 	 * @param proInsId
 	 * @param resType
@@ -49,7 +47,6 @@ public interface ProcessService {
 
 	/**
 	 * 更新状态
-	 *
 	 * @param status
 	 * @param procDefId
 	 * @return
@@ -58,7 +55,6 @@ public interface ProcessService {
 
 	/**
 	 * 删除流程实例
-	 *
 	 * @param deploymentId
 	 * @return
 	 */
@@ -66,9 +62,9 @@ public interface ProcessService {
 
 	/**
 	 * 启动流程、更新请假单状态
-	 *
 	 * @param leaveId
 	 * @return
 	 */
 	Boolean saveStartProcess(Integer leaveId);
+
 }

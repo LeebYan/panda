@@ -52,14 +52,17 @@ import java.util.Map;
 @AllArgsConstructor
 @Service("alipayCallback")
 public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHandler {
+
 	private final MessageDuplicateCheckerHandler duplicateCheckerHandler;
+
 	private final PayTradeOrderService tradeOrderService;
+
 	private final PayGoodsOrderService goodsOrderService;
+
 	private final PayNotifyRecordService recordService;
 
 	/**
 	 * 维护租户信息
-	 *
 	 * @param params
 	 */
 	@Override
@@ -70,13 +73,12 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	/**
 	 * 去重处理
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
 	@Override
 	public Boolean duplicateChecker(Map<String, String> params) {
-		//判断是否是为支付中
+		// 判断是否是为支付中
 		if (StrUtil.equals(TradeStatusEnum.WAIT_BUYER_PAY.getDescription(), params.get(PayConstants.TRADE_STATUS))) {
 			log.info("支付宝订单待支付 {} 不做处理", params);
 			return true;
@@ -93,7 +95,6 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	/**
 	 * 验签逻辑
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
@@ -115,9 +116,9 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 		}
 
 		try {
-			return AlipaySignature.rsaCheckV1(params, apiConfig.getAlipayPublicKey()
-					, CharsetUtil.UTF_8, "RSA2");
-		} catch (AlipayApiException e) {
+			return AlipaySignature.rsaCheckV1(params, apiConfig.getAlipayPublicKey(), CharsetUtil.UTF_8, "RSA2");
+		}
+		catch (AlipayApiException e) {
 			log.error("支付宝验签失败", e);
 			return false;
 		}
@@ -125,22 +126,22 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	/**
 	 * 解析报文
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
 	@Override
 	public String parse(Map<String, String> params) {
-		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get(PayConstants.TRADE_STATUS)).getStatus();
+		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get(PayConstants.TRADE_STATUS))
+				.getStatus();
 
 		String orderNo = params.get(PayConstants.OUT_TRADE_NO);
-		PayGoodsOrder goodsOrder = goodsOrderService.getOne(Wrappers.<PayGoodsOrder>lambdaQuery()
-				.eq(PayGoodsOrder::getPayOrderId, orderNo));
+		PayGoodsOrder goodsOrder = goodsOrderService
+				.getOne(Wrappers.<PayGoodsOrder>lambdaQuery().eq(PayGoodsOrder::getPayOrderId, orderNo));
 		goodsOrder.setStatus(tradeStatus);
 		goodsOrderService.updateById(goodsOrder);
 
-		PayTradeOrder tradeOrder = tradeOrderService.getOne(Wrappers.<PayTradeOrder>lambdaQuery()
-				.eq(PayTradeOrder::getOrderId, orderNo));
+		PayTradeOrder tradeOrder = tradeOrderService
+				.getOne(Wrappers.<PayTradeOrder>lambdaQuery().eq(PayTradeOrder::getOrderId, orderNo));
 		Long succTime = MapUtil.getLong(params, "time_end");
 		tradeOrder.setPaySuccTime(succTime);
 		tradeOrder.setChannelOrderNo(params.get("trade_no"));
@@ -153,7 +154,6 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	/**
 	 * 保存回调记录
-	 *
 	 * @param result 处理结果
 	 * @param params 回调报文
 	 */

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "pigx.pay")
 public class PayCommonProperties {
+
 	/**
 	 * 支付宝支付参数
 	 */
@@ -23,7 +24,6 @@ public class PayCommonProperties {
 	 * 微信支付参数
 	 */
 	private WxPayConfig wxPayConfig;
-
 
 	private String test;
 

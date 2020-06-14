@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 关闭事务组
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "ctg")
 public class ActionCTGServiceImpl implements IActionService {
-
 
 	@Autowired
 	private TxManagerService txManagerService;
@@ -41,4 +41,5 @@ public class ActionCTGServiceImpl implements IActionService {
 		String res = String.valueOf(txManagerService.closeTransactionGroup(groupId, state));
 		return res;
 	}
+
 }

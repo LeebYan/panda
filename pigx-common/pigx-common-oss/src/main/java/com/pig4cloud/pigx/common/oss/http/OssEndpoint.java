@@ -43,6 +43,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/aws")
 public class OssEndpoint {
+
 	private final OssTemplate template;
 
 	/**
@@ -90,7 +91,8 @@ public class OssEndpoint {
 
 	@SneakyThrows
 	@PostMapping("/object/{bucketName}/{objectName}")
-	public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName, @PathVariable String objectName) {
+	public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName,
+			@PathVariable String objectName) {
 		template.putObject(bucketName, objectName, object.getInputStream(), object.getSize(), object.getContentType());
 		return template.getObjectInfo(bucketName, objectName);
 
@@ -106,7 +108,8 @@ public class OssEndpoint {
 
 	@SneakyThrows
 	@GetMapping("/object/{bucketName}/{objectName}/{expires}")
-	public Map<String, Object> getObject(@PathVariable String bucketName, @PathVariable String objectName, @PathVariable Integer expires) {
+	public Map<String, Object> getObject(@PathVariable String bucketName, @PathVariable String objectName,
+			@PathVariable Integer expires) {
 		Map<String, Object> responseBody = new HashMap<>(8);
 		// Put Object info
 		responseBody.put("bucket", bucketName);
@@ -123,6 +126,5 @@ public class OssEndpoint {
 
 		template.removeObject(bucketName, objectName);
 	}
-
 
 }

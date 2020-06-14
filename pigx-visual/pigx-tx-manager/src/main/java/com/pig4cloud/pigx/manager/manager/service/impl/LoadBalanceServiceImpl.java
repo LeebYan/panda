@@ -68,4 +68,5 @@ public class LoadBalanceServiceImpl implements LoadBalanceService {
 	public String getLoadBalanceGroupName(String groupId) {
 		return configReader.getKeyPrefixLoadbalance() + groupId;
 	}
+
 }

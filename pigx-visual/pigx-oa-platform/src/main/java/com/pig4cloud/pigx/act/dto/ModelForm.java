@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.act.dto;
 
-
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -69,4 +68,5 @@ public class ModelForm {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+
 }

@@ -11,6 +11,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum PayChannelNameEnum {
+
 	/**
 	 * 支付宝wap支付
 	 */
@@ -31,6 +32,7 @@ public enum PayChannelNameEnum {
 	 */
 	@Getter
 	private String name;
+
 	/**
 	 * 描述
 	 */
@@ -38,17 +40,19 @@ public enum PayChannelNameEnum {
 
 	/**
 	 * 通过ua 判断所属渠道
-	 *
 	 * @param ua 浏览器类型
 	 * @return
 	 */
 	public static Enum getChannel(String ua) {
 		if (ua.contains(PayConstants.ALIPAY)) {
 			return PayChannelNameEnum.ALIPAY_WAP;
-		} else if (ua.contains(PayConstants.MICRO_MESSENGER)) {
+		}
+		else if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			return PayChannelNameEnum.WEIXIN_MP;
-		} else {
+		}
+		else {
 			return PayChannelNameEnum.WEIXIN_WAP;
 		}
 	}
+
 }

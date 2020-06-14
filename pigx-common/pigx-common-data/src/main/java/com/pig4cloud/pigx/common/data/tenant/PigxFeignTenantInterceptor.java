@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class PigxFeignTenantInterceptor implements RequestInterceptor {
+
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
 		if (TenantContextHolder.getTenantId() == null) {
@@ -36,4 +37,5 @@ public class PigxFeignTenantInterceptor implements RequestInterceptor {
 		}
 		requestTemplate.header(CommonConstants.TENANT_ID, TenantContextHolder.getTenantId().toString());
 	}
+
 }

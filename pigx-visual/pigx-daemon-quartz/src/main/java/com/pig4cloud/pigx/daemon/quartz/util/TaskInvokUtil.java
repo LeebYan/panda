@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.daemon.quartz.util;
 
-
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.daemon.quartz.constants.PigxQuartzEnum;
@@ -46,6 +45,7 @@ import java.util.Date;
 @Aspect
 @RequiredArgsConstructor
 public class TaskInvokUtil {
+
 	private final ApplicationEventPublisher publisher;
 
 	@Autowired
@@ -54,16 +54,16 @@ public class TaskInvokUtil {
 	@SneakyThrows
 	public void invokMethod(SysJob sysJob, Trigger trigger) {
 
-		//执行开始时间
+		// 执行开始时间
 		long startTime;
-		//执行结束时间
+		// 执行结束时间
 		long endTime;
-		//获取执行开始时间
+		// 获取执行开始时间
 		startTime = System.currentTimeMillis();
-		//更新定时任务表内的状态、执行时间、上次执行时间、下次执行时间等信息
+		// 更新定时任务表内的状态、执行时间、上次执行时间、下次执行时间等信息
 		SysJob updateSysjob = new SysJob();
 		updateSysjob.setJobId(sysJob.getJobId());
-		//日志
+		// 日志
 		SysJobLog sysJobLog = new SysJobLog();
 		sysJobLog.setJobId(sysJob.getJobId());
 		sysJobLog.setJobName(sysJob.getJobName());
@@ -80,29 +80,36 @@ public class TaskInvokUtil {
 			// 执行任务
 			ITaskInvok iTaskInvok = TaskInvokFactory.getInvoker(sysJob.getJobType());
 			// 确保租户上下文有值，使得当前线程中的多租户特性生效。
-			TenantBroker.runAs(sysJob.getTenantId(),tenantId -> iTaskInvok.invokMethod(sysJob)); ;
+			TenantBroker.runAs(sysJob.getTenantId(), tenantId -> iTaskInvok.invokMethod(sysJob));
+			;
 
-			//记录成功状态
+			// 记录成功状态
 			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getDescription());
 			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType());
-			//任务表信息更新
+			// 任务表信息更新
 			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType());
-		} catch (Throwable e) {
-			log.error("定时任务执行失败，任务名称：{}；任务组名：{}，cron执行表达式：{}，执行时间：{}", sysJob.getJobName(), sysJob.getJobGroup(), sysJob.getCronExpression(), new Date());
-			//记录失败状态
+		}
+		catch (Throwable e) {
+			log.error("定时任务执行失败，任务名称：{}；任务组名：{}，cron执行表达式：{}，执行时间：{}", sysJob.getJobName(), sysJob.getJobGroup(),
+					sysJob.getCronExpression(), new Date());
+			// 记录失败状态
 			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getDescription());
 			sysJobLog.setJobLogStatus(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType());
 			sysJobLog.setExceptionInfo(StrUtil.sub(e.getMessage(), 0, 2000));
-			//任务表信息更新
+			// 任务表信息更新
 			updateSysjob.setJobExecuteStatus(PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType());
-		} finally {
-			//记录执行时间 立刻执行使用的是simpleTeigger
-			if(trigger instanceof CronTrigger){
-				updateSysjob.setStartTime(trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-				updateSysjob.setPreviousTime(trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-				updateSysjob.setNextTime(trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+		}
+		finally {
+			// 记录执行时间 立刻执行使用的是simpleTeigger
+			if (trigger instanceof CronTrigger) {
+				updateSysjob.setStartTime(
+						trigger.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+				updateSysjob.setPreviousTime(
+						trigger.getPreviousFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+				updateSysjob.setNextTime(
+						trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			}
-			//记录执行时长
+			// 记录执行时长
 			endTime = System.currentTimeMillis();
 			sysJobLog.setExecuteTime(String.valueOf(endTime - startTime));
 
@@ -110,4 +117,5 @@ public class TaskInvokUtil {
 			sysJobService.updateById(updateSysjob);
 		}
 	}
+
 }

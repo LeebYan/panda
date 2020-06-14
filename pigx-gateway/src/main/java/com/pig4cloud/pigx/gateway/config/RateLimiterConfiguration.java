@@ -26,13 +26,14 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author lengleng
- * @date 2018/7/1
- * 路由限流配置
+ * @date 2018/7/1 路由限流配置
  */
 @Configuration
 public class RateLimiterConfiguration {
+
 	@Bean(value = "remoteAddrKeyResolver")
 	public KeyResolver remoteAddrKeyResolver() {
 		return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
 	}
+
 }

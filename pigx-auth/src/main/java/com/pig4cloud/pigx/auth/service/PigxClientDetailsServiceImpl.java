@@ -19,14 +19,13 @@ import javax.sql.DataSource;
  */
 @Service
 public class PigxClientDetailsServiceImpl extends JdbcClientDetailsService {
+
 	public PigxClientDetailsServiceImpl(DataSource dataSource) {
 		super(dataSource);
 	}
 
-
 	/**
 	 * 重写原生方法支持redis缓存
-	 *
 	 * @param clientId
 	 * @return ClientDetails
 	 * @throws InvalidClientException
@@ -34,8 +33,9 @@ public class PigxClientDetailsServiceImpl extends JdbcClientDetailsService {
 	@Override
 	@Cacheable(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId", unless = "#result == null")
 	public ClientDetails loadClientByClientId(String clientId) {
-		super.setSelectClientDetailsSql(String.format(SecurityConstants.DEFAULT_SELECT_STATEMENT
-				, TenantContextHolder.getTenantId()));
+		super.setSelectClientDetailsSql(
+				String.format(SecurityConstants.DEFAULT_SELECT_STATEMENT, TenantContextHolder.getTenantId()));
 		return super.loadClientByClientId(clientId);
 	}
+
 }

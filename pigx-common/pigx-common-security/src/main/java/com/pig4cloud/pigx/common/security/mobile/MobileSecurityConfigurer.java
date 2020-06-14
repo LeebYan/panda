@@ -33,18 +33,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * @author lengleng
- * @date 2018/8/5
- * 手机号登录配置入口
+ * @date 2018/8/5 手机号登录配置入口
  */
 @Getter
 @Setter
 public class MobileSecurityConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+
 	@Autowired
 	private ObjectMapper objectMapper;
+
 	@Autowired
 	private AuthenticationEventPublisher defaultAuthenticationEventPublisher;
+
 	@Autowired
 	private AuthenticationSuccessHandler mobileLoginSuccessHandler;
+
 	@Autowired
 	private PigxUserDetailsService userDetailsService;
 
@@ -58,7 +61,8 @@ public class MobileSecurityConfigurer extends SecurityConfigurerAdapter<DefaultS
 
 		MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
 		mobileAuthenticationProvider.setUserDetailsService(userDetailsService);
-		http.authenticationProvider(mobileAuthenticationProvider)
-				.addFilterAfter(mobileAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.authenticationProvider(mobileAuthenticationProvider).addFilterAfter(mobileAuthenticationFilter,
+				UsernamePasswordAuthenticationFilter.class);
 	}
+
 }

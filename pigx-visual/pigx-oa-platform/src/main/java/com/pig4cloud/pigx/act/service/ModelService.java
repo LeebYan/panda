@@ -30,7 +30,6 @@ public interface ModelService {
 
 	/**
 	 * 创建流程
-	 *
 	 * @param name
 	 * @param key
 	 * @param desc
@@ -41,7 +40,6 @@ public interface ModelService {
 
 	/**
 	 * 分页获取流程
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -49,7 +47,6 @@ public interface ModelService {
 
 	/**
 	 * 删除流程
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -57,9 +54,9 @@ public interface ModelService {
 
 	/**
 	 * 部署流程
-	 *
 	 * @param id
 	 * @return
 	 */
 	Boolean deploy(String id);
+
 }

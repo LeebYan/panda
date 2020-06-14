@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.api.service.impl;
 
-
 import com.pig4cloud.pigx.manager.api.service.ApiTxManagerService;
 import com.pig4cloud.pigx.manager.compensate.model.TransactionCompensateMsg;
 import com.pig4cloud.pigx.manager.compensate.service.CompensateService;
@@ -31,8 +30,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- *@author LCN on 2017/7/1.
- *
+ * @author LCN on 2017/7/1.
  * @author LCN
  * @author lengleng
  */
@@ -50,22 +48,21 @@ public class ApiTxManagerServiceImpl implements ApiTxManagerService {
 
 	private final ConfigReader configReader;
 
-
 	@Override
 	public TxServer getServer() {
 		return eurekaService.getServer();
 	}
-
 
 	@Override
 	public int cleanNotifyTransaction(String groupId, String taskId) {
 		return managerService.cleanNotifyTransaction(groupId, taskId);
 	}
 
-
 	@Override
-	public boolean sendCompensateMsg(long currentTime, String groupId, String model, String address, String uniqueKey, String className, String methodStr, String data, int time, int startError) {
-		TransactionCompensateMsg transactionCompensateMsg = new TransactionCompensateMsg(currentTime, groupId, model, address, uniqueKey, className, methodStr, data, time, 0, startError);
+	public boolean sendCompensateMsg(long currentTime, String groupId, String model, String address, String uniqueKey,
+			String className, String methodStr, String data, int time, int startError) {
+		TransactionCompensateMsg transactionCompensateMsg = new TransactionCompensateMsg(currentTime, groupId, model,
+				address, uniqueKey, className, methodStr, data, time, 0, startError);
 		return compensateService.saveCompensateMsg(transactionCompensateMsg);
 	}
 
@@ -74,9 +71,9 @@ public class ApiTxManagerServiceImpl implements ApiTxManagerService {
 		return txManagerSenderService.sendMsg(model, msg, configReader.getTransactionNettyDelayTime());
 	}
 
-
 	@Override
 	public TxState getState() {
 		return eurekaService.getState();
 	}
+
 }

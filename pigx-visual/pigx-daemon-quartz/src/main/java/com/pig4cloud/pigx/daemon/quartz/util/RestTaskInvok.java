@@ -40,13 +40,15 @@ public class RestTaskInvok implements ITaskInvok {
 	public void invokMethod(SysJob sysJob) throws TaskException {
 		try {
 			HttpRequest request = HttpUtil.createGet(sysJob.getExecutePath());
-			if(sysJob.getTenantId() != null){
+			if (sysJob.getTenantId() != null) {
 				request.header(CommonConstants.TENANT_ID, sysJob.getTenantId().toString());
 			}
 			request.execute();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("定时任务restTaskInvok异常,执行任务：{}", sysJob.getExecutePath());
 			throw new TaskException("定时任务restTaskInvok业务执行失败,任务：" + sysJob.getExecutePath());
 		}
 	}
+
 }

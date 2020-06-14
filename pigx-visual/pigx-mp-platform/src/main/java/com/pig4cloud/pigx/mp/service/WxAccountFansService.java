@@ -29,9 +29,9 @@ public interface WxAccountFansService extends IService<WxAccountFans> {
 
 	/**
 	 * 同步指定公众号粉丝
-	 *
 	 * @param appId
 	 * @return
 	 */
 	Boolean syncAccountFans(String appId);
+
 }

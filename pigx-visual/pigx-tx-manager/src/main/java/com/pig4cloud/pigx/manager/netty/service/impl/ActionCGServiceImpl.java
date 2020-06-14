@@ -26,11 +26,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 创建事务组
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "cg")
 public class ActionCGServiceImpl implements IActionService {
-
 
 	@Autowired
 	private TxManagerService txManagerService;
@@ -43,9 +43,11 @@ public class ActionCGServiceImpl implements IActionService {
 		if (txGroup != null) {
 			txGroup.setNowTime(System.currentTimeMillis());
 			res = txGroup.toJsonString(false);
-		} else {
+		}
+		else {
 			res = "";
 		}
 		return res;
 	}
+
 }

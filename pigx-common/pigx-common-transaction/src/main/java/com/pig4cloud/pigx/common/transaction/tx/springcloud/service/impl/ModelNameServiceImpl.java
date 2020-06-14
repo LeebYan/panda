@@ -29,8 +29,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- *@author LCN on 2017/7/12.
- *
+ * @author LCN on 2017/7/12.
  * @author LCN
  * @since 4.1.0
  */
@@ -44,7 +43,6 @@ public class ModelNameServiceImpl implements ModelNameService {
 	@Autowired
 	private ServerListener serverListener;
 
-
 	private String host = null;
 
 	@Override
@@ -56,7 +54,8 @@ public class ModelNameServiceImpl implements ModelNameService {
 		if (host == null) {
 			try {
 				host = InetAddress.getLocalHost().getHostAddress();
-			} catch (UnknownHostException e) {
+			}
+			catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
 		}
@@ -69,7 +68,8 @@ public class ModelNameServiceImpl implements ModelNameService {
 		while (port == 0) {
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			port = serverListener.getPort();
@@ -89,10 +89,10 @@ public class ModelNameServiceImpl implements ModelNameService {
 		return MD5Util.md5(address.getBytes());
 	}
 
-
 	@Override
 	public String getIpAddress() {
 		String address = getIp() + ":" + getPort();
 		return address;
 	}
+
 }

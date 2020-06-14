@@ -48,15 +48,17 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author lengleng
- * @date 2020/5/19
- * 登录逻辑验证码处理
+ * @date 2020/5/19 登录逻辑验证码处理
  */
 @Slf4j
 @Component
 @AllArgsConstructor
 public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
+
 	private final ObjectMapper objectMapper;
+
 	private final RedisTemplate redisTemplate;
+
 	private final FilterIgnorePropertiesConfig filterIgnorePropertiesConfig;
 
 	@Override
@@ -65,9 +67,8 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			ServerHttpRequest request = exchange.getRequest();
 
 			// 不是登录请求，直接向下执行
-			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath()
-					, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL
-					, SecurityConstants.SOCIAL_TOKEN_URL)) {
+			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.OAUTH_TOKEN_URL,
+					SecurityConstants.SMS_TOKEN_URL, SecurityConstants.SOCIAL_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
@@ -90,22 +91,24 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 					String mobile = request.getQueryParams().getFirst("mobile");
 					if (StrUtil.containsAny(mobile, LoginTypeEnum.SMS.getType())) {
 						throw new ValidateCodeException("验证码不合法");
-					} else {
+					}
+					else {
 						return chain.filter(exchange);
 					}
 				}
 
-				//校验验证码
+				// 校验验证码
 				checkCode(request);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				ServerHttpResponse response = exchange.getResponse();
 				response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				try {
-					return response.writeWith(Mono.just(response.bufferFactory()
-							.wrap(objectMapper.writeValueAsBytes(
-									R.failed(e.getMessage())))));
-				} catch (JsonProcessingException e1) {
+					return response.writeWith(Mono.just(
+							response.bufferFactory().wrap(objectMapper.writeValueAsBytes(R.failed(e.getMessage())))));
+				}
+				catch (JsonProcessingException e1) {
 					log.error("对象输出异常", e1);
 				}
 			}
@@ -116,7 +119,6 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 	/**
 	 * 检查code
-	 *
 	 * @param request
 	 */
 	@SneakyThrows
@@ -141,7 +143,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			return;
 		}
 
-		//https://gitee.com/log4j/pig/issues/IWA0D
+		// https://gitee.com/log4j/pig/issues/IWA0D
 		String mobile = request.getQueryParams().getFirst("mobile");
 		if (StrUtil.isNotBlank(mobile)) {
 			randomStr = mobile;
@@ -173,4 +175,5 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 		redisTemplate.delete(key);
 	}
+
 }

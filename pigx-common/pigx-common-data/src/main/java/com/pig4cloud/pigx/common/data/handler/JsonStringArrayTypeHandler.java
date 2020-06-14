@@ -17,13 +17,12 @@ import java.sql.SQLException;
 /**
  * Mybatis数组,符串互转
  * <p>
- * MappedJdbcTypes 数据库中的数据类型
- * MappedTypes java中的的数据类型
+ * MappedJdbcTypes 数据库中的数据类型 MappedTypes java中的的数据类型
  *
  * @author xuzihui
  * @date 2019-11-20
  */
-@MappedTypes(value = {String[].class})
+@MappedTypes(value = { String[].class })
 @MappedJdbcTypes(value = JdbcType.VARCHAR)
 public class JsonStringArrayTypeHandler extends BaseTypeHandler<String[]> {
 

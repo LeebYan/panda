@@ -30,15 +30,15 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2019-05-31
  */
 public abstract class AbstractPayOrderHandler implements PayOrderHandler {
+
 	@Autowired
 	private PayGoodsOrderMapper goodsOrderMapper;
+
 	@Autowired
 	private Sequence paySequence;
 
-
 	/**
 	 * 创建商品订单
-	 *
 	 * @param goodsOrder 商品订单
 	 * @return
 	 */
@@ -51,7 +51,6 @@ public abstract class AbstractPayOrderHandler implements PayOrderHandler {
 
 	/**
 	 * 调用入口
-	 *
 	 * @return
 	 */
 	@Override
@@ -62,4 +61,5 @@ public abstract class AbstractPayOrderHandler implements PayOrderHandler {
 		updateOrder(payGoodsOrder, tradeOrder);
 		return result;
 	}
+
 }

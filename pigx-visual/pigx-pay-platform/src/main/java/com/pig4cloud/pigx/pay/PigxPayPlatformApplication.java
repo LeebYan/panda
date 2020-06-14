@@ -38,4 +38,5 @@ public class PigxPayPlatformApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PigxPayPlatformApplication.class, args);
 	}
+
 }

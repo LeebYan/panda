@@ -40,31 +40,29 @@ import java.util.stream.Collectors;
  * 默认data scope 判断处理器
  */
 public class PigxDefaultDatascopeHandle implements DataScopeHandle {
+
 	@Autowired
 	private RemoteDataScopeService dataScopeService;
 
 	/**
 	 * 计算用户数据权限
-	 *
 	 * @param deptList
 	 * @return
 	 */
 	@Override
 	public Boolean calcScope(List<Integer> deptList) {
 		PigxUser user = SecurityUtils.getUser();
-		List<String> roleIdList = user.getAuthorities()
-				.stream().map(GrantedAuthority::getAuthority)
+		List<String> roleIdList = user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
-				.map(authority -> authority.split(StrUtil.UNDERLINE)[1])
-				.collect(Collectors.toList());
+				.map(authority -> authority.split(StrUtil.UNDERLINE)[1]).collect(Collectors.toList());
 		// 当前用户的角色为空
-		if(CollectionUtil.isEmpty(roleIdList)){
+		if (CollectionUtil.isEmpty(roleIdList)) {
 			return false;
 		}
 		SysRole role = dataScopeService.getRoleList(roleIdList).getData().stream()
 				.min(Comparator.comparingInt(SysRole::getDsType)).orElse(null);
 		// 角色有可能已经删除了
-		if(role == null){
+		if (role == null) {
 			return false;
 		}
 		Integer dsType = role.getDsType();
@@ -75,14 +73,13 @@ public class PigxDefaultDatascopeHandle implements DataScopeHandle {
 		// 自定义
 		if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
 			String dsScope = role.getDsScope();
-			deptList.addAll(Arrays.stream(dsScope.split(StrUtil.COMMA))
-					.map(Integer::parseInt).collect(Collectors.toList()));
+			deptList.addAll(
+					Arrays.stream(dsScope.split(StrUtil.COMMA)).map(Integer::parseInt).collect(Collectors.toList()));
 		}
 		// 查询本级及其下级
 		if (DataScopeTypeEnum.OWN_CHILD_LEVEL.getType() == dsType) {
-			List<Integer> deptIdList = dataScopeService.getDescendantList(user.getDeptId())
-					.getData().stream().map(SysDeptRelation::getDescendant)
-					.collect(Collectors.toList());
+			List<Integer> deptIdList = dataScopeService.getDescendantList(user.getDeptId()).getData().stream()
+					.map(SysDeptRelation::getDescendant).collect(Collectors.toList());
 			deptList.addAll(deptIdList);
 		}
 		// 只查询本级
@@ -91,4 +88,5 @@ public class PigxDefaultDatascopeHandle implements DataScopeHandle {
 		}
 		return false;
 	}
+
 }

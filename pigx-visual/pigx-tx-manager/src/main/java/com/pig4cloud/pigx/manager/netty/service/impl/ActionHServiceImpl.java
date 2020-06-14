@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 心跳包
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "h")
 public class ActionHServiceImpl implements IActionService {
-
 
 	@Autowired
 	private ConfigReader configReader;
@@ -38,4 +38,5 @@ public class ActionHServiceImpl implements IActionService {
 	public String execute(String channelAddress, String key, JSONObject params) {
 		return String.valueOf(configReader.getTransactionNettyDelayTime());
 	}
+
 }

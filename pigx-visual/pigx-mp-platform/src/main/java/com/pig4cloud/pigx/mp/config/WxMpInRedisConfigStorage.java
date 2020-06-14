@@ -50,7 +50,6 @@ public class WxMpInRedisConfigStorage extends WxMpDefaultConfigImpl {
 
 	/**
 	 * 每个公众号生成独有的存储key
-	 *
 	 * @param appId
 	 */
 	@Override
@@ -86,12 +85,10 @@ public class WxMpInRedisConfigStorage extends WxMpDefaultConfigImpl {
 		return redisTemplate.opsForValue().get(this.jsapiTicketKey);
 	}
 
-
 	@Override
 	public String getCardApiTicket() {
 		return redisTemplate.opsForValue().get(cardapiTicketKey);
 	}
-
 
 	@Override
 	public String getTicket(TicketType type) {

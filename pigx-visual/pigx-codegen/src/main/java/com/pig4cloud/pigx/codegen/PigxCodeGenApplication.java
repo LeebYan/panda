@@ -26,8 +26,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2018/07/29
- * 代码生成模块
+ * @date 2018/07/29 代码生成模块
  */
 @EnableDynamicDataSource
 @EnablePigxSwagger2
@@ -36,8 +35,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnablePigxResourceServer
 public class PigxCodeGenApplication {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(PigxCodeGenApplication.class, args);
 	}
+
 }

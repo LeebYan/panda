@@ -18,9 +18,12 @@ import java.io.IOException;
  */
 @Component
 public class AccpetRequestInterceptor implements ClientHttpRequestInterceptor {
+
 	@Override
-	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+			throws IOException {
 		request.getHeaders().set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		return execution.execute(request, body);
 	}
+
 }

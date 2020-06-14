@@ -37,10 +37,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
-
 /**
- * aws-s3 通用存储操作
- * 支持所有兼容s3协议的云存储: {阿里云OSS，腾讯云COS，七牛云，京东云，minio 等}
+ * aws-s3 通用存储操作 支持所有兼容s3协议的云存储: {阿里云OSS，腾讯云COS，七牛云，京东云，minio 等}
  *
  * @author lengleng
  * @author 858695266
@@ -49,13 +47,13 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 public class OssTemplate implements InitializingBean {
+
 	private final OssProperties ossProperties;
 
 	private AmazonS3 amazonS3;
 
 	/**
 	 * 创建bucket
-	 *
 	 * @param bucketName bucket名称
 	 */
 	@SneakyThrows
@@ -69,7 +67,8 @@ public class OssTemplate implements InitializingBean {
 	 * 获取全部bucket
 	 * <p>
 	 *
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListBuckets">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListBuckets">AWS
+	 * API Documentation</a>
 	 */
 	@SneakyThrows
 	public List<Bucket> getAllBuckets() {
@@ -78,7 +77,8 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * @param bucketName bucket名称
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListBuckets">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListBuckets">AWS
+	 * API Documentation</a>
 	 */
 	@SneakyThrows
 	public Optional<Bucket> getBucket(String bucketName) {
@@ -87,7 +87,9 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * @param bucketName bucket名称
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteBucket">AWS API Documentation</a>
+	 * @see <a href=
+	 * "http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteBucket">AWS API
+	 * Documentation</a>
 	 */
 	@SneakyThrows
 	public void removeBucket(String bucketName) {
@@ -96,12 +98,12 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 根据文件前置查询文件
-	 *
 	 * @param bucketName bucket名称
-	 * @param prefix     前缀
-	 * @param recursive  是否递归查询
+	 * @param prefix 前缀
+	 * @param recursive 是否递归查询
 	 * @return S3ObjectSummary 列表
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListObjects">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/ListObjects">AWS
+	 * API Documentation</a>
 	 */
 	@SneakyThrows
 	public List<S3ObjectSummary> getAllObjectsByPrefix(String bucketName, String prefix, boolean recursive) {
@@ -111,10 +113,9 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 获取文件外链
-	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
-	 * @param expires    过期时间 <=7
+	 * @param expires 过期时间 <=7
 	 * @return url
 	 * @see AmazonS3#generatePresignedUrl(String bucketName, String key, Date expiration)
 	 */
@@ -130,11 +131,11 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 获取文件
-	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @return 二进制流
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS
+	 * API Documentation</a>
 	 */
 	@SneakyThrows
 	public InputStream getObject(String bucketName, String objectName) {
@@ -143,10 +144,9 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 上传文件
-	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
-	 * @param stream     文件流
+	 * @param stream 文件流
 	 * @throws Exception
 	 */
 	public void putObject(String bucketName, String objectName, InputStream stream) throws Exception {
@@ -155,17 +155,18 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 上传文件
-	 *
-	 * @param bucketName  bucket名称
-	 * @param objectName  文件名称
-	 * @param stream      文件流
-	 * @param size        大小
+	 * @param bucketName bucket名称
+	 * @param objectName 文件名称
+	 * @param stream 文件流
+	 * @param size 大小
 	 * @param contextType 类型
 	 * @throws Exception
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/PutObject">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/PutObject">AWS
+	 * API Documentation</a>
 	 */
-	public PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws Exception {
-//		String fileName = getFileName(objectName);
+	public PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size,
+			String contextType) throws Exception {
+		// String fileName = getFileName(objectName);
 		byte[] bytes = IOUtils.toByteArray(stream);
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentLength(size);
@@ -178,11 +179,11 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 获取文件信息
-	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @throws Exception
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS API Documentation</a>
+	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS
+	 * API Documentation</a>
 	 */
 	public S3Object getObjectInfo(String bucketName, String objectName) throws Exception {
 		return amazonS3.getObject(bucketName, objectName);
@@ -190,11 +191,12 @@ public class OssTemplate implements InitializingBean {
 
 	/**
 	 * 删除文件
-	 *
 	 * @param bucketName bucket名称
 	 * @param objectName 文件名称
 	 * @throws Exception
-	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteObject">AWS API Documentation</a>
+	 * @see <a href=
+	 * "http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/DeleteObject">AWS API
+	 * Documentation</a>
 	 */
 	public void removeObject(String bucketName, String objectName) throws Exception {
 		amazonS3.deleteObject(bucketName, objectName);
@@ -205,14 +207,12 @@ public class OssTemplate implements InitializingBean {
 		ClientConfiguration clientConfiguration = new ClientConfiguration();
 		AwsClientBuilder.EndpointConfiguration endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(
 				ossProperties.getEndpoint(), ossProperties.getRegion());
-		AWSCredentials awsCredentials = new BasicAWSCredentials(ossProperties.getAccessKey(), ossProperties.getSecretKey());
+		AWSCredentials awsCredentials = new BasicAWSCredentials(ossProperties.getAccessKey(),
+				ossProperties.getSecretKey());
 		AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
-		this.amazonS3 = AmazonS3Client.builder()
-				.withEndpointConfiguration(endpointConfiguration)
-				.withClientConfiguration(clientConfiguration)
-				.withCredentials(awsCredentialsProvider)
-				.disableChunkedEncoding()
-				.withPathStyleAccessEnabled(ossProperties.getPathStyleAccess())
-				.build();
+		this.amazonS3 = AmazonS3Client.builder().withEndpointConfiguration(endpointConfiguration)
+				.withClientConfiguration(clientConfiguration).withCredentials(awsCredentialsProvider)
+				.disableChunkedEncoding().withPathStyleAccessEnabled(ossProperties.getPathStyleAccess()).build();
 	}
+
 }

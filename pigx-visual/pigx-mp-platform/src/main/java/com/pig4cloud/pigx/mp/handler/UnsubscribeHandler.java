@@ -21,19 +21,18 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 public class UnsubscribeHandler extends AbstractHandler {
+
 	private final WxAccountFansMapper wxAccountFansMapper;
 
-    @Override
-    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-                                    Map<String, Object> context, WxMpService wxMpService,
-                                    WxSessionManager sessionManager) {
-        String openId = wxMessage.getFromUser();
-        log.info("取消关注用户 OPENID: " + openId);
+	@Override
+	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,
+			WxSessionManager sessionManager) {
+		String openId = wxMessage.getFromUser();
+		log.info("取消关注用户 OPENID: " + openId);
 		WxAccountFans fans = new WxAccountFans();
 		fans.setSubscribeStatus(SubStatusEnum.UNSUB.getType());
-		wxAccountFansMapper.update(fans, Wrappers
-				.<WxAccountFans>lambdaUpdate().eq(WxAccountFans::getOpenid,openId));
-        return null;
-    }
+		wxAccountFansMapper.update(fans, Wrappers.<WxAccountFans>lambdaUpdate().eq(WxAccountFans::getOpenid, openId));
+		return null;
+	}
 
 }

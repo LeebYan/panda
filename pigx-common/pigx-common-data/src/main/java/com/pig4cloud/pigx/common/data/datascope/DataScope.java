@@ -26,12 +26,12 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2018/8/30
- * 数据权限查询参数
+ * @date 2018/8/30 数据权限查询参数
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class DataScope extends HashMap {
+
 	/**
 	 * 限制范围的字段名称
 	 */
@@ -46,4 +46,5 @@ public class DataScope extends HashMap {
 	 * 是否只查询本部门
 	 */
 	private Boolean isOnly = false;
+
 }

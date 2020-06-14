@@ -12,4 +12,3 @@ import com.pig4cloud.pigx.act.entity.LeaveBill;
 public interface LeaveBillService extends IService<LeaveBill> {
 
 }
-

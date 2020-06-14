@@ -39,11 +39,12 @@ public class PigxQuartzFactory implements Job {
 	@Autowired
 	private PigxQuartzInvokeFactory pigxQuartzInvokeFactory;
 
-
 	@Override
 	@SneakyThrows
 	public void execute(JobExecutionContext jobExecutionContext) {
-		SysJob sysJob = (SysJob) jobExecutionContext.getMergedJobDataMap().get(PigxQuartzEnum.SCHEDULE_JOB_KEY.getType());
+		SysJob sysJob = (SysJob) jobExecutionContext.getMergedJobDataMap()
+				.get(PigxQuartzEnum.SCHEDULE_JOB_KEY.getType());
 		pigxQuartzInvokeFactory.init(sysJob, jobExecutionContext.getTrigger());
 	}
+
 }

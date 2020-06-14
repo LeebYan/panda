@@ -33,8 +33,7 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2018/8/30
- * 全局异常处理器
+ * @date 2018/8/30 全局异常处理器
  */
 @Slf4j
 @RestControllerAdvice
@@ -42,7 +41,6 @@ public class GlobalExceptionHandlerResolver {
 
 	/**
 	 * 全局异常.
-	 *
 	 * @param e the e
 	 * @return R
 	 */
@@ -55,27 +53,24 @@ public class GlobalExceptionHandlerResolver {
 
 	/**
 	 * AccessDeniedException
-	 *
 	 * @param e the e
 	 * @return R
 	 */
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public R handleAccessDeniedException(AccessDeniedException e) {
-		String msg = SpringSecurityMessageSource.getAccessor()
-				.getMessage("AbstractAccessDecisionManager.accessDenied"
-						, e.getMessage());
+		String msg = SpringSecurityMessageSource.getAccessor().getMessage("AbstractAccessDecisionManager.accessDenied",
+				e.getMessage());
 		log.error("拒绝授权异常信息 ex={}", msg, e);
 		return R.failed(e.getLocalizedMessage());
 	}
 
 	/**
 	 * validation Exception
-	 *
 	 * @param exception
 	 * @return R
 	 */
-	@ExceptionHandler({MethodArgumentNotValidException.class})
+	@ExceptionHandler({ MethodArgumentNotValidException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R handleBodyValidException(MethodArgumentNotValidException exception) {
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
@@ -85,15 +80,15 @@ public class GlobalExceptionHandlerResolver {
 
 	/**
 	 * validation Exception (以form-data形式传参)
-	 *
 	 * @param exception
 	 * @return R
 	 */
-	@ExceptionHandler({BindException.class})
+	@ExceptionHandler({ BindException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R bindExceptionHandler(BindException exception) {
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		log.warn("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
 		return R.failed(fieldErrors.get(0).getDefaultMessage());
 	}
+
 }

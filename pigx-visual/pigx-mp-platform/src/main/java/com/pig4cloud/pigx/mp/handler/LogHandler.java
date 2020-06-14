@@ -30,23 +30,24 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class LogHandler extends AbstractHandler {
+
 	private final WxAccountFansMapper fansMapper;
+
 	private final WxAccountMapper accountMapper;
+
 	private final WxMsgMapper msgMapper;
 
 	@Override
 	@SneakyThrows
-	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-									Map<String, Object> context, WxMpService wxMpService,
-									WxSessionManager sessionManager) {
+	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,
+			WxSessionManager sessionManager) {
 		log.debug("接收到请求消息，内容：{}", wxMessage.getContent());
 
+		WxAccount wxAccount = accountMapper
+				.selectOne(Wrappers.<WxAccount>lambdaQuery().eq(WxAccount::getAccount, wxMessage.getToUser()));
 
-		WxAccount wxAccount = accountMapper.selectOne(Wrappers.<WxAccount>lambdaQuery()
-				.eq(WxAccount::getAccount, wxMessage.getToUser()));
-
-		WxAccountFans fans = fansMapper.selectOne(Wrappers.<WxAccountFans>lambdaQuery()
-				.eq(WxAccountFans::getOpenid, wxMessage.getFromUser()));
+		WxAccountFans fans = fansMapper
+				.selectOne(Wrappers.<WxAccountFans>lambdaQuery().eq(WxAccountFans::getOpenid, wxMessage.getFromUser()));
 
 		WxMsg wxMsg = new WxMsg();
 		wxMsg.setWxUserId(fans.getId());
@@ -101,4 +102,5 @@ public class LogHandler extends AbstractHandler {
 		log.debug("保存微信用户信息成功 {}", wxMsg);
 		return null;
 	}
+
 }

@@ -32,24 +32,23 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
- * @date 2020/03/25
- * 认证成功事件监听器
+ * @date 2020/03/25 认证成功事件监听器
  */
 public class AuthenticationSuccessEventListener implements ApplicationListener<AuthenticationSuccessEvent> {
+
 	@Autowired(required = false)
 	private AuthenticationSuccessHandler successHandler;
 
 	/**
 	 * Handle an application event.
-	 *
 	 * @param event the event to respond to
 	 */
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
 		Authentication authentication = (Authentication) event.getSource();
 		if (successHandler != null && isUserAuthentication(authentication)) {
-			ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
-					RequestContextHolder.getRequestAttributes();
+			ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
+					.getRequestAttributes();
 			HttpServletRequest request = requestAttributes.getRequest();
 			HttpServletResponse response = requestAttributes.getResponse();
 
@@ -57,8 +56,9 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 		}
 	}
 
-	private boolean isUserAuthentication(Authentication authentication){
-		return authentication.getPrincipal() instanceof PigxUser || CollUtil.isNotEmpty(authentication.getAuthorities());
+	private boolean isUserAuthentication(Authentication authentication) {
+		return authentication.getPrincipal() instanceof PigxUser
+				|| CollUtil.isNotEmpty(authentication.getAuthorities());
 	}
 
 }

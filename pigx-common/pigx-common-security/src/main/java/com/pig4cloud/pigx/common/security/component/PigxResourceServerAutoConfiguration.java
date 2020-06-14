@@ -37,6 +37,7 @@ import java.util.Map;
  */
 @ComponentScan("com.pig4cloud.pigx.common.security")
 public class PigxResourceServerAutoConfiguration implements ApplicationContextAware {
+
 	private ApplicationContext applicationContext;
 
 	@Bean
@@ -52,9 +53,9 @@ public class PigxResourceServerAutoConfiguration implements ApplicationContextAw
 		return restTemplate;
 	}
 
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
+
 }

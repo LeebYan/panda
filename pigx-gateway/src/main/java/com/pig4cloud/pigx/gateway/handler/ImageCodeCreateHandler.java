@@ -38,15 +38,14 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author lengleng
- * @date 2020/5/19
- * 验证码生成逻辑处理类
+ * @date 2020/5/19 验证码生成逻辑处理类
  */
 @Slf4j
 @Component
 @AllArgsConstructor
 public class ImageCodeCreateHandler implements HandlerFunction<ServerResponse> {
-	private final ObjectMapper objectMapper;
 
+	private final ObjectMapper objectMapper;
 
 	@Override
 	@SneakyThrows
@@ -56,8 +55,8 @@ public class ImageCodeCreateHandler implements HandlerFunction<ServerResponse> {
 		CaptchaService captchaService = SpringContextHolder.getBean(CaptchaService.class);
 		ResponseModel responseModel = captchaService.get(vo);
 
-		return ServerResponse.status(HttpStatus.OK)
-				.contentType(MediaType.APPLICATION_JSON)
+		return ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
 				.body(BodyInserters.fromValue(objectMapper.writeValueAsString(R.ok(responseModel))));
 	}
+
 }

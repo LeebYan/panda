@@ -37,7 +37,8 @@ public class SocketUtils {
 			byte[] bytes = new byte[buf.readableBytes()];
 			buf.readBytes(bytes);
 			json = new String(bytes);
-		} finally {
+		}
+		finally {
 			ReferenceCountUtil.release(msg);
 		}
 		return json;
@@ -48,8 +49,8 @@ public class SocketUtils {
 		ctx.writeAndFlush(Unpooled.buffer().writeBytes(msg.getBytes()));
 	}
 
-
 	public void sendMsg(Channel ctx, String msg) {
 		ctx.writeAndFlush(Unpooled.buffer().writeBytes(msg.getBytes()));
 	}
+
 }

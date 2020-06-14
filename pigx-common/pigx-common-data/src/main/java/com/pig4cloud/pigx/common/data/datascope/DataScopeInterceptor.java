@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
 /**
  * @author lengleng
  * @date 2020/5/27
@@ -46,8 +45,10 @@ import java.util.Properties;
  */
 @Slf4j
 @AllArgsConstructor
-@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
+@Intercepts({
+		@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 public class DataScopeInterceptor extends AbstractSqlParserHandler implements Interceptor {
+
 	private final DataScopeHandle dataScopeHandle;
 
 	@Override
@@ -66,7 +67,7 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		String originalSql = boundSql.getSql();
 		Object parameterObject = boundSql.getParameterObject();
 
-		//查找参数中包含DataScope类型的参数
+		// 查找参数中包含DataScope类型的参数
 		DataScope dataScope = findDataScopeObject(parameterObject);
 		if (dataScope == null) {
 			return invocation.proceed();
@@ -79,20 +80,20 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			return invocation.proceed();
 		}
 
-		if(deptIds.isEmpty()){
+		if (deptIds.isEmpty()) {
 			originalSql = "select * from (" + originalSql + ") temp_data_scope where 1 = 2";
-		}else{
+		}
+		else {
 			String join = CollectionUtil.join(deptIds, ",");
-			originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
+			originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName
+					+ " in (" + join + ")";
 		}
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}
 
-
 	/**
 	 * 生成拦截对象的代理
-	 *
 	 * @param target 目标对象
 	 * @return 代理对象
 	 */
@@ -106,7 +107,6 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 
 	/**
 	 * mybatis配置的属性
-	 *
 	 * @param properties mybatis配置的属性
 	 */
 	@Override
@@ -116,14 +116,14 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 
 	/**
 	 * 查找参数是否包括DataScope对象
-	 *
 	 * @param parameterObj 参数列表
 	 * @return DataScope
 	 */
 	private DataScope findDataScopeObject(Object parameterObj) {
 		if (parameterObj instanceof DataScope) {
 			return (DataScope) parameterObj;
-		} else if (parameterObj instanceof Map) {
+		}
+		else if (parameterObj instanceof Map) {
 			for (Object val : ((Map<?, ?>) parameterObj).values()) {
 				if (val instanceof DataScope) {
 					return (DataScope) val;

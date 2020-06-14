@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TradeStatusEnum {
+
 	/**
 	 * 交易完成
 	 */
@@ -40,13 +41,14 @@ public enum TradeStatusEnum {
 	 */
 	FAIL("FAIL", OrderStatusEnum.FAIL.getStatus());
 
-
 	/**
 	 * 描述
 	 */
 	private String description;
+
 	/**
 	 * 描述
 	 */
 	private String status;
+
 }

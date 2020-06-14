@@ -40,14 +40,15 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @RequestMapping("/generator")
 public class GeneratorController {
+
 	private final GeneratorService generatorService;
+
 	private final GenTableColumnService columnService;
 
 	/**
 	 * 列表
-	 *
 	 * @param tableName 参数集
-	 * @param dsName    数据源编号
+	 * @param dsName 数据源编号
 	 * @return 数据库表
 	 */
 	@GetMapping("/page")
@@ -57,7 +58,6 @@ public class GeneratorController {
 
 	/**
 	 * 预览代码
-	 *
 	 * @param genConfig 数据表配置
 	 * @return
 	 */
@@ -68,8 +68,7 @@ public class GeneratorController {
 
 	/**
 	 * 查询表的列信息
-	 *
-	 * @param page      分页
+	 * @param page 分页
 	 * @param genConfig 数据表配置
 	 * @return
 	 */
@@ -78,10 +77,8 @@ public class GeneratorController {
 		return R.ok(columnService.listTable(page, genConfig));
 	}
 
-
 	/**
 	 * 生成代码
-	 *
 	 * @param genConfig 数据表配置
 	 */
 	@SneakyThrows
@@ -89,10 +86,12 @@ public class GeneratorController {
 	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
 		byte[] data = generatorService.generatorCode(genConfig);
 		response.reset();
-		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+				String.format("attachment; filename=%s.zip", genConfig.getTableName()));
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));
 		response.setContentType("application/octet-stream; charset=UTF-8");
 
 		IoUtil.write(response.getOutputStream(), Boolean.TRUE, data);
 	}
+
 }

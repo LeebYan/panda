@@ -24,9 +24,8 @@ import com.pig4cloud.pigx.manager.netty.service.NettyServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
- *@author LCN on 2017/7/4.
+ * @author LCN on 2017/7/4.
  */
 @Service
 public class InitServiceImpl implements InitService {
@@ -37,10 +36,9 @@ public class InitServiceImpl implements InitService {
 	@Autowired
 	private ConfigReader configReader;
 
-
 	@Override
 	public void start() {
-		/**加载本地服务信息**/
+		/** 加载本地服务信息 **/
 
 		Constants.socketPort = configReader.getSocketPort();
 		Constants.maxConnection = configReader.getSocketMaxConnection();
@@ -51,4 +49,5 @@ public class InitServiceImpl implements InitService {
 	public void close() {
 		nettyServerService.close();
 	}
+
 }

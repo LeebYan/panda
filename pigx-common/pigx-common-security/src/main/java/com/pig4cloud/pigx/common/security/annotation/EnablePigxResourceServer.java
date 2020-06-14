@@ -34,10 +34,10 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @EnableResourceServer
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Import({PigxResourceServerAutoConfiguration.class, PigxSecurityBeanDefinitionRegistrar.class})
+@Import({ PigxResourceServerAutoConfiguration.class, PigxSecurityBeanDefinitionRegistrar.class })
 public @interface EnablePigxResourceServer {
 
 }

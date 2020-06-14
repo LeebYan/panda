@@ -1,5 +1,4 @@
 
-
 /*
  *    Copyright (c) 2018-2025, lengleng All rights reserved.
  *
@@ -25,6 +24,7 @@ package com.pig4cloud.pigx.manager.model;
 public class ModelName {
 
 	private String name;
+
 	private int count;
 
 	public String getName() {
@@ -42,4 +42,5 @@ public class ModelName {
 	public void setCount(int count) {
 		this.count = count;
 	}
+
 }

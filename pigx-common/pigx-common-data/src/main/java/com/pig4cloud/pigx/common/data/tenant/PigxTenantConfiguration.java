@@ -30,6 +30,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
  */
 @Configuration
 public class PigxTenantConfiguration {
+
 	@Bean
 	public RequestInterceptor pigxFeignTenantInterceptor() {
 		return new PigxFeignTenantInterceptor();
@@ -39,4 +40,5 @@ public class PigxTenantConfiguration {
 	public ClientHttpRequestInterceptor pigxTenantRequestInterceptor() {
 		return new TenantRequestInterceptor();
 	}
+
 }

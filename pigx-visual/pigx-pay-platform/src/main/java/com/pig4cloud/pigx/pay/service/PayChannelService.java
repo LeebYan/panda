@@ -30,9 +30,9 @@ public interface PayChannelService extends IService<PayChannel> {
 
 	/**
 	 * 新增支付渠道
-	 *
 	 * @param payChannel 支付渠道
 	 * @return
 	 */
 	Boolean saveChannel(PayChannel payChannel);
+
 }

@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @AllArgsConstructor
 public class TxManagerInterceptor {
+
 	private final AspectBeforeService aspectBeforeService;
 
 	@SneakyThrows
@@ -49,9 +50,11 @@ public class TxManagerInterceptor {
 			requestAttributes = RequestContextHolder.currentRequestAttributes();
 			HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 			groupId = request.getHeader("tx-group");
-		} catch (IllegalStateException e) {
+		}
+		catch (IllegalStateException e) {
 			log.info("非web 环境调用 不包含请求上下文");
 		}
 		return aspectBeforeService.around(groupId, point);
 	}
+
 }

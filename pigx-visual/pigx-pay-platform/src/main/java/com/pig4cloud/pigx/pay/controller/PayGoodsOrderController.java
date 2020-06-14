@@ -41,7 +41,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * 商品
  *
@@ -56,11 +55,9 @@ public class PayGoodsOrderController {
 
 	private final PayGoodsOrderService payGoodsOrderService;
 
-
 	/**
 	 * 商品订单
-	 *
-	 * @param goods        商品
+	 * @param goods 商品
 	 * @param modelAndView
 	 * @return R
 	 */
@@ -71,9 +68,9 @@ public class PayGoodsOrderController {
 		String ua = request.getHeader(HttpHeaders.USER_AGENT);
 		if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			String appId = WxPayApiConfigKit.getWxPayApiConfig().getAppId();
-			modelAndView.setViewName("redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId +
-					"&redirect_uri=http%3a%2f%2fadmin.pig4cloud.com%2fpay%2fgoods%2fwx%3famount%3d" + goods.getAmount() +
-					"&response_type=code&scope=snsapi_base&state=" + appId);
+			modelAndView.setViewName("redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId
+					+ "&redirect_uri=http%3a%2f%2fadmin.pig4cloud.com%2fpay%2fgoods%2fwx%3famount%3d"
+					+ goods.getAmount() + "&response_type=code&scope=snsapi_base&state=" + appId);
 			return modelAndView;
 		}
 
@@ -84,10 +81,9 @@ public class PayGoodsOrderController {
 
 	/**
 	 * oauth
-	 *
-	 * @param goods        商品信息
-	 * @param state        appid
-	 * @param code         回调code
+	 * @param goods 商品信息
+	 * @param state appid
+	 * @param code 回调code
 	 * @param modelAndView
 	 * @return
 	 * @throws WxErrorException
@@ -107,8 +103,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page          分页对象
+	 * @param page 分页对象
 	 * @param payGoodsOrder 商品订单表
 	 * @return
 	 */
@@ -118,10 +113,8 @@ public class PayGoodsOrderController {
 		return R.ok(payGoodsOrderService.page(page, Wrappers.query(payGoodsOrder)));
 	}
 
-
 	/**
 	 * 通过id查询商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */
@@ -133,7 +126,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 新增商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -147,7 +139,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 修改商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -161,7 +152,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id删除商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */

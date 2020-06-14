@@ -29,14 +29,13 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author lengleng
- * @date 2018/8/21
- * 演示环境过滤处理
+ * @date 2018/8/21 演示环境过滤处理
  */
 @Slf4j
 @Component
 public class PreviewGatewayFilter extends AbstractGatewayFilterFactory {
-	private static final String TOKEN = "token";
 
+	private static final String TOKEN = "token";
 
 	@Override
 	public GatewayFilter apply(Object config) {
@@ -44,8 +43,8 @@ public class PreviewGatewayFilter extends AbstractGatewayFilterFactory {
 			ServerHttpRequest request = exchange.getRequest();
 
 			// GET，直接向下执行
-			if (StrUtil.equalsIgnoreCase(request.getMethodValue(), HttpMethod.GET.name()) ||
-				StrUtil.containsIgnoreCase(request.getURI().getPath(), TOKEN)) {
+			if (StrUtil.equalsIgnoreCase(request.getMethodValue(), HttpMethod.GET.name())
+					|| StrUtil.containsIgnoreCase(request.getURI().getPath(), TOKEN)) {
 				return chain.filter(exchange);
 			}
 
@@ -55,4 +54,5 @@ public class PreviewGatewayFilter extends AbstractGatewayFilterFactory {
 			return response.setComplete();
 		};
 	}
+
 }

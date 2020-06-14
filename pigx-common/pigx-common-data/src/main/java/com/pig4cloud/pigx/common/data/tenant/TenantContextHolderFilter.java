@@ -52,11 +52,13 @@ public class TenantContextHolderFilter extends GenericFilterBean {
 
 		if (StrUtil.isNotBlank(tenantId)) {
 			TenantContextHolder.setTenantId(Integer.parseInt(tenantId));
-		} else {
+		}
+		else {
 			TenantContextHolder.setTenantId(CommonConstants.TENANT_ID_1);
 		}
 
 		filterChain.doFilter(request, response);
 		TenantContextHolder.clear();
 	}
+
 }

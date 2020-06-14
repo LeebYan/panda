@@ -51,8 +51,11 @@ import java.util.concurrent.Executor;
  */
 @Service
 public class CompensateServiceImpl implements CompensateService {
+
 	private static final String SUCCESS = "success";
+
 	private static final String SUCCESS1 = "SUCCESS";
+
 	private Logger logger = LoggerFactory.getLogger(CompensateServiceImpl.class);
 
 	@Autowired
@@ -75,12 +78,13 @@ public class CompensateServiceImpl implements CompensateService {
 
 		TxGroup txGroup = managerService.getTxGroup(transactionCompensateMsg.getGroupId());
 		if (txGroup == null) {
-			//仅发起方异常，其他模块正常
+			// 仅发起方异常，其他模块正常
 			txGroup = new TxGroup();
 			txGroup.setNowTime(System.currentTimeMillis());
 			txGroup.setGroupId(transactionCompensateMsg.getGroupId());
 			txGroup.setIsCompensate(1);
-		} else {
+		}
+		else {
 			managerService.deleteTxGroup(txGroup);
 		}
 
@@ -92,7 +96,7 @@ public class CompensateServiceImpl implements CompensateService {
 
 		final String compensateKey = compensateDao.saveCompensateMsg(transactionCompensateMsg);
 
-		//调整自动补偿机制，若开启了自动补偿，需要通知业务返回success，方可执行自动补偿
+		// 调整自动补偿机制，若开启了自动补偿，需要通知业务返回success，方可执行自动补偿
 		threadPool.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -108,13 +112,14 @@ public class CompensateServiceImpl implements CompensateService {
 					String res = HttpUtils.postJson(url, requestJson.toJSONString());
 					logger.error("Compensate Callback Result->" + res);
 					if (configReader.isCompensateAuto()) {
-						//自动补偿,是否自动执行补偿
+						// 自动补偿,是否自动执行补偿
 						if (res.contains(SUCCESS) || res.contains(SUCCESS1)) {
-							//自动补偿
+							// 自动补偿
 							autoCompensate(compensateKey, transactionCompensateMsg);
 						}
 					}
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					logger.error("Compensate Callback Fails->" + e.getMessage());
 				}
 			}
@@ -122,14 +127,13 @@ public class CompensateServiceImpl implements CompensateService {
 
 		return StringUtils.isNotEmpty(compensateKey);
 
-
 	}
 
 	@Override
 	public void autoCompensate(final String compensateKey, TransactionCompensateMsg transactionCompensateMsg) {
 		final String json = JSON.toJSONString(transactionCompensateMsg);
 		logger.info("Auto Compensate->" + json);
-		//自动补偿业务执行...
+		// 自动补偿业务执行...
 		final int tryTime = configReader.getCompensateTryTime();
 		boolean autoExecuteRes;
 		try {
@@ -145,24 +149,26 @@ public class CompensateServiceImpl implements CompensateService {
 				}
 				try {
 					Thread.sleep(tryTime * 1000);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				autoExecuteRes = executeCompensateMethod(json);
 			}
 
-			//执行成功删除数据
+			// 执行成功删除数据
 			if (autoExecuteRes) {
 				compensateDao.deleteCompensateByKey(compensateKey);
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Auto Compensate Fails,msg:" + e.getLocalizedMessage());
-			//推送数据给第三方通知
+			// 推送数据给第三方通知
 			autoExecuteRes = false;
 		}
 
-		//执行补偿以后通知给业务方
+		// 执行补偿以后通知给业务方
 		String groupId = transactionCompensateMsg.getGroupId();
 		JSONObject requestJson = new JSONObject();
 		requestJson.put("action", "notify");
@@ -175,7 +181,6 @@ public class CompensateServiceImpl implements CompensateService {
 		logger.error("Compensate Result Callback Result->" + res);
 
 	}
-
 
 	@Override
 	public List<ModelName> loadModelList() {
@@ -239,7 +244,8 @@ public class CompensateServiceImpl implements CompensateService {
 			public int compare(TxModel o1, TxModel o2) {
 				if (o2.getOrder() > o1.getOrder()) {
 					return 1;
-				} else {
+				}
+				else {
 					return -1;
 				}
 			}
@@ -264,31 +270,34 @@ public class CompensateServiceImpl implements CompensateService {
 		if (compensateGroup != null) {
 
 			if (compensateGroup.getList() != null && !compensateGroup.getList().isEmpty()) {
-				//引用集合 iterator，方便匹配后剔除列表
+				// 引用集合 iterator，方便匹配后剔除列表
 				Iterator<TxInfo> iterator = Lists.newArrayList(compensateGroup.getList()).iterator();
 				for (TxInfo txInfo : txGroup.getList()) {
 					while (iterator.hasNext()) {
 						TxInfo cinfo = iterator.next();
-						if (cinfo.getModel().equals(txInfo.getModel()) && cinfo.getMethodStr().equals(txInfo.getMethodStr())) {
-							//根据之前的数据补偿现在的事务
+						if (cinfo.getModel().equals(txInfo.getModel())
+								&& cinfo.getMethodStr().equals(txInfo.getMethodStr())) {
+							// 根据之前的数据补偿现在的事务
 							int oldNotify = cinfo.getNotify();
 
 							if (oldNotify == 1) {
-								//本次回滚
+								// 本次回滚
 								txInfo.setIsCommit(0);
-							} else {
-								//本次提交
+							}
+							else {
+								// 本次提交
 								txInfo.setIsCommit(1);
 							}
-							//匹配后剔除列表
+							// 匹配后剔除列表
 							iterator.remove();
 							break;
 						}
 					}
 				}
-			} else {//当没有List数据只记录了补偿数据时，理解问仅发起方提交其他均回滚
+			}
+			else {// 当没有List数据只记录了补偿数据时，理解问仅发起方提交其他均回滚
 				for (TxInfo txInfo : txGroup.getList()) {
-					//本次回滚
+					// 本次回滚
 					txInfo.setIsCommit(0);
 				}
 			}
@@ -306,7 +315,6 @@ public class CompensateServiceImpl implements CompensateService {
 		String txGroup = jsonObject.getString("txGroup");
 		return JSON.parseObject(txGroup, TxGroup.class);
 	}
-
 
 	@Override
 	@SneakyThrows
@@ -350,4 +358,5 @@ public class CompensateServiceImpl implements CompensateService {
 
 		return "1".equals(res);
 	}
+
 }

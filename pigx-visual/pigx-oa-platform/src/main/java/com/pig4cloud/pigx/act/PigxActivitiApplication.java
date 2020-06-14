@@ -25,8 +25,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2018/9/25
- * 工作流管理模块
+ * @date 2018/9/25 工作流管理模块
  */
 @EnablePigxSwagger2
 @EnablePigxFeignClients

@@ -32,8 +32,9 @@ import org.springframework.context.annotation.Bean;
  * @author 858695266
  */
 @AllArgsConstructor
-@EnableConfigurationProperties({OssProperties.class})
+@EnableConfigurationProperties({ OssProperties.class })
 public class OssAutoConfiguration {
+
 	private final OssProperties properties;
 
 	@Bean

@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class AliPayConfig {
+
 	/**
 	 * 订单过期时间
 	 */
@@ -22,4 +23,5 @@ public class AliPayConfig {
 	 * 服务端回调地址
 	 */
 	private String notifyUrl;
+
 }

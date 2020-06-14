@@ -46,15 +46,15 @@ import java.util.Map;
 @Component("OSC")
 @AllArgsConstructor
 public class OscChinaLoginHandler extends AbstractLoginHandler {
-	private final SysSocialDetailsMapper sysSocialDetailsMapper;
-	private final SysUserService sysUserService;
 
+	private final SysSocialDetailsMapper sysSocialDetailsMapper;
+
+	private final SysUserService sysUserService;
 
 	/**
 	 * 开源中国传入code
 	 * <p>
 	 * 通过code 调用qq 获取唯一标识
-	 *
 	 * @param code
 	 * @return
 	 */
@@ -83,24 +83,20 @@ public class OscChinaLoginHandler extends AbstractLoginHandler {
 		log.debug("开源中国获取个人信息返回报文{}", resp);
 
 		JSONObject userInfo = JSONUtil.parseObj(resp);
-		//开源中国唯一标识
+		// 开源中国唯一标识
 		String id = userInfo.getStr("id");
 		return id;
 	}
 
 	/**
 	 * identify 获取用户信息
-	 *
 	 * @param identify 开源中国表示
 	 * @return
 	 */
 	@Override
 	public UserInfo info(String identify) {
 
-
-		SysUser user = sysUserService
-				.getOne(Wrappers.<SysUser>query()
-						.lambda().eq(SysUser::getOscId, identify));
+		SysUser user = sysUserService.getOne(Wrappers.<SysUser>query().lambda().eq(SysUser::getOscId, identify));
 
 		if (user == null) {
 			log.info("开源中国未绑定:{}", identify);
@@ -108,4 +104,5 @@ public class OscChinaLoginHandler extends AbstractLoginHandler {
 		}
 		return sysUserService.findUserInfo(user);
 	}
+
 }

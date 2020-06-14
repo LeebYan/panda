@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.api.service.impl;
 
-
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.manager.api.service.ApiAdminService;
 import com.pig4cloud.pigx.manager.compensate.model.TxModel;
@@ -43,8 +42,11 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class ApiAdminServiceImpl implements ApiAdminService {
+
 	private final MicroService eurekaService;
+
 	private final RedisServerService redisServerService;
+
 	private final CompensateService compensateService;
 
 	@Override
@@ -54,7 +56,6 @@ public class ApiAdminServiceImpl implements ApiAdminService {
 
 	/**
 	 * k/v 获取 值封装成map
-	 *
 	 * @return
 	 */
 	@Override
@@ -96,7 +97,6 @@ public class ApiAdminServiceImpl implements ApiAdminService {
 		return compensateService.loadModelList();
 	}
 
-
 	@Override
 	public List<String> modelTimes(String model) {
 		return compensateService.loadCompensateTimes(model);
@@ -122,4 +122,5 @@ public class ApiAdminServiceImpl implements ApiAdminService {
 	public boolean hasCompensate() {
 		return compensateService.hasCompensate();
 	}
+
 }

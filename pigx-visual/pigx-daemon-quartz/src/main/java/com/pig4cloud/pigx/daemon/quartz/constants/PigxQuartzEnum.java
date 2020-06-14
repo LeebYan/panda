@@ -29,6 +29,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PigxQuartzEnum {
+
 	/**
 	 * 错失执行策略默认
 	 */
@@ -84,8 +85,10 @@ public enum PigxQuartzEnum {
 	 * 类型
 	 */
 	private final String type;
+
 	/**
 	 * 描述
 	 */
 	private final String description;
+
 }

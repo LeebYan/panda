@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 
 /**
  * @author lengleng
- * @date 2019-05-26
- * 根据传入返回bizname
+ * @date 2019-05-26 根据传入返回bizname
  */
 @AllArgsConstructor
 public class DefaultBizName implements BizName {

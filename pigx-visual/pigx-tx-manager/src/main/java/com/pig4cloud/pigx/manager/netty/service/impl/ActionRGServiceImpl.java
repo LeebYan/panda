@@ -25,11 +25,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 强制回滚事务组
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "rg")
 public class ActionRGServiceImpl implements IActionService {
-
 
 	@Autowired
 	private TxManagerService txManagerService;
@@ -42,4 +42,5 @@ public class ActionRGServiceImpl implements IActionService {
 		res = bs ? "1" : "0";
 		return res;
 	}
+
 }

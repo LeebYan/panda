@@ -30,7 +30,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 渠道
  *
@@ -42,13 +41,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/paychannel")
 @Api(value = "paychannel", tags = "paychannel管理")
 public class PayChannelController {
+
 	private final PayChannelService payChannelService;
+
 	private final RedisTemplate redisTemplate;
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page       分页对象
+	 * @param page 分页对象
 	 * @param payChannel 渠道
 	 * @return
 	 */
@@ -57,10 +57,8 @@ public class PayChannelController {
 		return R.ok(payChannelService.page(page, Wrappers.query(payChannel)));
 	}
 
-
 	/**
 	 * 通过id查询渠道
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -71,7 +69,6 @@ public class PayChannelController {
 
 	/**
 	 * 新增渠道
-	 *
 	 * @param payChannel 渠道
 	 * @return R
 	 */
@@ -86,7 +83,6 @@ public class PayChannelController {
 
 	/**
 	 * 修改渠道
-	 *
 	 * @param payChannel 渠道
 	 * @return R
 	 */
@@ -101,7 +97,6 @@ public class PayChannelController {
 
 	/**
 	 * 通过id删除渠道
-	 *
 	 * @param id id
 	 * @return R
 	 */

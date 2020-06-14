@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.manager.model;
 
 /**
  * 模块信息
+ *
  * @author LCN on 2017/11/13
  */
 public class ModelInfo {
@@ -62,4 +63,5 @@ public class ModelInfo {
 	public void setUniqueKey(String uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
+
 }

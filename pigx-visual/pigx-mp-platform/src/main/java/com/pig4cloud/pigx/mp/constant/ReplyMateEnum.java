@@ -23,7 +23,6 @@ public enum ReplyMateEnum {
 	 */
 	LIKE("2", "半匹配");
 
-
 	/***
 	 * 类型
 	 */
@@ -33,4 +32,5 @@ public enum ReplyMateEnum {
 	 * 描述
 	 */
 	private String desc;
+
 }

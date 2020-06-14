@@ -26,8 +26,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 /**
- *@author LCN on 2017/7/3.
- *
+ * @author LCN on 2017/7/3.
  * @author LCN
  * @since 4.1.0
  */
@@ -48,4 +47,5 @@ public class TransactionHttpRequestInterceptor implements ClientHttpRequestInter
 		}
 		return execution.execute(request, body);
 	}
+
 }

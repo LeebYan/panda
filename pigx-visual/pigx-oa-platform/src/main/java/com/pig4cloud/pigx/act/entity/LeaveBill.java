@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 @TableName("oa_leave_bill")
 @EqualsAndHashCode(callSuper = true)
 public class LeaveBill extends Model<LeaveBill> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,34 +46,42 @@ public class LeaveBill extends Model<LeaveBill> {
 	 */
 	@TableId(type = IdType.AUTO)
 	private Integer leaveId;
+
 	/**
 	 * 申请人
 	 */
 	private String username;
+
 	/**
 	 * 天数
 	 */
 	private Integer days;
+
 	/**
 	 * 备注
 	 */
 	private String content;
+
 	/**
 	 * 0-未提交,1-未审核,2-批准,9-驳回
 	 */
 	private String state;
+
 	/**
 	 * 提交时间
 	 */
 	private LocalDateTime leaveTime;
+
 	/**
 	 * 提交时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 修改时间
 	 */
 	private LocalDateTime updateTime;
+
 	/**
 	 * 删除标志
 	 */
@@ -91,4 +100,5 @@ public class LeaveBill extends Model<LeaveBill> {
 	protected Serializable pkVal() {
 		return this.leaveId;
 	}
+
 }

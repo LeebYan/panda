@@ -27,26 +27,39 @@ import org.activiti.engine.repository.ProcessDefinition;
  */
 @Data
 public class ProcessDefDTO {
-	private String category;
-	private String processonDefinitionId;
-	private String key;
-	private String name;
-	private Integer revision;
-	private Long deploymentTime;
-	private String xmlName;
-	private String picName;
-	private String deploymentId;
-	private Boolean suspend;
-	private String description;
-	private Integer xAxis;
-	private Integer yAxis;
-	private Integer width;
-	private Integer height;
 
+	private String category;
+
+	private String processonDefinitionId;
+
+	private String key;
+
+	private String name;
+
+	private Integer revision;
+
+	private Long deploymentTime;
+
+	private String xmlName;
+
+	private String picName;
+
+	private String deploymentId;
+
+	private Boolean suspend;
+
+	private String description;
+
+	private Integer xAxis;
+
+	private Integer yAxis;
+
+	private Integer width;
+
+	private Integer height;
 
 	/**
 	 * 抽取流程定义需要返回的内容
-	 *
 	 * @param processDefinition
 	 * @param deployment
 	 * @return
@@ -66,4 +79,5 @@ public class ProcessDefDTO {
 		dto.setDescription(processDefinition.getDescription());
 		return dto;
 	}
+
 }

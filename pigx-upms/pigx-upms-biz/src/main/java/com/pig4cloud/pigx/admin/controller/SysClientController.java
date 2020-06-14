@@ -45,26 +45,23 @@ import javax.validation.Valid;
 @RequestMapping("/client")
 @Api(value = "client", tags = "客户端管理模块")
 public class SysClientController {
+
 	private final SysOauthClientDetailsService clientDetailsService;
 
 	/**
 	 * 通过ID查询
-	 *
 	 * @param clientId clientId
 	 * @return SysOauthClientDetails
 	 */
 	@GetMapping("/{clientId}")
 	public R getByClientId(@PathVariable String clientId) {
-		return R.ok(clientDetailsService.list(Wrappers
-				.<SysOauthClientDetails>lambdaQuery()
-				.eq(SysOauthClientDetails::getClientId, clientId)));
+		return R.ok(clientDetailsService
+				.list(Wrappers.<SysOauthClientDetails>lambdaQuery().eq(SysOauthClientDetails::getClientId, clientId)));
 	}
-
 
 	/**
 	 * 简单分页查询
-	 *
-	 * @param page                  分页对象
+	 * @param page 分页对象
 	 * @param sysOauthClientDetails 系统终端
 	 * @return
 	 */
@@ -75,7 +72,6 @@ public class SysClientController {
 
 	/**
 	 * 添加
-	 *
 	 * @param sysOauthClientDetails 实体
 	 * @return success/false
 	 */
@@ -88,7 +84,6 @@ public class SysClientController {
 
 	/**
 	 * 删除
-	 *
 	 * @param clientId ID
 	 * @return success/false
 	 */
@@ -101,7 +96,6 @@ public class SysClientController {
 
 	/**
 	 * 编辑
-	 *
 	 * @param sysOauthClientDetails 实体
 	 * @return success/false
 	 */
@@ -111,4 +105,5 @@ public class SysClientController {
 	public R update(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
 		return R.ok(clientDetailsService.updateClientById(sysOauthClientDetails));
 	}
+
 }

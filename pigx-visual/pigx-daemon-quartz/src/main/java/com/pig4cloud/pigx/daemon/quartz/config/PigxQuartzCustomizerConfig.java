@@ -26,8 +26,10 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  */
 @Configuration
 public class PigxQuartzCustomizerConfig implements SchedulerFactoryBeanCustomizer {
+
 	@Override
 	public void customize(SchedulerFactoryBean schedulerFactoryBean) {
 		schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(true);
 	}
+
 }

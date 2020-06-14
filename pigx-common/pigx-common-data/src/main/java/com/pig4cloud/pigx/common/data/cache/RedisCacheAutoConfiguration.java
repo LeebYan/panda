@@ -46,19 +46,21 @@ import java.util.Map;
  * @author L.cm
  */
 @Configuration
-@AutoConfigureAfter({RedisAutoConfiguration.class})
-@ConditionalOnBean({RedisConnectionFactory.class})
-@ConditionalOnMissingBean({CacheManager.class})
+@AutoConfigureAfter({ RedisAutoConfiguration.class })
+@ConditionalOnBean({ RedisConnectionFactory.class })
+@ConditionalOnMissingBean({ CacheManager.class })
 @EnableConfigurationProperties(CacheProperties.class)
 public class RedisCacheAutoConfiguration {
+
 	private final CacheProperties cacheProperties;
+
 	private final CacheManagerCustomizers customizerInvoker;
+
 	@Nullable
 	private final RedisCacheConfiguration redisCacheConfiguration;
 
-	RedisCacheAutoConfiguration(CacheProperties cacheProperties,
-								CacheManagerCustomizers customizerInvoker,
-								ObjectProvider<RedisCacheConfiguration> redisCacheConfiguration) {
+	RedisCacheAutoConfiguration(CacheProperties cacheProperties, CacheManagerCustomizers customizerInvoker,
+			ObjectProvider<RedisCacheConfiguration> redisCacheConfiguration) {
 		this.cacheProperties = cacheProperties;
 		this.customizerInvoker = customizerInvoker;
 		this.redisCacheConfiguration = redisCacheConfiguration.getIfAvailable();
@@ -76,7 +78,7 @@ public class RedisCacheAutoConfiguration {
 			initialCaches.putAll(cacheConfigMap);
 		}
 		RedisAutoCacheManager cacheManager = new RedisAutoCacheManager(redisCacheWriter, cacheConfiguration,
-			initialCaches, true);
+				initialCaches, true);
 		cacheManager.setTransactionAware(false);
 		return this.customizerInvoker.customize(cacheManager);
 	}
@@ -84,10 +86,12 @@ public class RedisCacheAutoConfiguration {
 	private RedisCacheConfiguration determineConfiguration(ClassLoader classLoader) {
 		if (this.redisCacheConfiguration != null) {
 			return this.redisCacheConfiguration;
-		} else {
+		}
+		else {
 			CacheProperties.Redis redisProperties = this.cacheProperties.getRedis();
 			RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-			config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new JdkSerializationRedisSerializer(classLoader)));
+			config = config.serializeValuesWith(RedisSerializationContext.SerializationPair
+					.fromSerializer(new JdkSerializationRedisSerializer(classLoader)));
 			if (redisProperties.getTimeToLive() != null) {
 				config = config.entryTtl(redisProperties.getTimeToLive());
 			}
@@ -107,4 +111,5 @@ public class RedisCacheAutoConfiguration {
 			return config;
 		}
 	}
+
 }

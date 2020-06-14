@@ -31,7 +31,6 @@ import java.net.UnknownHostException;
 @Component
 public class ApplicationStartListener implements ApplicationListener<WebServerInitializedEvent> {
 
-
 	@Override
 	public void onApplicationEvent(WebServerInitializedEvent event) {
 		int serverPort = event.getWebServer().getPort();
@@ -39,14 +38,15 @@ public class ApplicationStartListener implements ApplicationListener<WebServerIn
 		Constants.address = ip + ":" + serverPort;
 	}
 
-
 	private String getIp() {
 		String host = null;
 		try {
 			host = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
+		}
+		catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		return host;
 	}
+
 }

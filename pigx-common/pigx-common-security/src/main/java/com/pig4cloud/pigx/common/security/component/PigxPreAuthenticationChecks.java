@@ -32,6 +32,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
  */
 @Slf4j
 public class PigxPreAuthenticationChecks implements UserDetailsChecker {
+
 	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	@Override
@@ -39,25 +40,23 @@ public class PigxPreAuthenticationChecks implements UserDetailsChecker {
 		if (!user.isAccountNonLocked()) {
 			log.debug("User account is locked");
 
-			throw new LockedException(messages.getMessage(
-					"AbstractUserDetailsAuthenticationProvider.locked",
-					"User account is locked"));
+			throw new LockedException(
+					messages.getMessage("AbstractUserDetailsAuthenticationProvider.locked", "User account is locked"));
 		}
 
 		if (!user.isEnabled()) {
 			log.debug("User account is disabled");
 
-			throw new DisabledException(messages.getMessage(
-					"AbstractUserDetailsAuthenticationProvider.disabled",
-					"User is disabled"));
+			throw new DisabledException(
+					messages.getMessage("AbstractUserDetailsAuthenticationProvider.disabled", "User is disabled"));
 		}
 
 		if (!user.isAccountNonExpired()) {
 			log.debug("User account is expired");
 
-			throw new AccountExpiredException(messages.getMessage(
-					"AbstractUserDetailsAuthenticationProvider.expired",
+			throw new AccountExpiredException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.expired",
 					"User account has expired"));
 		}
 	}
+
 }

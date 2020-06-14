@@ -20,7 +20,7 @@ package com.pig4cloud.pigx.manager.model;
 import java.util.List;
 
 /**
- *@author LCN on 2017/7/1.
+ * @author LCN on 2017/7/1.
  */
 public class TxState {
 
@@ -28,6 +28,7 @@ public class TxState {
 	 * socket ip
 	 */
 	private String ip;
+
 	/**
 	 * socket port
 	 */
@@ -43,7 +44,6 @@ public class TxState {
 	 */
 	private int nowConnection;
 
-
 	/**
 	 * transaction_netty_heart_time
 	 */
@@ -54,12 +54,10 @@ public class TxState {
 	 */
 	private int transactionNettyDelayTime;
 
-
 	/**
 	 * redis_save_max_time
 	 */
 	private int redisSaveMaxTime;
-
 
 	/**
 	 * 回调地址
@@ -85,7 +83,6 @@ public class TxState {
 	 * 自动补偿间隔时间
 	 */
 	private int compensateMaxWaitTime;
-
 
 	public String getIp() {
 		return ip;
@@ -182,6 +179,5 @@ public class TxState {
 	public void setCompensateMaxWaitTime(int compensateMaxWaitTime) {
 		this.compensateMaxWaitTime = compensateMaxWaitTime;
 	}
-
 
 }

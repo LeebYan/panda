@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum OrderStatusEnum {
+
 	/**
 	 * 订单初始 下单
 	 */
@@ -32,13 +33,14 @@ public enum OrderStatusEnum {
 	 */
 	FAIL("-1", "失败");
 
-
 	/**
 	 * 状态
 	 */
 	private String status;
+
 	/**
 	 * 描述
 	 */
 	private String description;
+
 }

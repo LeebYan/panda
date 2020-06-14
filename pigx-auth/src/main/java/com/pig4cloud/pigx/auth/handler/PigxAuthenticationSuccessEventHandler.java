@@ -41,16 +41,16 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @AllArgsConstructor
 public class PigxAuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
+
 	private final RemoteLogService logService;
 
 	/**
 	 * 处理登录成功方法
 	 * <p>
 	 * 获取到登录的authentication 对象
-	 *
 	 * @param authentication 登录对象
-	 * @param request        请求
-	 * @param response       返回
+	 * @param request 请求
+	 * @param response 返回
 	 */
 	@Async
 	@Override
@@ -65,4 +65,5 @@ public class PigxAuthenticationSuccessEventHandler implements AuthenticationSucc
 		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
 		log.info("用户：{} 登录成功", username);
 	}
+
 }

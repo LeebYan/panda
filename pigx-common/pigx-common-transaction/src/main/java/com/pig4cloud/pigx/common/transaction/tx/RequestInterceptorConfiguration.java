@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author LCN on 2018/1/18
- *
  * @author LCN
  * @since 4.1.0
  */
@@ -35,4 +34,5 @@ public class RequestInterceptorConfiguration {
 	public RequestInterceptor requestInterceptor() {
 		return new TransactionRestTemplateInterceptor();
 	}
+
 }

@@ -50,50 +50,49 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements SysTenantService {
+
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
 	private final SysOauthClientDetailsService clientServices;
+
 	private final SysDeptRelationService deptRelationService;
+
 	private final SysUserRoleService userRoleService;
+
 	private final SysRoleMenuService roleMenuService;
+
 	private final SysDictItemService dictItemService;
+
 	private final SysPublicParamService paramService;
+
 	private final SysUserService userService;
+
 	private final SysRoleService roleService;
+
 	private final SysMenuService menuService;
+
 	private final SysDeptService deptService;
+
 	private final SysDictService dictService;
 
 	/**
 	 * 获取正常状态租户
 	 * <p>
-	 * 1. 状态正常
-	 * 2. 开始时间小于等于当前时间
-	 * 3. 结束时间大于等于当前时间
-	 *
+	 * 1. 状态正常 2. 开始时间小于等于当前时间 3. 结束时间大于等于当前时间
 	 * @return
 	 */
 	@Override
 	@Cacheable(value = CacheConstants.TENANT_DETAILS)
 	public List<SysTenant> getNormalTenant() {
-		return baseMapper.selectList(Wrappers.<SysTenant>lambdaQuery()
-				.eq(SysTenant::getStatus, CommonConstants.STATUS_NORMAL));
+		return baseMapper
+				.selectList(Wrappers.<SysTenant>lambdaQuery().eq(SysTenant::getStatus, CommonConstants.STATUS_NORMAL));
 	}
 
 	/**
 	 * 保存租户
 	 * <p>
-	 * 1. 保存租户
-	 * 2. 初始化权限相关表
-	 * - sys_user
-	 * - sys_role
-	 * - sys_menu
-	 * - sys_user_role
-	 * - sys_role_menu
-	 * - sys_dict
-	 * - sys_dict_item
-	 * - sys_client_details
-	 * - sys_public_params
-	 *
+	 * 1. 保存租户 2. 初始化权限相关表 - sys_user - sys_role - sys_menu - sys_user_role -
+	 * sys_role_menu - sys_dict - sys_dict_item - sys_client_details - sys_public_params
 	 * @param sysTenant 租户实体
 	 * @return
 	 */
@@ -117,15 +116,13 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		List<SysOauthClientDetails> clientDetailsList = new ArrayList<>(16);
 		List<SysPublicParam> publicParamList = new ArrayList<>(64);
 
-		TenantBroker.runAs(defaultId,(id) -> {
+		TenantBroker.runAs(defaultId, (id) -> {
 			// 查询系统内置字典
 			dictList.addAll(dictService.list());
 			// 查询系统内置字典项目
-			dictIdList.addAll(dictList.stream().map(SysDict::getId)
-					.collect(Collectors.toList()));
-			dictItemList.addAll(dictItemService
-					.list(Wrappers.<SysDictItem>lambdaQuery()
-							.in(SysDictItem::getDictId, dictIdList)));
+			dictIdList.addAll(dictList.stream().map(SysDict::getId).collect(Collectors.toList()));
+			dictItemList.addAll(
+					dictItemService.list(Wrappers.<SysDictItem>lambdaQuery().in(SysDictItem::getDictId, dictIdList)));
 			// 查询当前租户菜单
 			menuList.addAll(menuService.list());
 			// 查询客户端配置
@@ -135,14 +132,14 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		});
 
 		// 保证插入租户为新的租户
-		return TenantBroker.applyAs(sysTenant.getId(),(id -> {
+		return TenantBroker.applyAs(sysTenant.getId(), (id -> {
 
 			// 插入部门
 			SysDept dept = new SysDept();
 			dept.setName(defaultDeptName);
 			dept.setParentId(0);
 			deptService.save(dept);
-			//维护部门关系
+			// 维护部门关系
 			deptRelationService.insertDeptRelation(dept);
 			// 构造初始化用户
 			SysUser user = new SysUser();
@@ -161,7 +158,8 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			userRole.setRoleId(role.getRoleId());
 			userRoleService.save(userRole);
 			// 插入新的菜单
-			saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID), CommonConstants.MENU_TREE_ROOT_ID);
+			saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID),
+					CommonConstants.MENU_TREE_ROOT_ID);
 			List<SysMenu> newMenuList = menuService.list();
 
 			// 查询全部菜单,构造角色菜单关系
@@ -175,13 +173,11 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			// 插入系统字典
 			dictService.saveBatch(dictList);
 			// 处理字典项最新关联的字典ID
-			List<SysDictItem> itemList = dictList.stream()
-					.flatMap(dict -> dictItemList.stream()
-							.filter(item -> item.getType().equals(dict.getType()))
-							.peek(item -> item.setDictId(dict.getId())))
+			List<SysDictItem> itemList = dictList.stream().flatMap(dict -> dictItemList.stream()
+					.filter(item -> item.getType().equals(dict.getType())).peek(item -> item.setDictId(dict.getId())))
 					.collect(Collectors.toList());
 
-			//插入客户端
+			// 插入客户端
 			clientServices.saveBatch(clientDetailsList);
 			// 插入系统配置
 			paramService.saveBatch(publicParamList);
@@ -192,9 +188,8 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 	/**
 	 * 保存新的租户菜单，维护成新的菜单
-	 *
 	 * @param nodeList 节点树
-	 * @param parent   上级
+	 * @param parent 上级
 	 */
 	private void saveTenantMenu(List<MenuTree> nodeList, Integer parent) {
 		for (MenuTree node : nodeList) {
@@ -203,10 +198,11 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			menu.setParentId(parent);
 			menuService.save(menu);
 			if (CollUtil.isNotEmpty(node.getChildren())) {
-				List<MenuTree> childrenList = node.getChildren().stream()
-						.map(treeNode -> (MenuTree) treeNode).collect(Collectors.toList());
+				List<MenuTree> childrenList = node.getChildren().stream().map(treeNode -> (MenuTree) treeNode)
+						.collect(Collectors.toList());
 				saveTenantMenu(childrenList, menu.getMenuId());
 			}
 		}
 	}
+
 }

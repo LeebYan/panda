@@ -36,12 +36,14 @@ import org.springframework.web.server.ServerWebExchange;
 @Slf4j
 @Component
 public class HttpBasicGatewayFilter extends AbstractGatewayFilterFactory {
+
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
 			if (hasAuth(exchange)) {
 				return chain.filter(exchange);
-			} else {
+			}
+			else {
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.UNAUTHORIZED);
 				response.getHeaders().add(HttpHeaders.WWW_AUTHENTICATE, "Basic Realm=\"pigx\"");
@@ -52,7 +54,6 @@ public class HttpBasicGatewayFilter extends AbstractGatewayFilterFactory {
 
 	/**
 	 * 简单的basic认证
-	 *
 	 * @param exchange 上下文
 	 * @return 是否有权限
 	 */

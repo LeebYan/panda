@@ -35,13 +35,13 @@ import java.util.List;
  * @author lengleng
  * @date 2018/11/12
  * <p>
- * redis store event
- * default 100
+ * redis store event default 100
  */
 @Slf4j
 @Configuration
 @AllArgsConstructor
 public class RedisEventStore extends InMemoryEventStore {
+
 	private final RedisTemplate redisTemplate;
 
 	@Override
@@ -55,4 +55,5 @@ public class RedisEventStore extends InMemoryEventStore {
 		});
 		return super.append(events);
 	}
+
 }

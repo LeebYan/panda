@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/service")
 public class EditorController {
+
 	private final EditorService editorService;
 
 	@GetMapping("/editor/stencilset")
@@ -45,7 +46,8 @@ public class EditorController {
 
 	@PutMapping("/model/{modelId}/save")
 	public void saveModel(@PathVariable(value = "modelId") String modelId, String name, String description,
-						  @RequestParam("json_xml") String jsonXml, @RequestParam("svg_xml") String svgXml) {
+			@RequestParam("json_xml") String jsonXml, @RequestParam("svg_xml") String svgXml) {
 		editorService.saveModel(modelId, name, description, jsonXml, svgXml);
 	}
+
 }

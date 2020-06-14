@@ -42,14 +42,15 @@ import org.springframework.stereotype.Component;
 @Component("MINI")
 @AllArgsConstructor
 public class MiniAppLoginHandler extends AbstractLoginHandler {
+
 	private final SysUserService sysUserService;
+
 	private final SysSocialDetailsMapper sysSocialDetailsMapper;
 
 	/**
 	 * 小程序登录传入code
 	 * <p>
 	 * 通过code 调用qq 获取唯一标识
-	 *
 	 * @param code
 	 * @return
 	 */
@@ -59,8 +60,8 @@ public class MiniAppLoginHandler extends AbstractLoginHandler {
 		condition.setType(LoginTypeEnum.MINI_APP.getType());
 		SysSocialDetails socialDetails = sysSocialDetailsMapper.selectOne(new QueryWrapper<>(condition));
 
-		String url = String.format(SecurityConstants.MINI_APP_AUTHORIZATION_CODE_URL
-				, socialDetails.getAppId(), socialDetails.getAppSecret(), code);
+		String url = String.format(SecurityConstants.MINI_APP_AUTHORIZATION_CODE_URL, socialDetails.getAppId(),
+				socialDetails.getAppSecret(), code);
 		String result = HttpUtil.get(url);
 		log.debug("微信小程序响应报文:{}", result);
 
@@ -70,15 +71,12 @@ public class MiniAppLoginHandler extends AbstractLoginHandler {
 
 	/**
 	 * openId 获取用户信息
-	 *
 	 * @param openId
 	 * @return
 	 */
 	@Override
 	public UserInfo info(String openId) {
-		SysUser user = sysUserService
-				.getOne(Wrappers.<SysUser>query()
-						.lambda().eq(SysUser::getMiniOpenid, openId));
+		SysUser user = sysUserService.getOne(Wrappers.<SysUser>query().lambda().eq(SysUser::getMiniOpenid, openId));
 
 		if (user == null) {
 			log.info("微信小程序未绑定:{}", openId);
@@ -86,4 +84,5 @@ public class MiniAppLoginHandler extends AbstractLoginHandler {
 		}
 		return sysUserService.findUserInfo(user);
 	}
+
 }

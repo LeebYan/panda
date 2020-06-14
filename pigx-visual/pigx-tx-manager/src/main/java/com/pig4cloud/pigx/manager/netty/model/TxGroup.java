@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.netty.model;
 
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *@author LCN on 2017/6/7.
+ * @author LCN on 2017/6/7.
  */
 public class TxGroup {
 
@@ -43,7 +42,6 @@ public class TxGroup {
 	 * 补偿请求
 	 */
 	private int isCompensate;
-
 
 	/**
 	 * 是否强制回滚(1:开启，0:关闭)
@@ -87,7 +85,8 @@ public class TxGroup {
 			}
 			return txGroup;
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return null;
 		}
 
@@ -185,7 +184,6 @@ public class TxGroup {
 				item.put("ip", info.getModelIpAddress());
 				item.put("ms", info.getMethodStr());
 
-
 				jsonArray.add(item);
 			}
 			jsonObject.put("l", jsonArray);
@@ -196,4 +194,5 @@ public class TxGroup {
 	public String toJsonString() {
 		return toJsonString(true);
 	}
+
 }

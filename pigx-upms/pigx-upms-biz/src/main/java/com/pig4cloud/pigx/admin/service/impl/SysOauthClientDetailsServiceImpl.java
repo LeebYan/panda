@@ -37,24 +37,23 @@ import org.springframework.stereotype.Service;
  * @since 2018-05-15
  */
 @Service
-public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClientDetailsMapper, SysOauthClientDetails> implements SysOauthClientDetailsService {
+public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClientDetailsMapper, SysOauthClientDetails>
+		implements SysOauthClientDetailsService {
 
 	/**
 	 * 通过ID删除客户端
-	 *
 	 * @param clientId
 	 * @return
 	 */
 	@Override
 	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId")
 	public Boolean removeByClientId(String clientId) {
-		return this.remove(Wrappers.<SysOauthClientDetails>lambdaQuery()
-				.eq(SysOauthClientDetails::getClientId, clientId));
+		return this
+				.remove(Wrappers.<SysOauthClientDetails>lambdaQuery().eq(SysOauthClientDetails::getClientId, clientId));
 	}
 
 	/**
 	 * 根据客户端信息
-	 *
 	 * @param clientDetails
 	 * @return
 	 */
@@ -63,4 +62,5 @@ public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClient
 	public Boolean updateClientById(SysOauthClientDetails clientDetails) {
 		return this.updateById(clientDetails);
 	}
+
 }

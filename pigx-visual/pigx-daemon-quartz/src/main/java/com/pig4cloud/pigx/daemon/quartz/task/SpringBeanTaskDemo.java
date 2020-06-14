@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Component("demo")
 public class SpringBeanTaskDemo {
+
 	/**
 	 * 测试Spring Bean的演示方法
 	 */
@@ -38,4 +39,5 @@ public class SpringBeanTaskDemo {
 		log.info("测试于:{}，输入参数{}", LocalDateTime.now(), para);
 		return PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getType();
 	}
+
 }

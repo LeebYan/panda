@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 /**
  * 系统社交登录账号表
  *
@@ -43,13 +42,12 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @Api(value = "social", tags = "三方账号管理模块")
 public class SysSocialDetailsController {
-	private final SysSocialDetailsService sysSocialDetailsService;
 
+	private final SysSocialDetailsService sysSocialDetailsService;
 
 	/**
 	 * 社交登录账户简单分页查询
-	 *
-	 * @param page             分页对象
+	 * @param page 分页对象
 	 * @param sysSocialDetails 社交登录
 	 * @return
 	 */
@@ -58,23 +56,19 @@ public class SysSocialDetailsController {
 		return R.ok(sysSocialDetailsService.page(page, Wrappers.query(sysSocialDetails)));
 	}
 
-
 	/**
 	 * 信息
-	 *
 	 * @param type 类型
 	 * @return R
 	 */
 	@GetMapping("/{type}")
 	public R getByType(@PathVariable("type") String type) {
 		return R.ok(sysSocialDetailsService
-				.list(Wrappers.<SysSocialDetails>lambdaQuery()
-				.eq(SysSocialDetails::getType, type)));
+				.list(Wrappers.<SysSocialDetails>lambdaQuery().eq(SysSocialDetails::getType, type)));
 	}
 
 	/**
 	 * 保存
-	 *
 	 * @param sysSocialDetails
 	 * @return R
 	 */
@@ -87,7 +81,6 @@ public class SysSocialDetailsController {
 
 	/**
 	 * 修改
-	 *
 	 * @param sysSocialDetails
 	 * @return R
 	 */
@@ -101,7 +94,6 @@ public class SysSocialDetailsController {
 
 	/**
 	 * 删除
-	 *
 	 * @param id
 	 * @return R
 	 */
@@ -114,7 +106,6 @@ public class SysSocialDetailsController {
 
 	/**
 	 * 通过社交账号、手机号查询用户、角色信息
-	 *
 	 * @param inStr appid@code
 	 * @return
 	 */
@@ -126,13 +117,13 @@ public class SysSocialDetailsController {
 
 	/**
 	 * 绑定社交账号
-	 *
 	 * @param state 类型
-	 * @param code  code
+	 * @param code code
 	 * @return
 	 */
 	@PostMapping("/bind")
 	public R bindSocial(String state, String code) {
 		return R.ok(sysSocialDetailsService.bindSocial(state, code));
 	}
+
 }

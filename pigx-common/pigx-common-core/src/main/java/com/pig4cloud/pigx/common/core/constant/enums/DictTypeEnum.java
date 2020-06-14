@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum DictTypeEnum {
+
 	/**
 	 * 字典类型-系统内置（不可修改）
 	 */
@@ -26,8 +27,10 @@ public enum DictTypeEnum {
 	 * 类型
 	 */
 	private String type;
+
 	/**
 	 * 描述
 	 */
 	private String description;
+
 }

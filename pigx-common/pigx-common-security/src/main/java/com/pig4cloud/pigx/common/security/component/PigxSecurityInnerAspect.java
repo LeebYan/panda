@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @AllArgsConstructor
 public class PigxSecurityInnerAspect {
+
 	private final HttpServletRequest request;
 
 	@SneakyThrows

@@ -35,7 +35,6 @@ public interface ApiAdminService {
 
 	/**
 	 * k/v 获取 值封装成map
-	 *
 	 * @return
 	 */
 	List<Map<String, Object>> getMapState();
@@ -43,7 +42,6 @@ public interface ApiAdminService {
 	String loadNotifyJson();
 
 	List<ModelName> modelList();
-
 
 	List<String> modelTimes(String model);
 
@@ -54,4 +52,5 @@ public interface ApiAdminService {
 	boolean hasCompensate();
 
 	boolean delCompensate(String path);
+
 }

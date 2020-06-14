@@ -34,6 +34,7 @@ import java.util.Map;
 @RequestMapping("/model")
 @AllArgsConstructor
 public class ModelController {
+
 	private final ModelService modelService;
 
 	@PostMapping(value = "/insert")
@@ -43,8 +44,8 @@ public class ModelController {
 	}
 
 	@PostMapping
-	public R createModel(@RequestParam String name, @RequestParam String key,
-						 @RequestParam String desc, @RequestParam String category) {
+	public R createModel(@RequestParam String name, @RequestParam String key, @RequestParam String desc,
+			@RequestParam String category) {
 		return R.ok(modelService.create(name, key, desc, category));
 	}
 
@@ -63,4 +64,5 @@ public class ModelController {
 	public R deploy(@PathVariable("id") String id) {
 		return modelService.deploy(id) ? R.ok() : R.failed();
 	}
+
 }

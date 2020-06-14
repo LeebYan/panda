@@ -41,14 +41,15 @@ import java.util.Map;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, PayGoodsOrder> implements PayGoodsOrderService {
-	private final Map<String, PayOrderHandler> orderHandlerMap;
-	private final HttpServletRequest request;
+public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, PayGoodsOrder>
+		implements PayGoodsOrderService {
 
+	private final Map<String, PayOrderHandler> orderHandlerMap;
+
+	private final HttpServletRequest request;
 
 	/**
 	 * 下单购买
-	 *
 	 * @param goodsOrder
 	 * @return
 	 */

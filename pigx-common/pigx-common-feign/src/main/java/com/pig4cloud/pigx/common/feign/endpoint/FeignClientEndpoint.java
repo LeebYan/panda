@@ -26,7 +26,9 @@ import java.util.Set;
  */
 @Endpoint(id = "feign")
 public class FeignClientEndpoint implements SmartInitializingSingleton {
+
 	private final ApplicationContext context;
+
 	private final List<FeignClientInfo> clientList;
 
 	public FeignClientEndpoint(ApplicationContext context) {
@@ -80,7 +82,8 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
 					if (method.isDefault()) {
 						continue;
 					}
-					RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+					RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method,
+							RequestMapping.class);
 					if (requestMapping == null) {
 						continue;
 					}
@@ -96,19 +99,29 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
 	@Getter
 	@Setter
 	public static class FeignClientInfo {
+
 		private String beanName;
+
 		private String serviceId;
+
 		private String contextId;
+
 		private String url;
+
 		private String path;
+
 		private List<ClientInfo> clientList;
+
 	}
 
 	@Getter
 	@AllArgsConstructor
 	public static class ClientInfo {
+
 		private final RequestMethod[] methods;
+
 		private final String[] mappings;
+
 	}
 
 }

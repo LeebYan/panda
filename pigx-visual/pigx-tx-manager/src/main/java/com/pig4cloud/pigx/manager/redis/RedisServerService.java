@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.redis;
 
-
 import com.pig4cloud.pigx.manager.netty.model.TxGroup;
 
 import java.util.List;
@@ -45,8 +44,6 @@ public interface RedisServerService {
 
 	void saveLoadBalance(String groupName, String key, String data);
 
-
 	String getLoadBalance(String groupName, String key);
-
 
 }

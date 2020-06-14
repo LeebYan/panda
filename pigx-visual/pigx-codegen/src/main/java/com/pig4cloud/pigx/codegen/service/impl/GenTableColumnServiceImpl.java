@@ -21,10 +21,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper, ColumnEntity> implements GenTableColumnService {
+public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper, ColumnEntity>
+		implements GenTableColumnService {
+
 	@Override
 	public IPage<ColumnEntity> listTable(Page page, GenConfig genConfig) {
-		IPage<ColumnEntity> columnPage = baseMapper.selectTableColumn(page, genConfig.getTableName(), genConfig.getDsName());
+		IPage<ColumnEntity> columnPage = baseMapper.selectTableColumn(page, genConfig.getTableName(),
+				genConfig.getDsName());
 
 		// 处理 数据库类型和 Java 类型关系
 		Configuration config = GenUtils.getConfig();
@@ -35,4 +38,5 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
 		});
 		return columnPage;
 	}
+
 }

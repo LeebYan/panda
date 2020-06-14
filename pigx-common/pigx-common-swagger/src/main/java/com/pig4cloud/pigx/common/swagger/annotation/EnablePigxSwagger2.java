@@ -24,13 +24,13 @@ import java.lang.annotation.*;
 
 /**
  * @author lengleng
- * @date 2018/7/21
- * 开启pigx swagger
+ * @date 2018/7/21 开启pigx swagger
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({SwaggerAutoConfiguration.class})
+@Import({ SwaggerAutoConfiguration.class })
 public @interface EnablePigxSwagger2 {
+
 }

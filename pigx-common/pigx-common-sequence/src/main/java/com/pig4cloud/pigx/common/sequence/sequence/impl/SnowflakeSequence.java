@@ -1,24 +1,16 @@
 package com.pig4cloud.pigx.common.sequence.sequence.impl;
 
-
 import com.pig4cloud.pigx.common.sequence.exception.SeqException;
 import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
 
 /**
- * 使用雪花算法
- * 一个long类型的数据，64位。以下是每位的具体含义。
- * <br>
- * snowflake的结构如下(每部分用-分开):
- * <br>
- * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
- * <br>
- * （1）第一位为未使用
- * （2）接下来的41位为毫秒级时间(41位的长度可以使用69年)
- * （3）然后是5位datacenterId
- * （4）5位workerId
- * （5）最后12位是毫秒内的计数（12位的计数顺序号支持每个节点每毫秒产生4096个ID序号）
- * <br>
+ * 使用雪花算法 一个long类型的数据，64位。以下是每位的具体含义。 <br>
+ * snowflake的结构如下(每部分用-分开): <br>
+ * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000 <br>
+ * （1）第一位为未使用 （2）接下来的41位为毫秒级时间(41位的长度可以使用69年) （3）然后是5位datacenterId （4）5位workerId
+ * （5）最后12位是毫秒内的计数（12位的计数顺序号支持每个节点每毫秒产生4096个ID序号） <br>
  * 一共加起来刚好64位，为一个Long型。(转换成字符串长度为18)
+ *
  * @author xuan on 2018/5/9.
  */
 public class SnowflakeSequence implements Sequence {
@@ -97,37 +89,35 @@ public class SnowflakeSequence implements Sequence {
 	public synchronized long nextValue() throws SeqException {
 		long timestamp = timeGen();
 
-		//如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
+		// 如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
 		if (timestamp < lastTimestamp) {
 			throw new SeqException("[SnowflakeSequence-nextValue] 当前时间小于上次生成序列号的时间，时间被回退了，请确认服务器时间的设置.");
 		}
 
-		//如果是同一时间生成的，则进行毫秒内序列
+		// 如果是同一时间生成的，则进行毫秒内序列
 		if (lastTimestamp == timestamp) {
 			sequence = (sequence + 1) & sequenceMask;
-			//毫秒内序列溢出
+			// 毫秒内序列溢出
 			if (sequence == 0) {
-				//阻塞到下一个毫秒,获得新的时间戳
+				// 阻塞到下一个毫秒,获得新的时间戳
 				timestamp = tilNextMillis(lastTimestamp);
 			}
-		} else {
-			//时间戳改变，毫秒内序列重置
+		}
+		else {
+			// 时间戳改变，毫秒内序列重置
 			sequence = 0L;
 		}
 
-		//上次生成ID的时间截
+		// 上次生成ID的时间截
 		lastTimestamp = timestamp;
 
-		//移位并通过或运算拼到一起组成64位的ID
-		return ((timestamp - twepoch) << timestampLeftShift)
-				| (datacenterId << datacenterIdShift)
-				| (workerId << workerIdShift)
-				| sequence;
+		// 移位并通过或运算拼到一起组成64位的ID
+		return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift)
+				| (workerId << workerIdShift) | sequence;
 	}
 
 	/**
 	 * 阻塞到下一个毫秒，直到获得新的时间戳
-	 *
 	 * @param lastTimestamp 上次生成ID的时间截
 	 * @return 当前时间戳
 	 */
@@ -141,7 +131,6 @@ public class SnowflakeSequence implements Sequence {
 
 	/**
 	 * 返回以毫秒为单位的当前时间
-	 *
 	 * @return 当前时间(毫秒)
 	 */
 	private long timeGen() {
@@ -166,7 +155,6 @@ public class SnowflakeSequence implements Sequence {
 
 	/**
 	 * 下一个生成序号（带格式）
-	 *
 	 * @return
 	 * @throws SeqException
 	 */
@@ -174,4 +162,5 @@ public class SnowflakeSequence implements Sequence {
 	public String nextNo() throws SeqException {
 		return String.valueOf(nextValue());
 	}
+
 }

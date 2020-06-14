@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
  * @author 郑健楠
  */
 class AutowireCapableBeanJobFactory extends SpringBeanJobFactory {
+
 	private final AutowireCapableBeanFactory beanFactory;
 
 	AutowireCapableBeanJobFactory(AutowireCapableBeanFactory beanFactory) {
@@ -45,4 +46,5 @@ class AutowireCapableBeanJobFactory extends SpringBeanJobFactory {
 		this.beanFactory.initializeBean(jobInstance, beanName);
 		return jobInstance;
 	}
+
 }

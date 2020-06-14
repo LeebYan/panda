@@ -20,7 +20,6 @@ public interface CacheConstants {
 	 */
 	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY:";
 
-
 	/**
 	 * 菜单信息缓存
 	 */
@@ -36,12 +35,10 @@ public interface CacheConstants {
 	 */
 	String DICT_DETAILS = "dict_details";
 
-
 	/**
 	 * oauth 客户端信息
 	 */
 	String CLIENT_DETAILS_KEY = "pigx_oauth:client:details";
-
 
 	/**
 	 * spring boot admin 事件key
@@ -68,12 +65,10 @@ public interface CacheConstants {
 	 */
 	String MP_REDIS_RELOAD_TOPIC = "mp_redis_reload_topic";
 
-
 	/**
 	 * 支付 reload 事件
 	 */
 	String PAY_REDIS_RELOAD_TOPIC = "pay_redis_reload_topic";
-
 
 	/**
 	 * 参数缓存
@@ -84,4 +79,5 @@ public interface CacheConstants {
 	 * 租户缓存 (不区分租户)
 	 */
 	String TENANT_DETAILS = GLOBALLY + "tenant_details";
+
 }

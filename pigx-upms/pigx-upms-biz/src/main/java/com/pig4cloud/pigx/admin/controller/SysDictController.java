@@ -19,7 +19,6 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -52,12 +51,13 @@ import javax.validation.Valid;
 @RequestMapping("/dict")
 @Api(value = "dict", tags = "字典管理模块")
 public class SysDictController {
+
 	private final SysDictService sysDictService;
+
 	private final SysDictItemService sysDictItemService;
 
 	/**
 	 * 通过ID查询字典信息
-	 *
 	 * @param id ID
 	 * @return 字典信息
 	 */
@@ -68,7 +68,6 @@ public class SysDictController {
 
 	/**
 	 * 分页查询字典信息
-	 *
 	 * @param page 分页对象
 	 * @return 分页对象
 	 */
@@ -79,21 +78,17 @@ public class SysDictController {
 
 	/**
 	 * 通过字典类型查找字典
-	 *
 	 * @param type 类型
 	 * @return 同类型字典
 	 */
 	@GetMapping("/type/{type}")
 	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result.data.isEmpty()")
 	public R getDictByType(@PathVariable String type) {
-		return R.ok(sysDictItemService.list(Wrappers
-				.<SysDictItem>query().lambda()
-				.eq(SysDictItem::getType, type)));
+		return R.ok(sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, type)));
 	}
 
 	/**
 	 * 添加字典
-	 *
 	 * @param sysDict 字典信息
 	 * @return success、false
 	 */
@@ -106,7 +101,6 @@ public class SysDictController {
 
 	/**
 	 * 删除字典，并且清除字典缓存
-	 *
 	 * @param id ID
 	 * @return R
 	 */
@@ -119,7 +113,6 @@ public class SysDictController {
 
 	/**
 	 * 修改字典
-	 *
 	 * @param sysDict 字典信息
 	 * @return success/false
 	 */
@@ -132,8 +125,7 @@ public class SysDictController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page        分页对象
+	 * @param page 分页对象
 	 * @param sysDictItem 字典项
 	 * @return
 	 */
@@ -142,10 +134,8 @@ public class SysDictController {
 		return R.ok(sysDictItemService.page(page, Wrappers.query(sysDictItem)));
 	}
 
-
 	/**
 	 * 通过id查询字典项
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -156,7 +146,6 @@ public class SysDictController {
 
 	/**
 	 * 新增字典项
-	 *
 	 * @param sysDictItem 字典项
 	 * @return R
 	 */
@@ -169,7 +158,6 @@ public class SysDictController {
 
 	/**
 	 * 修改字典项
-	 *
 	 * @param sysDictItem 字典项
 	 * @return R
 	 */
@@ -181,7 +169,6 @@ public class SysDictController {
 
 	/**
 	 * 通过id删除字典项
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -190,4 +177,5 @@ public class SysDictController {
 	public R removeDictItemById(@PathVariable Integer id) {
 		return sysDictItemService.removeDictItem(id);
 	}
+
 }

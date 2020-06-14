@@ -23,11 +23,11 @@ import java.util.Date;
 
 /**
  * @author lengleng
- * @date 2018/9/28
- * 批注Dto
+ * @date 2018/9/28 批注Dto
  */
 @Data
 public class CommentDto {
+
 	/**
 	 * unique identifier for this comment
 	 */
@@ -62,4 +62,5 @@ public class CommentDto {
 	 * the full comment message the user had related to the task and/or process instance
 	 */
 	private String fullMessage;
+
 }

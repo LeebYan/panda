@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SubStatusEnum {
+
 	/**
 	 * 已关注
 	 */
@@ -22,7 +23,6 @@ public enum SubStatusEnum {
 	 */
 	UNSUB("0", "关注");
 
-
 	/***
 	 * 类型
 	 */
@@ -32,4 +32,5 @@ public enum SubStatusEnum {
 	 * 描述
 	 */
 	private String desc;
+
 }

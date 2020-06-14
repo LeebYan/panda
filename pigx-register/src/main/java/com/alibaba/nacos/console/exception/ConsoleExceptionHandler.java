@@ -32,21 +32,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ConsoleExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConsoleExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConsoleExceptionHandler.class);
 
-    @ExceptionHandler(AccessException.class)
-    private ResponseEntity<String> handleAccessException(AccessException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getErrMsg());
-    }
+	@ExceptionHandler(AccessException.class)
+	private ResponseEntity<String> handleAccessException(AccessException e) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getErrMsg());
+	}
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
-    }
+	@ExceptionHandler(IllegalArgumentException.class)
+	private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+	}
 
-    @ExceptionHandler(Exception.class)
-    private ResponseEntity<String> handleException(Exception e) {
-        logger.error("CONSOLE", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.toString());
-    }
+	@ExceptionHandler(Exception.class)
+	private ResponseEntity<String> handleException(Exception e) {
+		logger.error("CONSOLE", e);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.toString());
+	}
+
 }

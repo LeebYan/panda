@@ -41,7 +41,9 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DruidDataSourceProperties.class)
 public class DynamicDataSourceAutoConfiguration {
+
 	private final StringEncryptor stringEncryptor;
+
 	private final DruidDataSourceProperties properties;
 
 	@Bean
@@ -53,4 +55,5 @@ public class DynamicDataSourceAutoConfiguration {
 	public DsProcessor dsProcessor() {
 		return new LastParamDsProcessor();
 	}
+
 }

@@ -37,8 +37,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 @ConditionalOnWebApplication
 public class EventAutoConfiguration {
+
 	@Autowired
 	private TaskInvokUtil taskInvokUtil;
+
 	@Autowired
 	private SysJobLogService sysJobLogService;
 

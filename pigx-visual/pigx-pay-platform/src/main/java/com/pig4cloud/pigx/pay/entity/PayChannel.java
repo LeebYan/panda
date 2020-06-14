@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "渠道")
 public class PayChannel extends Model<PayChannel> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,47 +46,58 @@ public class PayChannel extends Model<PayChannel> {
 	 */
 	@TableId
 	private Integer id;
+
 	/**
 	 * 应用ID
 	 */
 	private String appId;
+
 	/**
 	 * 渠道ID
 	 */
 	private String channelId;
+
 	/**
 	 * 渠道名称,如:alipay,wechat
 	 */
 	private String channelName;
+
 	/**
 	 * 渠道商户ID
 	 */
 	private String channelMchId;
+
 	/**
 	 * 渠道状态
 	 */
 	private String state;
+
 	/**
 	 * 配置参数,json字符串
 	 */
 	private String param;
+
 	/**
 	 * 备注
 	 */
 	private String remark;
+
 	/**
 	 * 删除标记
 	 */
 	@TableLogic
 	private String delFlag;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
+
 	/**
 	 * 租户ID
 	 */

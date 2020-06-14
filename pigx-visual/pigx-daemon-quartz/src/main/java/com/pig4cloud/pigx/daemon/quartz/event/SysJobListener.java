@@ -26,10 +26,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 
-
 /**
- * @author frwcloud
- * 异步监听定时任务事件
+ * @author frwcloud 异步监听定时任务事件
  */
 @Slf4j
 @AllArgsConstructor
@@ -45,4 +43,5 @@ public class SysJobListener {
 		Trigger trigger = event.getTrigger();
 		taskInvokUtil.invokMethod(sysJob, trigger);
 	}
+
 }

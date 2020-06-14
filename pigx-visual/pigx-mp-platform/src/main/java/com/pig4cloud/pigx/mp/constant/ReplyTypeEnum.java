@@ -38,10 +38,8 @@ public enum ReplyTypeEnum {
 	 */
 	private String desc;
 
-
 	/**
 	 * 根据 type 查找枚举
-	 *
 	 * @param type
 	 * @return
 	 */
@@ -53,4 +51,5 @@ public enum ReplyTypeEnum {
 		}
 		return null;
 	}
+
 }

@@ -9,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author Hccake
  * @version 1.0
- * @date 2019/8/8 15:40
- * TaskInvok工厂类
+ * @date 2019/8/8 15:40 TaskInvok工厂类
  */
 @Slf4j
 public class TaskInvokFactory {
@@ -30,17 +29,22 @@ public class TaskInvokFactory {
 		ITaskInvok iTaskInvok = null;
 		if (JobTypeQuartzEnum.JAVA.getType().equals(jobType)) {
 			iTaskInvok = SpringContextHolder.getBean("javaClassTaskInvok");
-		} else if (JobTypeQuartzEnum.SPRING_BEAN.getType().equals(jobType)) {
+		}
+		else if (JobTypeQuartzEnum.SPRING_BEAN.getType().equals(jobType)) {
 			iTaskInvok = SpringContextHolder.getBean("springBeanTaskInvok");
-		} else if (JobTypeQuartzEnum.REST.getType().equals(jobType)) {
+		}
+		else if (JobTypeQuartzEnum.REST.getType().equals(jobType)) {
 			iTaskInvok = SpringContextHolder.getBean("restTaskInvok");
-		} else if (JobTypeQuartzEnum.JAR.getType().equals(jobType)) {
+		}
+		else if (JobTypeQuartzEnum.JAR.getType().equals(jobType)) {
 			iTaskInvok = SpringContextHolder.getBean("jarTaskInvok");
-		} else if (StrUtil.isBlank(jobType)) {
+		}
+		else if (StrUtil.isBlank(jobType)) {
 			log.info("定时任务类型无对应反射方式，反射类型:{}", jobType);
 			throw new TaskException("");
 		}
 
 		return iTaskInvok;
 	}
+
 }

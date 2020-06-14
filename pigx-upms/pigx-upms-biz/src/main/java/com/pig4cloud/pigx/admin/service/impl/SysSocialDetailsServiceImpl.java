@@ -43,14 +43,17 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 @Service("sysSocialDetailsService")
-public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMapper, SysSocialDetails> implements SysSocialDetailsService {
+public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMapper, SysSocialDetails>
+		implements SysSocialDetailsService {
+
 	private final Map<String, LoginHandler> loginHandlerMap;
+
 	private final CacheManager cacheManager;
+
 	private final SysUserMapper sysUserMapper;
 
 	/**
 	 * 绑定社交账号
-	 *
 	 * @param type type
 	 * @param code code
 	 * @return
@@ -62,25 +65,28 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 
 		if (LoginTypeEnum.GITEE.getType().equals(type)) {
 			sysUser.setGiteeLogin(identify);
-		} else if (LoginTypeEnum.OSC.getType().equals(type)) {
+		}
+		else if (LoginTypeEnum.OSC.getType().equals(type)) {
 			sysUser.setOscId(identify);
-		} else if (LoginTypeEnum.WECHAT.getType().equals(type)) {
+		}
+		else if (LoginTypeEnum.WECHAT.getType().equals(type)) {
 			sysUser.setWxOpenid(identify);
-		} else if (LoginTypeEnum.QQ.getType().equals(type)) {
+		}
+		else if (LoginTypeEnum.QQ.getType().equals(type)) {
 			sysUser.setQqOpenid(identify);
-		} else if (LoginTypeEnum.MINI_APP.getType().equals(type)) {
+		}
+		else if (LoginTypeEnum.MINI_APP.getType().equals(type)) {
 			sysUser.setMiniOpenid(identify);
 		}
 
 		sysUserMapper.updateById(sysUser);
-		//更新緩存
+		// 更新緩存
 		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(sysUser.getUsername());
 		return Boolean.TRUE;
 	}
 
 	/**
 	 * 根据入参查询用户信息
-	 *
 	 * @param inStr TYPE@code
 	 * @return
 	 */
@@ -91,4 +97,5 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 		String loginStr = inStrs[1];
 		return loginHandlerMap.get(type).handle(loginStr);
 	}
+
 }

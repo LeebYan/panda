@@ -28,4 +28,5 @@ public class PigxTenantConfigProperties {
 	 * 多租户的数据表集合
 	 */
 	private List<String> tables = new ArrayList<>();
+
 }

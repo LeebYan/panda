@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/inner-job")
 public class RestTaskDemo {
+
 	/**
 	 * 测试REST风格调用定时任务的演示方法
 	 */
@@ -29,4 +30,5 @@ public class RestTaskDemo {
 		log.info("测试于:{}，传入参数{}", LocalDateTime.now(), param);
 		return R.ok();
 	}
+
 }

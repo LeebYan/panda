@@ -42,21 +42,20 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
-	private final ApiAdminService apiAdminService;
-	private final ApiModelService apiModelService;
 
+	private final ApiAdminService apiAdminService;
+
+	private final ApiModelService apiModelService;
 
 	@RequestMapping(value = "/onlines", method = RequestMethod.GET)
 	public List<ModelInfo> onlines() {
 		return apiModelService.onlines();
 	}
 
-
 	@RequestMapping(value = "/avueOnlines", method = RequestMethod.GET)
 	public List<ModelInfo> avueOnlines() {
 		return apiModelService.onlines();
 	}
-
 
 	@RequestMapping(value = "/setting", method = RequestMethod.GET)
 	public TxState setting() {
@@ -83,7 +82,6 @@ public class AdminController {
 		return apiAdminService.modelTimes(model);
 	}
 
-
 	@RequestMapping(value = "/modelInfos", method = RequestMethod.GET)
 	public List<TxModel> modelInfos(@RequestParam("path") String path) {
 		return apiAdminService.modelInfos(path);
@@ -106,4 +104,5 @@ public class AdminController {
 	public boolean hasCompensate() {
 		return apiAdminService.hasCompensate();
 	}
+
 }

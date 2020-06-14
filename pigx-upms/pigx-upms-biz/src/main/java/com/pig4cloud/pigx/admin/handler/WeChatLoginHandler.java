@@ -40,14 +40,15 @@ import org.springframework.stereotype.Component;
 @Component("WX")
 @AllArgsConstructor
 public class WeChatLoginHandler extends AbstractLoginHandler {
+
 	private final SysUserService sysUserService;
+
 	private final SysSocialDetailsMapper sysSocialDetailsMapper;
 
 	/**
 	 * 微信登录传入code
 	 * <p>
 	 * 通过code 调用qq 获取唯一标识
-	 *
 	 * @param code
 	 * @return
 	 */
@@ -57,8 +58,8 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 		condition.setType(LoginTypeEnum.WECHAT.getType());
 		SysSocialDetails socialDetails = sysSocialDetailsMapper.selectOne(new QueryWrapper<>(condition));
 
-		String url = String.format(SecurityConstants.WX_AUTHORIZATION_CODE_URL
-			, socialDetails.getAppId(), socialDetails.getAppSecret(), code);
+		String url = String.format(SecurityConstants.WX_AUTHORIZATION_CODE_URL, socialDetails.getAppId(),
+				socialDetails.getAppSecret(), code);
 		String result = HttpUtil.get(url);
 		log.debug("微信响应报文:{}", result);
 
@@ -68,15 +69,12 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 
 	/**
 	 * openId 获取用户信息
-	 *
 	 * @param openId
 	 * @return
 	 */
 	@Override
 	public UserInfo info(String openId) {
-		SysUser user = sysUserService
-			.getOne(Wrappers.<SysUser>query()
-				.lambda().eq(SysUser::getWxOpenid, openId));
+		SysUser user = sysUserService.getOne(Wrappers.<SysUser>query().lambda().eq(SysUser::getWxOpenid, openId));
 
 		if (user == null) {
 			log.info("微信未绑定:{}", openId);
@@ -84,4 +82,5 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 		}
 		return sysUserService.findUserInfo(user);
 	}
+
 }

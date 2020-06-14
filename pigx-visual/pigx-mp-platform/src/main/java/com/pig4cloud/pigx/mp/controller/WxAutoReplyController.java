@@ -28,8 +28,7 @@ public class WxAutoReplyController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page        分页对象
+	 * @param page 分页对象
 	 * @param wxAutoReply 消息自动回复
 	 * @return
 	 */
@@ -38,10 +37,8 @@ public class WxAutoReplyController {
 		return R.ok(wxAutoReplyService.page(page, Wrappers.query(wxAutoReply)));
 	}
 
-
 	/**
 	 * 通过id查询消息自动回复
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -52,7 +49,6 @@ public class WxAutoReplyController {
 
 	/**
 	 * 新增消息自动回复
-	 *
 	 * @param wxAutoReply 消息自动回复
 	 * @return R
 	 */
@@ -65,7 +61,6 @@ public class WxAutoReplyController {
 
 	/**
 	 * 修改消息自动回复
-	 *
 	 * @param wxAutoReply 消息自动回复
 	 * @return R
 	 */
@@ -78,7 +73,6 @@ public class WxAutoReplyController {
 
 	/**
 	 * 通过id删除消息自动回复
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -90,13 +84,12 @@ public class WxAutoReplyController {
 
 	/**
 	 * //校验参数
-	 *
 	 * @param wxAutoReply
 	 */
 	public void jude(WxAutoReply wxAutoReply) {
 		if (ReplyTypeEnum.MSG.getType().equals(wxAutoReply.getType())) {
-			Wrapper<WxAutoReply> queryWrapper = Wrappers.<WxAutoReply>lambdaQuery()
-					.eq(WxAutoReply::getReqType, wxAutoReply.getReqType());
+			Wrapper<WxAutoReply> queryWrapper = Wrappers.<WxAutoReply>lambdaQuery().eq(WxAutoReply::getReqType,
+					wxAutoReply.getReqType());
 			List<WxAutoReply> list = wxAutoReplyService.list(queryWrapper);
 			if (wxAutoReply.getId() != null) {
 				if (list != null && list.size() == 1) {
@@ -124,4 +117,5 @@ public class WxAutoReplyController {
 			}
 		}
 	}
+
 }

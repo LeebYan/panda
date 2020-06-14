@@ -11,6 +11,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * 初始化日志路径
  */
 public class ApplicationLoggerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
@@ -21,4 +22,5 @@ public class ApplicationLoggerInitializer implements ApplicationContextInitializ
 		// spring boot admin 直接加载日志
 		System.setProperty("logging.file.name", String.format("%s/%s/debug.log", logBase, appName));
 	}
+
 }

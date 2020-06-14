@@ -55,14 +55,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 @Service("sysRouteConfService")
-public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, SysRouteConf> implements SysRouteConfService {
-	private final RedisTemplate redisTemplate;
-	private final ApplicationEventPublisher applicationEventPublisher;
+public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, SysRouteConf>
+		implements SysRouteConfService {
 
+	private final RedisTemplate redisTemplate;
+
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * 更新路由信息
-	 *
 	 * @param routes 路由信息
 	 * @return
 	 */
@@ -95,16 +96,15 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 				Object predicates = map.get("predicates");
 				if (predicates != null) {
 					JSONArray predicatesArray = (JSONArray) predicates;
-					List<PredicateDefinition> predicateDefinitionList =
-							predicatesArray.toList(PredicateDefinition.class);
+					List<PredicateDefinition> predicateDefinitionList = predicatesArray
+							.toList(PredicateDefinition.class);
 					vo.setPredicates(predicateDefinitionList);
 				}
 
 				Object filters = map.get("filters");
 				if (filters != null) {
 					JSONArray filtersArray = (JSONArray) filters;
-					List<FilterDefinition> filterDefinitionList
-							= filtersArray.toList(FilterDefinition.class);
+					List<FilterDefinition> filterDefinitionList = filtersArray.toList(FilterDefinition.class);
 					vo.setFilters(filterDefinitionList);
 				}
 
@@ -127,7 +127,7 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 			condition.setDelFlag(CommonConstants.STATUS_NORMAL);
 			this.remove(new UpdateWrapper<>(condition));
 
-			//插入生效路由
+			// 插入生效路由
 			List<SysRouteConf> routeConfList = routeDefinitionVoList.stream().map(vo -> {
 				SysRouteConf routeConf = new SysRouteConf();
 				routeConf.setRouteId(vo.getId());
@@ -143,7 +143,8 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 
 			this.applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
 			redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "UPMS路由信息,网关缓存更新");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("路由配置解析失败", e);
 			// 回滚路由，重新加载即可
 			this.applicationEventPublisher.publishEvent(new DynamicRouteInitEvent(this));

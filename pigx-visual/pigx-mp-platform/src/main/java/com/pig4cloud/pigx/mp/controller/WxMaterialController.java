@@ -43,18 +43,15 @@ public class WxMaterialController {
 
 	/**
 	 * 上传非图文微信素材
-	 *
 	 * @param mulFile
 	 * @param mediaType
 	 * @return
 	 */
 	@PostMapping("/materialFileUpload")
 	@PreAuthorize("@pms.hasPermission('mp_wxmaterial_add')")
-	public R materialFileUpload(@RequestParam("file") MultipartFile mulFile,
-								@RequestParam String appId,
-								@RequestParam("title") String title,
-								@RequestParam("introduction") String introduction,
-								@RequestParam("mediaType") String mediaType) {
+	public R materialFileUpload(@RequestParam("file") MultipartFile mulFile, @RequestParam String appId,
+			@RequestParam("title") String title, @RequestParam("introduction") String introduction,
+			@RequestParam("mediaType") String mediaType) {
 		try {
 			WxMpMaterial material = new WxMpMaterial();
 			material.setName(mulFile.getOriginalFilename());
@@ -69,17 +66,20 @@ public class WxMaterialController {
 
 			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
-			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialFileUpload(mediaType, material);
+			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialFileUpload(mediaType,
+					material);
 			WxMpMaterialFileBatchGetResult.WxMaterialFileBatchGetNewsItem wxMpMaterialFileBatchGetResult = new WxMpMaterialFileBatchGetResult.WxMaterialFileBatchGetNewsItem();
 			wxMpMaterialFileBatchGetResult.setName(file.getName());
 			wxMpMaterialFileBatchGetResult.setMediaId(wxMpMaterialUploadResult.getMediaId());
 			wxMpMaterialFileBatchGetResult.setUrl(wxMpMaterialUploadResult.getUrl());
 			FileUtil.del(file);
 			return R.ok(wxMpMaterialFileBatchGetResult);
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.warn("上传非图文微信素材失败: {}", e.getLocalizedMessage());
 			return R.failed(e.getLocalizedMessage());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("上传失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
@@ -87,7 +87,6 @@ public class WxMaterialController {
 
 	/**
 	 * 新增图文消息
-	 *
 	 * @param data
 	 * @return
 	 */
@@ -96,7 +95,8 @@ public class WxMaterialController {
 	public R materialNewsUpload(@RequestBody JSONObject data) {
 		try {
 			JSONArray jSONArray = data.getJSONArray("articles");
-			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
+			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray
+					.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
 			WxMpMaterialNews news = new WxMpMaterialNews();
 			news.setArticles(articles);
 
@@ -105,10 +105,12 @@ public class WxMaterialController {
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialNewsUpload(news);
 			return R.ok(wxMpMaterialUploadResult);
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.warn("新增图文失败: {}", e.getMessage());
 			return R.failed(e.getMessage());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("新增图文失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
@@ -116,7 +118,6 @@ public class WxMaterialController {
 
 	/**
 	 * 修改图文消息
-	 *
 	 * @param data
 	 * @return
 	 */
@@ -126,7 +127,8 @@ public class WxMaterialController {
 		try {
 			String mediaId = data.getStr("mediaId");
 			JSONArray jSONArray = data.getJSONArray("articles");
-			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
+			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray
+					.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
 			String appId = data.getStr("appId");
 			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
@@ -140,10 +142,12 @@ public class WxMaterialController {
 				index++;
 			}
 			return R.ok();
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.warn("修改图文失败:{}", e.getLocalizedMessage());
 			return R.failed(e.getLocalizedMessage());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("修改图文失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
@@ -151,13 +155,13 @@ public class WxMaterialController {
 
 	/**
 	 * 上传图文消息内的图片获取URL
-	 *
 	 * @param mulFile
 	 * @return
 	 */
 	@PostMapping("/newsImgUpload")
 	@PreAuthorize("@pms.hasPermission('mp_wxmaterial_add')")
-	public String newsImgUpload(@RequestParam("file") MultipartFile mulFile, @RequestParam String appId) throws Exception {
+	public String newsImgUpload(@RequestParam("file") MultipartFile mulFile, @RequestParam String appId)
+			throws Exception {
 		File file = FileUtil.createTempFile(FileUtil.getTmpDir());
 		mulFile.transferTo(file);
 		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
@@ -171,7 +175,6 @@ public class WxMaterialController {
 
 	/**
 	 * 通过id删除微信素材
-	 *
 	 * @param
 	 * @return R
 	 */
@@ -182,7 +185,8 @@ public class WxMaterialController {
 		WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 		try {
 			return R.ok(wxMpMaterialService.materialDelete(id));
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error("删除微信素材失败", e);
 			return R.failed(e.getMessage());
 		}
@@ -190,7 +194,6 @@ public class WxMaterialController {
 
 	/**
 	 * 分页查询
-	 *
 	 * @param page 分页对象
 	 * @param type
 	 * @return
@@ -204,19 +207,19 @@ public class WxMaterialController {
 			int offset = (int) page.getCurrent() * count - count;
 			if (WxConsts.MaterialType.NEWS.equals(type)) {
 				return R.ok(wxMpMaterialService.materialNewsBatchGet(offset, count));
-			} else {
+			}
+			else {
 				return R.ok(wxMpMaterialService.materialFileBatchGet(type, offset, count));
 			}
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error("查询素材失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
 	}
 
-
 	/**
 	 * 获取微信视频素材
-	 *
 	 * @param
 	 * @return R
 	 */
@@ -226,7 +229,8 @@ public class WxMaterialController {
 		WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 		try {
 			return R.ok(wxMpMaterialService.materialVideoInfo(mediaId));
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error("获取微信视频素材失败", e);
 			return R.failed(e.getMessage());
 		}
@@ -234,7 +238,6 @@ public class WxMaterialController {
 
 	/**
 	 * 获取微信素材直接文件
-	 *
 	 * @param
 	 * @return R
 	 */
@@ -243,19 +246,20 @@ public class WxMaterialController {
 		try {
 			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
-			//获取文件
+			// 获取文件
 			InputStream is = wxMpMaterialService.materialImageOrVoiceDownload(mediaId);
 			byte[] body = new byte[is.available()];
 			is.read(body);
 			HttpHeaders headers = new HttpHeaders();
-			//设置文件类型
+			// 设置文件类型
 			headers.add("Content-Disposition", "attchement;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 			headers.add("Content-Type", "application/octet-stream");
 			HttpStatus statusCode = HttpStatus.OK;
-			//返回数据
+			// 返回数据
 			ResponseEntity<byte[]> entity = new ResponseEntity<>(body, headers, statusCode);
 			return entity;
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			e.printStackTrace();
 			log.error("获取微信素材直接文件失败", e);
 			return null;
@@ -264,7 +268,6 @@ public class WxMaterialController {
 
 	/**
 	 * 获取微信临时素材直接文件
-	 *
 	 * @param
 	 * @return R
 	 */
@@ -273,22 +276,24 @@ public class WxMaterialController {
 		try {
 			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
-			//获取文件
+			// 获取文件
 			InputStream is = new FileInputStream(wxMpMaterialService.mediaDownload(mediaId));
 			byte[] body = new byte[is.available()];
 			is.read(body);
 			HttpHeaders headers = new HttpHeaders();
-			//设置文件类型
+			// 设置文件类型
 			headers.add("Content-Disposition", "attchement;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 			headers.add("Content-Type", "application/octet-stream");
 			HttpStatus statusCode = HttpStatus.OK;
-			//返回数据
+			// 返回数据
 			ResponseEntity<byte[]> entity = new ResponseEntity<>(body, headers, statusCode);
 			return entity;
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			e.printStackTrace();
 			log.error("获取微信素材直接文件失败", e);
 			return null;
 		}
 	}
+
 }

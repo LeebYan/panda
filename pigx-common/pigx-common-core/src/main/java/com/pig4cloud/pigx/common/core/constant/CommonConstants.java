@@ -24,6 +24,7 @@ package com.pig4cloud.pigx.common.core.constant;
  * @date 2017/10/29
  */
 public interface CommonConstants {
+
 	/**
 	 * header 中租户ID
 	 */
@@ -43,6 +44,7 @@ public interface CommonConstants {
 	 * 删除
 	 */
 	String STATUS_DEL = "1";
+
 	/**
 	 * 正常
 	 */
@@ -82,6 +84,7 @@ public interface CommonConstants {
 	 * 成功标记
 	 */
 	Integer SUCCESS = 0;
+
 	/**
 	 * 失败标记
 	 */
@@ -96,4 +99,5 @@ public interface CommonConstants {
 	 * 滑块验证码
 	 */
 	String IMAGE_CODE_TYPE = "blockPuzzle";
+
 }

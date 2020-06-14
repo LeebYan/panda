@@ -46,16 +46,15 @@ import java.util.concurrent.Executor;
  */
 
 @ChannelHandler.Sharable
-public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
+public class TxCoreServerHandler extends ChannelInboundHandlerAdapter {
+
+	// (1)
 
 	private NettyService nettyService;
 
-
 	private Logger logger = LoggerFactory.getLogger(TxCoreServerHandler.class);
 
-
 	private Executor threadPool;
-
 
 	public TxCoreServerHandler(Executor threadPool, NettyService nettyService) {
 		this.threadPool = threadPool;
@@ -94,10 +93,11 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	@SneakyThrows
 	public void channelRegistered(ChannelHandlerContext ctx) {
 
-		//是否到达最大上线连接数
+		// 是否到达最大上线连接数
 		if (SocketManager.getInstance().isAllowConnection()) {
 			SocketManager.getInstance().addClient(ctx.channel());
-		} else {
+		}
+		else {
 			ctx.close();
 		}
 		super.channelRegistered(ctx);
@@ -123,12 +123,12 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		cause.printStackTrace();
-		//ctx.close();
+		// ctx.close();
 	}
 
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-		//心跳配置
+		// 心跳配置
 		if (IdleStateEvent.class.isAssignableFrom(evt.getClass())) {
 			IdleStateEvent event = (IdleStateEvent) evt;
 			if (event.state() == IdleState.READER_IDLE) {

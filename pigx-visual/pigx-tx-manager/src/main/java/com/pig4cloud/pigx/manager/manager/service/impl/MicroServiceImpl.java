@@ -41,13 +41,11 @@ import java.util.regex.Pattern;
 @Service
 public class MicroServiceImpl implements MicroService {
 
-
 	@Autowired
 	private RestTemplate restTemplate;
 
 	@Autowired
 	private ConfigReader configReader;
-
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
@@ -61,7 +59,6 @@ public class MicroServiceImpl implements MicroService {
 		Matcher matcher = pattern.matcher(ipAddress);
 		return matcher.matches();
 	}
-
 
 	@Override
 	public TxState getState() {
@@ -102,7 +99,8 @@ public class MicroServiceImpl implements MicroService {
 			try {
 				TxState state = restTemplate.getForObject(url + "/tx/manager/state", TxState.class);
 				states.add(state);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 			}
 
 		}
@@ -110,14 +108,16 @@ public class MicroServiceImpl implements MicroService {
 			TxState state = getState();
 			if (state.getMaxConnection() > state.getNowConnection()) {
 				return TxServer.format(state);
-			} else {
+			}
+			else {
 				return null;
 			}
-		} else {
-			//找默认数据
+		}
+		else {
+			// 找默认数据
 			TxState state = getDefault(states, 0);
 			if (state == null) {
-				//没有满足的默认数据
+				// 没有满足的默认数据
 				return null;
 			}
 			return TxServer.format(state);
@@ -130,10 +130,12 @@ public class MicroServiceImpl implements MicroService {
 			index++;
 			if (states.size() - 1 >= index) {
 				return getDefault(states, index);
-			} else {
+			}
+			else {
 				return null;
 			}
-		} else {
+		}
+		else {
 			return state;
 		}
 	}

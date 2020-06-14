@@ -13,7 +13,6 @@ public interface PayOrderHandler {
 
 	/**
 	 * 创建商品订单
-	 *
 	 * @param goodsOrder 金额
 	 * @return
 	 */
@@ -21,7 +20,6 @@ public interface PayOrderHandler {
 
 	/**
 	 * 创建交易订单
-	 *
 	 * @param goodsOrder 商品订单
 	 * @return
 	 */
@@ -29,7 +27,6 @@ public interface PayOrderHandler {
 
 	/**
 	 * 调起渠道支付
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 * @return obj
@@ -38,7 +35,6 @@ public interface PayOrderHandler {
 
 	/**
 	 * 更新订单信息
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -46,9 +42,9 @@ public interface PayOrderHandler {
 
 	/**
 	 * 调用入口
-	 *
 	 * @param goodsOrde 商品订单
 	 * @return
 	 */
 	Object handle(PayGoodsOrder goodsOrde);
+
 }

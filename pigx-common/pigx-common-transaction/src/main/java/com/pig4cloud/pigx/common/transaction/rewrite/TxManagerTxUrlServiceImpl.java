@@ -27,13 +27,13 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author lengleng
- * @date 2018/8/19
- * 使用服务发现重写 Txmanager 获取规则
+ * @date 2018/8/19 使用服务发现重写 Txmanager 获取规则
  */
 @Slf4j
 @Service
 @AllArgsConstructor
 public class TxManagerTxUrlServiceImpl implements TxManagerTxUrlService {
+
 	private final LoadBalancerClient loadBalancerClient;
 
 	@Override
@@ -45,4 +45,5 @@ public class TxManagerTxUrlServiceImpl implements TxManagerTxUrlService {
 		log.info("tm.manager.url -> {}", url);
 		return url;
 	}
+
 }

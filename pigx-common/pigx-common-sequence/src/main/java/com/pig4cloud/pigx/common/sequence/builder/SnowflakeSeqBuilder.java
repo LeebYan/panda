@@ -1,11 +1,11 @@
 package com.pig4cloud.pigx.common.sequence.builder;
 
-
 import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
 import com.pig4cloud.pigx.common.sequence.sequence.impl.SnowflakeSequence;
 
 /**
  * 基于雪花算法，序列号生成器构建者
+ *
  * @author xuan on 2018/5/30.
  */
 public class SnowflakeSeqBuilder implements SeqBuilder {
@@ -14,6 +14,7 @@ public class SnowflakeSeqBuilder implements SeqBuilder {
 	 * 数据中心ID，值的范围在[0,31]之间，一般可以设置机房的IDC[必选]
 	 */
 	private long datacenterId;
+
 	/**
 	 * 工作机器ID，值的范围在[0,31]之间，一般可以设置机器编号[必选]
 	 */

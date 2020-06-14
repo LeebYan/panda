@@ -22,14 +22,12 @@ import lombok.experimental.UtilityClass;
 
 /**
  * @author lengleng
- * @date 2018/10/4
- * 租户工具类
+ * @date 2018/10/4 租户工具类
  */
 @UtilityClass
 public class TenantContextHolder {
 
 	private final ThreadLocal<Integer> THREAD_LOCAL_TENANT = new TransmittableThreadLocal<>();
-
 
 	/**
 	 * TTL 设置租户ID<br/>
@@ -43,7 +41,6 @@ public class TenantContextHolder {
 
 	/**
 	 * 获取TTL中的租户ID
-	 *
 	 * @return
 	 */
 	public Integer getTenantId() {
@@ -53,4 +50,5 @@ public class TenantContextHolder {
 	public void clear() {
 		THREAD_LOCAL_TENANT.remove();
 	}
+
 }

@@ -24,24 +24,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * aws 配置信息
  *
  * @author lengleng
- * @author 858695266
- * 配置文件添加：
- * oss:
- * enable: true
- * endpoint: http://127.0.0.1:9000
- * # pathStyleAccess 采用nginx反向代理或者AWS S3 配置成true，支持第三方云存储配置成false
- * pathStyleAccess: false
- * access-key: lengleng
- * secret-key: lengleng
- * bucket-name: lengleng
- * region:
- * custom-domain: https://oss.xxx.com/lengleng
+ * @author 858695266 配置文件添加： oss: enable: true endpoint: http://127.0.0.1:9000 #
+ * pathStyleAccess 采用nginx反向代理或者AWS S3 配置成true，支持第三方云存储配置成false pathStyleAccess: false
+ * access-key: lengleng secret-key: lengleng bucket-name: lengleng region: custom-domain:
+ * https://oss.xxx.com/lengleng
  * <p>
  * bucket 设置公共读权限
  */
 @Data
 @ConfigurationProperties(prefix = "oss")
 public class OssProperties {
+
 	/**
 	 * 对象存储服务的URL
 	 */
@@ -53,10 +46,9 @@ public class OssProperties {
 	private String customDomain;
 
 	/**
-	 * true path-style
-	 *      nginx 反向代理和S3默认支持 pathStyle {http://endpoint/bucketname}
-	 * false supports virtual-hosted-style 阿里云等需要配置为
-	 * virtual-hosted-style 模式{http://bucketname.endpoint}
+	 * true path-style nginx 反向代理和S3默认支持 pathStyle {http://endpoint/bucketname} false
+	 * supports virtual-hosted-style 阿里云等需要配置为 virtual-hosted-style
+	 * 模式{http://bucketname.endpoint}
 	 */
 	private Boolean pathStyleAccess = true;
 

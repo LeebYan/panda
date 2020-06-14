@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class WxFansMsgRes extends Model<WxFansMsgRes> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -39,26 +40,32 @@ public class WxFansMsgRes extends Model<WxFansMsgRes> {
 	 */
 	@TableId
 	private Integer id;
+
 	/**
 	 * 粉丝消息ID
 	 */
 	private Integer fansMsgId;
+
 	/**
 	 * 回复内容
 	 */
 	private String resContent;
+
 	/**
 	 * 用户ID
 	 */
 	private Integer userId;
+
 	/**
 	 * 用户名
 	 */
 	private String userName;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */

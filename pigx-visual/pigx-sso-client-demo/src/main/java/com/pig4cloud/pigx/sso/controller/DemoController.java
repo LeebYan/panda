@@ -23,13 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author lengleng
- * @date 2018/1/27
- * demo controller
+ * @date 2018/1/27 demo controller
  */
 @RestController
 public class DemoController {
-    @GetMapping("/user")
-    public Authentication user(Authentication authentication) {
-        return authentication;
-    }
+
+	@GetMapping("/user")
+	public Authentication user(Authentication authentication) {
+		return authentication;
+	}
+
 }

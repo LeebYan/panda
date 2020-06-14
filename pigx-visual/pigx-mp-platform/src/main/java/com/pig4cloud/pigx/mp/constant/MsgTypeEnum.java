@@ -32,4 +32,5 @@ public enum MsgTypeEnum {
 	 * 描述
 	 */
 	private String desc;
+
 }

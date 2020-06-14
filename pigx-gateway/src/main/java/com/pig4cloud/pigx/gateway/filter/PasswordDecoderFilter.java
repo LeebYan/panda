@@ -55,21 +55,22 @@ import java.util.function.Function;
 
 /**
  * @author lengleng
- * @date 2020/1/8
- * 密码解密工具类
+ * @date 2020/1/8 密码解密工具类
  * <p>
  * 参考 ModifyRequestBodyGatewayFilterFactory 实现
  */
 @Slf4j
 @Component
 public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
+
 	private final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
 
 	private static final String PASSWORD = "password";
+
 	private static final String KEY_ALGORITHM = "AES";
+
 	@Value("${security.encode.key:1234567812345678}")
 	private String encodeKey;
-
 
 	@Override
 	public GatewayFilter apply(Object config) {
@@ -88,12 +89,10 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 			Class inClass = String.class;
 			Class outClass = String.class;
-			ServerRequest serverRequest = ServerRequest.create(exchange,
-					messageReaders);
+			ServerRequest serverRequest = ServerRequest.create(exchange, messageReaders);
 
 			// 解密生成新的报文
-			Mono<?> modifiedBody = serverRequest.bodyToMono(inClass)
-					.flatMap(decryptAES());
+			Mono<?> modifiedBody = serverRequest.bodyToMono(inClass).flatMap(decryptAES());
 
 			BodyInserter bodyInserter = BodyInserters.fromPublisher(modifiedBody, outClass);
 			HttpHeaders headers = new HttpHeaders();
@@ -101,41 +100,35 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 			headers.remove(HttpHeaders.CONTENT_LENGTH);
 
 			headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-			CachedBodyOutputMessage outputMessage = new CachedBodyOutputMessage(
-					exchange, headers);
-			return bodyInserter.insert(outputMessage, new BodyInserterContext())
-					.then(Mono.defer(() -> {
-						ServerHttpRequest decorator = decorate(exchange, headers,
-								outputMessage);
-						return chain
-								.filter(exchange.mutate().request(decorator).build());
-					}));
+			CachedBodyOutputMessage outputMessage = new CachedBodyOutputMessage(exchange, headers);
+			return bodyInserter.insert(outputMessage, new BodyInserterContext()).then(Mono.defer(() -> {
+				ServerHttpRequest decorator = decorate(exchange, headers, outputMessage);
+				return chain.filter(exchange.mutate().request(decorator).build());
+			}));
 		};
 	}
 
 	/**
 	 * 原文解密
-	 *
 	 * @return
 	 */
 	private Function decryptAES() {
 		return s -> {
 			// 构建前端对应解密AES 因子
-			AES aes = new AES(Mode.CBC, Padding.NoPadding,
-					new SecretKeySpec(encodeKey.getBytes(), KEY_ALGORITHM),
+			AES aes = new AES(Mode.CBC, Padding.NoPadding, new SecretKeySpec(encodeKey.getBytes(), KEY_ALGORITHM),
 					new IvParameterSpec(encodeKey.getBytes()));
 
 			// 获取请求密码并解密
 			Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
-			if(inParamsMap.containsKey(PASSWORD)){
-				byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD)
-						.getBytes(StandardCharsets.UTF_8)));
+			if (inParamsMap.containsKey(PASSWORD)) {
+				byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD).getBytes(StandardCharsets.UTF_8)));
 				String password = new String(result, StandardCharsets.UTF_8);
 
 				// 返回修改后报文字符
 				inParamsMap.put(PASSWORD, password.trim());
-			} else {
-				log.error("非法请求数据:{}",s);
+			}
+			else {
+				log.error("非法请求数据:{}", s);
 			}
 			return Mono.just(HttpUtil.toParams(inParamsMap));
 		};
@@ -143,11 +136,10 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	/**
 	 * 报文转换
-	 *
 	 * @return
 	 */
 	private ServerHttpRequestDecorator decorate(ServerWebExchange exchange, HttpHeaders headers,
-												CachedBodyOutputMessage outputMessage) {
+			CachedBodyOutputMessage outputMessage) {
 		return new ServerHttpRequestDecorator(exchange.getRequest()) {
 			@Override
 			public HttpHeaders getHeaders() {
@@ -156,7 +148,8 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 				httpHeaders.putAll(super.getHeaders());
 				if (contentLength > 0) {
 					httpHeaders.setContentLength(contentLength);
-				} else {
+				}
+				else {
 					httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
 				}
 				return httpHeaders;
@@ -168,4 +161,5 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 			}
 		};
 	}
+
 }

@@ -22,12 +22,12 @@ import lombok.Getter;
 
 /**
  * @author lengleng
- * @date 2018/9/30
- * 资源类型
+ * @date 2018/9/30 资源类型
  */
 @Getter
 @AllArgsConstructor
 public enum ResourceTypeEnum {
+
 	/**
 	 * 图片资源
 	 */
@@ -42,8 +42,10 @@ public enum ResourceTypeEnum {
 	 * 类型
 	 */
 	private final String type;
+
 	/**
 	 * 描述
 	 */
 	private final String description;
+
 }

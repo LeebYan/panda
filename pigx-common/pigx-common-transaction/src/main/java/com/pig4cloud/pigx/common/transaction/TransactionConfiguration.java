@@ -27,8 +27,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@ComponentScan({"com.codingapi.tx", "com.pig4cloud.pigx.common.transaction"})
+@ComponentScan({ "com.codingapi.tx", "com.pig4cloud.pigx.common.transaction" })
 public class TransactionConfiguration {
-
 
 }

@@ -38,24 +38,27 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
- * @date 2018/1/9
- * 手机号登录验证filter
+ * @date 2018/1/9 手机号登录验证filter
  */
 public class MobileAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
 	private static final String SPRING_SECURITY_FORM_MOBILE_KEY = "mobile";
+
 	@Getter
 	@Setter
 	private String mobileParameter = SPRING_SECURITY_FORM_MOBILE_KEY;
+
 	@Getter
 	@Setter
 	private boolean postOnly = true;
+
 	@Getter
 	@Setter
 	private AuthenticationEventPublisher eventPublisher;
+
 	@Getter
 	@Setter
 	private AuthenticationEntryPoint authenticationEntryPoint;
-
 
 	public MobileAuthenticationFilter() {
 		super(new AntPathRequestMatcher(SecurityConstants.MOBILE_TOKEN_URL, "POST"));
@@ -63,11 +66,9 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 
 	@Override
 	@SneakyThrows
-	public Authentication attemptAuthentication(HttpServletRequest request,
-												HttpServletResponse response) {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		if (postOnly && !request.getMethod().equals(HttpMethod.POST.name())) {
-			throw new AuthenticationServiceException(
-					"Authentication method not supported: " + request.getMethod());
+			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
 
 		String mobile = obtainMobile(request);
@@ -89,7 +90,8 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 			logger.debug("Authentication success: " + authResult);
 			SecurityContextHolder.getContext().setAuthentication(authResult);
 
-		} catch (Exception failed) {
+		}
+		catch (Exception failed) {
 			SecurityContextHolder.clearContext();
 			logger.debug("Authentication request failed: " + failed);
 
@@ -99,7 +101,8 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 			try {
 				authenticationEntryPoint.commence(request, response,
 						new UsernameNotFoundException(failed.getMessage(), failed));
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				logger.error("authenticationEntryPoint handle error:{}", failed);
 			}
 		}
@@ -111,9 +114,8 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 		return request.getParameter(mobileParameter);
 	}
 
-	private void setDetails(HttpServletRequest request,
-							MobileAuthenticationToken authRequest) {
+	private void setDetails(HttpServletRequest request, MobileAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
-}
 
+}

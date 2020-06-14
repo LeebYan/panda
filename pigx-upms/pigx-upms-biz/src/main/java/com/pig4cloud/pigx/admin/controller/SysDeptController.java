@@ -47,12 +47,13 @@ import java.time.LocalDateTime;
 @RequestMapping("/dept")
 @Api(value = "dept", tags = "部门管理模块")
 public class SysDeptController {
+
 	private final SysDeptRelationService relationService;
+
 	private final SysDeptService sysDeptService;
 
 	/**
 	 * 通过ID查询
-	 *
 	 * @param id ID
 	 * @return SysDept
 	 */
@@ -61,10 +62,8 @@ public class SysDeptController {
 		return R.ok(sysDeptService.getById(id));
 	}
 
-
 	/**
 	 * 返回树形菜单集合
-	 *
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/tree")
@@ -74,7 +73,6 @@ public class SysDeptController {
 
 	/**
 	 * 添加
-	 *
 	 * @param sysDept 实体
 	 * @return success/false
 	 */
@@ -87,7 +85,6 @@ public class SysDeptController {
 
 	/**
 	 * 删除
-	 *
 	 * @param id ID
 	 * @return success/false
 	 */
@@ -100,7 +97,6 @@ public class SysDeptController {
 
 	/**
 	 * 编辑
-	 *
 	 * @param sysDept 实体
 	 * @return success/false
 	 */
@@ -114,13 +110,12 @@ public class SysDeptController {
 
 	/**
 	 * 查收子级列表
-	 *
 	 * @return 返回子级
 	 */
 	@GetMapping(value = "/getDescendantList/{deptId}")
 	public R getDescendantList(@PathVariable Integer deptId) {
-		return R.ok(relationService.list(Wrappers.<SysDeptRelation>lambdaQuery()
-				.eq(SysDeptRelation::getAncestor, deptId)));
+		return R.ok(
+				relationService.list(Wrappers.<SysDeptRelation>lambdaQuery().eq(SysDeptRelation::getAncestor, deptId)));
 	}
 
 }

@@ -19,7 +19,6 @@
 
 package com.pig4cloud.pigx.admin.service;
 
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
@@ -38,9 +37,9 @@ import java.util.Set;
  * @since 2017-10-29
  */
 public interface SysMenuService extends IService<SysMenu> {
+
 	/**
 	 * 通过角色编号查询URL 权限
-	 *
 	 * @param roleId 角色ID
 	 * @return 菜单列表
 	 */
@@ -48,7 +47,6 @@ public interface SysMenuService extends IService<SysMenu> {
 
 	/**
 	 * 级联删除菜单
-	 *
 	 * @param id 菜单ID
 	 * @return 成功、失败
 	 */
@@ -56,7 +54,6 @@ public interface SysMenuService extends IService<SysMenu> {
 
 	/**
 	 * 更新菜单信息
-	 *
 	 * @param sysMenu 菜单信息
 	 * @return 成功、失败
 	 */
@@ -64,8 +61,7 @@ public interface SysMenuService extends IService<SysMenu> {
 
 	/**
 	 * 构建树
-	 *
-	 * @param lazy     是否是懒加载
+	 * @param lazy 是否是懒加载
 	 * @param parentId 父节点ID
 	 * @return
 	 */
@@ -73,10 +69,10 @@ public interface SysMenuService extends IService<SysMenu> {
 
 	/**
 	 * 查询菜单
-	 *
 	 * @param voSet
 	 * @param parentId
 	 * @return
 	 */
 	List<MenuTree> filterMenu(Set<MenuVO> voSet, String type, Integer parentId);
+
 }

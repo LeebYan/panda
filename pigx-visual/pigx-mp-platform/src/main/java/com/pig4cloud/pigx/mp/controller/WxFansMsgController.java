@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 微信粉丝消息管理
  *
@@ -43,9 +42,8 @@ public class WxFansMsgController {
 
 	/**
 	 * 分页查询
-	 *
 	 * @param page 分页对象
-	 * @param msg  查询条件
+	 * @param msg 查询条件
 	 */
 	@GetMapping("/page")
 	public R getWxMsgPage(Page page, WxMsg msg) {
@@ -54,7 +52,6 @@ public class WxFansMsgController {
 
 	/**
 	 * 通过id查询微信消息
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -65,7 +62,6 @@ public class WxFansMsgController {
 
 	/**
 	 * 新增微信消息
-	 *
 	 * @param wxMsg 微信消息
 	 * @return R
 	 */
@@ -77,7 +73,6 @@ public class WxFansMsgController {
 
 	/**
 	 * 修改微信消息
-	 *
 	 * @param wxMsg 微信消息
 	 * @return R
 	 */
@@ -89,7 +84,6 @@ public class WxFansMsgController {
 
 	/**
 	 * 通过id删除微信消息
-	 *
 	 * @param id id
 	 * @return R
 	 */

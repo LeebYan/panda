@@ -28,7 +28,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 公众号账户
  *
@@ -39,13 +38,14 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/wxaccount")
 public class WxAccountController {
+
 	private final WxAccountService wxAccountService;
+
 	private final RedisTemplate redisTemplate;
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page      分页对象
+	 * @param page 分页对象
 	 * @param wxAccount 公众号账户
 	 * @return
 	 */
@@ -54,10 +54,8 @@ public class WxAccountController {
 		return R.ok(wxAccountService.page(page, Wrappers.query(wxAccount)));
 	}
 
-
 	/**
 	 * 通过id查询公众号账户
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -68,7 +66,6 @@ public class WxAccountController {
 
 	/**
 	 * 新增公众号账户
-	 *
 	 * @param wxAccount 公众号账户
 	 * @return R
 	 */
@@ -77,13 +74,12 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_add')")
 	public R save(@RequestBody WxAccount wxAccount) {
 		wxAccountService.save(wxAccount);
-		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC, "重新加载公众号配置");
 		return R.ok();
 	}
 
 	/**
 	 * 修改公众号账户
-	 *
 	 * @param wxAccount 公众号账户
 	 * @return R
 	 */
@@ -92,13 +88,12 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_edit')")
 	public R updateById(@RequestBody WxAccount wxAccount) {
 		wxAccountService.updateById(wxAccount);
-		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC, "重新加载公众号配置");
 		return R.ok();
 	}
 
 	/**
 	 * 通过id删除公众号账户
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -107,13 +102,12 @@ public class WxAccountController {
 	@PreAuthorize("@pms.hasPermission('mp_wxaccount_del')")
 	public R removeById(@PathVariable Integer id) {
 		wxAccountService.removeById(id);
-		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC,"重新加载公众号配置");
+		redisTemplate.convertAndSend(CacheConstants.MP_REDIS_RELOAD_TOPIC, "重新加载公众号配置");
 		return R.ok();
 	}
 
 	/**
 	 * 生成公众号二维码
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -126,7 +120,6 @@ public class WxAccountController {
 
 	/**
 	 * 获取公众号列表
-	 *
 	 * @return
 	 */
 	@GetMapping("/list")
@@ -136,8 +129,7 @@ public class WxAccountController {
 
 	/**
 	 * 获取公众号接口数据
-	 *
-	 * @param appId    公众号
+	 * @param appId 公众号
 	 * @param interval 时间间隔
 	 * @return
 	 */
@@ -145,4 +137,5 @@ public class WxAccountController {
 	public R statistics(String appId, String interval) {
 		return wxAccountService.statistics(appId, interval);
 	}
+
 }

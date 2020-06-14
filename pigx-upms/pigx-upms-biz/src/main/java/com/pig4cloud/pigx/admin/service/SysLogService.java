@@ -35,12 +35,11 @@ import java.util.List;
  */
 public interface SysLogService extends IService<SysLog> {
 
-
 	/**
 	 * 批量插入前端错误日志
-	 *
 	 * @param preLogVoList 日志信息
 	 * @return true/false
 	 */
 	Boolean saveBatchLogs(List<PreLogVO> preLogVoList);
+
 }

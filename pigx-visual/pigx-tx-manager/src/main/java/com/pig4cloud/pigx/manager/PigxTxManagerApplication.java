@@ -22,12 +22,10 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author LCN
- * @author lengleng
- * tx-manager ，进行了代码逻辑和代码规范重构
+ * @author lengleng tx-manager ，进行了代码逻辑和代码规范重构
  */
 @SpringCloudApplication
 public class PigxTxManagerApplication {
-
 
 	public static void main(String[] args) {
 		SpringApplication.run(PigxTxManagerApplication.class, args);

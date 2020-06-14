@@ -39,7 +39,7 @@ import java.io.PrintWriter;
 import java.util.Locale;
 
 /**
- * 客户端异常处理  {@link org.springframework.security.core.AuthenticationException } 不同细化异常处理
+ * 客户端异常处理 {@link org.springframework.security.core.AuthenticationException } 不同细化异常处理
  *
  * @author lengleng
  * @date 2020-06-14
@@ -48,12 +48,13 @@ import java.util.Locale;
 @Component
 @AllArgsConstructor
 public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint {
+
 	private final ObjectMapper objectMapper;
 
 	@Override
 	@SneakyThrows
 	public void commence(HttpServletRequest request, HttpServletResponse response,
-						 AuthenticationException authException) {
+			AuthenticationException authException) {
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		R<String> result = new R<>();
@@ -64,15 +65,15 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		if (authException instanceof CredentialsExpiredException
 				|| authException instanceof InsufficientAuthenticationException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.credentialsExpired"
-					, authException.getMessage(), Locale.CHINA);
+					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage(),
+					Locale.CHINA);
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof UsernameNotFoundException) {
 			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.noopBindAccount"
-					, authException.getMessage(), Locale.CHINA);
+					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage(),
+					Locale.CHINA);
 			result.setMsg(msg);
 		}
 
@@ -80,4 +81,5 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));
 	}
+
 }

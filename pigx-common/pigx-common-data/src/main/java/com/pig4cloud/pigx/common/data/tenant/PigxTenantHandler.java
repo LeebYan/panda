@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Slf4j
 public class PigxTenantHandler implements TenantHandler {
+
 	@Autowired
 	private PigxTenantConfigProperties properties;
 
@@ -39,7 +40,6 @@ public class PigxTenantHandler implements TenantHandler {
 	 * 获取租户值
 	 * <p>
 	 * TODO 校验租户状态
-	 *
 	 * @return 租户值
 	 */
 	@Override
@@ -55,7 +55,6 @@ public class PigxTenantHandler implements TenantHandler {
 
 	/**
 	 * 获取租户字段名
-	 *
 	 * @return 租户字段名
 	 */
 	@Override
@@ -65,7 +64,6 @@ public class PigxTenantHandler implements TenantHandler {
 
 	/**
 	 * 根据表名判断是否进行过滤
-	 *
 	 * @param tableName 表名
 	 * @return 是否进行过滤
 	 */
@@ -79,4 +77,5 @@ public class PigxTenantHandler implements TenantHandler {
 
 		return !properties.getTables().contains(tableName);
 	}
+
 }

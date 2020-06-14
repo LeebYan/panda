@@ -37,12 +37,13 @@ import java.util.List;
 public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements WxMsgService {
 
 	private final WxAccountFansMapper accountFansMapper;
+
 	private final WxAccountMapper accountMapper;
+
 	private final WxMsgMapper msgMapper;
 
 	/**
 	 * 保存信息并向用户推送
-	 *
 	 * @param wxMsg 推送消息内容
 	 * @return
 	 */
@@ -50,15 +51,15 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
 	public R saveAndPushMsg(WxMsg wxMsg) {
 		// 查询用户详细
 		WxAccountFans wxUser = accountFansMapper.selectById(wxMsg.getWxUserId());
-		WxAccount wxAccount = accountMapper.selectOne(Wrappers.<WxAccount>lambdaQuery()
-				.eq(WxAccount::getAppid, wxMsg.getAppId()));
+		WxAccount wxAccount = accountMapper
+				.selectOne(Wrappers.<WxAccount>lambdaQuery().eq(WxAccount::getAppid, wxMsg.getAppId()));
 
-		//维护消息-用户
+		// 维护消息-用户
 		wxMsg.setNickName(wxUser.getNickname());
 		wxMsg.setHeadimgUrl(wxUser.getHeadimgUrl());
 		wxMsg.setType(MsgTypeEnum.MP2USER.getType());
 
-		//维护消息-公众号
+		// 维护消息-公众号
 		wxMsg.setAppLogo(wxAccount.getQrUrl());
 		wxMsg.setAppName(wxAccount.getName());
 
@@ -69,7 +70,7 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
 			wxMpKefuMessage.setContent(wxMsg.getRepContent());
 		}
 
-		if (WxConsts.KefuMsgType.IMAGE.equals(wxMsg.getRepType())) {//图片
+		if (WxConsts.KefuMsgType.IMAGE.equals(wxMsg.getRepType())) {// 图片
 			wxMsg.setRepName(wxMsg.getRepName());
 			wxMsg.setRepUrl(wxMsg.getRepUrl());
 			wxMsg.setRepMediaId(wxMsg.getRepMediaId());
@@ -135,7 +136,6 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
 			return R.failed("非法消息类型");
 		}
 
-
 		WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(wxMsg.getAppId());
 		WxMpKefuService wxMpKefuService = wxMpService.getKefuService();
 		wxMpKefuMessage.setToUser(wxUser.getOpenid());
@@ -143,8 +143,10 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
 			wxMpKefuService.sendKefuMessage(wxMpKefuMessage);
 			msgMapper.insert(wxMsg);
 			return R.ok(wxMsg);
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			return R.failed(e.getError().getErrorMsg());
 		}
 	}
+
 }

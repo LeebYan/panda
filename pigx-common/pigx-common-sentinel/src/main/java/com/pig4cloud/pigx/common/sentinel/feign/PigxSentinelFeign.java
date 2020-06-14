@@ -19,13 +19,13 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 重写 {@link com.alibaba.cloud.sentinel.feign.SentinelFeign}
- * 支持自动降级注入
+ * 重写 {@link com.alibaba.cloud.sentinel.feign.SentinelFeign} 支持自动降级注入
  *
  * @author lengleng
  * @date 2020/6/9
  */
 public final class PigxSentinelFeign {
+
 	private PigxSentinelFeign() {
 
 	}
@@ -34,8 +34,7 @@ public final class PigxSentinelFeign {
 		return new PigxSentinelFeign.Builder();
 	}
 
-	public static final class Builder extends Feign.Builder
-			implements ApplicationContextAware {
+	public static final class Builder extends Feign.Builder implements ApplicationContextAware {
 
 		private Contract contract = new Contract.Default();
 
@@ -44,8 +43,7 @@ public final class PigxSentinelFeign {
 		private FeignContext feignContext;
 
 		@Override
-		public Feign.Builder invocationHandlerFactory(
-				InvocationHandlerFactory invocationHandlerFactory) {
+		public Feign.Builder invocationHandlerFactory(InvocationHandlerFactory invocationHandlerFactory) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -59,20 +57,16 @@ public final class PigxSentinelFeign {
 		public Feign build() {
 			super.invocationHandlerFactory(new InvocationHandlerFactory() {
 				@Override
-				public InvocationHandler create(Target target,
-												Map<Method, MethodHandler> dispatch) {
+				public InvocationHandler create(Target target, Map<Method, MethodHandler> dispatch) {
 					// using reflect get fallback and fallbackFactory properties from
 					// FeignClientFactoryBean because FeignClientFactoryBean is a package
 					// level class, we can not use it in our package
 					Object feignClientFactoryBean = PigxSentinelFeign.Builder.this.applicationContext
 							.getBean("&" + target.type().getName());
 
-					Class fallback = (Class) getFieldValue(feignClientFactoryBean,
-							"fallback");
-					Class fallbackFactory = (Class) getFieldValue(feignClientFactoryBean,
-							"fallbackFactory");
-					String beanName = (String) getFieldValue(feignClientFactoryBean,
-							"contextId");
+					Class fallback = (Class) getFieldValue(feignClientFactoryBean, "fallback");
+					Class fallbackFactory = (Class) getFieldValue(feignClientFactoryBean, "fallbackFactory");
+					String beanName = (String) getFieldValue(feignClientFactoryBean, "contextId");
 					if (!StringUtils.hasText(beanName)) {
 						beanName = (String) getFieldValue(feignClientFactoryBean, "name");
 					}
@@ -81,29 +75,23 @@ public final class PigxSentinelFeign {
 					FallbackFactory fallbackFactoryInstance;
 					// check fallback and fallbackFactory properties
 					if (void.class != fallback) {
-						fallbackInstance = getFromContext(beanName, "fallback", fallback,
-								target.type());
+						fallbackInstance = getFromContext(beanName, "fallback", fallback, target.type());
 						return new PigxSentinelInvocationHandler(target, dispatch,
 								new FallbackFactory.Default(fallbackInstance));
 					}
 					if (void.class != fallbackFactory) {
-						fallbackFactoryInstance = (FallbackFactory) getFromContext(
-								beanName, "fallbackFactory", fallbackFactory,
-								FallbackFactory.class);
-						return new PigxSentinelInvocationHandler(target, dispatch,
-								fallbackFactoryInstance);
+						fallbackFactoryInstance = (FallbackFactory) getFromContext(beanName, "fallbackFactory",
+								fallbackFactory, FallbackFactory.class);
+						return new PigxSentinelInvocationHandler(target, dispatch, fallbackFactoryInstance);
 					}
 					return new PigxSentinelInvocationHandler(target, dispatch);
 				}
 
-				private Object getFromContext(String name, String type,
-											  Class fallbackType, Class targetType) {
-					Object fallbackInstance = feignContext.getInstance(name,
-							fallbackType);
+				private Object getFromContext(String name, String type, Class fallbackType, Class targetType) {
+					Object fallbackInstance = feignContext.getInstance(name, fallbackType);
 					if (fallbackInstance == null) {
 						throw new IllegalStateException(String.format(
-								"No %s instance of type %s found for feign client %s",
-								type, fallbackType, name));
+								"No %s instance of type %s found for feign client %s", type, fallbackType, name));
 					}
 
 					if (!targetType.isAssignableFrom(fallbackType)) {
@@ -124,15 +112,15 @@ public final class PigxSentinelFeign {
 			field.setAccessible(true);
 			try {
 				return field.get(instance);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				// ignore
 			}
 			return null;
 		}
 
 		@Override
-		public void setApplicationContext(ApplicationContext applicationContext)
-				throws BeansException {
+		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 			this.applicationContext = applicationContext;
 			feignContext = this.applicationContext.getBean(FeignContext.class);
 		}

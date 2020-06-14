@@ -30,7 +30,6 @@ public interface WxAccountService extends IService<WxAccount> {
 
 	/**
 	 * 生成公众号二维码
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -38,10 +37,10 @@ public interface WxAccountService extends IService<WxAccount> {
 
 	/**
 	 * 获取公众号统计数据
-	 *
 	 * @param appId
 	 * @param interval
 	 * @return
 	 */
 	R statistics(String appId, String interval);
+
 }

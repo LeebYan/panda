@@ -27,8 +27,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ModelInfoManager {
 
-
 	private static ModelInfoManager manager = null;
+
 	private List<ModelInfo> modelInfos = new CopyOnWriteArrayList<>();
 
 	public static ModelInfoManager getInstance() {
@@ -49,7 +49,6 @@ public class ModelInfoManager {
 			}
 		}
 	}
-
 
 	public void addModelInfo(ModelInfo minfo) {
 		for (ModelInfo modelInfo : modelInfos) {
@@ -85,4 +84,5 @@ public class ModelInfoManager {
 		}
 		return null;
 	}
+
 }

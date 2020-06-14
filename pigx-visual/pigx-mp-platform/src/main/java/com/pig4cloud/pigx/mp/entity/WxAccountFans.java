@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class WxAccountFans extends Model<WxAccountFans> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -40,54 +41,67 @@ public class WxAccountFans extends Model<WxAccountFans> {
 	 */
 	@TableId
 	private Integer id;
+
 	/**
 	 * 用户标识
 	 */
 	private String openid;
+
 	/**
 	 * 订阅状态，0未关注，1已关注
 	 */
 	private String subscribeStatus;
+
 	/**
 	 * 订阅时间
 	 */
 	private LocalDateTime subscribeTime;
+
 	/**
 	 * 昵称
 	 */
 	private String nickname;
+
 	/**
 	 * 性别，1男，2女，0未知
 	 */
 	private String gender;
+
 	/**
 	 * 语言
 	 */
 	private String language;
+
 	/**
 	 * 国家
 	 */
 	private String country;
+
 	/**
 	 * 省份
 	 */
 	private String province;
+
 	/**
 	 * 城市
 	 */
 	private String city;
+
 	/**
 	 * 头像地址
 	 */
 	private String headimgUrl;
+
 	/**
 	 * 备注
 	 */
 	private String remark;
+
 	/**
 	 * 微信公众号ID
 	 */
 	private Integer wxAccountId;
+
 	/**
 	 * 微信公众号appid
 	 */
@@ -97,16 +111,19 @@ public class WxAccountFans extends Model<WxAccountFans> {
 	 * 微信公众号名
 	 */
 	private String wxAccountName;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
+
 	/**
-	 * 是否删除  -1：已删除  0：正常
+	 * 是否删除 -1：已删除 0：正常
 	 */
 	@TableLogic
 	private String delFlag;

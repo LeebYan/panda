@@ -46,4 +46,5 @@ public class GrayRibbonLoadBalancerConfiguration {
 	public RequestInterceptor grayFeignRequestInterceptor() {
 		return new GrayFeignRequestInterceptor();
 	}
+
 }

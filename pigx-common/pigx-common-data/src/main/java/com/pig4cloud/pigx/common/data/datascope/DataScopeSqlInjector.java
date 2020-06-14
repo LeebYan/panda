@@ -18,4 +18,5 @@ public class DataScopeSqlInjector extends DefaultSqlInjector {
 		methodList.add(new SelectPageByScope());
 		return methodList;
 	}
+
 }

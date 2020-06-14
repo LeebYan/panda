@@ -30,7 +30,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 公共参数
  *
@@ -47,7 +46,6 @@ public class SysPublicParamController {
 
 	/**
 	 * 通过key查询公共参数值
-	 *
 	 * @param publicKey
 	 * @return
 	 */
@@ -60,8 +58,7 @@ public class SysPublicParamController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page           分页对象
+	 * @param page 分页对象
 	 * @param sysPublicParam 公共参数
 	 * @return
 	 */
@@ -71,10 +68,8 @@ public class SysPublicParamController {
 		return R.ok(sysPublicParamService.page(page, Wrappers.query(sysPublicParam)));
 	}
 
-
 	/**
 	 * 通过id查询公共参数
-	 *
 	 * @param publicId id
 	 * @return R
 	 */
@@ -86,7 +81,6 @@ public class SysPublicParamController {
 
 	/**
 	 * 新增公共参数
-	 *
 	 * @param sysPublicParam 公共参数
 	 * @return R
 	 */
@@ -100,7 +94,6 @@ public class SysPublicParamController {
 
 	/**
 	 * 修改公共参数
-	 *
 	 * @param sysPublicParam 公共参数
 	 * @return R
 	 */
@@ -114,7 +107,6 @@ public class SysPublicParamController {
 
 	/**
 	 * 通过id删除公共参数
-	 *
 	 * @param publicId id
 	 * @return R
 	 */

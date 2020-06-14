@@ -26,13 +26,14 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @author lengleng
- * @date 2018/1/20
- * 部门树
+ * @date 2018/1/20 部门树
  */
 @Data
 @ApiModel(value = "部门树")
 @EqualsAndHashCode(callSuper = true)
 public class DeptTree extends TreeNode {
+
 	@ApiModelProperty(value = "部门名称")
 	private String name;
+
 }

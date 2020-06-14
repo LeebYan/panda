@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DateBizName implements BizName {
+
 	private String bizName;
 
 	/**
@@ -23,4 +24,5 @@ public class DateBizName implements BizName {
 	public String create() {
 		return bizName + DateUtil.today();
 	}
+
 }

@@ -19,7 +19,6 @@
 
 package com.pig4cloud.pigx.admin.controller;
 
-
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
@@ -48,12 +47,12 @@ import java.util.List;
 @RequestMapping("/log")
 @Api(value = "log", tags = "日志管理模块")
 public class SysLogController {
+
 	private final SysLogService sysLogService;
 
 	/**
 	 * 简单分页查询
-	 *
-	 * @param page   分页对象
+	 * @param page 分页对象
 	 * @param sysLog 系统日志
 	 * @return
 	 */
@@ -64,7 +63,6 @@ public class SysLogController {
 
 	/**
 	 * 删除日志
-	 *
 	 * @param id ID
 	 * @return success/false
 	 */
@@ -76,7 +74,6 @@ public class SysLogController {
 
 	/**
 	 * 插入日志
-	 *
 	 * @param sysLog 日志实体
 	 * @return success/false
 	 */
@@ -88,7 +85,6 @@ public class SysLogController {
 
 	/**
 	 * 批量插入前端异常日志
-	 *
 	 * @param preLogVoList 日志实体
 	 * @return success/false
 	 */
@@ -96,4 +92,5 @@ public class SysLogController {
 	public R saveBatchLogs(@RequestBody List<PreLogVO> preLogVoList) {
 		return R.ok(sysLogService.saveBatchLogs(preLogVoList));
 	}
+
 }

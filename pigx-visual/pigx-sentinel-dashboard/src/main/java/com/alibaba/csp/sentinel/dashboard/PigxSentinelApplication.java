@@ -23,8 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author nacos
  * <p>
- * sentinel console 源码运行，方便开发
- * 生产建议从官网下载最新版配置运行
+ * sentinel console 源码运行，方便开发 生产建议从官网下载最新版配置运行
  */
 @SpringBootApplication
 public class PigxSentinelApplication {
@@ -37,4 +36,5 @@ public class PigxSentinelApplication {
 	private static void triggerSentinelInit() {
 		new Thread(InitExecutor::doInit).start();
 	}
+
 }

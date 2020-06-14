@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 /**
  * @author frwcloud
  * <p>
@@ -40,12 +39,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sys-job-log")
 @Api(value = "sys-job-log", tags = "定时任务日志")
 public class SysJobLogController {
+
 	private final SysJobLogService sysJobLogService;
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page      分页对象
+	 * @param page 分页对象
 	 * @param sysJobLog 定时任务执行日志表
 	 * @return
 	 */
@@ -54,4 +53,5 @@ public class SysJobLogController {
 	public R getSysJobLogPage(Page page, SysJobLog sysJobLog) {
 		return R.ok(sysJobLogService.page(page, Wrappers.query(sysJobLog)));
 	}
+
 }

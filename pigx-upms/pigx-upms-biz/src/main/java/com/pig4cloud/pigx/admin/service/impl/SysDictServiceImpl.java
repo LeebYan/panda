@@ -40,11 +40,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
+
 	private final SysDictItemMapper dictItemMapper;
 
 	/**
 	 * 根据ID 删除字典
-	 *
 	 * @param id 字典ID
 	 * @return
 	 */
@@ -59,14 +59,12 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		}
 
 		baseMapper.deleteById(id);
-		dictItemMapper.delete(Wrappers.<SysDictItem>lambdaQuery()
-				.eq(SysDictItem::getDictId, id));
+		dictItemMapper.delete(Wrappers.<SysDictItem>lambdaQuery().eq(SysDictItem::getDictId, id));
 		return R.ok();
 	}
 
 	/**
 	 * 更新字典
-	 *
 	 * @param dict 字典
 	 * @return
 	 */
@@ -79,4 +77,5 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		}
 		return R.ok(this.updateById(dict));
 	}
+
 }

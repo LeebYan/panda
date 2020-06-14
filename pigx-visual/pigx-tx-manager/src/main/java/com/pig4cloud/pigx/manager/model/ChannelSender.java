@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ChannelSender {
 
-
 	private Channel channel;
 
 	private String address;
@@ -47,7 +46,6 @@ public class ChannelSender {
 		this.address = address;
 	}
 
-
 	public void send(String msg) {
 		if (channel != null) {
 			SocketUtils.sendMsg(channel, msg);
@@ -58,7 +56,8 @@ public class ChannelSender {
 	public void send(String msg, Task task) {
 		if (channel != null) {
 			SocketUtils.sendMsg(channel, msg);
-		} else {
+		}
+		else {
 			String url = String.format("http://%s/tx/manager/sendMsg", address);
 			final String res = HttpUtils.post(url, "msg=" + msg + "&model=" + modelName);
 			if (StringUtils.isNotEmpty(res)) {
@@ -66,7 +65,8 @@ public class ChannelSender {
 					task.setBack(objs -> res);
 					task.signalTask();
 				}
-			} else {
+			}
+			else {
 				if (task != null) {
 					task.setBack(objs -> "-2");
 					task.signalTask();
@@ -75,4 +75,5 @@ public class ChannelSender {
 		}
 
 	}
+
 }

@@ -35,18 +35,18 @@ import java.util.List;
 @Service
 public class CompensateDaoImpl implements CompensateDao {
 
-
 	@Autowired
 	private RedisServerService redisServerService;
 
 	@Autowired
 	private ConfigReader configReader;
 
-
 	@Override
 	public String saveCompensateMsg(TransactionCompensateMsg transactionCompensateMsg) {
 
-		String name = String.format("%s%s:%s:%s.json", configReader.getKeyPrefixCompensate(), transactionCompensateMsg.getModel(), DateUtil.getCurrentDateFormat(), transactionCompensateMsg.getGroupId());
+		String name = String.format("%s%s:%s:%s.json", configReader.getKeyPrefixCompensate(),
+				transactionCompensateMsg.getModel(), DateUtil.getCurrentDateFormat(),
+				transactionCompensateMsg.getGroupId());
 
 		String json = JSON.toJSONString(transactionCompensateMsg);
 
@@ -55,13 +55,11 @@ public class CompensateDaoImpl implements CompensateDao {
 		return name;
 	}
 
-
 	@Override
 	public List<String> loadCompensateKeys() {
 		String key = configReader.getKeyPrefixCompensate() + "*";
 		return redisServerService.getKeys(key);
 	}
-
 
 	@Override
 	public boolean hasCompensate() {
@@ -86,7 +84,6 @@ public class CompensateDaoImpl implements CompensateDao {
 		return times;
 	}
 
-
 	@Override
 	public List<String> loadCompensateByModelAndTime(String path) {
 		String key = String.format("%s%s*", configReader.getKeyPrefixCompensate(), path);
@@ -101,13 +98,11 @@ public class CompensateDaoImpl implements CompensateDao {
 		return redisServerService.getValueByKey(key);
 	}
 
-
 	@Override
 	public void deleteCompensateByPath(String path) {
 		String key = String.format("%s%s.json", configReader.getKeyPrefixCompensate(), path);
 		redisServerService.deleteKey(key);
 	}
-
 
 	@Override
 	public void deleteCompensateByKey(String key) {
@@ -124,4 +119,5 @@ public class CompensateDaoImpl implements CompensateDao {
 		}
 		return null;
 	}
+
 }

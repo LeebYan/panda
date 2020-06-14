@@ -19,11 +19,11 @@ public interface RemoteParamService {
 
 	/**
 	 * 通过key 查询参数配置
-	 *
-	 * @param key  key
+	 * @param key key
 	 * @param from 声明成内部调用，避免MQ 等无法调用
 	 * @return
 	 */
 	@GetMapping("/param/publicValue/{key}")
 	R<String> getByKey(@PathVariable("key") String key, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

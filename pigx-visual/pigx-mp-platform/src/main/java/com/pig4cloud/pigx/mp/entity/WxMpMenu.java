@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class WxMpMenu extends Model<WxMpMenu> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -50,6 +51,7 @@ public class WxMpMenu extends Model<WxMpMenu> {
 	 * 微信公众号ID
 	 */
 	private Integer wxAccountId;
+
 	/**
 	 * 微信公众号appid
 	 */
@@ -64,13 +66,14 @@ public class WxMpMenu extends Model<WxMpMenu> {
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
 
 	/**
-	 * 是否删除  -1：已删除  0：正常
+	 * 是否删除 -1：已删除 0：正常
 	 */
 	@TableLogic
 	private String delFlag;

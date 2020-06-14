@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 微信公众号粉丝管理
  *
@@ -42,8 +41,7 @@ public class WxAccountFansController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page          分页对象
+	 * @param page 分页对象
 	 * @param wxAccountFans 微信公众号粉丝
 	 * @return
 	 */
@@ -52,10 +50,8 @@ public class WxAccountFansController {
 		return R.ok(wxAccountFansService.page(page, Wrappers.query(wxAccountFans)));
 	}
 
-
 	/**
 	 * 通过id查询微信公众号粉丝
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -66,7 +62,6 @@ public class WxAccountFansController {
 
 	/**
 	 * 新增微信公众号粉丝
-	 *
 	 * @param wxAccountFans 微信公众号粉丝
 	 * @return R
 	 */
@@ -79,7 +74,6 @@ public class WxAccountFansController {
 
 	/**
 	 * 修改微信公众号粉丝
-	 *
 	 * @param wxAccountFans 微信公众号粉丝
 	 * @return R
 	 */
@@ -92,7 +86,6 @@ public class WxAccountFansController {
 
 	/**
 	 * 通过id删除微信公众号粉丝
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -105,7 +98,6 @@ public class WxAccountFansController {
 
 	/**
 	 * 同步粉丝
-	 *
 	 * @param appId
 	 * @return
 	 */

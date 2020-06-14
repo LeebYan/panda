@@ -24,22 +24,27 @@ package com.pig4cloud.pigx.common.core.constant;
  * @date 2017-12-18
  */
 public interface SecurityConstants {
+
 	/**
 	 * 刷新
 	 */
 	String REFRESH_TOKEN = "refresh_token";
+
 	/**
 	 * 验证码有效期
 	 */
 	int CODE_TIME = 60;
+
 	/**
 	 * 验证码长度
 	 */
 	String CODE_SIZE = "4";
+
 	/**
 	 * 角色前缀
 	 */
 	String ROLE = "ROLE_";
+
 	/**
 	 * 前缀
 	 */
@@ -49,6 +54,7 @@ public interface SecurityConstants {
 	 * oauth 相关前缀
 	 */
 	String OAUTH_PREFIX = "oauth:";
+
 	/**
 	 * 项目的license
 	 */
@@ -78,6 +84,7 @@ public interface SecurityConstants {
 	 * 社交登录URL
 	 */
 	String SOCIAL_TOKEN_URL = "/mobile/token/social";
+
 	/**
 	 * 自定义登录URL
 	 */
@@ -86,21 +93,20 @@ public interface SecurityConstants {
 	/**
 	 * 微信获取OPENID
 	 */
-	String WX_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/oauth2/access_token" +
-			"?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
+	String WX_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/oauth2/access_token"
+			+ "?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
 
 	/**
 	 * 微信小程序OPENID
 	 */
-	String MINI_APP_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/jscode2session" +
-			"?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+	String MINI_APP_AUTHORIZATION_CODE_URL = "https://api.weixin.qq.com/sns/jscode2session"
+			+ "?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
 
 	/**
 	 * 码云获取token
 	 */
-	String GITEE_AUTHORIZATION_CODE_URL = "https://gitee.com/oauth/token?grant_type=" +
-			"authorization_code&code=%S&client_id=%s&redirect_uri=" +
-			"%s&client_secret=%s";
+	String GITEE_AUTHORIZATION_CODE_URL = "https://gitee.com/oauth/token?grant_type="
+			+ "authorization_code&code=%S&client_id=%s&redirect_uri=" + "%s&client_secret=%s";
 
 	/**
 	 * 开源中国获取token
@@ -121,6 +127,7 @@ public interface SecurityConstants {
 	 * {bcrypt} 加密的特征码
 	 */
 	String BCRYPT = "{bcrypt}";
+
 	/**
 	 * sys_oauth_client_details 表的字段，不包括client_id、client_secret
 	 */
@@ -131,8 +138,7 @@ public interface SecurityConstants {
 	/**
 	 * JdbcClientDetailsService 查询语句
 	 */
-	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS
-			+ " from sys_oauth_client_details";
+	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS + " from sys_oauth_client_details";
 
 	/**
 	 * 按条件client_id 查询
@@ -173,6 +179,7 @@ public interface SecurityConstants {
 	 * 头像
 	 */
 	String DETAILS_AVATAR = "avatar";
+
 	/**
 	 * 用户部门字段
 	 */
@@ -197,4 +204,5 @@ public interface SecurityConstants {
 	 * AES 加密
 	 */
 	String AES = "aes";
+
 }

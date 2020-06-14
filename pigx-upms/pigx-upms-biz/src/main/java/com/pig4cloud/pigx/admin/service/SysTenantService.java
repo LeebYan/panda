@@ -32,16 +32,15 @@ public interface SysTenantService extends IService<SysTenant> {
 
 	/**
 	 * 获取正常的租户
-	 *
 	 * @return
 	 */
 	List<SysTenant> getNormalTenant();
 
 	/**
 	 * 保存租户
-	 *
 	 * @param sysTenant
 	 * @return
 	 */
 	Boolean saveTenant(SysTenant sysTenant);
+
 }

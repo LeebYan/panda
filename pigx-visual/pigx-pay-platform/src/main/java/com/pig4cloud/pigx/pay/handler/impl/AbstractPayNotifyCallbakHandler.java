@@ -33,9 +33,9 @@ import java.util.Map;
  */
 @Slf4j
 public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallbakHandler {
+
 	/**
 	 * 调用入口
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -69,8 +69,8 @@ public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallba
 	 * @param notifyId
 	 * @param recordService
 	 */
-	void saveRecord(Map<String, String> params, String result, PayNotifyRecord record, String notifyId
-			, PayNotifyRecordService recordService) {
+	void saveRecord(Map<String, String> params, String result, PayNotifyRecord record, String notifyId,
+			PayNotifyRecordService recordService) {
 		record.setNotifyId(notifyId);
 		String orderNo = params.get(PayConstants.OUT_TRADE_NO);
 		record.setOrderNo(orderNo);
@@ -78,4 +78,5 @@ public abstract class AbstractPayNotifyCallbakHandler implements PayNotifyCallba
 		record.setResponse(result);
 		recordService.save(record);
 	}
+
 }

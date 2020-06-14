@@ -31,10 +31,8 @@ import java.util.Map;
  */
 public interface ActTaskService {
 
-
 	/**
 	 * 获取用户代办列表
-	 *
 	 * @param params
 	 * @param name
 	 * @return
@@ -43,7 +41,6 @@ public interface ActTaskService {
 
 	/**
 	 * 通过任务ID查询任务信息关联申请单信息
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -51,7 +48,6 @@ public interface ActTaskService {
 
 	/**
 	 * 提交任务
-	 *
 	 * @param leaveBillDto
 	 * @return
 	 */
@@ -59,7 +55,6 @@ public interface ActTaskService {
 
 	/**
 	 * 通过任务ID 查询批注信息
-	 *
 	 * @param taskId 任务ID
 	 * @return
 	 */
@@ -67,9 +62,9 @@ public interface ActTaskService {
 
 	/**
 	 * 追踪图片节点
-	 *
 	 * @param id
 	 * @return
 	 */
 	InputStream viewByTaskId(String id);
+
 }

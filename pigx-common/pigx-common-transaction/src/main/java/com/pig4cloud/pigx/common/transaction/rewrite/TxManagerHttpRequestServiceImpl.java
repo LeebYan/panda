@@ -24,8 +24,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author lengleng
- * @date 2018/8/19
- * 请求tx-manager接口实现
+ * @date 2018/8/19 请求tx-manager接口实现
  */
 @Slf4j
 @Service
@@ -44,4 +43,5 @@ public class TxManagerHttpRequestServiceImpl implements TxManagerHttpRequestServ
 		log.debug("请求接口 {}，响应报文：{}", url, res);
 		return res;
 	}
+
 }

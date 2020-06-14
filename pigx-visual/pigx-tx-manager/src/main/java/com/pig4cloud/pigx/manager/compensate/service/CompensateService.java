@@ -49,4 +49,5 @@ public interface CompensateService {
 	boolean delCompensate(String path);
 
 	TxGroup getCompensateByGroupId(String groupId);
+
 }

@@ -38,7 +38,6 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
 	/**
 	 * 根据用户Id删除该用户的角色关系
-	 *
 	 * @param userId 用户ID
 	 * @return boolean
 	 * @author 寻欢·李
@@ -48,4 +47,5 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 	public Boolean deleteByUserId(Integer userId) {
 		return baseMapper.deleteByUserId(userId);
 	}
+
 }

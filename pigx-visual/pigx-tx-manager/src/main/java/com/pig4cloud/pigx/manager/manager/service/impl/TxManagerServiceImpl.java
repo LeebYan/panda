@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.manager.service.impl;
 
-
 import com.pig4cloud.pigx.manager.compensate.service.CompensateService;
 import com.pig4cloud.pigx.manager.config.ConfigReader;
 import com.pig4cloud.pigx.manager.framework.utils.Constants;
@@ -35,19 +34,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *@author LCN on 2017/6/7.
+ * @author LCN on 2017/6/7.
  */
 @Service
 public class TxManagerServiceImpl implements TxManagerService {
+
 	@Autowired
 	private ConfigReader configReader;
+
 	@Autowired
 	private RedisServerService redisServerService;
 
-
 	@Autowired
 	private TxManagerSenderService transactionConfirmService;
-
 
 	@Autowired
 	private LoadBalanceService loadBalanceService;
@@ -55,9 +54,7 @@ public class TxManagerServiceImpl implements TxManagerService {
 	@Autowired
 	private CompensateService compensateService;
 
-
 	private Logger logger = LoggerFactory.getLogger(TxManagerServiceImpl.class);
-
 
 	@Override
 	public TxGroup createTransactionGroup(String groupId) {
@@ -75,9 +72,9 @@ public class TxManagerServiceImpl implements TxManagerService {
 		return txGroup;
 	}
 
-
 	@Override
-	public TxGroup addTransactionGroup(String groupId, String taskId, int isGroup, String channelAddress, String methodStr) {
+	public TxGroup addTransactionGroup(String groupId, String taskId, int isGroup, String channelAddress,
+			String methodStr) {
 		String key = getTxGroupKey(groupId);
 		TxGroup txGroup = getTxGroup(groupId);
 		if (txGroup == null) {
@@ -89,7 +86,6 @@ public class TxManagerServiceImpl implements TxManagerService {
 		txInfo.setAddress(Constants.address);
 		txInfo.setIsGroup(isGroup);
 		txInfo.setMethodStr(methodStr);
-
 
 		ModelInfo modelInfo = ModelInfoManager.getInstance().getModelByChannelName(channelAddress);
 		if (modelInfo != null) {
@@ -130,7 +126,7 @@ public class TxManagerServiceImpl implements TxManagerService {
 
 		if (txGroup.getHasOver() == 0) {
 
-			//整个事务回滚.
+			// 整个事务回滚.
 			txGroup.setRollback(1);
 			redisServerService.saveTransaction(key, txGroup.toJsonString());
 
@@ -143,7 +139,7 @@ public class TxManagerServiceImpl implements TxManagerService {
 			return 0;
 		}
 
-		//更新数据
+		// 更新数据
 		boolean hasSet = false;
 		for (TxInfo info : txGroup.getList()) {
 			if (info.getKid().equals(taskId)) {
@@ -157,7 +153,7 @@ public class TxManagerServiceImpl implements TxManagerService {
 			}
 		}
 
-		//判断是否都结束
+		// 判断是否都结束
 		boolean isOver = true;
 		for (TxInfo info : txGroup.getList()) {
 			if (info.getIsGroup() == 0 && info.getNotify() == 0) {
@@ -170,15 +166,15 @@ public class TxManagerServiceImpl implements TxManagerService {
 			deleteTxGroup(txGroup);
 		}
 
-		//有更新的数据，需要修改记录
+		// 有更新的数据，需要修改记录
 		if (!isOver && hasSet) {
 			redisServerService.saveTransaction(key, txGroup.toJsonString());
 		}
 
-		logger.info("end-cleanNotifyTransaction->groupId:" + groupId + ",taskId:" + taskId + ",res(1:commit,0:rollback):" + res);
+		logger.info("end-cleanNotifyTransaction->groupId:" + groupId + ",taskId:" + taskId
+				+ ",res(1:commit,0:rollback):" + res);
 		return res;
 	}
-
 
 	@Override
 	public int closeTransactionGroup(String groupId, int state) {
@@ -193,14 +189,12 @@ public class TxManagerServiceImpl implements TxManagerService {
 		return transactionConfirmService.confirm(txGroup);
 	}
 
-
 	@Override
 	public void dealTxGroup(TxGroup txGroup, boolean hasOk) {
 		if (hasOk) {
 			deleteTxGroup(txGroup);
 		}
 	}
-
 
 	@Override
 	public void deleteTxGroup(TxGroup txGroup) {
@@ -212,7 +206,6 @@ public class TxManagerServiceImpl implements TxManagerService {
 		loadBalanceService.remove(groupId);
 	}
 
-
 	@Override
 	public TxGroup getTxGroup(String groupId) {
 		String key = getTxGroupKey(groupId);
@@ -223,4 +216,5 @@ public class TxManagerServiceImpl implements TxManagerService {
 	public String getTxGroupKey(String groupId) {
 		return configReader.getKeyPrefix() + groupId;
 	}
+
 }

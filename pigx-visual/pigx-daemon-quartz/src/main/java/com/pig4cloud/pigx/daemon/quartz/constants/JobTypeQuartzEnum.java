@@ -29,6 +29,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum JobTypeQuartzEnum {
+
 	/**
 	 * 反射java类
 	 */
@@ -53,8 +54,10 @@ public enum JobTypeQuartzEnum {
 	 * 类型
 	 */
 	private final String type;
+
 	/**
 	 * 描述
 	 */
 	private final String description;
+
 }

@@ -34,39 +34,39 @@ import org.springframework.web.client.RestTemplate;
  * @author lengleng
  * @date 2018/6/22
  * <p>
- * 1. 支持remoteTokenServices 负载均衡
- * 2. 支持 获取用户全部信息
+ * 1. 支持remoteTokenServices 负载均衡 2. 支持 获取用户全部信息
  */
 @Slf4j
 public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
+
 	@Autowired
 	protected ResourceAuthExceptionEntryPoint resourceAuthExceptionEntryPoint;
+
 	@Autowired
 	protected RemoteTokenServices remoteTokenServices;
+
 	@Autowired
 	private PermitAllUrlProperties permitAllUrlProperties;
+
 	@Autowired
 	private TokenExtractor tokenExtractor;
+
 	@Autowired
 	private RestTemplate lbRestTemplate;
 
 	/**
 	 * 默认的配置，对外暴露
-	 *
 	 * @param httpSecurity
 	 */
 	@Override
 	@SneakyThrows
 	public void configure(HttpSecurity httpSecurity) {
-		//允许使用iframe 嵌套，避免swagger-ui 不被加载的问题
+		// 允许使用iframe 嵌套，避免swagger-ui 不被加载的问题
 		httpSecurity.headers().frameOptions().disable();
-		ExpressionUrlAuthorizationConfigurer<HttpSecurity>
-				.ExpressionInterceptUrlRegistry registry = httpSecurity
+		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
 				.authorizeRequests();
-		permitAllUrlProperties.getIgnoreUrls()
-				.forEach(url -> registry.antMatchers(url).permitAll());
-		registry.anyRequest().authenticated()
-				.and().csrf().disable();
+		permitAllUrlProperties.getIgnoreUrls().forEach(url -> registry.antMatchers(url).permitAll());
+		registry.anyRequest().authenticated().and().csrf().disable();
 	}
 
 	@Override
@@ -77,8 +77,8 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 
 		remoteTokenServices.setRestTemplate(lbRestTemplate);
 		remoteTokenServices.setAccessTokenConverter(accessTokenConverter);
-		resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint)
-				.tokenExtractor(tokenExtractor)
+		resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint).tokenExtractor(tokenExtractor)
 				.tokenServices(remoteTokenServices);
 	}
+
 }

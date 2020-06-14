@@ -1,6 +1,5 @@
 package com.pig4cloud.pigx.common.sequence.range.impl.db;
 
-
 import com.pig4cloud.pigx.common.sequence.exception.SeqException;
 import com.pig4cloud.pigx.common.sequence.range.SeqRange;
 import com.pig4cloud.pigx.common.sequence.range.SeqRangeMgr;
@@ -9,6 +8,7 @@ import javax.sql.DataSource;
 
 /**
  * DB区间管理器
+ *
  * @author xuan on 2018/4/29.
  */
 public class DbSeqRangeMgr implements SeqRangeMgr {
@@ -17,18 +17,22 @@ public class DbSeqRangeMgr implements SeqRangeMgr {
 	 * 区间步长
 	 */
 	private int step = 1000;
+
 	/**
 	 * 区间起始位置，真实从stepStart+1开始
 	 */
 	private long stepStart = 0;
+
 	/**
 	 * 获取区间失败重试次数
 	 */
 	private int retryTimes = 100;
+
 	/**
 	 * DB来源
 	 */
 	private DataSource dataSource;
+
 	/**
 	 * 表名，默认range
 	 */
@@ -47,7 +51,7 @@ public class DbSeqRangeMgr implements SeqRangeMgr {
 			oldValue = BaseDbHelper.selectRange(getDataSource(), getRealTableName(), name, getStepStart());
 
 			if (null == oldValue) {
-				//区间不存在，重试
+				// 区间不存在，重试
 				continue;
 			}
 
@@ -56,7 +60,7 @@ public class DbSeqRangeMgr implements SeqRangeMgr {
 			if (BaseDbHelper.updateRange(getDataSource(), getRealTableName(), newValue, oldValue, name)) {
 				return new SeqRange(oldValue + 1, newValue);
 			}
-			//else 失败重试
+			// else 失败重试
 		}
 
 		throw new SeqException("Retried too many times, retryTimes = " + getRetryTimes());
@@ -94,7 +98,7 @@ public class DbSeqRangeMgr implements SeqRangeMgr {
 		}
 	}
 
-	////////getter and setter
+	//////// getter and setter
 
 	public int getStep() {
 		return step;

@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.daemon.quartz.util;
 
-
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJob;
 import com.pig4cloud.pigx.daemon.quartz.exception.TaskException;
@@ -53,9 +52,11 @@ public class JarTaskInvok implements ITaskInvok {
 		processBuilder.command(commands);
 		try {
 			processBuilder.start();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.error("定时任务jar反射执行异常,执行任务：{}", sysJob.getExecutePath());
 			throw new TaskException("定时任务jar反射执行异常,执行任务：" + sysJob.getExecutePath());
 		}
 	}
+
 }

@@ -27,24 +27,24 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/{appId}/portal")
 public class WxPortalController {
+
 	private final WxAccountService accountService;
 
 	/**
 	 * 微信接入校验处理
-	 *
-	 * @param appId     多公众号标志位
+	 * @param appId 多公众号标志位
 	 * @param signature 微信签名
 	 * @param timestamp 时间戳
-	 * @param nonce     随机数
-	 * @param echostr   随机字符串
+	 * @param nonce 随机数
+	 * @param echostr 随机字符串
 	 * @return
 	 */
 	@GetMapping(produces = "text/plain;charset=utf-8")
 	public String authGet(@PathVariable("appId") String appId,
-						  @RequestParam(name = "signature", required = false) String signature,
-						  @RequestParam(name = "timestamp", required = false) String timestamp,
-						  @RequestParam(name = "nonce", required = false) String nonce,
-						  @RequestParam(name = "echostr", required = false) String echostr) {
+			@RequestParam(name = "signature", required = false) String signature,
+			@RequestParam(name = "timestamp", required = false) String timestamp,
+			@RequestParam(name = "nonce", required = false) String nonce,
+			@RequestParam(name = "echostr", required = false) String echostr) {
 
 		log.info("接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", signature, timestamp, nonce, echostr);
 
@@ -67,57 +67,45 @@ public class WxPortalController {
 
 	/**
 	 * 微信消息处理
-	 *
-	 * @param appId        多公众号标志位
-	 * @param requestBody  请求报文体
-	 * @param signature    微信签名
-	 * @param encType      加签方式
+	 * @param appId 多公众号标志位
+	 * @param requestBody 请求报文体
+	 * @param signature 微信签名
+	 * @param encType 加签方式
 	 * @param msgSignature 微信签名
-	 * @param timestamp    时间戳
-	 * @param nonce        随机数
+	 * @param timestamp 时间戳
+	 * @param nonce 随机数
 	 * @return
 	 */
 	@PostMapping(produces = "application/xml; charset=UTF-8")
-	public String post(@PathVariable("appId") String appId,
-					   @RequestBody String requestBody,
-					   @RequestParam("signature") String signature,
-					   @RequestParam("timestamp") String timestamp,
-					   @RequestParam("nonce") String nonce,
-					   @RequestParam("openid") String openid,
-					   @RequestParam(name = "encrypt_type", required = false) String encType,
-					   @RequestParam(name = "msg_signature", required = false) String msgSignature) {
-		return TenantBroker.applyAs(
-				() -> WxMpInitConfigRunner.getTenants().get(appId),
-				(id) -> handleMessage(appId,requestBody,signature,timestamp,nonce,openid,encType,msgSignature)
-		);
+	public String post(@PathVariable("appId") String appId, @RequestBody String requestBody,
+			@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,
+			@RequestParam("nonce") String nonce, @RequestParam("openid") String openid,
+			@RequestParam(name = "encrypt_type", required = false) String encType,
+			@RequestParam(name = "msg_signature", required = false) String msgSignature) {
+		return TenantBroker.applyAs(() -> WxMpInitConfigRunner.getTenants().get(appId),
+				(id) -> handleMessage(appId, requestBody, signature, timestamp, nonce, openid, encType, msgSignature));
 	}
 
 	/**
 	 * 微信消息处理
-	 *
-	 * @param appId        多公众号标志位
-	 * @param requestBody  请求报文体
-	 * @param signature    微信签名
-	 * @param encType      加签方式
+	 * @param appId 多公众号标志位
+	 * @param requestBody 请求报文体
+	 * @param signature 微信签名
+	 * @param encType 加签方式
 	 * @param msgSignature 微信签名
-	 * @param timestamp    时间戳
-	 * @param nonce        随机数
+	 * @param timestamp 时间戳
+	 * @param nonce 随机数
 	 * @return
 	 */
-	public String handleMessage(String appId,
-								String requestBody,
-								String signature,
-								String timestamp,
-								String nonce,
-								String openid,
-								String encType,
-								String msgSignature) {
+	public String handleMessage(String appId, String requestBody, String signature, String timestamp, String nonce,
+			String openid, String encType, String msgSignature) {
 
 		WxMpContextHolder.setAppId(appId);
 
 		final WxMpService wxService = WxMpInitConfigRunner.getMpServices().get(appId);
 
-		log.info("接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
+		log.info(
+				"接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
 						+ " timestamp=[{}], nonce=[{}], requestBody=[{}] ",
 				openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
 

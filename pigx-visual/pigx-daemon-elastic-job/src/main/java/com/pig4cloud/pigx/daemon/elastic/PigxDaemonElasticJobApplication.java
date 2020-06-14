@@ -26,8 +26,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2018/7/24
- * 分布式任务调度模块
+ * @date 2018/7/24 分布式任务调度模块
  */
 @EnablePigxXxlJob
 @EnablePigxSwagger2

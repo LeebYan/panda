@@ -40,4 +40,5 @@ public class PigxQuartzInvokeFactory {
 	void init(SysJob sysJob, Trigger trigger) {
 		publisher.publishEvent(new SysJobEvent(sysJob, trigger));
 	}
+
 }

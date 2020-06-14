@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.manager.model;
 
 /**
  * 负载均衡模块信息
+ *
  * @author LCN on 2017/12/5
  */
 public class LoadBalanceInfo {
@@ -28,7 +29,6 @@ public class LoadBalanceInfo {
 	private String key;
 
 	private String data;
-
 
 	public String getGroupId() {
 		return groupId;
@@ -53,4 +53,5 @@ public class LoadBalanceInfo {
 	public void setData(String data) {
 		this.data = data;
 	}
+
 }

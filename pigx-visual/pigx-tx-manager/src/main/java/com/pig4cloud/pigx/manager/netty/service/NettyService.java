@@ -22,6 +22,6 @@ package com.pig4cloud.pigx.manager.netty.service;
  */
 public interface NettyService {
 
-
 	IActionService getActionService(String action);
+
 }

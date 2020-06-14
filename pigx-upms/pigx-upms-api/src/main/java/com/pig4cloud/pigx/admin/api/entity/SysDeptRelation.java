@@ -39,16 +39,17 @@ import lombok.EqualsAndHashCode;
 public class SysDeptRelation extends Model<SysDeptRelation> {
 
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 祖先节点
 	 */
 	@ApiModelProperty(value = "祖先节点")
 	private Integer ancestor;
+
 	/**
 	 * 后代节点
 	 */
 	@ApiModelProperty(value = "后代节点")
 	private Integer descendant;
-
 
 }

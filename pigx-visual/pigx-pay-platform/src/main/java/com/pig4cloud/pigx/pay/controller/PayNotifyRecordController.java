@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-
 /**
  * 异步通知记录
  *
@@ -52,14 +51,16 @@ import java.util.Map;
 @RequestMapping("/notify")
 @Api(value = "notify", tags = "notify管理")
 public class PayNotifyRecordController {
+
 	private final PayNotifyRecordService payNotifyRecordService;
+
 	private final PayNotifyCallbakHandler alipayCallback;
+
 	private final PayNotifyCallbakHandler weChatCallback;
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page            分页对象
+	 * @param page 分页对象
 	 * @param payNotifyRecord 异步通知记录
 	 * @return
 	 */
@@ -68,10 +69,8 @@ public class PayNotifyRecordController {
 		return R.ok(payNotifyRecordService.page(page, Wrappers.query(payNotifyRecord)));
 	}
 
-
 	/**
 	 * 通过id查询异步通知记录
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -82,7 +81,6 @@ public class PayNotifyRecordController {
 
 	/**
 	 * 新增异步通知记录
-	 *
 	 * @param payNotifyRecord 异步通知记录
 	 * @return R
 	 */
@@ -95,7 +93,6 @@ public class PayNotifyRecordController {
 
 	/**
 	 * 修改异步通知记录
-	 *
 	 * @param payNotifyRecord 异步通知记录
 	 * @return R
 	 */
@@ -108,7 +105,6 @@ public class PayNotifyRecordController {
 
 	/**
 	 * 通过id删除异步通知记录
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -121,7 +117,6 @@ public class PayNotifyRecordController {
 
 	/**
 	 * 支付宝渠道异步回调
-	 *
 	 * @param request 渠道请求
 	 * @return
 	 */
@@ -136,7 +131,6 @@ public class PayNotifyRecordController {
 
 	/**
 	 * 微信渠道支付回调
-	 *
 	 * @param request
 	 * @return
 	 */

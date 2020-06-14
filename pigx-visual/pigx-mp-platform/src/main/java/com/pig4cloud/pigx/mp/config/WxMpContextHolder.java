@@ -22,18 +22,15 @@ import lombok.experimental.UtilityClass;
 
 /**
  * @author lengleng
- * @date 2019/03/27
- * 微信上下文工具类
+ * @date 2019/03/27 微信上下文工具类
  */
 @UtilityClass
 public class WxMpContextHolder {
 
 	private final ThreadLocal<String> THREAD_LOCAL_APPID = new TransmittableThreadLocal<>();
 
-
 	/**
 	 * TTL 设置appId
-	 *
 	 * @param appId
 	 */
 	public void setAppId(String appId) {
@@ -42,7 +39,6 @@ public class WxMpContextHolder {
 
 	/**
 	 * 获取TTL中的appId
-	 *
 	 * @return
 	 */
 	public String getAppId() {
@@ -52,4 +48,5 @@ public class WxMpContextHolder {
 	public void clear() {
 		THREAD_LOCAL_APPID.remove();
 	}
+
 }

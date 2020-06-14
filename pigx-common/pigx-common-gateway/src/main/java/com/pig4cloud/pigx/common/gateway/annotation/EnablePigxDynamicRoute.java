@@ -28,10 +28,11 @@ import java.lang.annotation.*;
  * <p>
  * 开启pigx 动态路由
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @Import(DynamicRouteAutoConfiguration.class)
 public @interface EnablePigxDynamicRoute {
+
 }

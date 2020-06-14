@@ -35,7 +35,6 @@ public class PayChannelServiceImpl extends ServiceImpl<PayChannelMapper, PayChan
 
 	/**
 	 * 新增支付渠道
-	 *
 	 * @param payChannel 支付渠道
 	 * @return
 	 */
@@ -43,4 +42,5 @@ public class PayChannelServiceImpl extends ServiceImpl<PayChannelMapper, PayChan
 	public Boolean saveChannel(PayChannel payChannel) {
 		return save(payChannel);
 	}
+
 }

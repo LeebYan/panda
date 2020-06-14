@@ -49,21 +49,19 @@ import java.util.Properties;
 @Service
 @AllArgsConstructor
 public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFormConf> implements GenFormConfService {
+
 	private final GenTableColumnMapper tableColumnMapper;
 
 	/**
-	 * 1. 根据数据源、表名称，查询已配置表单信息
-	 * 2. 不存在调用模板生成
-	 *
-	 * @param dsName    数据源ID
+	 * 1. 根据数据源、表名称，查询已配置表单信息 2. 不存在调用模板生成
+	 * @param dsName 数据源ID
 	 * @param tableName 表名称
 	 * @return
 	 */
 	@Override
 	@SneakyThrows
 	public String getForm(String dsName, String tableName) {
-		GenFormConf form = getOne(Wrappers.<GenFormConf>lambdaQuery()
-				.eq(GenFormConf::getTableName, tableName)
+		GenFormConf form = getOne(Wrappers.<GenFormConf>lambdaQuery().eq(GenFormConf::getTableName, tableName)
 				.orderByDesc(GenFormConf::getCreateTime), false);
 
 		if (form != null) {
@@ -71,7 +69,7 @@ public class GenFormConfServiceImpl extends ServiceImpl<GenFormConfMapper, GenFo
 		}
 
 		List<ColumnEntity> columns = tableColumnMapper.selectTableColumn(tableName, dsName);
-		//设置velocity资源加载器
+		// 设置velocity资源加载器
 		Properties prop = new Properties();
 		prop.put("file.resource.loader.class", ClasspathResourceLoader.class.getName());
 		Velocity.init(prop);

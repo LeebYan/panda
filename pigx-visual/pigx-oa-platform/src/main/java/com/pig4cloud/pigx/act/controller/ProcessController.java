@@ -40,6 +40,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/process")
 public class ProcessController {
+
 	private final ProcessService processService;
 
 	@GetMapping
@@ -49,13 +50,15 @@ public class ProcessController {
 
 	@Inner(value = false)
 	@GetMapping(value = "/resource/{proInsId}/{procDefId}/{resType}")
-	public ResponseEntity resourceRead(@PathVariable String procDefId, @PathVariable String proInsId, @PathVariable String resType) {
+	public ResponseEntity resourceRead(@PathVariable String procDefId, @PathVariable String proInsId,
+			@PathVariable String resType) {
 
 		HttpHeaders headers = new HttpHeaders();
 
 		if (ResourceTypeEnum.XML.getType().equals(resType)) {
 			headers.setContentType(MediaType.APPLICATION_XML);
-		} else {
+		}
+		else {
 			headers.setContentType(MediaType.IMAGE_PNG);
 		}
 
@@ -72,4 +75,5 @@ public class ProcessController {
 	public R deleteProcIns(@PathVariable String deploymentId) {
 		return R.ok(processService.removeProcIns(deploymentId));
 	}
+
 }

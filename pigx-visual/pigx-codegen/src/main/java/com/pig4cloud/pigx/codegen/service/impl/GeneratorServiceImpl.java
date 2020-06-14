@@ -50,13 +50,15 @@ import java.util.zip.ZipOutputStream;
 @Service
 @AllArgsConstructor
 public class GeneratorServiceImpl implements GeneratorService {
+
 	private final GenTableColumnMapper tableColumnMapper;
+
 	private final GeneratorMapper generatorMapper;
+
 	private final GenFormConfMapper genFormConfMapper;
 
 	/**
 	 * 分页查询表
-	 *
 	 * @param tableName 查询条件
 	 * @param dsName
 	 * @return
@@ -69,23 +71,24 @@ public class GeneratorServiceImpl implements GeneratorService {
 
 	@Override
 	public Map<String, String> previewCode(GenConfig genConfig) {
-		//根据tableName 查询最新的表单配置
+		// 根据tableName 查询最新的表单配置
 		List<GenFormConf> formConfList = genFormConfMapper.selectList(Wrappers.<GenFormConf>lambdaQuery()
-				.eq(GenFormConf::getTableName, genConfig.getTableName())
-				.orderByDesc(GenFormConf::getCreateTime));
+				.eq(GenFormConf::getTableName, genConfig.getTableName()).orderByDesc(GenFormConf::getCreateTime));
 
 		DynamicDataSourceContextHolder.push(genConfig.getDsName());
 
 		String tableNames = genConfig.getTableName();
 		for (String tableName : StrUtil.split(tableNames, StrUtil.DASHED)) {
-			//查询表信息
+			// 查询表信息
 			Map<String, String> table = generatorMapper.queryTable(tableName, genConfig.getDsName());
-			//查询列信息
-			List<Map<String, String>> columns = tableColumnMapper.selectMapTableColumn(tableName, genConfig.getDsName());
-			//生成代码
+			// 查询列信息
+			List<Map<String, String>> columns = tableColumnMapper.selectMapTableColumn(tableName,
+					genConfig.getDsName());
+			// 生成代码
 			if (CollUtil.isNotEmpty(formConfList)) {
 				return GenUtils.generatorCode(genConfig, table, columns, null, formConfList.get(0));
-			} else {
+			}
+			else {
 				return GenUtils.generatorCode(genConfig, table, columns, null, null);
 			}
 		}
@@ -94,16 +97,14 @@ public class GeneratorServiceImpl implements GeneratorService {
 
 	/**
 	 * 生成代码
-	 *
 	 * @param genConfig 生成配置
 	 * @return
 	 */
 	@Override
 	public byte[] generatorCode(GenConfig genConfig) {
-		//根据tableName 查询最新的表单配置
+		// 根据tableName 查询最新的表单配置
 		List<GenFormConf> formConfList = genFormConfMapper.selectList(Wrappers.<GenFormConf>lambdaQuery()
-				.eq(GenFormConf::getTableName, genConfig.getTableName())
-				.orderByDesc(GenFormConf::getCreateTime));
+				.eq(GenFormConf::getTableName, genConfig.getTableName()).orderByDesc(GenFormConf::getCreateTime));
 
 		DynamicDataSourceContextHolder.push(genConfig.getDsName());
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -111,18 +112,21 @@ public class GeneratorServiceImpl implements GeneratorService {
 
 		String tableNames = genConfig.getTableName();
 		for (String tableName : StrUtil.split(tableNames, StrUtil.DASHED)) {
-			//查询表信息
+			// 查询表信息
 			Map<String, String> table = generatorMapper.queryTable(tableName, genConfig.getDsName());
-			//查询列信息
-			List<Map<String, String>> columns = tableColumnMapper.selectMapTableColumn(tableName, genConfig.getDsName());
-			//生成代码
+			// 查询列信息
+			List<Map<String, String>> columns = tableColumnMapper.selectMapTableColumn(tableName,
+					genConfig.getDsName());
+			// 生成代码
 			if (CollUtil.isNotEmpty(formConfList)) {
 				GenUtils.generatorCode(genConfig, table, columns, zip, formConfList.get(0));
-			} else {
+			}
+			else {
 				GenUtils.generatorCode(genConfig, table, columns, zip, null);
 			}
 		}
 		IoUtil.close(zip);
 		return outputStream.toByteArray();
 	}
+
 }

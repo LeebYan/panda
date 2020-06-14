@@ -27,11 +27,13 @@ import org.springframework.http.HttpStatus;
  */
 @JsonSerialize(using = PigxAuth2ExceptionSerializer.class)
 public class ForbiddenException extends PigxAuth2Exception {
+
 	public ForbiddenException(String msg) {
 		super(msg);
 	}
+
 	public ForbiddenException(String msg, Throwable t) {
-		super(msg,t);
+		super(msg, t);
 	}
 
 	@Override
@@ -45,4 +47,3 @@ public class ForbiddenException extends PigxAuth2Exception {
 	}
 
 }
-

@@ -67,7 +67,6 @@ public class RedisServerServiceImpl implements RedisServerService {
 		value.set(key, json, configReader.getRedisSaveMaxTime(), TimeUnit.SECONDS);
 	}
 
-
 	@Override
 	public TxGroup getTxGroupByKey(String key) {
 		ValueOperations<String, String> value = redisTemplate.opsForValue();
@@ -77,7 +76,6 @@ public class RedisServerServiceImpl implements RedisServerService {
 		}
 		return TxGroup.parser(json);
 	}
-
 
 	@Override
 	public void saveCompensateMsg(String name, String json) {
@@ -123,10 +121,10 @@ public class RedisServerServiceImpl implements RedisServerService {
 		value.put(groupName, key, data);
 	}
 
-
 	@Override
 	public String getLoadBalance(String groupName, String key) {
 		HashOperations<String, String, String> value = redisTemplate.opsForHash();
 		return value.get(groupName, key);
 	}
+
 }

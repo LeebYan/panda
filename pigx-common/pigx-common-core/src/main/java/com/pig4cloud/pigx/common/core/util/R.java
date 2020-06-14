@@ -40,6 +40,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @ApiModel(value = "响应信息主体")
 public class R<T> implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Getter
@@ -51,7 +52,6 @@ public class R<T> implements Serializable {
 	@Setter
 	@ApiModelProperty(value = "返回信息")
 	private String msg;
-
 
 	@Getter
 	@Setter
@@ -93,4 +93,5 @@ public class R<T> implements Serializable {
 		apiResult.setMsg(msg);
 		return apiResult;
 	}
+
 }

@@ -28,10 +28,11 @@ import java.lang.annotation.*;
  * <p>
  * 开启支持XXL
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({XxlJobAutoConfiguration.class})
+@Import({ XxlJobAutoConfiguration.class })
 public @interface EnablePigxXxlJob {
+
 }

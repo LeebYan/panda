@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  * sentinel 请求头解析判断
  */
 public class PigxHeaderRequestOriginParser implements RequestOriginParser {
+
 	/**
 	 * 请求头获取allow
 	 */
@@ -35,7 +36,6 @@ public class PigxHeaderRequestOriginParser implements RequestOriginParser {
 
 	/**
 	 * Parse the origin from given HTTP request.
-	 *
 	 * @param request HTTP request
 	 * @return parsed origin
 	 */
@@ -43,4 +43,5 @@ public class PigxHeaderRequestOriginParser implements RequestOriginParser {
 	public String parseOrigin(HttpServletRequest request) {
 		return request.getHeader(ALLOW);
 	}
+
 }

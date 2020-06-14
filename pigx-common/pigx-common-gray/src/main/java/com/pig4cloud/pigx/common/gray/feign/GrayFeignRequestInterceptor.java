@@ -32,19 +32,21 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class GrayFeignRequestInterceptor implements RequestInterceptor {
+
 	/**
-	 * Called for every request. Add data using methods on the supplied {@link RequestTemplate}.
-	 *
+	 * Called for every request. Add data using methods on the supplied
+	 * {@link RequestTemplate}.
 	 * @param template
 	 */
 	@Override
 	public void apply(RequestTemplate template) {
-		String reqVersion = WebUtils.getRequest() != null
-				? WebUtils.getRequest().getHeader(CommonConstants.VERSION) : null;
+		String reqVersion = WebUtils.getRequest() != null ? WebUtils.getRequest().getHeader(CommonConstants.VERSION)
+				: null;
 
 		if (StrUtil.isNotBlank(reqVersion)) {
 			log.debug("feign gray add header version :{}", reqVersion);
 			template.header(CommonConstants.VERSION, reqVersion);
 		}
 	}
+
 }

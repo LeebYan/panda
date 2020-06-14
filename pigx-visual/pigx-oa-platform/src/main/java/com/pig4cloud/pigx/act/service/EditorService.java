@@ -22,16 +22,15 @@ package com.pig4cloud.pigx.act.service;
  * @date 2018/9/25
  */
 public interface EditorService {
+
 	/**
 	 * 获取设计器页面的json
-	 *
 	 * @return
 	 */
 	Object getStencilset();
 
 	/**
 	 * 根据modelId获取model
-	 *
 	 * @param modelId
 	 * @return
 	 */
@@ -46,4 +45,5 @@ public interface EditorService {
 	 * @param svgXml
 	 */
 	void saveModel(String modelId, String name, String description, String jsonXml, String svgXml);
+
 }

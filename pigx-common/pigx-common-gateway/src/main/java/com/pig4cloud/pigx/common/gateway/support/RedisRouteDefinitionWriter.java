@@ -44,6 +44,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
+
 	private final RedisTemplate redisTemplate;
 
 	@Override
@@ -70,14 +71,10 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 		return Mono.empty();
 	}
 
-
 	/**
 	 * 动态路由入口
 	 * <p>
-	 * 1. 先从内存中获取
-	 * 2. 为空加载Redis中数据
-	 * 3. 更新内存
-	 *
+	 * 1. 先从内存中获取 2. 为空加载Redis中数据 3. 更新内存
 	 * @return
 	 */
 	@Override
@@ -96,4 +93,5 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 		RouteCacheHolder.setRouteList(values);
 		return Flux.fromIterable(values);
 	}
+
 }

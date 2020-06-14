@@ -30,13 +30,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @AllArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
 	private RemoteTokenServices tokenService;
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/ws")
-				.setAllowedOrigins("*")
-				.withSockJS();
+		registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
 	}
 
 	@Override
@@ -63,13 +62,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 						SecurityContextHolder.getContext().setAuthentication(auth2Authentication);
 						accessor.setUser(() -> auth2Authentication.getName());
 						return message;
-					} else {
+					}
+					else {
 						return null;
 					}
 				}
-				//不是首次连接，已经成功登陆
+				// 不是首次连接，已经成功登陆
 				return message;
 			}
 		});
 	}
+
 }

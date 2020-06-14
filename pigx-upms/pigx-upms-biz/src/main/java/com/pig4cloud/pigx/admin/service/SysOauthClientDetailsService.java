@@ -31,9 +31,9 @@ import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
  * @since 2018-05-15
  */
 public interface SysOauthClientDetailsService extends IService<SysOauthClientDetails> {
+
 	/**
 	 * 通过ID删除客户端
-	 *
 	 * @param clientId
 	 * @return
 	 */
@@ -41,9 +41,9 @@ public interface SysOauthClientDetailsService extends IService<SysOauthClientDet
 
 	/**
 	 * 根据客户端信息
-	 *
 	 * @param clientDetails
 	 * @return
 	 */
 	Boolean updateClientById(SysOauthClientDetails clientDetails);
+
 }

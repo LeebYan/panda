@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 class BaseSequenceProperties {
+
 	/**
 	 * 获取range步长[可选，默认：1000]
 	 */
@@ -24,4 +25,5 @@ class BaseSequenceProperties {
 	 * 业务名称
 	 */
 	private String bizName = "pigx";
+
 }

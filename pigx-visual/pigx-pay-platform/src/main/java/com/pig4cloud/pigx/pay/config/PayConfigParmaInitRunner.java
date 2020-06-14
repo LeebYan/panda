@@ -48,40 +48,37 @@ import java.util.Map;
 @Configuration
 @AllArgsConstructor
 public class PayConfigParmaInitRunner {
-	public static Map<String, WxMpService> mpServiceMap = new HashMap<>();
-	private final PayChannelService channelService;
-	private final RemoteTenantService tenantService;
 
+	public static Map<String, WxMpService> mpServiceMap = new HashMap<>();
+
+	private final PayChannelService channelService;
+
+	private final RemoteTenantService tenantService;
 
 	@Async
 	@Order
 	@SqlParser(filter = true)
-	@EventListener({WebServerInitializedEvent.class})
+	@EventListener({ WebServerInitializedEvent.class })
 	public void initPayConfig() {
 
 		List<PayChannel> channelList = new ArrayList<>();
 		tenantService.list(SecurityConstants.FROM_IN).getData()
 				.forEach(tenant -> TenantBroker.runAs(tenant.getId(), (id) -> {
-					List<PayChannel> payChannelList = channelService
-							.list(Wrappers.<PayChannel>lambdaQuery()
-									.eq(PayChannel::getState, CommonConstants.STATUS_NORMAL));
+					List<PayChannel> payChannelList = channelService.list(
+							Wrappers.<PayChannel>lambdaQuery().eq(PayChannel::getState, CommonConstants.STATUS_NORMAL));
 					channelList.addAll(payChannelList);
 				}));
 
 		channelList.forEach(channel -> {
 			JSONObject params = JSONUtil.parseObj(channel.getParam());
 
-			//支付宝支付
+			// 支付宝支付
 			if (PayChannelNameEnum.ALIPAY_WAP.getName().equals(channel.getChannelId())) {
 
-				AliPayApiConfig aliPayApiConfig = AliPayApiConfig.New()
-						.setAppId(channel.getAppId())
-						.setPrivateKey(params.getStr("privateKey"))
-						.setCharset(CharsetUtil.UTF_8)
-						.setAlipayPublicKey(params.getStr("publicKey"))
-						.setServiceUrl(params.getStr("serviceUrl"))
-						.setSignType("RSA2")
-						.build();
+				AliPayApiConfig aliPayApiConfig = AliPayApiConfig.New().setAppId(channel.getAppId())
+						.setPrivateKey(params.getStr("privateKey")).setCharset(CharsetUtil.UTF_8)
+						.setAlipayPublicKey(params.getStr("publicKey")).setServiceUrl(params.getStr("serviceUrl"))
+						.setSignType("RSA2").build();
 
 				AliPayApiConfigKit.putApiConfig(aliPayApiConfig);
 				log.info("新增支付宝支付参数 {}", aliPayApiConfig);
@@ -89,10 +86,8 @@ public class PayConfigParmaInitRunner {
 
 			// 微信支付
 			if (PayChannelNameEnum.WEIXIN_MP.getName().equals(channel.getChannelId())) {
-				WxPayApiConfig wx = WxPayApiConfig.New()
-						.setAppId(channel.getAppId())
-						.setMchId(channel.getChannelMchId())
-						.setPaternerKey(params.getStr("paternerKey"))
+				WxPayApiConfig wx = WxPayApiConfig.New().setAppId(channel.getAppId())
+						.setMchId(channel.getChannelMchId()).setPaternerKey(params.getStr("paternerKey"))
 						.setPayModel(WxPayApiConfig.PayModel.BUSINESSMODEL);
 
 				String subMchId = params.getStr("subMchId");
@@ -118,14 +113,12 @@ public class PayConfigParmaInitRunner {
 
 	/**
 	 * redis 监听配置,监听 pay_redis_route_reload_topic,重新加载配置
-	 *
 	 * @param redisConnectionFactory redis 配置
 	 * @return
 	 */
 	@Bean
 	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
-		RedisMessageListenerContainer container
-				= new RedisMessageListenerContainer();
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(redisConnectionFactory);
 		container.addMessageListener((message, bytes) -> {
 			log.warn("接收到Redis 事件 重新加载支付参数事件");
@@ -133,4 +126,5 @@ public class PayConfigParmaInitRunner {
 		}, new ChannelTopic(CacheConstants.PAY_REDIS_RELOAD_TOPIC));
 		return container;
 	}
+
 }

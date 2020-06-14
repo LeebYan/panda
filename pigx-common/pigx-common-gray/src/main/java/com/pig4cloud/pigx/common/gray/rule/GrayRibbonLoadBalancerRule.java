@@ -39,6 +39,7 @@ import java.util.Map;
  */
 @Slf4j
 public class GrayRibbonLoadBalancerRule extends AbstractLoadBalancerRule {
+
 	@Override
 	public void initWithNiwsConfig(IClientConfig iClientConfig) {
 	}
@@ -48,19 +49,18 @@ public class GrayRibbonLoadBalancerRule extends AbstractLoadBalancerRule {
 		return choose(getLoadBalancer(), key);
 	}
 
-
 	public Server choose(ILoadBalancer lb, Object key) {
 		List<Server> reachableServers = lb.getReachableServers();
 
-		//注册中心无可用实例 抛出异常
+		// 注册中心无可用实例 抛出异常
 		if (CollUtil.isEmpty(reachableServers)) {
 			log.warn("No instance available for {}", key);
 			return null;
 		}
 
 		// 获取请求version，无则随机返回可用实例
-		String reqVersion = WebUtils.getRequest() != null
-				? WebUtils.getRequest().getHeader(CommonConstants.VERSION) : null;
+		String reqVersion = WebUtils.getRequest() != null ? WebUtils.getRequest().getHeader(CommonConstants.VERSION)
+				: null;
 		if (StrUtil.isBlank(reqVersion)) {
 			return reachableServers.get(RandomUtil.randomInt(reachableServers.size()));
 		}

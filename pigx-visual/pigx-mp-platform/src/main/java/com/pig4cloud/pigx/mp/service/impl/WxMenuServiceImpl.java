@@ -47,25 +47,24 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> implements WxMenuService {
+
 	private static final String PUB_ED = "1";
+
 	private final WxAccountMapper wxAccountMapper;
 
 	/**
 	 * 新增微信公众号按钮
-	 *
 	 * @param wxMenus json
-	 * @param appId   公众号
+	 * @param appId 公众号
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean save(JSONObject wxMenus, String appId) {
-		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery()
-				.eq(WxMpMenu::getWxAccountAppid, appId));
+		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery().eq(WxMpMenu::getWxAccountAppid, appId));
 
 		WxAccount wxAccount = wxAccountMapper
-				.selectOne(Wrappers.<WxAccount>lambdaQuery()
-						.eq(WxAccount::getAppid, appId));
+				.selectOne(Wrappers.<WxAccount>lambdaQuery().eq(WxAccount::getAppid, appId));
 		WxMpMenu wxMpMenu = new WxMpMenu();
 		wxMpMenu.setMenu(wxMenus.toStringPretty());
 		wxMpMenu.setWxAccountId(wxAccount.getId());
@@ -77,14 +76,13 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 
 	/**
 	 * 发布到微信
-	 *
 	 * @param appId 公众号信息
 	 * @return
 	 */
 	@Override
 	public R push(String appId) {
-		List<WxMpMenu> wxMpMenuList = baseMapper.selectList(Wrappers.<WxMpMenu>lambdaQuery()
-				.eq(WxMpMenu::getWxAccountAppid, appId));
+		List<WxMpMenu> wxMpMenuList = baseMapper
+				.selectList(Wrappers.<WxMpMenu>lambdaQuery().eq(WxMpMenu::getWxAccountAppid, appId));
 
 		if (CollUtil.isEmpty(wxMpMenuList)) {
 			return R.failed("微信菜单配置未保存，不能发布");
@@ -100,12 +98,13 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 		// 给数据库保存的加一层
 		try {
 			menuService.menuCreate(wxMpMenu.getMenu());
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error("发布微信菜单失败", e.getError().getErrorMsg());
 			return R.failed(e.getError().getErrorMsg());
 		}
 
-		//更新菜单发布标志
+		// 更新菜单发布标志
 		wxMpMenu.setPubFlag(PUB_ED);
 		baseMapper.updateById(wxMpMenu);
 		return R.ok();
@@ -113,14 +112,13 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 
 	/**
 	 * 通过appid 查询菜单信息
-	 *
 	 * @param appId
 	 * @return
 	 */
 	@Override
 	public R getByAppId(String appId) {
-		List<WxMpMenu> wxMpMenuList = baseMapper.selectList(Wrappers.<WxMpMenu>lambdaQuery()
-				.eq(WxMpMenu::getWxAccountAppid, appId));
+		List<WxMpMenu> wxMpMenuList = baseMapper
+				.selectList(Wrappers.<WxMpMenu>lambdaQuery().eq(WxMpMenu::getWxAccountAppid, appId));
 
 		if (CollUtil.isEmpty(wxMpMenuList)) {
 			return R.ok();
@@ -130,7 +128,6 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 
 	/**
 	 * 通过appid 删除菜单
-	 *
 	 * @param appId
 	 * @return
 	 */
@@ -140,13 +137,14 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMpMenu> imple
 		WxMpMenuService menuService = wxMpService.getMenuService();
 		try {
 			menuService.menuDelete();
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			log.error("微信菜单删除失败", e.getError().getErrorMsg());
 			return R.failed(e.getError().getErrorMsg());
 		}
 
-		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery()
-				.eq(WxMpMenu::getWxAccountAppid, appId));
+		baseMapper.delete(Wrappers.<WxMpMenu>lambdaQuery().eq(WxMpMenu::getWxAccountAppid, appId));
 		return R.ok();
 	}
+
 }

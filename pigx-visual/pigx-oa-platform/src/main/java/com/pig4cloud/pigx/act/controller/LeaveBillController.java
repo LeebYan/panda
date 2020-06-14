@@ -28,7 +28,6 @@ import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 请假流程
  *
@@ -39,13 +38,14 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/leave-bill")
 public class LeaveBillController {
+
 	private final LeaveBillService leaveBillService;
+
 	private final ProcessService processService;
 
 	/**
 	 * 请假审批单简单分页查询
-	 *
-	 * @param page      分页对象
+	 * @param page 分页对象
 	 * @param leaveBill 请假审批单
 	 * @return
 	 */
@@ -54,10 +54,8 @@ public class LeaveBillController {
 		return R.ok(leaveBillService.page(page, Wrappers.query(leaveBill)));
 	}
 
-
 	/**
 	 * 信息
-	 *
 	 * @param leaveId
 	 * @return R
 	 */
@@ -68,7 +66,6 @@ public class LeaveBillController {
 
 	/**
 	 * 保存
-	 *
 	 * @param leaveBill
 	 * @return R
 	 */
@@ -81,7 +78,6 @@ public class LeaveBillController {
 
 	/**
 	 * 修改
-	 *
 	 * @param leaveBill
 	 * @return R
 	 */
@@ -92,7 +88,6 @@ public class LeaveBillController {
 
 	/**
 	 * 删除
-	 *
 	 * @param leaveId
 	 * @return R
 	 */
@@ -103,7 +98,6 @@ public class LeaveBillController {
 
 	/**
 	 * 提交请假流程
-	 *
 	 * @param leaveId
 	 * @return R
 	 */
@@ -111,4 +105,5 @@ public class LeaveBillController {
 	public R submit(@PathVariable("leaveId") Integer leaveId) {
 		return R.ok(processService.saveStartProcess(leaveId));
 	}
+
 }

@@ -40,6 +40,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<spring.checkstyle.version>0.0.22</spring.checkstyle.version>
 		<git.commit.version>2.2.5</git.commit.version>
 		<spring-boot-admin.version>2.2.3</spring-boot-admin.version>
 		<hutool.version>5.3.7</hutool.version>
@@ -170,6 +171,7 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
+				<!--spring boot 默认插件-->
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
@@ -182,6 +184,7 @@
 						</execution>
 					</executions>
 				</plugin>
+				<!--maven  docker 打包插件 -->
 				<plugin>
 					<groupId>io.fabric8</groupId>
 					<artifactId>docker-maven-plugin</artifactId>
@@ -208,6 +211,13 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<!--代码格式插件，默认使用spring 规则-->
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>${spring.checkstyle.version}</version>
+			</plugin>
+			<!--代码编译指定版本插件-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -219,6 +229,7 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<!--打包关联最新 git commit 信息插件-->
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>

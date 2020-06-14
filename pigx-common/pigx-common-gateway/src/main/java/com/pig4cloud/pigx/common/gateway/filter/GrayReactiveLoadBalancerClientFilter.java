@@ -40,7 +40,9 @@ import java.net.URI;
  */
 @Slf4j
 public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerClientFilter {
+
 	private static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10150;
+
 	private LoadBalancerProperties properties;
 
 	private GrayLoadBalancer grayLoadBalancer;
@@ -60,23 +62,20 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		URI url = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
 		String schemePrefix = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_SCHEME_PREFIX_ATTR);
-		if (url == null
-				|| (!"lb".equals(url.getScheme()) && !"lb".equals(schemePrefix))) {
+		if (url == null || (!"lb".equals(url.getScheme()) && !"lb".equals(schemePrefix))) {
 			return chain.filter(exchange);
 		}
 		// preserve the original url
 		ServerWebExchangeUtils.addOriginalRequestUrl(exchange, url);
 
 		if (log.isTraceEnabled()) {
-			log.trace(ReactiveLoadBalancerClientFilter.class.getSimpleName()
-					+ " url before: " + url);
+			log.trace(ReactiveLoadBalancerClientFilter.class.getSimpleName() + " url before: " + url);
 		}
 
 		return choose(exchange).doOnNext(response -> {
 
 			if (!response.hasServer()) {
-				throw NotFoundException.create(properties.isUse404(),
-						"Unable to find instance for " + url.getHost());
+				throw NotFoundException.create(properties.isUse404(), "Unable to find instance for " + url.getHost());
 			}
 
 			URI uri = exchange.getRequest().getURI();
@@ -88,8 +87,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 				overrideScheme = url.getScheme();
 			}
 
-			DelegatingServiceInstance serviceInstance = new DelegatingServiceInstance(
-					response.getServer(), overrideScheme);
+			DelegatingServiceInstance serviceInstance = new DelegatingServiceInstance(response.getServer(),
+					overrideScheme);
 
 			URI requestUrl = LoadBalancerUriTools.reconstructURI(serviceInstance, uri);
 
@@ -102,7 +101,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 
 	private Mono<Response<ServiceInstance>> choose(ServerWebExchange exchange) {
 		URI uri = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
-		ServiceInstance serviceInstance = grayLoadBalancer.choose(uri.getHost(),exchange.getRequest());
+		ServiceInstance serviceInstance = grayLoadBalancer.choose(uri.getHost(), exchange.getRequest());
 		return Mono.just(new DefaultResponse(serviceInstance));
 	}
+
 }

@@ -31,22 +31,21 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
- * @date 2020/03/25
- * 认证失败事件监听器
+ * @date 2020/03/25 认证失败事件监听器
  */
 public class AuthenticationFailureEventListener implements ApplicationListener<AbstractAuthenticationFailureEvent> {
+
 	@Autowired(required = false)
 	private AuthenticationFailureHandler failureHandler;
 
 	/**
 	 * Handle an application event.
-	 *
 	 * @param event the event to respond to
 	 */
 	@Override
 	public void onApplicationEvent(AbstractAuthenticationFailureEvent event) {
-		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
-				RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
+				.getRequestAttributes();
 		HttpServletRequest request = requestAttributes.getRequest();
 		HttpServletResponse response = requestAttributes.getResponse();
 
@@ -58,4 +57,5 @@ public class AuthenticationFailureEventListener implements ApplicationListener<A
 			failureHandler.handle(authenticationException, authentication, request, response);
 		}
 	}
+
 }

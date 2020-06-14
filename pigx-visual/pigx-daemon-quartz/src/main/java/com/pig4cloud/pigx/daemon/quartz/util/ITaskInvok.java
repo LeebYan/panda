@@ -29,9 +29,9 @@ public interface ITaskInvok {
 
 	/**
 	 * 执行反射方法
-	 *
 	 * @param sysJob 配置类
 	 * @throws TaskException
 	 */
 	void invokMethod(SysJob sysJob) throws TaskException;
+
 }

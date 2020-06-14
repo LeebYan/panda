@@ -24,7 +24,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 微信菜单管理
  *
@@ -38,10 +37,8 @@ public class WxMenuController {
 
 	private final WxMenuService wxMenuService;
 
-
 	/**
 	 * 通过appid查询微信菜单
-	 *
 	 * @param appId 公众号
 	 * @return R
 	 */
@@ -52,7 +49,6 @@ public class WxMenuController {
 
 	/**
 	 * 新增微信菜单
-	 *
 	 * @param wxMenu 微信菜单列表
 	 * @return R
 	 */
@@ -65,7 +61,6 @@ public class WxMenuController {
 
 	/**
 	 * 发布微信菜单
-	 *
 	 * @param appId 公众号
 	 * @return R
 	 */
@@ -81,4 +76,5 @@ public class WxMenuController {
 	public R delete(@PathVariable("appId") String appId) {
 		return wxMenuService.delete(appId);
 	}
+
 }

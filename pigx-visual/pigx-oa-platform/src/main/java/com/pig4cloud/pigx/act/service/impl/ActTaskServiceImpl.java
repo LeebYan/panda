@@ -62,12 +62,19 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ActTaskServiceImpl implements ActTaskService {
+
 	private static final String FLAG = "审批";
+
 	private final LeaveBillMapper leaveBillMapper;
+
 	private final TaskService taskService;
+
 	private final RuntimeService runtimeService;
+
 	private final RepositoryService repositoryService;
+
 	private final HistoryService historyService;
+
 	private final ProcessEngineFactoryBean processEngine;
 
 	@Override
@@ -75,43 +82,38 @@ public class ActTaskServiceImpl implements ActTaskService {
 		int page = MapUtil.getInt(params, PaginationConstants.CURRENT);
 		int limit = MapUtil.getInt(params, PaginationConstants.SIZE);
 
-		TaskQuery taskQuery = taskService.createTaskQuery()
-			.taskCandidateOrAssigned(name)
-			.taskTenantId(String.valueOf(TenantContextHolder.getTenantId()));
+		TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(name)
+				.taskTenantId(String.valueOf(TenantContextHolder.getTenantId()));
 
 		IPage result = new Page(page, limit);
 		result.setTotal(taskQuery.count());
 
-		List<TaskDTO> taskDTOList = taskQuery.orderByTaskCreateTime().desc()
-			.listPage((page - 1) * limit, limit).stream().map(task -> {
-				TaskDTO dto = new TaskDTO();
-				dto.setTaskId(task.getId());
-				dto.setTaskName(task.getName());
-				dto.setProcessInstanceId(task.getProcessInstanceId());
-				dto.setNodeKey(task.getTaskDefinitionKey());
-				dto.setCategory(task.getCategory());
-				dto.setTime(task.getCreateTime());
-				return dto;
-			}).collect(Collectors.toList());
+		List<TaskDTO> taskDTOList = taskQuery.orderByTaskCreateTime().desc().listPage((page - 1) * limit, limit)
+				.stream().map(task -> {
+					TaskDTO dto = new TaskDTO();
+					dto.setTaskId(task.getId());
+					dto.setTaskName(task.getName());
+					dto.setProcessInstanceId(task.getProcessInstanceId());
+					dto.setNodeKey(task.getTaskDefinitionKey());
+					dto.setCategory(task.getCategory());
+					dto.setTime(task.getCreateTime());
+					return dto;
+				}).collect(Collectors.toList());
 		result.setRecords(taskDTOList);
 		return result;
 	}
 
 	/**
 	 * 通过任务ID查询任务信息关联申请单信息
-	 *
 	 * @param taskId
 	 * @return
 	 */
 	@Override
 	public LeaveBillDto getTaskById(String taskId) {
-		Task task = taskService.createTaskQuery()
-			.taskId(taskId)
-			.singleResult();
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery()
-			.processInstanceId(task.getProcessInstanceId())
-			.singleResult();
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId())
+				.singleResult();
 
 		String businessKey = pi.getBusinessKey();
 		if (StrUtil.isNotBlank(businessKey)) {
@@ -131,7 +133,6 @@ public class ActTaskServiceImpl implements ActTaskService {
 
 	/**
 	 * 提交任务
-	 *
 	 * @param leaveBillDto
 	 * @return
 	 */
@@ -141,9 +142,7 @@ public class ActTaskServiceImpl implements ActTaskService {
 		String message = leaveBillDto.getComment();
 		Integer id = leaveBillDto.getLeaveId();
 
-		Task task = taskService.createTaskQuery()
-			.taskId(taskId)
-			.singleResult();
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 
 		String processInstanceId = task.getProcessInstanceId();
 		Authentication.setAuthenticatedUserId(SecurityUtils.getUser().getUsername());
@@ -154,16 +153,14 @@ public class ActTaskServiceImpl implements ActTaskService {
 		variables.put("days", leaveBillDto.getDays());
 
 		taskService.complete(taskId, variables);
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery()
-			.processInstanceId(processInstanceId)
-			.singleResult();
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId)
+				.singleResult();
 
 		if (pi == null) {
 			LeaveBill bill = new LeaveBill();
 			bill.setLeaveId(id);
-			bill.setState(StrUtil.equals(TaskStatusEnum.OVERRULE.getDescription()
-				, leaveBillDto.getTaskFlag()) ? TaskStatusEnum.OVERRULE.getStatus()
-				: TaskStatusEnum.COMPLETED.getStatus());
+			bill.setState(StrUtil.equals(TaskStatusEnum.OVERRULE.getDescription(), leaveBillDto.getTaskFlag())
+					? TaskStatusEnum.OVERRULE.getStatus() : TaskStatusEnum.COMPLETED.getStatus());
 			leaveBillMapper.updateById(bill);
 		}
 		return null;
@@ -171,15 +168,12 @@ public class ActTaskServiceImpl implements ActTaskService {
 
 	@Override
 	public List<CommentDto> getCommentByTaskId(String taskId) {
-		//使用当前的任务ID，查询当前流程对应的历史任务ID
-		//使用当前任务ID，获取当前任务对象
-		Task task = taskService.createTaskQuery()
-			.taskId(taskId)
-			.singleResult();
-		//获取流程实例ID
-		List<CommentDto> commentDtoList = taskService
-			.getProcessInstanceComments(task.getProcessInstanceId())
-			.stream().map(comment -> {
+		// 使用当前的任务ID，查询当前流程对应的历史任务ID
+		// 使用当前任务ID，获取当前任务对象
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		// 获取流程实例ID
+		List<CommentDto> commentDtoList = taskService.getProcessInstanceComments(task.getProcessInstanceId()).stream()
+				.map(comment -> {
 					CommentDto commentDto = new CommentDto();
 					commentDto.setId(comment.getId());
 					commentDto.setTime(comment.getTime());
@@ -189,41 +183,35 @@ public class ActTaskServiceImpl implements ActTaskService {
 					commentDto.setFullMessage(comment.getFullMessage());
 					commentDto.setProcessInstanceId(comment.getProcessInstanceId());
 					return commentDto;
-				}
-			).collect(Collectors.toList());
+				}).collect(Collectors.toList());
 		return commentDtoList;
 	}
 
 	/**
 	 * 追踪图片节点
-	 *
 	 * @param id
 	 */
 	@Override
 	public InputStream viewByTaskId(String id) {
-		//使用当前任务ID，获取当前任务对象
-		Task task = taskService.createTaskQuery()
-			.taskId(id)
-			.singleResult();
+		// 使用当前任务ID，获取当前任务对象
+		Task task = taskService.createTaskQuery().taskId(id).singleResult();
 
 		String processInstanceId = task.getProcessInstanceId();
 		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
-			.processInstanceId(processInstanceId).singleResult();
-		HistoricProcessInstance historicProcessInstance =
-			historyService.createHistoricProcessInstanceQuery()
+				.processInstanceId(processInstanceId).singleResult();
+		HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
 				.processInstanceId(processInstanceId).singleResult();
 		String processDefinitionId = null;
 		List<String> executedActivityIdList = new ArrayList<>();
 		if (processInstance != null) {
 			processDefinitionId = processInstance.getProcessDefinitionId();
 			executedActivityIdList = this.runtimeService.getActiveActivityIds(processInstance.getId());
-		} else if (historicProcessInstance != null) {
+		}
+		else if (historicProcessInstance != null) {
 			processDefinitionId = historicProcessInstance.getProcessDefinitionId();
 			executedActivityIdList = historyService.createHistoricActivityInstanceQuery()
-				.processInstanceId(processInstanceId)
-				.orderByHistoricActivityInstanceId().asc().list()
-				.stream().map(HistoricActivityInstance::getActivityId)
-				.collect(Collectors.toList());
+					.processInstanceId(processInstanceId).orderByHistoricActivityInstanceId().asc().list().stream()
+					.map(HistoricActivityInstance::getActivityId).collect(Collectors.toList());
 		}
 
 		BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
@@ -231,28 +219,24 @@ public class ActTaskServiceImpl implements ActTaskService {
 		Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 		ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
 
-		return diagramGenerator.generateDiagram(
-			bpmnModel, "png",
-			executedActivityIdList, Collections.emptyList(),
-			processEngine.getProcessEngineConfiguration().getActivityFontName(),
-			processEngine.getProcessEngineConfiguration().getLabelFontName(),
-			"宋体",
-			null, 1.0);
+		return diagramGenerator.generateDiagram(bpmnModel, "png", executedActivityIdList, Collections.emptyList(),
+				processEngine.getProcessEngineConfiguration().getActivityFontName(),
+				processEngine.getProcessEngineConfiguration().getLabelFontName(), "宋体", null, 1.0);
 
 	}
 
 	private List<String> findOutFlagListByTaskId(Task task, ProcessInstance pi) {
-		//查询ProcessDefinitionEntiy对象
+		// 查询ProcessDefinitionEntiy对象
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService
-			.getProcessDefinition(task.getProcessDefinitionId());
+				.getProcessDefinition(task.getProcessDefinitionId());
 
 		ActivityImpl activityImpl = processDefinitionEntity.findActivity(pi.getActivityId());
-		//获取当前活动完成之后连线的名称
-		List<String> nameList = activityImpl.getOutgoingTransitions().stream()
-			.map(pvm -> {
-				String name = (String) pvm.getProperty("name");
-				return StrUtil.isNotBlank(name) ? name : FLAG;
-			}).collect(Collectors.toList());
+		// 获取当前活动完成之后连线的名称
+		List<String> nameList = activityImpl.getOutgoingTransitions().stream().map(pvm -> {
+			String name = (String) pvm.getProperty("name");
+			return StrUtil.isNotBlank(name) ? name : FLAG;
+		}).collect(Collectors.toList());
 		return nameList;
 	}
+
 }

@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "异步通知记录")
 public class PayNotifyRecord extends Model<PayNotifyRecord> {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -45,39 +46,48 @@ public class PayNotifyRecord extends Model<PayNotifyRecord> {
 	 */
 	@TableId
 	private Long id;
+
 	/**
 	 * 响应ID
 	 */
 	private String notifyId;
+
 	/**
 	 * 请求报文
 	 */
 	private String request;
+
 	/**
 	 * 响应报文
 	 */
 	private String response;
+
 	/**
 	 * 系统订单号
 	 */
 	private String orderNo;
+
 	/**
 	 * http状态
 	 */
 	private String httpStatus;
+
 	/**
 	 * 删除标记
 	 */
 	@TableLogic
 	private String delFlag;
+
 	/**
 	 * 创建时间
 	 */
 	private LocalDateTime createTime;
+
 	/**
 	 * 更新时间
 	 */
 	private LocalDateTime updateTime;
+
 	/**
 	 * 租户ID
 	 */

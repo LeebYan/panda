@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 @Component("javaClassTaskInvok")
 @Slf4j
 public class JavaClassTaskInvok implements ITaskInvok {
+
 	@Override
 	public void invokMethod(SysJob sysJob) throws TaskException {
 		Object obj;
@@ -47,32 +48,40 @@ public class JavaClassTaskInvok implements ITaskInvok {
 				obj = clazz.newInstance();
 				method = clazz.getDeclaredMethod(sysJob.getMethodName(), String.class);
 				returnValue = method.invoke(obj, sysJob.getMethodParamsValue());
-			} else {
+			}
+			else {
 				clazz = Class.forName(sysJob.getClassName());
 				obj = clazz.newInstance();
 				method = clazz.getDeclaredMethod(sysJob.getMethodName());
 				returnValue = method.invoke(obj);
 			}
-			if (StrUtil.isEmpty(returnValue.toString()) || PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType().equals(returnValue.toString())) {
+			if (StrUtil.isEmpty(returnValue.toString())
+					|| PigxQuartzEnum.JOB_LOG_STATUS_FAIL.getType().equals(returnValue.toString())) {
 				log.error("定时任务javaClassTaskInvok异常,执行任务：{}", sysJob.getClassName());
 				throw new TaskException("定时任务javaClassTaskInvok业务执行失败,任务：" + sysJob.getClassName());
 			}
-		} catch (ClassNotFoundException e) {
+		}
+		catch (ClassNotFoundException e) {
 			log.error("定时任务java反射类没有找到,执行任务：{}", sysJob.getClassName());
 			throw new TaskException("定时任务java反射类没有找到,执行任务：" + sysJob.getClassName());
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			log.error("定时任务java反射类异常,执行任务：{}", sysJob.getClassName());
 			throw new TaskException("定时任务java反射类异常,执行任务：" + sysJob.getClassName());
-		} catch (InstantiationException e) {
+		}
+		catch (InstantiationException e) {
 			log.error("定时任务java反射类异常,执行任务：{}", sysJob.getClassName());
 			throw new TaskException("定时任务java反射类异常,执行任务：" + sysJob.getClassName());
-		} catch (NoSuchMethodException e) {
+		}
+		catch (NoSuchMethodException e) {
 			log.error("定时任务java反射执行方法名异常,执行任务：{}", sysJob.getClassName());
 			throw new TaskException("定时任务java反射执行方法名异常,执行任务：" + sysJob.getClassName());
-		} catch (InvocationTargetException e) {
+		}
+		catch (InvocationTargetException e) {
 			log.error("定时任务java反射执行异常,执行任务：{}", sysJob.getClassName());
 			throw new TaskException("定时任务java反射执行异常,执行任务：" + sysJob.getClassName());
 		}
 
 	}
+
 }

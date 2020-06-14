@@ -49,12 +49,13 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
+
 	private final SysDeptRelationService sysDeptRelationService;
+
 	private final SysDeptMapper deptMapper;
 
 	/**
 	 * 添加信息部门
-	 *
 	 * @param dept 部门
 	 * @return
 	 */
@@ -68,45 +69,39 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 		return Boolean.TRUE;
 	}
 
-
 	/**
 	 * 删除部门
-	 *
 	 * @param id 部门 ID
 	 * @return 成功、失败
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean removeDeptById(Integer id) {
-		//级联删除部门
+		// 级联删除部门
 		List<Integer> idList = sysDeptRelationService
-				.list(Wrappers.<SysDeptRelation>query().lambda()
-						.eq(SysDeptRelation::getAncestor, id))
-				.stream()
-				.map(SysDeptRelation::getDescendant)
-				.collect(Collectors.toList());
+				.list(Wrappers.<SysDeptRelation>query().lambda().eq(SysDeptRelation::getAncestor, id)).stream()
+				.map(SysDeptRelation::getDescendant).collect(Collectors.toList());
 
 		if (CollUtil.isNotEmpty(idList)) {
 			this.removeByIds(idList);
 		}
 
-		//删除部门级联关系
+		// 删除部门级联关系
 		sysDeptRelationService.deleteAllDeptRealtion(id);
 		return Boolean.TRUE;
 	}
 
 	/**
 	 * 更新部门
-	 *
 	 * @param sysDept 部门信息
 	 * @return 成功、失败
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean updateDeptById(SysDept sysDept) {
-		//更新部门状态
+		// 更新部门状态
 		this.updateById(sysDept);
-		//更新部门关系
+		// 更新部门关系
 		SysDeptRelation relation = new SysDeptRelation();
 		relation.setAncestor(sysDept.getParentId());
 		relation.setDescendant(sysDept.getDeptId());
@@ -116,7 +111,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
 	/**
 	 * 查询全部部门树
-	 *
 	 * @return 树
 	 */
 	@Override
@@ -124,26 +118,22 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 		return getDeptTree(deptMapper.selectList(Wrappers.emptyWrapper()));
 	}
 
-
 	/**
 	 * 构建部门树
-	 *
 	 * @param depts 部门
 	 * @return
 	 */
 	private List<DeptTree> getDeptTree(List<SysDept> depts) {
-		List<DeptTree> treeList = depts.stream()
-				.filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
-				.sorted(Comparator.comparingInt(SysDept::getSort))
-				.map(dept -> {
+		List<DeptTree> treeList = depts.stream().filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
+				.sorted(Comparator.comparingInt(SysDept::getSort)).map(dept -> {
 					DeptTree node = new DeptTree();
 					node.setId(dept.getDeptId());
 					node.setParentId(dept.getParentId());
 					node.setName(dept.getName());
 					return node;
 				}).collect(Collectors.toList());
-		return TreeUtil.build(treeList, depts.stream()
-				.sorted(Comparator.comparingInt(SysDept::getDeptId))
-				.findFirst().get().getParentId());
+		return TreeUtil.build(treeList,
+				depts.stream().sorted(Comparator.comparingInt(SysDept::getDeptId)).findFirst().get().getParentId());
 	}
+
 }

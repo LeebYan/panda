@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * LCN 事务拦截器
- * @author LCN on 2018/1/5
  *
+ * @author LCN on 2018/1/5
  * @author LCN
  * @since 4.1.0
  */
@@ -60,11 +60,9 @@ public class TransactionAspect implements Ordered {
 		return obj;
 	}
 
-
 	@Override
 	public int getOrder() {
 		return HIGHEST_PRECEDENCE;
 	}
-
 
 }

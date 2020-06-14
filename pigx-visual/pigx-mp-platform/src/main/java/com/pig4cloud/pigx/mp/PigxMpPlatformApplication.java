@@ -25,8 +25,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author lengleng
- * @date 2019/03/25
- * 微信公众号管理模块
+ * @date 2019/03/25 微信公众号管理模块
  */
 @EnablePigxSwagger2
 @EnablePigxFeignClients
@@ -37,4 +36,5 @@ public class PigxMpPlatformApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PigxMpPlatformApplication.class, args);
 	}
+
 }

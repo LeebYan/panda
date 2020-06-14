@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
  * @date 2019-05-28 23:58:18
  */
 @Service
-public class PayTradeOrderServiceImpl extends ServiceImpl<PayTradeOrderMapper, PayTradeOrder> implements PayTradeOrderService {
+public class PayTradeOrderServiceImpl extends ServiceImpl<PayTradeOrderMapper, PayTradeOrder>
+		implements PayTradeOrderService {
 
 }

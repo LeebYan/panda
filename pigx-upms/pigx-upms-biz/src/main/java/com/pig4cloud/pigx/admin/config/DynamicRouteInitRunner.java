@@ -51,12 +51,14 @@ import java.net.URI;
 @Configuration
 @AllArgsConstructor
 public class DynamicRouteInitRunner {
+
 	private final RedisTemplate redisTemplate;
+
 	private final SysRouteConfService routeConfService;
 
 	@Async
 	@Order
-	@EventListener({WebServerInitializedEvent.class, DynamicRouteInitEvent.class})
+	@EventListener({ WebServerInitializedEvent.class, DynamicRouteInitEvent.class })
 	public void initRoute() {
 		Boolean result = redisTemplate.delete(CacheConstants.ROUTE_KEY);
 		log.info("初始化网关路由 {} ", result);
@@ -82,14 +84,12 @@ public class DynamicRouteInitRunner {
 
 	/**
 	 * redis 监听配置,监听 gateway_redis_route_reload_topic,重新加载Redis
-	 *
 	 * @param redisConnectionFactory redis 配置
 	 * @return
 	 */
 	@Bean
 	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
-		RedisMessageListenerContainer container
-				= new RedisMessageListenerContainer();
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(redisConnectionFactory);
 		container.addMessageListener((message, bytes) -> {
 			log.warn("接收到重新Redis 重新加载路由事件");
@@ -97,4 +97,5 @@ public class DynamicRouteInitRunner {
 		}, new ChannelTopic(CacheConstants.ROUTE_REDIS_RELOAD_TOPIC));
 		return container;
 	}
+
 }

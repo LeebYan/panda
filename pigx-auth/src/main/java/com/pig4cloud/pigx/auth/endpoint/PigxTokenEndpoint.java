@@ -59,25 +59,29 @@ import java.util.Map;
 
 /**
  * @author lengleng
- * @date 2018/6/24
- * 删除token端点
+ * @date 2018/6/24 删除token端点
  */
 @Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
-	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
+
+	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX
+			+ "auth_to_access:";
+
 	private final ClientDetailsService clientDetailsService;
+
 	private final RedisTemplate redisTemplate;
+
 	private final TokenStore tokenStore;
+
 	private final CacheManager cacheManager;
 
 	/**
 	 * 认证页面
-	 *
 	 * @param modelAndView
-	 * @param error        表单登录失败处理回调的错误信息
+	 * @param error 表单登录失败处理回调的错误信息
 	 * @return ModelAndView
 	 */
 	@GetMapping("/login")
@@ -89,7 +93,6 @@ public class PigxTokenEndpoint {
 
 	/**
 	 * 确认授权页面
-	 *
 	 * @param request
 	 * @param session
 	 * @param modelAndView
@@ -114,7 +117,6 @@ public class PigxTokenEndpoint {
 
 	/**
 	 * 退出token
-	 *
 	 * @param authHeader Authorization
 	 */
 	@DeleteMapping("/logout")
@@ -129,7 +131,6 @@ public class PigxTokenEndpoint {
 
 	/**
 	 * 令牌管理调用
-	 *
 	 * @param token token
 	 * @return
 	 */
@@ -143,8 +144,7 @@ public class PigxTokenEndpoint {
 
 		OAuth2Authentication auth2Authentication = tokenStore.readAuthentication(accessToken);
 		// 清空用户信息
-		cacheManager.getCache(CacheConstants.USER_DETAILS)
-				.evict(auth2Authentication.getName());
+		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(auth2Authentication.getName());
 
 		// 清空access token
 		tokenStore.removeAccessToken(accessToken);
@@ -155,35 +155,33 @@ public class PigxTokenEndpoint {
 		return R.ok();
 	}
 
-
 	/**
 	 * 查询token
-	 *
 	 * @param params 分页参数
 	 * @return
 	 */
 	@Inner
 	@PostMapping("/page")
 	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
-		//根据分页参数获取对应数据
+		// 根据分页参数获取对应数据
 		String key = String.format("%s*:%s", PIGX_OAUTH_ACCESS, TenantContextHolder.getTenantId());
-		List<String> pages = findKeysForPage(key, MapUtil.getInt(params, PaginationConstants.CURRENT)
-				, MapUtil.getInt(params, PaginationConstants.SIZE));
+		List<String> pages = findKeysForPage(key, MapUtil.getInt(params, PaginationConstants.CURRENT),
+				MapUtil.getInt(params, PaginationConstants.SIZE));
 
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT), MapUtil.getInt(params, PaginationConstants.SIZE));
+		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT),
+				MapUtil.getInt(params, PaginationConstants.SIZE));
 		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
 		result.setTotal(redisTemplate.keys(key).size());
 		return R.ok(result);
 	}
 
-
 	private List<String> findKeysForPage(String patternKey, int pageNum, int pageSize) {
-		ScanOptions options = ScanOptions.scanOptions().count(1000L)
-				.match(patternKey).build();
+		ScanOptions options = ScanOptions.scanOptions().count(1000L).match(patternKey).build();
 		RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-		Cursor cursor = (Cursor) redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
+		Cursor cursor = (Cursor) redisTemplate.executeWithStickyConnection(
+				redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
 		List<String> result = new ArrayList<>();
 		int tmpIndex = 0;
 		int startIndex = (pageNum - 1) * pageSize;
@@ -205,9 +203,11 @@ public class PigxTokenEndpoint {
 
 		try {
 			cursor.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.error("关闭cursor 失败");
 		}
 		return result;
 	}
+
 }

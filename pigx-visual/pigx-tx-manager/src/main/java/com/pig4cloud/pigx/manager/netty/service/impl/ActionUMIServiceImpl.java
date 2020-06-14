@@ -26,11 +26,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 上传模块信息
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "umi")
 public class ActionUMIServiceImpl implements IActionService {
-
 
 	@Override
 	public String execute(String channelAddress, String key, JSONObject params) {
@@ -39,7 +39,6 @@ public class ActionUMIServiceImpl implements IActionService {
 		String uniqueKey = params.getString("u");
 		String ipAddress = params.getString("i");
 		String model = params.getString("m");
-
 
 		ModelInfo modelInfo = new ModelInfo();
 		modelInfo.setChannelName(channelAddress);
@@ -53,4 +52,5 @@ public class ActionUMIServiceImpl implements IActionService {
 
 		return res;
 	}
+
 }

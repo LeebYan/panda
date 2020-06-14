@@ -1,6 +1,5 @@
 package com.pig4cloud.pigx.common.sequence.builder;
 
-
 import com.pig4cloud.pigx.common.sequence.range.BizName;
 import com.pig4cloud.pigx.common.sequence.range.impl.redis.RedisSeqRangeMgr;
 import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
@@ -17,18 +16,22 @@ public class RedisSeqBuilder implements SeqBuilder {
 	 * 连接redis的IP[必选]
 	 */
 	private String ip;
+
 	/**
 	 * 连接redis的port[必选]
 	 */
 	private int port;
+
 	/**
 	 * 业务名称[必选]
 	 */
 	private BizName bizName;
+
 	/**
 	 * 认证权限，看redis是否配置了需要密码auth[可选]
 	 */
 	private String auth;
+
 	/**
 	 * 获取range步长[可选，默认：1000]
 	 */
@@ -46,7 +49,7 @@ public class RedisSeqBuilder implements SeqBuilder {
 
 	@Override
 	public Sequence build() {
-		//利用Redis获取区间管理器
+		// 利用Redis获取区间管理器
 		RedisSeqRangeMgr redisSeqRangeMgr = new RedisSeqRangeMgr();
 		redisSeqRangeMgr.setIp(this.ip);
 		redisSeqRangeMgr.setPort(this.port);
@@ -54,7 +57,7 @@ public class RedisSeqBuilder implements SeqBuilder {
 		redisSeqRangeMgr.setStep(this.step);
 		redisSeqRangeMgr.setStepStart(stepStart);
 		redisSeqRangeMgr.init();
-		//构建序列号生成器
+		// 构建序列号生成器
 		DefaultRangeSequence sequence = new DefaultRangeSequence();
 		sequence.setName(this.bizName);
 		sequence.setSeqRangeMgr(redisSeqRangeMgr);

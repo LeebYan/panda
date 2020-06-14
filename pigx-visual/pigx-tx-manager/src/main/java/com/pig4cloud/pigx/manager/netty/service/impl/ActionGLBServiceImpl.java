@@ -26,15 +26,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * 获取负载模块信息
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "glb")
 public class ActionGLBServiceImpl implements IActionService {
 
-
 	@Autowired
 	private LoadBalanceService loadBalanceService;
-
 
 	@Override
 	public String execute(String channelAddress, String key, JSONObject params) {
@@ -45,9 +44,11 @@ public class ActionGLBServiceImpl implements IActionService {
 		LoadBalanceInfo loadBalanceInfo = loadBalanceService.get(groupId, k);
 		if (loadBalanceInfo == null) {
 			res = "";
-		} else {
+		}
+		else {
 			res = loadBalanceInfo.getData();
 		}
 		return res;
 	}
+
 }

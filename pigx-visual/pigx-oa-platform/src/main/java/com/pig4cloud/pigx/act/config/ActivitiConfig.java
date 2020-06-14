@@ -30,19 +30,19 @@ import javax.sql.DataSource;
 
 /**
  * @author lengleng
- * @date 2018/9/25
- * Activiti 配置
+ * @date 2018/9/25 Activiti 配置
  */
 @Configuration
 @AllArgsConstructor
 public class ActivitiConfig {
+
 	private final DataSource dataSource;
+
 	private final PlatformTransactionManager transactionManager;
 
 	@Bean
 	public SpringProcessEngineConfiguration getProcessEngineConfiguration() {
-		SpringProcessEngineConfiguration config =
-				new SpringProcessEngineConfiguration();
+		SpringProcessEngineConfiguration config = new SpringProcessEngineConfiguration();
 		// 流程图字体设置
 		config.setActivityFontName("宋体");
 		config.setAnnotationFontName("宋体");
@@ -60,4 +60,5 @@ public class ActivitiConfig {
 	public TaskExecutor primaryTaskExecutor() {
 		return new ThreadPoolTaskExecutor();
 	}
+
 }

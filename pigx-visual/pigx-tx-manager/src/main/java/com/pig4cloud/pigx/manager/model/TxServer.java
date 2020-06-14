@@ -18,14 +18,18 @@
 package com.pig4cloud.pigx.manager.model;
 
 /**
- *@author LCN on 2017/7/1.
+ * @author LCN on 2017/7/1.
  */
 public class TxServer {
 
 	private String ip;
+
 	private int port;
+
 	private int heart;
+
 	private int delay;
+
 	private int compensateMaxWaitTime;
 
 	public static TxServer format(TxState state) {
@@ -38,7 +42,6 @@ public class TxServer {
 		return txServer;
 	}
 
-
 	public String getIp() {
 		return ip;
 	}
@@ -46,7 +49,6 @@ public class TxServer {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-
 
 	public int getPort() {
 		return port;
@@ -72,15 +74,12 @@ public class TxServer {
 		this.delay = delay;
 	}
 
-
 	public int getCompensateMaxWaitTime() {
 		return compensateMaxWaitTime;
 	}
 
-
 	public void setCompensateMaxWaitTime(int compensateMaxWaitTime) {
 		this.compensateMaxWaitTime = compensateMaxWaitTime;
 	}
-
 
 }

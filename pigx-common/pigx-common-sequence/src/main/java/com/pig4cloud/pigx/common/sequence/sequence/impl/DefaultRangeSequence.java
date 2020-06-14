@@ -1,6 +1,5 @@
 package com.pig4cloud.pigx.common.sequence.sequence.impl;
 
-
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.pig4cloud.pigx.common.sequence.exception.SeqException;
@@ -51,7 +50,7 @@ public class DefaultRangeSequence implements RangeSequence {
 		String name = bizName.create();
 
 		currentRange = seqRangeMap.get(name);
-		//当前区间不存在，重新获取一个区间
+		// 当前区间不存在，重新获取一个区间
 		if (null == currentRange) {
 			lock.lock();
 			try {
@@ -59,17 +58,18 @@ public class DefaultRangeSequence implements RangeSequence {
 					currentRange = seqRangeMgr.nextRange(name);
 					seqRangeMap.put(name, currentRange);
 				}
-			} finally {
+			}
+			finally {
 				lock.unlock();
 			}
 		}
 
-		//当value值为-1时，表明区间的序列号已经分配完，需要重新获取区间
+		// 当value值为-1时，表明区间的序列号已经分配完，需要重新获取区间
 		long value = currentRange.getAndIncrement();
 		if (value == -1) {
 			lock.lock();
 			try {
-				for (; ; ) {
+				for (;;) {
 					if (currentRange.isOver()) {
 						currentRange = seqRangeMgr.nextRange(name);
 					}
@@ -81,7 +81,8 @@ public class DefaultRangeSequence implements RangeSequence {
 
 					break;
 				}
-			} finally {
+			}
+			finally {
 				lock.unlock();
 			}
 		}
@@ -95,7 +96,6 @@ public class DefaultRangeSequence implements RangeSequence {
 
 	/**
 	 * 下一个生成序号（带格式）
-	 *
 	 * @return
 	 * @throws SeqException
 	 */
@@ -115,4 +115,3 @@ public class DefaultRangeSequence implements RangeSequence {
 	}
 
 }
-

@@ -44,25 +44,23 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 
 	/**
 	 * 批量插入前端错误日志
-	 *
 	 * @param preLogVoList 日志信息
 	 * @return true/false
 	 */
 	@Override
 	public Boolean saveBatchLogs(List<PreLogVO> preLogVoList) {
-		List<SysLog> sysLogs = preLogVoList.stream()
-			.map(pre -> {
-				SysLog log = new SysLog();
-				log.setType(CommonConstants.STATUS_LOCK);
-				log.setTitle(pre.getInfo());
-				log.setException(pre.getStack());
-				log.setParams(pre.getMessage());
-				log.setCreateTime(LocalDateTime.now());
-				log.setRequestUri(pre.getUrl());
-				log.setCreateBy(pre.getUser());
-				return log;
-			})
-			.collect(Collectors.toList());
+		List<SysLog> sysLogs = preLogVoList.stream().map(pre -> {
+			SysLog log = new SysLog();
+			log.setType(CommonConstants.STATUS_LOCK);
+			log.setTitle(pre.getInfo());
+			log.setException(pre.getStack());
+			log.setParams(pre.getMessage());
+			log.setCreateTime(LocalDateTime.now());
+			log.setRequestUri(pre.getUrl());
+			log.setCreateBy(pre.getUser());
+			return log;
+		}).collect(Collectors.toList());
 		return this.saveBatch(sysLogs);
 	}
+
 }

@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.daemon.quartz.event;
 
-
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJobLog;
 import com.pig4cloud.pigx.daemon.quartz.service.SysJobLogService;
 import lombok.AllArgsConstructor;
@@ -27,8 +26,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 
 /**
- * @author frwcloud
- * 异步监听定时任务日志事件
+ * @author frwcloud 异步监听定时任务日志事件
  */
 @Slf4j
 @AllArgsConstructor
@@ -44,4 +42,5 @@ public class SysJobLogListener {
 		sysJobLogService.save(sysJobLog);
 		log.info("执行定时任务日志");
 	}
+
 }

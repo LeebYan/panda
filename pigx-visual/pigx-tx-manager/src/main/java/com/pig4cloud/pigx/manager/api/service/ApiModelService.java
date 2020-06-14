@@ -29,5 +29,4 @@ public interface ApiModelService {
 
 	List<ModelInfo> onlines();
 
-
 }

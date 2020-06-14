@@ -26,12 +26,12 @@ import java.util.List;
 
 /**
  * @author lengleng
- * @date 2018/9/28
- * LeaveBillDto
+ * @date 2018/9/28 LeaveBillDto
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class LeaveBillDto extends LeaveBill {
+
 	/**
 	 * 任务ID
 	 */
@@ -53,4 +53,5 @@ public class LeaveBillDto extends LeaveBill {
 	private List<String> flagList;
 
 	private String taskFlag;
+
 }

@@ -48,7 +48,6 @@ public class MybatisPlusConfiguration {
 
 	/**
 	 * 创建租户维护处理器对象
-	 *
 	 * @return 处理后的租户维护处理器
 	 */
 	@Bean
@@ -59,7 +58,6 @@ public class MybatisPlusConfiguration {
 
 	/**
 	 * 分页插件
-	 *
 	 * @param tenantHandler 租户处理器
 	 * @return PaginationInterceptor
 	 */
@@ -78,7 +76,6 @@ public class MybatisPlusConfiguration {
 
 	/**
 	 * pigx 默认数据权限处理
-	 *
 	 * @return
 	 */
 	@Bean
@@ -89,7 +86,6 @@ public class MybatisPlusConfiguration {
 
 	/**
 	 * 数据权限插件
-	 *
 	 * @return DataScopeInterceptor
 	 */
 	@Bean
@@ -104,4 +100,5 @@ public class MybatisPlusConfiguration {
 	public DataScopeSqlInjector dataScopeSqlInjector() {
 		return new DataScopeSqlInjector();
 	}
+
 }

@@ -45,18 +45,21 @@ import java.util.Map;
 @Slf4j
 @Service("WEIXIN_MP")
 public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
+
 	@Autowired
 	private PayCommonProperties payCommonProperties;
+
 	@Autowired
 	private PayTradeOrderMapper tradeOrderMapper;
+
 	@Autowired
 	private PayGoodsOrderMapper goodsOrderMapper;
+
 	@Autowired
 	private HttpServletRequest request;
 
 	/**
 	 * 创建交易订单
-	 *
 	 * @param goodsOrder
 	 * @return
 	 */
@@ -77,7 +80,6 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 
 	/**
 	 * 调起渠道支付
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -85,15 +87,11 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 	public Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
 		String ip = ServletUtil.getClientIP(request);
 		Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
-				.setAttach(TenantContextHolder.getTenantId().toString())
-				.setBody(goodsOrder.getGoodsName())
-				.setSpbillCreateIp(ip)
-				.setTotalFee(goodsOrder.getAmount())
-				.setOpenId(goodsOrder.getUserId())
+				.setAttach(TenantContextHolder.getTenantId().toString()).setBody(goodsOrder.getGoodsName())
+				.setSpbillCreateIp(ip).setTotalFee(goodsOrder.getAmount()).setOpenId(goodsOrder.getUserId())
 				.setTradeType(WxPayApi.TradeType.JSAPI)
 				.setNotifyUrl(payCommonProperties.getWxPayConfig().getNotifyUrl())
-				.setOutTradeNo(tradeOrder.getOrderId())
-				.build();
+				.setOutTradeNo(tradeOrder.getOrderId()).build();
 
 		String xmlResult = WxPayApi.pushOrder(false, params);
 		log.info(xmlResult);
@@ -104,7 +102,6 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 
 	/**
 	 * 更新订单信息
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -113,4 +110,5 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 		tradeOrderMapper.updateById(tradeOrder);
 		goodsOrderMapper.updateById(goodsOrder);
 	}
+
 }

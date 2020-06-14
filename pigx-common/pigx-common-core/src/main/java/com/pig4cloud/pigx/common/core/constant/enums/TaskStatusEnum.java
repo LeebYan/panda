@@ -22,12 +22,12 @@ import lombok.Getter;
 
 /**
  * @author lengleng
- * @date 2018/9/30
- * 流程状态
+ * @date 2018/9/30 流程状态
  */
 @Getter
 @AllArgsConstructor
 public enum TaskStatusEnum {
+
 	/**
 	 * 未提交
 	 */
@@ -52,8 +52,10 @@ public enum TaskStatusEnum {
 	 * 类型
 	 */
 	private final String status;
+
 	/**
 	 * 描述
 	 */
 	private final String description;
+
 }

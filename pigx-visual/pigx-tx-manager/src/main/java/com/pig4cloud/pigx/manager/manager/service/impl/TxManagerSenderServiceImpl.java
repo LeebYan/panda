@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.manager.manager.service.impl;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lorne.core.framework.utils.KidUtils;
@@ -45,13 +44,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.*;
 
-
 /**
  * @author LCN on 2017/6/9.
  */
 @Service
 public class TxManagerSenderServiceImpl implements TxManagerSenderService {
-
 
 	private Logger logger = LoggerFactory.getLogger(TxManagerSenderServiceImpl.class);
 
@@ -73,10 +70,10 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 	@Override
 	public int confirm(TxGroup txGroup) {
-		//绑定管道对象，检查网络
+		// 绑定管道对象，检查网络
 		setChannel(txGroup.getList());
 
-		//事务不满足直接回滚事务
+		// 事务不满足直接回滚事务
 		if (txGroup.getState() == 0) {
 			transaction(txGroup, 0);
 			return 0;
@@ -92,10 +89,8 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 		return hasOk ? 1 : 0;
 	}
 
-
 	/**
 	 * 匹配管道
-	 *
 	 * @param list
 	 */
 	private void setChannel(List<TxInfo> list) {
@@ -108,7 +103,8 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 					info.setChannel(sender);
 				}
-			} else {
+			}
+			else {
 				ChannelSender sender = new ChannelSender();
 				sender.setAddress(info.getAddress());
 				sender.setModelName(info.getChannelAddress());
@@ -118,18 +114,15 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 		}
 	}
 
-
 	/**
 	 * 事务提交或回归
-	 *
 	 * @param checkSate
 	 */
 	private boolean transaction(final TxGroup txGroup, final int checkSate) {
 
-
 		if (checkSate == 1) {
 
-			//补偿请求，加载历史数据
+			// 补偿请求，加载历史数据
 			if (txGroup.getIsCompensate() == 1) {
 				compensateService.reloadCompensate(txGroup);
 			}
@@ -147,10 +140,11 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 							final JSONObject jsonObject = new JSONObject();
 							jsonObject.put("a", "t");
 
-							//补偿请求
+							// 补偿请求
 							if (txGroup.getIsCompensate() == 1) {
 								jsonObject.put("c", txInfo.getIsCommit());
-							} else { //正常业务
+							}
+							else { // 正常业务
 								jsonObject.put("c", checkSate);
 							}
 
@@ -172,7 +166,7 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 							try {
 								String data = (String) task.getBack().doing();
-								// 1  成功 0 失败 -1 task为空 -2 超过
+								// 1 成功 0 失败 -1 task为空 -2 超过
 								boolean res = "1".equals(data);
 
 								if (res) {
@@ -180,10 +174,12 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 								}
 
 								return res;
-							} catch (Throwable throwable) {
+							}
+							catch (Throwable throwable) {
 								throwable.printStackTrace();
 								return false;
-							} finally {
+							}
+							finally {
 								task.remove();
 							}
 						}
@@ -203,10 +199,12 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 					break;
 				}
 			}
-			logger.info("--->" + hasOk + ",group:" + txGroup.getGroupId() + ",state:" + checkSate + ",list:" + txGroup.toJsonString());
+			logger.info("--->" + hasOk + ",group:" + txGroup.getGroupId() + ",state:" + checkSate + ",list:"
+					+ txGroup.toJsonString());
 			return hasOk;
-		} else {
-			//回滚操作只发送通过不需要等待确认
+		}
+		else {
+			// 回滚操作只发送通过不需要等待确认
 			for (TxInfo txInfo : txGroup.getList()) {
 				if (txInfo.getChannel() != null) {
 					if (txInfo.getIsGroup() == 0) {
@@ -242,14 +240,15 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 		JSONObject jsonObject = JSON.parseObject(msg);
 		String key = jsonObject.getString("k");
 
-		//创建Task
+		// 创建Task
 		final Task task = ConditionUtils.getInstance().createTask(key);
 
 		threadPool.execute(() -> {
 			while (!task.isAwait() && !Thread.interrupted()) {
 				try {
 					Thread.sleep(1);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
@@ -270,34 +269,36 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 		try {
 			return (String) task.getBack().doing();
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			return "-1";
-		} finally {
+		}
+		finally {
 			task.remove();
 		}
 	}
-
 
 	private void threadAwaitSend(final Task task, final TxInfo txInfo, final String msg) {
 		threadPool.execute(() -> {
 			while (!task.isAwait() && !Thread.interrupted()) {
 				try {
 					Thread.sleep(1);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 
 			if (txInfo != null && txInfo.getChannel() != null) {
 				txInfo.getChannel().send(msg, task);
-			} else {
+			}
+			else {
 				task.setBack(objs -> "-2");
 				task.signalTask();
 			}
 		});
 
 	}
-
 
 	private ScheduledFuture schedule(final String key, int delayTime) {
 		ScheduledFuture future = executorService.schedule(() -> {
@@ -310,6 +311,5 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
 		return future;
 	}
-
 
 }

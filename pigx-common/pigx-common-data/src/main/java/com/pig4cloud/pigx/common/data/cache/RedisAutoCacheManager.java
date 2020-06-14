@@ -43,11 +43,13 @@ import java.util.Map;
  */
 @Slf4j
 public class RedisAutoCacheManager extends RedisCacheManager {
+
 	private static final String SPLIT_FLAG = "#";
+
 	private static final int CACHE_LENGTH = 2;
 
 	RedisAutoCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration,
-						  Map<String, RedisCacheConfiguration> initialCacheConfigurations, boolean allowInFlightCacheCreation) {
+			Map<String, RedisCacheConfiguration> initialCacheConfigurations, boolean allowInFlightCacheCreation) {
 		super(cacheWriter, defaultCacheConfiguration, initialCacheConfigurations, allowInFlightCacheCreation);
 	}
 
@@ -71,7 +73,6 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 
 	/**
 	 * 从上下文中获取租户ID，重写@Cacheable value 值
-	 *
 	 * @param name
 	 * @return
 	 */
@@ -83,4 +84,5 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 		}
 		return super.getCache(TenantContextHolder.getTenantId() + StrUtil.COLON + name);
 	}
+
 }

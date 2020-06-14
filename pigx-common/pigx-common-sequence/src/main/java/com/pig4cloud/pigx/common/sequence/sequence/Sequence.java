@@ -1,6 +1,5 @@
 package com.pig4cloud.pigx.common.sequence.sequence;
 
-
 import com.pig4cloud.pigx.common.sequence.exception.SeqException;
 
 /**
@@ -12,7 +11,6 @@ public interface Sequence {
 
 	/**
 	 * 生成下一个序列号
-	 *
 	 * @return 序列号
 	 * @throws SeqException 序列号异常
 	 */
@@ -20,9 +18,9 @@ public interface Sequence {
 
 	/**
 	 * 下一个生成序号（带格式）
-	 *
 	 * @return
 	 * @throws SeqException
 	 */
 	String nextNo() throws SeqException;
+
 }

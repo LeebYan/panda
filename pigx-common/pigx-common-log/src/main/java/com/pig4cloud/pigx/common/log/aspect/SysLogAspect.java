@@ -39,6 +39,7 @@ import org.springframework.context.ApplicationEventPublisher;
 @Aspect
 @AllArgsConstructor
 public class SysLogAspect {
+
 	private final ApplicationEventPublisher publisher;
 
 	@SneakyThrows

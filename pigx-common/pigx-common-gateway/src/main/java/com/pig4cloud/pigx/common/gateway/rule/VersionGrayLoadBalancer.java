@@ -41,21 +41,20 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 public class VersionGrayLoadBalancer implements GrayLoadBalancer {
-	private DiscoveryClient discoveryClient;
 
+	private DiscoveryClient discoveryClient;
 
 	/**
 	 * 根据serviceId 筛选可用服务
-	 *
 	 * @param serviceId 服务ID
-	 * @param request   当前请求
+	 * @param request 当前请求
 	 * @return
 	 */
 	@Override
 	public ServiceInstance choose(String serviceId, ServerHttpRequest request) {
 		List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
 
-		//注册中心无实例 抛出异常
+		// 注册中心无实例 抛出异常
 		if (CollUtil.isEmpty(instances)) {
 			log.warn("No instance available for {}", serviceId);
 			throw new NotFoundException("No instance available for " + serviceId);
@@ -78,4 +77,5 @@ public class VersionGrayLoadBalancer implements GrayLoadBalancer {
 		}
 		return instances.get(RandomUtil.randomInt(instances.size()));
 	}
+
 }

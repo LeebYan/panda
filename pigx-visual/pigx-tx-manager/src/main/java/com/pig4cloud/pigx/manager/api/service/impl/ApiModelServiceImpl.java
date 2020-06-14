@@ -31,11 +31,9 @@ import java.util.List;
 @Service
 public class ApiModelServiceImpl implements ApiModelService {
 
-
 	@Override
 	public List<ModelInfo> onlines() {
 		return ModelInfoManager.getInstance().getOnlines();
 	}
-
 
 }

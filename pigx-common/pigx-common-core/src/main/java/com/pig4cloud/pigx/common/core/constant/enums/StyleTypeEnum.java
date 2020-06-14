@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum StyleTypeEnum {
+
 	/**
 	 * 前端类型-avue 风格
 	 */
@@ -26,8 +27,10 @@ public enum StyleTypeEnum {
 	 * 类型
 	 */
 	private String style;
+
 	/**
 	 * 描述
 	 */
 	private String description;
+
 }

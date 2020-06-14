@@ -29,7 +29,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * RedisTemplate  配置
+ * RedisTemplate 配置
  *
  * @author L.cm
  */
@@ -49,4 +49,5 @@ public class RedisTemplateConfig {
 		redisTemplate.setConnectionFactory(redisConnectionFactory);
 		return redisTemplate;
 	}
+
 }

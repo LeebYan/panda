@@ -26,15 +26,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * 添加负载模块信息
+ *
  * @author LCN on 2017/11/11
  */
 @Service(value = "plb")
 public class ActionPLBServiceImpl implements IActionService {
 
-
 	@Autowired
 	private LoadBalanceService loadBalanceService;
-
 
 	@Override
 	public String execute(String channelAddress, String key, JSONObject params) {
@@ -51,4 +50,5 @@ public class ActionPLBServiceImpl implements IActionService {
 
 		return ok ? "1" : "0";
 	}
+
 }
