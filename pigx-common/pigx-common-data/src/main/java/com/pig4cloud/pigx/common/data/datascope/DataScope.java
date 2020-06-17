@@ -54,6 +54,6 @@ public class DataScope extends HashMap {
 	 * <li>COUNT(1)</li>
 	 * </ul>
 	 */
-	private DataScopeFuncEnum Func = DataScopeFuncEnum.ALL;
+	private DataScopeFuncEnum func = DataScopeFuncEnum.ALL;
 
 }
