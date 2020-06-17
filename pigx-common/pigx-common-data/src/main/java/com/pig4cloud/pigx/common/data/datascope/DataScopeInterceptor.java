@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.data.datascope;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
@@ -43,6 +42,11 @@ import java.util.Properties;
  * @date 2018/12/26
  * <p>
  * mybatis 数据权限拦截器
+ *
+ * update by yhaili2009@163.com at 2020/6/17
+ *  1、支持本人数据权限过滤；
+ *  2、支持自动注入、手动注入；
+ *  3、支持字段名称及表别名设置；
  */
 @Slf4j
 @AllArgsConstructor
@@ -56,11 +60,6 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		StatementHandler statementHandler = PluginUtils.realTarget(invocation.getTarget());
 		MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
 		this.sqlParser(metaObject);
-		// 先判断是不是SELECT操作
-		MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
-		if (!SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
-			return invocation.proceed();
-		}
 
 		BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
 		String originalSql = boundSql.getSql();
@@ -72,14 +71,38 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			return invocation.proceed();
 		}
 
-		String scopeName = dataScope.getScopeName();
-		List<Integer> deptIds = dataScope.getDeptIds();
-		// 优先获取赋值数据
-		if (CollUtil.isEmpty(deptIds) && dataScopeHandle.calcScope(deptIds)) {
-			return invocation.proceed();
+		/**
+		 * 这里分自动注入和手动注入处理； 自动注入维持原来的逻辑不变
+		 * update by yhaili2009@163.com at 2020/6/17
+ 		 */
+		if (dataScope.isAutoInj()) {
+			// 先判断是不是SELECT操作
+			MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+			if (!SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
+				return invocation.proceed();
+			}
+
+			// 优先获取赋值数据
+			if (dataScopeHandle.calcScope(dataScope)) {
+				return invocation.proceed();
+			}
+
+			String scopeName = dataScope.getScopeName();
+			List<Integer> scopeIds = dataScope.getScopeIds();
+
+			String join = CollectionUtil.join(scopeIds, ",");
+			originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
 		}
-		String join = CollectionUtil.join(deptIds, ",");
-		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
+		/**
+		 * 手动插入sql中（通过字符串占位）
+		 * add by yhaili2009@163.com at 2020/6/17
+ 		 */
+		else {
+			dataScopeHandle.calcScope(dataScope);
+
+			originalSql = originalSql.replace(dataScope.getSqlPlaceholder(), dataScope.getScopeSql() + " ");
+		}
+
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}

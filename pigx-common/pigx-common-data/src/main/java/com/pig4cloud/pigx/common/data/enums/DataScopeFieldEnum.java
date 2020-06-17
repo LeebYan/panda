@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2018-2025, ihealth All rights reserved.
+ *    Copyright (c) 2018-2025, lengleng All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -12,7 +12,7 @@
  * Neither the name of the pig4cloud.com developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: ihealth
+ * Author: lengleng (wangiegie@gmail.com)
  */
 
 package com.pig4cloud.pigx.common.data.enums;
@@ -21,39 +21,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author ihealth
- * @date 2018/12/26
- * <p>
- * 数据权限类型
+ * 数据权限支持的模式
+ * @author yhaili2009@163.com
+ * @date 2020/6/17
+ *
  */
 @Getter
 @AllArgsConstructor
-public enum DataScopeTypeEnum {
+public enum DataScopeFieldEnum {
 	/**
-	 * 查询全部数据
+	 * 仅支持部门
 	 */
-	ALL(0, "全部"),
+	DEPT(0, "仅部门"),
 
 	/**
-	 * 自定义
+	 * 仅支持用户
 	 */
-	CUSTOM(1, "自定义"),
+	USER(1, "仅用户"),
 
 	/**
-	 * 本级及子级
+	 * 支持部门和用户
 	 */
-	OWN_CHILD_LEVEL(2, "本级及子级"),
-
-	/**
-	 * 本级
-	 */
-	OWN_LEVEL(3, "本级"),
-
-	/**
-	 * 本人
-	 * add by yhaili2009@163.com at 2020/6/17
-	 */
-	OWN(4, "本人");
+	DEPT_AND_USER(2, "部门和用户");
 
 	/**
 	 * 类型
