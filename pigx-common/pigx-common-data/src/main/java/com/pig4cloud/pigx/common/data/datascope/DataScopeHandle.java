@@ -17,8 +17,6 @@
 
 package com.pig4cloud.pigx.common.data.datascope;
 
-import java.util.List;
-
 /**
  * @author lengleng
  * @date 2019-09-07
@@ -30,8 +28,11 @@ public interface DataScopeHandle {
 	/**
 	 * 计算用户数据权限
 	 *
-	 * @param deptList
+	 * @param dataScope
 	 * @return
+	 *
+	 * update by yhaili2009@163.com at 2020/6/17
+	 * 修改参数 List<Integer> 为 DataScope
 	 */
-	Boolean calcScope(List<Integer> deptList);
+	Boolean calcScope(DataScope dataScope);
 }
