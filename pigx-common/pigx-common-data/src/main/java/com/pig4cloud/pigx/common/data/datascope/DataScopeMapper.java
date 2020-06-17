@@ -9,8 +9,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
+ * 若使用数据权限 Mapper继承此类
+ *
  * @author lengleng
- * @date 2020/4/26
+ * @date 2020-06-17
  */
 public interface DataScopeMapper<T> extends BaseMapper<T> {
 
@@ -31,5 +33,13 @@ public interface DataScopeMapper<T> extends BaseMapper<T> {
 	 */
 	<E extends IPage<T>> E selectPageByScope(E page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper,
 			DataScope scope);
+
+	/**
+	 * 根据 Wrapper 条件，查询总记录数
+	 * @param queryWrapper 实体对象封装操作类（可以为 null）
+	 * @param scope 数据权限范围
+	 * @return Integer
+	 */
+	Integer selectCountByScope(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, DataScope scope);
 
 }

@@ -17,43 +17,39 @@
 
 package com.pig4cloud.pigx.common.data.datascope;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
+ * 数据权限函数类型
+ *
  * @author lengleng
- * @date 2018/8/30 数据权限查询参数
+ * @date 2020-06-17
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DataScope extends HashMap {
+@Getter
+@AllArgsConstructor
+public enum DataScopeFuncEnum {
 
 	/**
-	 * 限制范围的字段名称
+	 * 查询全部数据 SELECT * FROM (originSql) temp_data_scope WHERE temp_data_scope.dept_id IN
+	 * (1)
 	 */
-	private String scopeName = "dept_id";
+	ALL("*", "全部"),
 
 	/**
-	 * 具体的数据范围
+	 * 查询函数COUNT SELECT COUNT(1) FROM (originSql) temp_data_scope WHERE
+	 * temp_data_scope.dept_id IN (1)
 	 */
-	private List<Integer> deptIds = new ArrayList<>();
+	COUNT("COUNT(1)", "自定义");
 
 	/**
-	 * 是否只查询本部门
+	 * 类型
 	 */
-	private Boolean isOnly = false;
+	private final String type;
 
 	/**
-	 * 函数名称，默认 SELECT * ;
-	 *
-	 * <ul>
-	 * <li>COUNT(1)</li>
-	 * </ul>
+	 * 描述
 	 */
-	private DataScopeFuncEnum Func = DataScopeFuncEnum.ALL;
+	private final String description;
 
 }

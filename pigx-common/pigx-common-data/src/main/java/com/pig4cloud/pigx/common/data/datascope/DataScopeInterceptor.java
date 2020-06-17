@@ -81,13 +81,15 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		}
 
 		if (deptIds.isEmpty()) {
-			originalSql = "select * from (" + originalSql + ") temp_data_scope where 1 = 2";
+			originalSql = String.format("SELECT %s FROM (%s) temp_data_scope WHERE 1 = 2",
+					dataScope.getFunc().getType(), originalSql);
 		}
 		else {
 			String join = CollectionUtil.join(deptIds, ",");
-			originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName
-					+ " in (" + join + ")";
+			originalSql = String.format("SELECT %s FROM (%s) temp_data_scope WHERE temp_data_scope.%s IN (%s)",
+					dataScope.getFunc().getType(), originalSql, scopeName, join);
 		}
+
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}

@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import java.util.List;
 
 /**
+ * 支持自定义数据权限方法注入
+ *
  * @author lengleng
- * @date 2020/4/26
+ * @date 2020-06-17
  */
 public class DataScopeSqlInjector extends DefaultSqlInjector {
 
@@ -16,6 +18,7 @@ public class DataScopeSqlInjector extends DefaultSqlInjector {
 		List<AbstractMethod> methodList = super.getMethodList(mapperClass);
 		methodList.add(new SelectListByScope());
 		methodList.add(new SelectPageByScope());
+		methodList.add(new SelectCountByScope());
 		return methodList;
 	}
 
