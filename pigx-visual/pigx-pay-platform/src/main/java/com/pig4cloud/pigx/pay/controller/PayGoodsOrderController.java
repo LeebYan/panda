@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 商品
@@ -58,25 +59,28 @@ public class PayGoodsOrderController {
 	/**
 	 * 商品订单
 	 * @param goods 商品
-	 * @param modelAndView
+	 * @param response
 	 * @return R
 	 */
+	@SneakyThrows
 	@Inner(false)
 	@GetMapping("/buy")
 	@SysLog("购买商品")
-	public ModelAndView buy(PayGoodsOrder goods, HttpServletRequest request, ModelAndView modelAndView) {
+	public void buy(PayGoodsOrder goods, HttpServletRequest request, HttpServletResponse response) {
 		String ua = request.getHeader(HttpHeaders.USER_AGENT);
 		if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			String appId = WxPayApiConfigKit.getWxPayApiConfig().getAppId();
-			modelAndView.setViewName("redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId
+			String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
 					+ "&redirect_uri=http%3a%2f%2fadmin.pig4cloud.com%2fpay%2fgoods%2fwx%3famount%3d"
-					+ goods.getAmount() + "&response_type=code&scope=snsapi_base&state=" + appId);
-			return modelAndView;
+					+ "%s&response_type=code&scope=snsapi_base&state=";
+
+			response.sendRedirect(String.format(wxUrl, appId, goods.getAmount(), appId));
 		}
 
-		modelAndView.setViewName("pay");
-		modelAndView.addAllObjects(payGoodsOrderService.buy(goods));
-		return modelAndView;
+		if (ua.contains(PayConstants.ALIPAY)) {
+			payGoodsOrderService.buy(goods);
+		}
+
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class PayGoodsOrderController {
 	 * @return R
 	 */
 	@ResponseBody
-	@GetMapping("/{goodsOrderId}")
+	@GetMapping(value = "/{goodsOrderId}")
 	public R getById(@PathVariable("goodsOrderId") Integer goodsOrderId) {
 		return R.ok(payGoodsOrderService.getById(goodsOrderId));
 	}

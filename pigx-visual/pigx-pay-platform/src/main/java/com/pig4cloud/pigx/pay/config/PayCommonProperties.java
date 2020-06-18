@@ -25,6 +25,4 @@ public class PayCommonProperties {
 	 */
 	private WxPayConfig wxPayConfig;
 
-	private String test;
-
 }
