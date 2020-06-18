@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.alibaba.nacos.utils;
 
-package com.alibaba.nacos;
-
-import com.alibaba.nacos.config.ConfigConstants;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
+ * Password encoder tool
+ *
  * @author nacos
- * <p>
- * nacos console 源码运行，方便开发 生产建议从官网下载最新版配置运行
  */
-@EnableScheduling
-@SpringBootApplication
-public class PigxNacosApplication {
+public class PasswordEncoderUtil {
 
 	public static void main(String[] args) {
-		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
-		System.setProperty(ConfigConstants.AUTH_ENABLED, "false");
-		SpringApplication.run(PigxNacosApplication.class, args);
+		System.out.println(new BCryptPasswordEncoder().encode("nacos"));
+	}
+
+	public static Boolean matches(String raw, String encoded) {
+		return new BCryptPasswordEncoder().matches(raw, encoded);
+	}
+
+	public static String encode(String raw) {
+		return new BCryptPasswordEncoder().encode(raw);
 	}
 
 }
