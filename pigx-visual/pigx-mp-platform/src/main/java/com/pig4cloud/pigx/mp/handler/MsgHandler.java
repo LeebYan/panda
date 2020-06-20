@@ -25,7 +25,6 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.builder.outxml.*;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +116,6 @@ public class MsgHandler extends AbstractHandler {
 			wxMsg.setWxUserId(fans.getId());
 			wxMsg.setNickName(fans.getNickname());
 			wxMsg.setHeadimgUrl(fans.getHeadimgUrl());
-			wxMsg.setCreateTime(LocalDateTime.now());
 			wxMsg.setType(MsgTypeEnum.MP2USER.getType());
 			wxMsg.setRepType(wxAutoReply.getRepType());
 			wxMsg.setOpenId(fans.getOpenid());

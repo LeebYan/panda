@@ -66,7 +66,7 @@ public class WxFansMsgController {
 	 * @return R
 	 */
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxmsg_add')")
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_add')")
 	public R save(@RequestBody WxMsg wxMsg) {
 		return wxMsgService.saveAndPushMsg(wxMsg);
 	}
@@ -77,7 +77,7 @@ public class WxFansMsgController {
 	 * @return R
 	 */
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('mp_wxmsg_edit')")
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_edit')")
 	public R updateById(@RequestBody WxMsg wxMsg) {
 		return R.ok(wxMsgService.updateById(wxMsg));
 	}
@@ -88,7 +88,7 @@ public class WxFansMsgController {
 	 * @return R
 	 */
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('mp_wxmsg_del')")
+	@PreAuthorize("@pms.hasPermission('mp_wxfansmsg_del')")
 	public R removeById(@PathVariable String id) {
 		return R.ok(wxMsgService.removeById(id));
 	}
