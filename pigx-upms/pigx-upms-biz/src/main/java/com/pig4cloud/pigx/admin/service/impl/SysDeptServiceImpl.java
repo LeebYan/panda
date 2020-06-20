@@ -29,6 +29,7 @@ import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysDeptMapper;
 import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
 import com.pig4cloud.pigx.admin.service.SysDeptService;
+import com.pig4cloud.pigx.common.data.datascope.DataScope;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -115,25 +116,27 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	@Override
 	public List<DeptTree> selectTree() {
-		return getDeptTree(deptMapper.selectList(Wrappers.emptyWrapper()));
-	}
+		// 查询全部部门
+		List<SysDept> deptAllList = deptMapper.selectList(Wrappers.emptyWrapper());
+		// 查询数据权限内部门
+		List<Integer> deptOwnIdList = deptMapper.selectListByScope(Wrappers.emptyWrapper(), new DataScope()).stream()
+				.map(SysDept::getDeptId).collect(Collectors.toList());
 
-	/**
-	 * 构建部门树
-	 * @param depts 部门
-	 * @return
-	 */
-	private List<DeptTree> getDeptTree(List<SysDept> depts) {
-		List<DeptTree> treeList = depts.stream().filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
+		// 权限内部门
+		List<DeptTree> collect = deptAllList.stream().filter(dept -> dept.getDeptId().intValue() != dept.getParentId())
 				.sorted(Comparator.comparingInt(SysDept::getSort)).map(dept -> {
 					DeptTree node = new DeptTree();
 					node.setId(dept.getDeptId());
 					node.setParentId(dept.getParentId());
 					node.setName(dept.getName());
+
+					// 有权限不返回标识
+					if (deptOwnIdList.contains(dept.getDeptId())) {
+						node.setIsLock(Boolean.FALSE);
+					}
 					return node;
 				}).collect(Collectors.toList());
-		return TreeUtil.build(treeList,
-				depts.stream().sorted(Comparator.comparingInt(SysDept::getDeptId)).findFirst().get().getParentId());
+		return TreeUtil.build(collect, 0);
 	}
 
 }
