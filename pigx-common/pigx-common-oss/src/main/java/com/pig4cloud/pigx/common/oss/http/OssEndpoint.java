@@ -37,11 +37,11 @@ import java.util.Map;
  * @author lengleng
  * @author 858695266
  * <p>
- * oss.enable
+ * oss.info
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/aws")
+@RequestMapping("/oss")
 public class OssEndpoint {
 
 	private final OssTemplate template;

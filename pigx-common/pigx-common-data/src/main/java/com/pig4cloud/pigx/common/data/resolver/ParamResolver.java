@@ -1,5 +1,6 @@
 package com.pig4cloud.pigx.common.data.resolver;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.admin.api.feign.RemoteParamService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -22,7 +23,7 @@ public class ParamResolver {
 	 * @return value
 	 */
 	public Integer getInt(String key, Integer... defaultVal) {
-		return checkAndGet(key, defaultVal);
+		return checkAndGet(key, Integer.class, defaultVal);
 	}
 
 	/**
@@ -32,10 +33,10 @@ public class ParamResolver {
 	 * @return value
 	 */
 	public String getStr(String key, String... defaultVal) {
-		return checkAndGet(key, defaultVal);
+		return checkAndGet(key, String.class, defaultVal);
 	}
 
-	private <T> T checkAndGet(String key, Object... defaultVal) {
+	private <T> T checkAndGet(String key, Class<T> clazz, T... defaultVal) {
 		// 校验入参是否合法
 		if (StrUtil.isBlank(key) || defaultVal.length > 1) {
 			throw new IllegalArgumentException("参数不合法");
@@ -46,11 +47,12 @@ public class ParamResolver {
 		String result = remoteParamService.getByKey(key, SecurityConstants.FROM_IN).getData();
 
 		if (StrUtil.isNotBlank(result)) {
-			return (T) result;
+			return Convert.convert(clazz, result);
 		}
 
-		if (defaultVal != null) {
-			return (T) defaultVal.clone()[0];
+		if (defaultVal.length == 1) {
+			return Convert.convert(clazz, defaultVal.clone()[0]);
+
 		}
 		return null;
 	}

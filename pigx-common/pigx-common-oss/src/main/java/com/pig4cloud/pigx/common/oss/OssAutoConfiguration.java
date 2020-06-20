@@ -45,7 +45,7 @@ public class OssAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnProperty(name = "oss.public", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnProperty(name = "oss.info", havingValue = "true")
 	public OssEndpoint ossEndpoint(OssTemplate template) {
 		return new OssEndpoint(template);
 	}
