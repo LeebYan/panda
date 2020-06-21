@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.common.datasource.config;
 
 import com.baomidou.dynamic.datasource.processor.DsProcessor;
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -37,7 +38,12 @@ public class LastParamDsProcessor extends DsProcessor {
 	 */
 	@Override
 	public boolean matches(String key) {
-		return key.startsWith(LAST_PREFIX);
+		if (key.startsWith(LAST_PREFIX)) {
+			// https://github.com/baomidou/dynamic-datasource-spring-boot-starter/issues/213
+			DynamicDataSourceContextHolder.clear();
+			return true;
+		}
+		return false;
 	}
 
 	/**
