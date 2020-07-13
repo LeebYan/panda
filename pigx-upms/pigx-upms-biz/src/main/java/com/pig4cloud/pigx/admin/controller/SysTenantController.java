@@ -31,7 +31,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,8 +117,8 @@ public class SysTenantController {
 	@GetMapping("/list")
 	public R list() {
 		List<SysTenant> tenants = sysTenantService.getNormalTenant().stream()
-				.filter(tenant -> tenant.getStartTime().isBefore(LocalDate.now()))
-				.filter(tenant -> tenant.getEndTime().isAfter(LocalDate.now())).collect(Collectors.toList());
+				.filter(tenant -> tenant.getStartTime().isBefore(LocalDateTime.now()))
+				.filter(tenant -> tenant.getEndTime().isAfter(LocalDateTime.now())).collect(Collectors.toList());
 		return R.ok(tenants);
 	}
 

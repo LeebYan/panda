@@ -1,6 +1,7 @@
 package com.pig4cloud.pigx.common.data.tenant;
 
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -19,7 +20,11 @@ public class TenantRequestInterceptor implements ClientHttpRequestInterceptor {
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 			throws IOException {
-		request.getHeaders().set(CommonConstants.TENANT_ID, String.valueOf(TenantContextHolder.getTenantId()));
+
+		if (TenantContextHolder.getTenantId() != null) {
+			request.getHeaders().set(CommonConstants.TENANT_ID, String.valueOf(TenantContextHolder.getTenantId()));
+		}
+
 		return execution.execute(request, body);
 	}
 
