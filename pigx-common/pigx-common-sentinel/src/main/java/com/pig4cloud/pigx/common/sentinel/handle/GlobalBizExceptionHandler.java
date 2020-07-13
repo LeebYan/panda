@@ -15,10 +15,12 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.common.security.component;
+package com.pig4cloud.pigx.common.sentinel.handle;
 
+import com.alibaba.csp.sentinel.Tracer;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.SpringSecurityMessageSource;
@@ -32,12 +34,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 
 /**
+ * <p>
+ * 全局异常处理器结合sentinel 全局异常处理器不能作用在 oauth server https://gitee.com/log4j/pig/issues/I1M2TJ
+ * </p>
+ *
  * @author lengleng
- * @date 2018/8/30 全局异常处理器
+ * @date 2020-06-29
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandlerResolver {
+@ConditionalOnExpression("!'${security.oauth2.client.clientId}'.isEmpty()")
+public class GlobalBizExceptionHandler {
 
 	/**
 	 * 全局异常.
@@ -48,6 +55,9 @@ public class GlobalExceptionHandlerResolver {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public R handleGlobalException(Exception e) {
 		log.error("全局异常信息 ex={}", e.getMessage(), e);
+
+		// 业务异常交由 sentinel 记录
+		Tracer.trace(e);
 		return R.failed(e.getLocalizedMessage());
 	}
 

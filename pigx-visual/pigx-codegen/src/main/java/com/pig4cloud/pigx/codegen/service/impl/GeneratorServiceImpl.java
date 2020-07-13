@@ -106,7 +106,6 @@ public class GeneratorServiceImpl implements GeneratorService {
 		List<GenFormConf> formConfList = genFormConfMapper.selectList(Wrappers.<GenFormConf>lambdaQuery()
 				.eq(GenFormConf::getTableName, genConfig.getTableName()).orderByDesc(GenFormConf::getCreateTime));
 
-		DynamicDataSourceContextHolder.push(genConfig.getDsName());
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
 
