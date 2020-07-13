@@ -27,6 +27,7 @@
 		<ijpay.version>1.2.0</ijpay.version>
 		<groovy.version>3.0.3</groovy.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
+		<reactor.netty.version>0.9.7.RELEASE</reactor.netty.version>
 		<fastjson.version>1.2.69</fastjson.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 	</properties>
@@ -187,6 +188,12 @@
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${security.oauth.version}</version>
+			</dependency>
+			<!--稳定版本，替代spring boot bom内置-->
+			<dependency>
+				<groupId>io.projectreactor.netty</groupId>
+				<artifactId>reactor-netty</artifactId>
+				<version>${reactor.netty.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
