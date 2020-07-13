@@ -396,7 +396,7 @@ INSERT INTO `sys_menu` VALUES (10002, '表单管理', '', '/gen/form', 10006, 'i
 INSERT INTO `sys_menu` VALUES (10003, '表单新增', 'gen_form_add', NULL, 10002, '1', 0, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:45', '0', 1);
 INSERT INTO `sys_menu` VALUES (10004, '表单修改', 'gen_form_edit', NULL, 10002, '1', 1, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:46', '0', 1);
 INSERT INTO `sys_menu` VALUES (10005, '表单删除', 'gen_form_del', NULL, 10002, '1', 2, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:47', '0', 1);
-INSERT INTO `sys_menu` VALUES (10006, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '1', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
+INSERT INTO `sys_menu` VALUES (10006, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
 INSERT INTO `sys_menu` VALUES (10007, '数据源管理', NULL, '/gen/datasource', 10006, 'icon-mysql', 0, '0', '0', '2019-08-12 09:42:11', '2020-03-24 08:58:49', '0', 1);
 INSERT INTO `sys_menu` VALUES (10008, '表单设计', NULL, '/gen/design', 10006, 'icon-biaodanbiaoqian', 2, '0', '0', '2019-08-16 10:08:56', '2020-03-24 08:58:53', '0', 1);
 COMMIT;
