@@ -138,8 +138,8 @@ public class OssTemplate implements InitializingBean {
 	 * API Documentation</a>
 	 */
 	@SneakyThrows
-	public InputStream getObject(String bucketName, String objectName) {
-		return amazonS3.getObject(bucketName, objectName).getObjectContent();
+	public S3Object getObject(String bucketName, String objectName) {
+		return amazonS3.getObject(bucketName, objectName);
 	}
 
 	/**
@@ -203,8 +203,10 @@ public class OssTemplate implements InitializingBean {
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		ClientConfiguration clientConfiguration = new ClientConfiguration();
+		clientConfiguration.setMaxConnections(ossProperties.getMaxConnections());
+
 		AwsClientBuilder.EndpointConfiguration endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(
 				ossProperties.getEndpoint(), ossProperties.getRegion());
 		AWSCredentials awsCredentials = new BasicAWSCredentials(ossProperties.getAccessKey(),

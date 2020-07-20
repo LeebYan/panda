@@ -20,6 +20,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.amazonaws.services.s3.model.S3Object;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
 import com.pig4cloud.pigx.admin.mapper.SysFileMapper;
@@ -36,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,9 +88,9 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	 */
 	@Override
 	public void getFile(String bucket, String fileName, HttpServletResponse response) {
-		try (InputStream inputStream = minioTemplate.getObject(bucket, fileName)) {
+		try (S3Object s3Object = minioTemplate.getObject(bucket, fileName)) {
 			response.setContentType("application/octet-stream; charset=UTF-8");
-			IoUtil.copy(inputStream, response.getOutputStream());
+			IoUtil.copy(s3Object.getObjectContent(), response.getOutputStream());
 		}
 		catch (Exception e) {
 			log.error("文件读取异常: {}", e.getLocalizedMessage());

@@ -77,4 +77,9 @@ public class OssProperties {
 	 */
 	private String bucketName = "payerp";
 
+	/**
+	 * 最大线程数，默认： 100
+	 */
+	private Integer maxConnections = 100;
+
 }
