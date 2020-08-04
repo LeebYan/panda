@@ -19,7 +19,7 @@ package com.pig4cloud.pigx.pay.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;

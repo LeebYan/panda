@@ -6,10 +6,10 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.jpay.alipay.AliPayApiConfig;
-import com.jpay.alipay.AliPayApiConfigKit;
-import com.jpay.weixin.api.WxPayApiConfig;
-import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.ijpay.alipay.AliPayApiConfig;
+import com.ijpay.alipay.AliPayApiConfigKit;
+import com.ijpay.wxpay.WxPayApiConfig;
+import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
@@ -75,9 +75,9 @@ public class PayConfigParmaInitRunner {
 			// 支付宝支付
 			if (PayChannelNameEnum.ALIPAY_WAP.getName().equals(channel.getChannelId())) {
 
-				AliPayApiConfig aliPayApiConfig = AliPayApiConfig.New().setAppId(channel.getAppId())
+				AliPayApiConfig aliPayApiConfig = AliPayApiConfig.builder().setAppId(channel.getAppId())
 						.setPrivateKey(params.getStr("privateKey")).setCharset(CharsetUtil.UTF_8)
-						.setAlipayPublicKey(params.getStr("publicKey")).setServiceUrl(params.getStr("serviceUrl"))
+						.setAliPayPublicKey(params.getStr("publicKey")).setServiceUrl(params.getStr("serviceUrl"))
 						.setSignType("RSA2").build();
 
 				AliPayApiConfigKit.putApiConfig(aliPayApiConfig);
@@ -86,14 +86,13 @@ public class PayConfigParmaInitRunner {
 
 			// 微信支付
 			if (PayChannelNameEnum.WEIXIN_MP.getName().equals(channel.getChannelId())) {
-				WxPayApiConfig wx = WxPayApiConfig.New().setAppId(channel.getAppId())
-						.setMchId(channel.getChannelMchId()).setPaternerKey(params.getStr("paternerKey"))
-						.setPayModel(WxPayApiConfig.PayModel.BUSINESSMODEL);
+				WxPayApiConfig wx = WxPayApiConfig.builder().appId(channel.getAppId()).mchId(channel.getChannelMchId())
+						.partnerKey(params.getStr("paternerKey")).build();
 
 				String subMchId = params.getStr("subMchId");
 				if (StrUtil.isNotBlank(subMchId)) {
-					wx.setPayModel(WxPayApiConfig.PayModel.SERVICEMODE);
-					wx.setSubMchId(subMchId);
+					wx.setSlAppId(channel.getAppId());
+					wx.setSlMchId(subMchId);
 				}
 
 				WxPayApiConfigKit.putApiConfig(wx);

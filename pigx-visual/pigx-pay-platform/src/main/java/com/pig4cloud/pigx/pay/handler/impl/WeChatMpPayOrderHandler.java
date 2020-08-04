@@ -18,9 +18,13 @@
 package com.pig4cloud.pigx.pay.handler.impl;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import com.jpay.ext.kit.PaymentKit;
-import com.jpay.weixin.api.WxPayApi;
-import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.ijpay.core.enums.SignType;
+import com.ijpay.core.enums.TradeType;
+import com.ijpay.core.kit.WxPayKit;
+import com.ijpay.wxpay.WxPayApi;
+import com.ijpay.wxpay.WxPayApiConfig;
+import com.ijpay.wxpay.WxPayApiConfigKit;
+import com.ijpay.wxpay.model.UnifiedOrderModel;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.config.PayCommonProperties;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
@@ -29,8 +33,8 @@ import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
 import com.pig4cloud.pigx.pay.mapper.PayTradeOrderMapper;
 import com.pig4cloud.pigx.pay.utils.OrderStatusEnum;
 import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,19 +48,16 @@ import java.util.Map;
  */
 @Slf4j
 @Service("WEIXIN_MP")
+@RequiredArgsConstructor
 public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 
-	@Autowired
-	private PayCommonProperties payCommonProperties;
+	private final PayCommonProperties payCommonProperties;
 
-	@Autowired
-	private PayTradeOrderMapper tradeOrderMapper;
+	private final PayTradeOrderMapper tradeOrderMapper;
 
-	@Autowired
-	private PayGoodsOrderMapper goodsOrderMapper;
+	private final PayGoodsOrderMapper goodsOrderMapper;
 
-	@Autowired
-	private HttpServletRequest request;
+	private final HttpServletRequest request;
 
 	/**
 	 * 创建交易订单
@@ -86,18 +87,23 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 	@Override
 	public Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
 		String ip = ServletUtil.getClientIP(request);
-		Map<String, String> params = WxPayApiConfigKit.getWxPayApiConfig()
-				.setAttach(TenantContextHolder.getTenantId().toString()).setBody(goodsOrder.getGoodsName())
-				.setSpbillCreateIp(ip).setTotalFee(goodsOrder.getAmount()).setOpenId(goodsOrder.getUserId())
-				.setTradeType(WxPayApi.TradeType.JSAPI)
-				.setNotifyUrl(payCommonProperties.getWxPayConfig().getNotifyUrl())
-				.setOutTradeNo(tradeOrder.getOrderId()).build();
+		WxPayApiConfig wxPayApiConfig = WxPayApiConfigKit.getWxPayApiConfig();
+
+		// 预订单参数
+		Map<String, String> params = UnifiedOrderModel.builder().appid(wxPayApiConfig.getAppId())
+				.mch_id(wxPayApiConfig.getMchId()).nonce_str(WxPayKit.generateStr()).body(goodsOrder.getGoodsName())
+				.attach(TenantContextHolder.getTenantId().toString()).out_trade_no(tradeOrder.getOrderId())
+				.total_fee(goodsOrder.getAmount()).spbill_create_ip(ip)
+				.notify_url(payCommonProperties.getWxPayConfig().getNotifyUrl())
+				.trade_type(TradeType.JSAPI.getTradeType()).openid(goodsOrder.getUserId()).build()
+				.createSign(wxPayApiConfig.getPartnerKey(), SignType.HMACSHA256);
 
 		String xmlResult = WxPayApi.pushOrder(false, params);
 		log.info(xmlResult);
-		Map<String, String> resultMap = PaymentKit.xmlToMap(xmlResult);
+		Map<String, String> resultMap = WxPayKit.xmlToMap(xmlResult);
 		String prepayId = resultMap.get("prepay_id");
-		return PaymentKit.prepayIdCreateSign(prepayId);
+		return WxPayKit.prepayIdCreateSign(prepayId, wxPayApiConfig.getAppId(), wxPayApiConfig.getPartnerKey(),
+				SignType.HMACSHA256);
 	}
 
 	/**

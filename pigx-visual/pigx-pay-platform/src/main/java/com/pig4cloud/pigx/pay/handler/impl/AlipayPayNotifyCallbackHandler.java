@@ -24,8 +24,8 @@ import cn.hutool.core.util.StrUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.jpay.alipay.AliPayApiConfig;
-import com.jpay.alipay.AliPayApiConfigKit;
+import com.ijpay.alipay.AliPayApiConfig;
+import com.ijpay.alipay.AliPayApiConfigKit;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
@@ -116,7 +116,7 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 		}
 
 		try {
-			return AlipaySignature.rsaCheckV1(params, apiConfig.getAlipayPublicKey(), CharsetUtil.UTF_8, "RSA2");
+			return AlipaySignature.rsaCheckV1(params, apiConfig.getAliPayPublicKey(), CharsetUtil.UTF_8, "RSA2");
 		}
 		catch (AlipayApiException e) {
 			log.error("支付宝验签失败", e);

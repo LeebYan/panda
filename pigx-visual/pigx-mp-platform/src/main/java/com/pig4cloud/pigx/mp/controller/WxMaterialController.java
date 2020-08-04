@@ -95,8 +95,7 @@ public class WxMaterialController {
 	public R materialNewsUpload(@RequestBody JSONObject data) {
 		try {
 			JSONArray jSONArray = data.getJSONArray("articles");
-			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray
-					.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
+			List<WxMpNewsArticle> articles = jSONArray.toList(WxMpNewsArticle.class);
 			WxMpMaterialNews news = new WxMpMaterialNews();
 			news.setArticles(articles);
 
@@ -127,15 +126,14 @@ public class WxMaterialController {
 		try {
 			String mediaId = data.getStr("mediaId");
 			JSONArray jSONArray = data.getJSONArray("articles");
-			List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles = jSONArray
-					.toList(WxMpMaterialNews.WxMpMaterialNewsArticle.class);
+			List<WxMpNewsArticle> articles = jSONArray.toList(WxMpNewsArticle.class);
 			String appId = data.getStr("appId");
 			WxMpService wxMpService = WxMpInitConfigRunner.getMpServices().get(appId);
 			WxMpMaterialService wxMpMaterialService = wxMpService.getMaterialService();
 			WxMpMaterialArticleUpdate wxMpMaterialArticleUpdate = new WxMpMaterialArticleUpdate();
 			wxMpMaterialArticleUpdate.setMediaId(mediaId);
 			int index = 0;
-			for (WxMpMaterialNews.WxMpMaterialNewsArticle article : articles) {
+			for (WxMpNewsArticle article : articles) {
 				wxMpMaterialArticleUpdate.setIndex(index);
 				wxMpMaterialArticleUpdate.setArticles(article);
 				wxMpMaterialService.materialNewsUpdate(wxMpMaterialArticleUpdate);

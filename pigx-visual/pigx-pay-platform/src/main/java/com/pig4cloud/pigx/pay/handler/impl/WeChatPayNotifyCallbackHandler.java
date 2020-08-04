@@ -20,8 +20,8 @@ package com.pig4cloud.pigx.pay.handler.impl;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.EnumUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.jpay.ext.kit.PaymentKit;
-import com.jpay.weixin.api.WxPayApiConfigKit;
+import com.ijpay.core.kit.WxPayKit;
+import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
@@ -91,7 +91,7 @@ public class WeChatPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	 */
 	@Override
 	public Boolean verifyNotify(Map<String, String> params) {
-		if (!PaymentKit.verifyNotify(params, WxPayApiConfigKit.getWxPayApiConfig().getPaternerKey())) {
+		if (!WxPayKit.verifyNotify(params, WxPayApiConfigKit.getWxPayApiConfig().getApiKey())) {
 			log.warn("微信支付回调验签失败", params);
 			return null;
 		}
@@ -128,7 +128,7 @@ public class WeChatPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 		Map<String, String> xml = new HashMap<>(4);
 		xml.put("return_code", "SUCCESS");
 		xml.put("return_msg", "OK");
-		return PaymentKit.toXml(xml);
+		return WxPayKit.toXml(xml);
 	}
 
 	/**

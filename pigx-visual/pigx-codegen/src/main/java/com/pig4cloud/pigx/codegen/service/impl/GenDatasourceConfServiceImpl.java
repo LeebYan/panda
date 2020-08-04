@@ -117,14 +117,14 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	@Override
 	public void addDynamicDataSource(GenDatasourceConf conf) {
 		DataSourceProperty dataSourceProperty = new DataSourceProperty();
-		dataSourceProperty.setPollName(conf.getName());
+		dataSourceProperty.setPoolName(conf.getName());
 		dataSourceProperty.setUrl(conf.getUrl());
 		dataSourceProperty.setUsername(conf.getUsername());
 		dataSourceProperty.setPassword(conf.getPassword());
 		DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
 
 		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
-		dynamicRoutingDataSource.addDataSource(dataSourceProperty.getPollName(), dataSource);
+		dynamicRoutingDataSource.addDataSource(dataSourceProperty.getPoolName(), dataSource);
 	}
 
 	/**

@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>pigx-cloud-dependencies-parent</artifactId>
 		<groupId>com.pig4cloud</groupId>
-		<version>Hoxton.SR5</version>
+		<version>Hoxton.SR7</version>
 		<relativePath/>
 	</parent>
 
@@ -17,18 +17,17 @@
 	<description>pigx 公共版本控制</description>
 
 	<properties>
-		<pigx.version>3.9.0</pigx.version>
+		<pigx.version>3.10.0-SNAPSHOT</pigx.version>
 		<mybatis-plus.version>3.3.2</mybatis-plus.version>
-		<dynamic-ds.version>3.0.0</dynamic-ds.version>
+		<dynamic-ds.version>3.2.0</dynamic-ds.version>
 		<druid.version>1.1.21</druid.version>
-		<mysql.connector.version>8.0.20</mysql.connector.version>
+		<mysql.connector.version>8.0.21</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
-		<mp.weixin.version>3.7.0</mp.weixin.version>
-		<ijpay.version>1.2.0</ijpay.version>
+		<mp.weixin.version>3.8.0</mp.weixin.version>
+		<ijpay.version>2.6.3</ijpay.version>
 		<groovy.version>3.0.3</groovy.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
-		<reactor.netty.version>0.9.7.RELEASE</reactor.netty.version>
-		<fastjson.version>1.2.69</fastjson.version>
+		<fastjson.version>1.2.73</fastjson.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 	</properties>
 
@@ -169,13 +168,13 @@
 			<!--支付相关SDK-->
 			<dependency>
 				<groupId>com.github.javen205</groupId>
-				<artifactId>IJPay</artifactId>
+				<artifactId>IJPay-WxPay</artifactId>
 				<version>${ijpay.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.alipay.sdk</groupId>
-				<artifactId>alipay-sdk-java</artifactId>
-				<version>${aliyun.version}</version>
+				<groupId>com.github.javen205</groupId>
+				<artifactId>IJPay-AliPay</artifactId>
+				<version>${ijpay.version}</version>
 			</dependency>
 			<!--定义groovy 版本-->
 			<dependency>
@@ -188,12 +187,6 @@
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${security.oauth.version}</version>
-			</dependency>
-			<!--稳定版本，替代spring boot bom内置-->
-			<dependency>
-				<groupId>io.projectreactor.netty</groupId>
-				<artifactId>reactor-netty</artifactId>
-				<version>${reactor.netty.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -227,7 +220,7 @@
 			<plugin>
 				<groupId>io.spring.javaformat</groupId>
 				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>0.0.22</version>
+				<version>0.0.23</version>
 			</plugin>
 		</plugins>
 	</build>

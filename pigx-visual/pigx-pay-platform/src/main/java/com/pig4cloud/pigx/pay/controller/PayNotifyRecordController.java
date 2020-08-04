@@ -19,9 +19,9 @@ package com.pig4cloud.pigx.pay.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jpay.alipay.AliPayApi;
-import com.jpay.ext.kit.HttpKit;
-import com.jpay.ext.kit.PaymentKit;
+import com.ijpay.alipay.AliPayApi;
+import com.ijpay.core.kit.HttpKit;
+import com.ijpay.core.kit.WxPayKit;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
@@ -141,7 +141,7 @@ public class PayNotifyRecordController {
 	public String wxCallbak(HttpServletRequest request) {
 		String xmlMsg = HttpKit.readData(request);
 		log.info("微信订单回调信息:{}", xmlMsg);
-		Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
+		Map<String, String> params = WxPayKit.xmlToMap(xmlMsg);
 		return weChatCallback.handle(params);
 	}
 

@@ -16,8 +16,8 @@
 
 package com.pig4cloud.pigx.mp.config;
 
+import me.chanjar.weixin.common.enums.TicketType;
 import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
-import me.chanjar.weixin.mp.enums.TicketType;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.TimeUnit;
