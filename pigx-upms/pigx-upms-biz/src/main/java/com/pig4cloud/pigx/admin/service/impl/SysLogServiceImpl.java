@@ -60,7 +60,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 			log.setCreateBy(pre.getUser());
 			return log;
 		}).collect(Collectors.toList());
-		return this.saveBatch(sysLogs);
+		baseMapper.insertBatchSomeColumn(sysLogs);
+		return Boolean.TRUE;
 	}
 
 }

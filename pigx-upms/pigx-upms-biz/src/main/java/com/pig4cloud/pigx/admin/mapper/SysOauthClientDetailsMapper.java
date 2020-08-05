@@ -19,8 +19,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -32,6 +32,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2018-05-15
  */
 @Mapper
-public interface SysOauthClientDetailsMapper extends BaseMapper<SysOauthClientDetails> {
+public interface SysOauthClientDetailsMapper extends PigxBaseMapper<SysOauthClientDetails> {
 
 }

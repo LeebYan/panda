@@ -20,7 +20,7 @@
 package com.pig4cloud.pigx.admin.mapper;
 
 import com.pig4cloud.pigx.admin.api.entity.SysDept;
-import com.pig4cloud.pigx.common.data.datascope.DataScopeMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -32,6 +32,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2018-01-20
  */
 @Mapper
-public interface SysDeptMapper extends DataScopeMapper<SysDept> {
+public interface SysDeptMapper extends PigxBaseMapper<SysDept> {
 
 }

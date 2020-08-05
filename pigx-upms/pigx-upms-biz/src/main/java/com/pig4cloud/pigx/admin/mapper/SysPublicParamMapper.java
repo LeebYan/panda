@@ -16,8 +16,8 @@
  */
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysPublicParam;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -27,6 +27,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-04-29
  */
 @Mapper
-public interface SysPublicParamMapper extends BaseMapper<SysPublicParam> {
+public interface SysPublicParamMapper extends PigxBaseMapper<SysPublicParam> {
 
 }

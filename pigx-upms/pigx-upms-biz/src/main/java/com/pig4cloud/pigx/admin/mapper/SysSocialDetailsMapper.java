@@ -17,8 +17,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysSocialDetails;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018-08-16 21:30:41
  */
 @Mapper
-public interface SysSocialDetailsMapper extends BaseMapper<SysSocialDetails> {
+public interface SysSocialDetailsMapper extends PigxBaseMapper<SysSocialDetails> {
 
 }

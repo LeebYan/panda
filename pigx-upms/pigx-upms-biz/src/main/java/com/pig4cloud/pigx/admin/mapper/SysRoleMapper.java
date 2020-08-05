@@ -19,8 +19,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysRole;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
  * @since 2017-10-29
  */
 @Mapper
-public interface SysRoleMapper extends BaseMapper<SysRole> {
+public interface SysRoleMapper extends PigxBaseMapper<SysRole> {
 
 	/**
 	 * 通过用户ID，查询角色信息

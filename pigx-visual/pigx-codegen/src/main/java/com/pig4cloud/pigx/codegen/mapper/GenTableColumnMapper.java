@@ -1,10 +1,10 @@
 package com.pig4cloud.pigx.codegen.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2020/5/18
  */
 @Mapper
-public interface GenTableColumnMapper extends BaseMapper<ColumnEntity> {
+public interface GenTableColumnMapper extends PigxBaseMapper<ColumnEntity> {
 
 	/**
 	 * 分页查询表分页信息

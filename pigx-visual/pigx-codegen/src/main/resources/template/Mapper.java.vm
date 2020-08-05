@@ -17,7 +17,7 @@
 
 package ${package}.${moduleName}.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import ${package}.${moduleName}.entity.${className};
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date ${datetime}
  */
 @Mapper
-public interface ${className}Mapper extends BaseMapper<${className}> {
+public interface ${className}Mapper extends PigxBaseMapper<${className}> {
 
 }

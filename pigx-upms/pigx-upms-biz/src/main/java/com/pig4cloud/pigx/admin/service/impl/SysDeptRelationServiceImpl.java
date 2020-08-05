@@ -63,7 +63,7 @@ public class SysDeptRelationServiceImpl extends ServiceImpl<SysDeptRelationMappe
 					return relation;
 				}).collect(Collectors.toList());
 		if (CollUtil.isNotEmpty(relationList)) {
-			this.saveBatch(relationList);
+			baseMapper.insertBatchSomeColumn(relationList);
 		}
 
 		// 自己也要维护到关系表中

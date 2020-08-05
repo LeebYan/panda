@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.daemon.quartz.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import com.pig4cloud.pigx.daemon.quartz.entity.SysJobLog;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-01-27 13:40:20
  */
 @Mapper
-public interface SysJobLogMapper extends BaseMapper<SysJobLog> {
+public interface SysJobLogMapper extends PigxBaseMapper<SysJobLog> {
 
 }

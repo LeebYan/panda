@@ -17,8 +17,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysRouteConf;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018-11-06 10:17:18
  */
 @Mapper
-public interface SysRouteConfMapper extends BaseMapper<SysRouteConf> {
+public interface SysRouteConfMapper extends PigxBaseMapper<SysRouteConf> {
 
 }

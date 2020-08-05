@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.pay.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-05-28 23:58:18
  */
 @Mapper
-public interface PayTradeOrderMapper extends BaseMapper<PayTradeOrder> {
+public interface PayTradeOrderMapper extends PigxBaseMapper<PayTradeOrder> {
 
 }

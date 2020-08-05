@@ -22,8 +22,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.*;
 import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
-import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
-import com.pig4cloud.pigx.admin.service.*;
+import com.pig4cloud.pigx.admin.mapper.*;
+import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
+import com.pig4cloud.pigx.admin.service.SysTenantService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.data.resolver.ParamResolver;
@@ -53,27 +54,27 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
-	private final SysOauthClientDetailsService clientServices;
+	private final SysOauthClientDetailsMapper clientDetailsMapper;
 
 	private final SysDeptRelationService deptRelationService;
 
-	private final SysUserRoleService userRoleService;
+	private final SysRoleMenuMapper roleMenuMapper;
 
-	private final SysRoleMenuService roleMenuService;
+	private final SysDictItemMapper dictItemMapper;
 
-	private final SysDictItemService dictItemService;
+	private final SysPublicParamMapper paramMapper;
 
-	private final SysPublicParamService paramService;
+	private final SysUserRoleMapper userRoleMapper;
 
-	private final SysUserService userService;
+	private final SysMenuMapper menuMapper;
 
-	private final SysRoleService roleService;
+	private final SysDictMapper dictMapper;
 
-	private final SysMenuService menuService;
+	private final SysDeptMapper deptMapper;
 
-	private final SysDeptService deptService;
+	private final SysUserMapper userMapper;
 
-	private final SysDictService dictService;
+	private final SysRoleMapper roleMapper;
 
 	/**
 	 * 获取正常状态租户
@@ -118,17 +119,17 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 		TenantBroker.runAs(defaultId, (id) -> {
 			// 查询系统内置字典
-			dictList.addAll(dictService.list());
+			dictList.addAll(dictMapper.selectList(Wrappers.emptyWrapper()));
 			// 查询系统内置字典项目
 			dictIdList.addAll(dictList.stream().map(SysDict::getId).collect(Collectors.toList()));
-			dictItemList.addAll(
-					dictItemService.list(Wrappers.<SysDictItem>lambdaQuery().in(SysDictItem::getDictId, dictIdList)));
+			dictItemList.addAll(dictItemMapper
+					.selectList(Wrappers.<SysDictItem>lambdaQuery().in(SysDictItem::getDictId, dictIdList)));
 			// 查询当前租户菜单
-			menuList.addAll(menuService.list());
+			menuList.addAll(menuMapper.selectList(Wrappers.emptyWrapper()));
 			// 查询客户端配置
-			clientDetailsList.addAll(clientServices.list());
+			clientDetailsList.addAll(clientDetailsMapper.selectList(Wrappers.emptyWrapper()));
 			// 查询系统参数配置
-			publicParamList.addAll(paramService.list());
+			publicParamList.addAll(paramMapper.selectList(Wrappers.emptyWrapper()));
 		});
 
 		// 保证插入租户为新的租户
@@ -138,7 +139,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			SysDept dept = new SysDept();
 			dept.setName(defaultDeptName);
 			dept.setParentId(0);
-			deptService.save(dept);
+			deptMapper.insert(dept);
 			// 维护部门关系
 			deptRelationService.insertDeptRelation(dept);
 			// 构造初始化用户
@@ -146,21 +147,21 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			user.setUsername(defaultUsername);
 			user.setPassword(ENCODER.encode(defaultPassword));
 			user.setDeptId(dept.getDeptId());
-			userService.save(user);
+			userMapper.insert(user);
 			// 构造新角色
 			SysRole role = new SysRole();
 			role.setRoleCode(defaultRoleCode);
 			role.setRoleName(defaultRoleName);
-			roleService.save(role);
+			roleMapper.insert(role);
 			// 用户角色关系
 			SysUserRole userRole = new SysUserRole();
 			userRole.setUserId(user.getUserId());
 			userRole.setRoleId(role.getRoleId());
-			userRoleService.save(userRole);
+			userRoleMapper.insert(userRole);
 			// 插入新的菜单
 			saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID),
 					CommonConstants.MENU_TREE_ROOT_ID);
-			List<SysMenu> newMenuList = menuService.list();
+			List<SysMenu> newMenuList = menuMapper.selectList(Wrappers.emptyWrapper());
 
 			// 查询全部菜单,构造角色菜单关系
 			List<SysRoleMenu> collect = newMenuList.stream().map(menu -> {
@@ -169,19 +170,20 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 				roleMenu.setMenuId(menu.getMenuId());
 				return roleMenu;
 			}).collect(Collectors.toList());
-			roleMenuService.saveBatch(collect);
+			roleMenuMapper.insertBatchSomeColumn(collect);
 			// 插入系统字典
-			dictService.saveBatch(dictList);
+			dictMapper.insertBatchSomeColumn(dictList);
 			// 处理字典项最新关联的字典ID
 			List<SysDictItem> itemList = dictList.stream().flatMap(dict -> dictItemList.stream()
 					.filter(item -> item.getType().equals(dict.getType())).peek(item -> item.setDictId(dict.getId())))
 					.collect(Collectors.toList());
 
 			// 插入客户端
-			clientServices.saveBatch(clientDetailsList);
+			clientDetailsMapper.insertBatchSomeColumn(clientDetailsList);
 			// 插入系统配置
-			paramService.saveBatch(publicParamList);
-			return dictItemService.saveBatch(itemList);
+			paramMapper.insertBatchSomeColumn(publicParamList);
+			dictItemMapper.insertBatchSomeColumn(itemList);
+			return Boolean.TRUE;
 		}));
 
 	}
@@ -196,7 +198,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			SysMenu menu = new SysMenu();
 			BeanUtils.copyProperties(node, menu, "parentId");
 			menu.setParentId(parent);
-			menuService.save(menu);
+			menuMapper.insert(menu);
 			if (CollUtil.isNotEmpty(node.getChildren())) {
 				List<MenuTree> childrenList = node.getChildren().stream().map(treeNode -> (MenuTree) treeNode)
 						.collect(Collectors.toList());

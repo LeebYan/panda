@@ -17,8 +17,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysFile;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-06-18 17:18:42
  */
 @Mapper
-public interface SysFileMapper extends BaseMapper<SysFile> {
+public interface SysFileMapper extends PigxBaseMapper<SysFile> {
 
 }

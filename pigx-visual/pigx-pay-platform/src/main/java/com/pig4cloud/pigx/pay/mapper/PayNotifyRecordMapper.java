@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.pay.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-05-28 23:57:23
  */
 @Mapper
-public interface PayNotifyRecordMapper extends BaseMapper<PayNotifyRecord> {
+public interface PayNotifyRecordMapper extends PigxBaseMapper<PayNotifyRecord> {
 
 }

@@ -16,7 +16,7 @@
  */
 package com.pig4cloud.pigx.mp.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import com.pig4cloud.pigx.mp.entity.WxFansMsgRes;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +27,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-03-27 20:45:48
  */
 @Mapper
-public interface WxFansMsgResMapper extends BaseMapper<WxFansMsgRes> {
+public interface WxFansMsgResMapper extends PigxBaseMapper<WxFansMsgRes> {
 
 }

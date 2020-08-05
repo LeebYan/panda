@@ -9,12 +9,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 若使用数据权限 Mapper继承此类
+ * 扩展通用 Mapper，支持数据权限 和批量插入
  *
  * @author lengleng
  * @date 2020-06-17
  */
-public interface DataScopeMapper<T> extends BaseMapper<T> {
+public interface PigxBaseMapper<T> extends BaseMapper<T> {
 
 	/**
 	 * 根据 entity 条件，查询全部记录
@@ -41,5 +41,12 @@ public interface DataScopeMapper<T> extends BaseMapper<T> {
 	 * @return Integer
 	 */
 	Integer selectCountByScope(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, DataScope scope);
+
+	/**
+	 * 批量插入 仅适用于 mysql
+	 * @param entityList 实体列表
+	 * @return 影响行数
+	 */
+	Integer insertBatchSomeColumn(List<T> entityList);
 
 }

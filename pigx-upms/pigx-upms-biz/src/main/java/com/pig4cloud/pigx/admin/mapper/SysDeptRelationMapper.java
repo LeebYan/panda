@@ -19,8 +19,8 @@
 
 package com.pig4cloud.pigx.admin.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.admin.api.entity.SysDeptRelation;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2018-02-12
  */
 @Mapper
-public interface SysDeptRelationMapper extends BaseMapper<SysDeptRelation> {
+public interface SysDeptRelationMapper extends PigxBaseMapper<SysDeptRelation> {
 
 	/**
 	 * 删除部门关系表数据

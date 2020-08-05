@@ -17,8 +17,8 @@
 
 package com.pig4cloud.pigx.codegen.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.codegen.entity.GenFormConf;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-08-12 15:55:35
  */
 @Mapper
-public interface GenFormConfMapper extends BaseMapper<GenFormConf> {
+public interface GenFormConfMapper extends PigxBaseMapper<GenFormConf> {
 
 }

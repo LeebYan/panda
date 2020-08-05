@@ -1,7 +1,7 @@
 package com.pig4cloud.pigx.act.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pigx.act.entity.LeaveBill;
+import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018-09-27 15:20:44
  */
 @Mapper
-public interface LeaveBillMapper extends BaseMapper<LeaveBill> {
+public interface LeaveBillMapper extends PigxBaseMapper<LeaveBill> {
 
 }
