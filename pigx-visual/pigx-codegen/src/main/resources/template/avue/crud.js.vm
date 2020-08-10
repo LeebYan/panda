@@ -12,7 +12,7 @@ export const tableOption = {
       "type": "input",
       "label": "$column.comments",
       "prop": "$column.lowerAttrName",
-      "span": 12,
+      "span": 12
     }#if($foreach.hasNext),#end
 #end
   ]
