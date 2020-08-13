@@ -19,6 +19,7 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
@@ -27,7 +28,6 @@ import com.pig4cloud.pigx.admin.service.SysOauthClientDetailsService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -61,7 +61,7 @@ public class SysOauthClientDetailsServiceImpl extends ServiceImpl<SysOauthClient
 	@Override
 	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientDetails.clientId")
 	public Boolean updateClientById(SysOauthClientDetails clientDetails) {
-    	if(StringUtils.isBlank(clientDetails.getAdditionalInformation())){
+		if (StrUtil.isBlank(clientDetails.getAdditionalInformation())) {
 			clientDetails.setAdditionalInformation(null);
 		}
 		return this.updateById(clientDetails);
