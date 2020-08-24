@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.nacos.nacos;
+
+package com.alibaba.nacos.security.nacos;
 
 import com.alibaba.nacos.api.common.Constants;
 import com.alibaba.nacos.config.server.auth.RoleInfo;
-import com.alibaba.nacos.nacos.roles.NacosRoleServiceImpl;
-import com.alibaba.nacos.nacos.users.NacosUser;
+import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
+import com.alibaba.nacos.security.nacos.users.NacosUser;
 import com.alibaba.nacos.core.auth.AccessException;
 import com.alibaba.nacos.core.auth.AuthManager;
 import com.alibaba.nacos.core.auth.Permission;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * Builtin access control entry of Nacos
+ * Builtin access control entry of Nacos.
  *
  * @author nkorange
  * @since 1.2.0
@@ -107,7 +108,7 @@ public class NacosAuthManager implements AuthManager {
 	}
 
 	/**
-	 * Get token from header
+	 * Get token from header.
 	 */
 	private String resolveToken(HttpServletRequest request) throws AccessException {
 		String bearerToken = request.getHeader(NacosAuthConfig.AUTHORIZATION_HEADER);

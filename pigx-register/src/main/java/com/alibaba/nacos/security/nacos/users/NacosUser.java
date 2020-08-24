@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.alibaba.nacos.nacos.users;
+package com.alibaba.nacos.security.nacos.users;
 
 import com.alibaba.nacos.core.auth.User;
 
 /**
+ * Nacos User.
+ *
  * @author nkorange
  * @since 1.2.0
  */

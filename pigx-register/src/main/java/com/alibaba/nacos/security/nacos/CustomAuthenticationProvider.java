@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.nacos.nacos;
 
-import com.alibaba.nacos.nacos.users.NacosUserDetailsServiceImpl;
+package com.alibaba.nacos.security.nacos;
+
+import com.alibaba.nacos.security.nacos.users.NacosUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 /**
- * auth provider
+ * auth provider.
  *
  * @author wfnuser
  */
