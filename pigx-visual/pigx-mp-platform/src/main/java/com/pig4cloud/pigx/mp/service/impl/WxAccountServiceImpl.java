@@ -124,7 +124,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 			return R.failed("获取公众号数据失败:" + e.getError().getErrorMsg());
 		}
 
-		return R.ok();
+		return R.ok(result);
 	}
 
 }
