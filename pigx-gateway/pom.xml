@@ -60,8 +60,8 @@
 		<!--验证码-->
 		<dependency>
 			<groupId>com.github.anji-plus</groupId>
-			<artifactId>captcha</artifactId>
-			<version>${kaptcha.version}</version>
+			<artifactId>captcha-spring-boot-starter</artifactId>
+			<version>${captcha.version}</version>
 		</dependency>
 		<!--hutool-->
 		<dependency>

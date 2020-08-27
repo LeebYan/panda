@@ -1,25 +1,25 @@
 package com.pig4cloud.pigx.gateway.config;
 
 import com.anji.captcha.service.CaptchaCacheService;
-import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import com.google.auto.service.AutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author lengleng
- * @date 2020/5/19
+ * @date 2020/8/27
  * <p>
- * 验证码 缓存提供支持集群
+ * 验证码 缓存提供支持集群,需要通过SPI
  */
-@Primary
-@Component
-@AllArgsConstructor
+@AutoService(CaptchaCacheService.class)
 public class CaptchaCacheServiceProvider implements CaptchaCacheService {
 
-	private final StringRedisTemplate stringRedisTemplate;
+	private static final String REDIS = "redis";
+
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 
 	@Override
 	public void set(String key, String value, long expiresInSeconds) {
@@ -39,6 +39,11 @@ public class CaptchaCacheServiceProvider implements CaptchaCacheService {
 	@Override
 	public String get(String key) {
 		return stringRedisTemplate.opsForValue().get(key);
+	}
+
+	@Override
+	public String type() {
+		return REDIS;
 	}
 
 }

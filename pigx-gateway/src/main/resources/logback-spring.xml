@@ -71,7 +71,8 @@
 		</filter>
 	</appender>
 
-	<logger name="org.activiti.engine.impl.db" level="DEBUG">
+	<!--验证码缓存 INFO 屏蔽-->
+	<logger name="com.anji" level="ERROR">
 		<appender-ref ref="debug"/>
 	</logger>
 

@@ -31,6 +31,11 @@ public interface CacheConstants {
 	String USER_DETAILS = "user_details";
 
 	/**
+	 * 角色信息缓存
+	 */
+	String ROLE_DETAILS = "role_details";
+
+	/**
 	 * 字典信息缓存
 	 */
 	String DICT_DETAILS = "dict_details";
