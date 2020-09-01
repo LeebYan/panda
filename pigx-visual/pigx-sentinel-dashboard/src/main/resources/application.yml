@@ -24,4 +24,4 @@ auth:
 
 sentinel:
   dashboard:
-    version: 1.7.1
+    version: @project.version@

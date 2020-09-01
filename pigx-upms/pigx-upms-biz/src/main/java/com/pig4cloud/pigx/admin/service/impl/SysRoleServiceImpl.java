@@ -51,7 +51,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 	/**
 	 * 通过用户ID，查询角色信息
-	 *
 	 * @param userId
 	 * @return
 	 */
@@ -62,9 +61,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 	/**
 	 * 根据角色ID 查询角色列表，注意缓存删除
-	 *
 	 * @param roleIdList 角色ID列表
-	 * @param key        缓存key
+	 * @param key 缓存key
 	 * @return
 	 */
 	@Override
@@ -75,7 +73,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 	/**
 	 * 通过角色ID，删除角色,并清空角色菜单缓存
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -88,7 +85,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 	/**
 	 * 根据角色菜单列表
-	 *
 	 * @param roleVo 角色&菜单列表
 	 * @return
 	 */
@@ -97,4 +93,5 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 		SysRole sysRole = baseMapper.selectById(roleVo.getRoleId());
 		return roleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleVo.getRoleId(), roleVo.getMenuIds());
 	}
+
 }

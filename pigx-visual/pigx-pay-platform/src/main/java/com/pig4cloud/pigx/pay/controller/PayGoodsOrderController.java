@@ -58,8 +58,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 商品订单
-	 *
-	 * @param goods    商品
+	 * @param goods 商品
 	 * @param response
 	 * @return R
 	 */
@@ -86,10 +85,9 @@ public class PayGoodsOrderController {
 
 	/**
 	 * oauth
-	 *
-	 * @param goods        商品信息
-	 * @param state        appid
-	 * @param code         回调code
+	 * @param goods 商品信息
+	 * @param state appid
+	 * @param code 回调code
 	 * @param modelAndView
 	 * @return
 	 * @throws WxErrorException
@@ -109,8 +107,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page          分页对象
+	 * @param page 分页对象
 	 * @param payGoodsOrder 商品订单表
 	 * @return
 	 */
@@ -122,7 +119,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id查询商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */
@@ -134,7 +130,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 新增商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -148,7 +143,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 修改商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -162,7 +156,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id删除商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */
