@@ -56,6 +56,11 @@ public interface SecurityConstants {
 	String OAUTH_PREFIX = "oauth:";
 
 	/**
+	 * 授权码模式code key 前缀
+	 */
+	String OAUTH_CODE_PREFIX = "oauth:code:";
+
+	/**
 	 * 项目的license
 	 */
 	String PIGX_LICENSE = "made by pigx";

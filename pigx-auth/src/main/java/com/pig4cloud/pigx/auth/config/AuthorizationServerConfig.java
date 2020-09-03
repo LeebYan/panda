@@ -38,6 +38,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -60,6 +61,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	private final UserDetailsService pigxUserDetailsService;
 
+	private final AuthorizationCodeServices authorizationCodeServices;
+
 	private final TokenEnhancer pigxTokenEnhancer;
 
 	@Override
@@ -77,8 +80,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(tokenStore())
 				.tokenEnhancer(pigxTokenEnhancer).userDetailsService(pigxUserDetailsService)
-				.authenticationManager(authenticationManagerBean).reuseRefreshTokens(false)
-				.pathMapping("/oauth/confirm_access", "/token/confirm_access")
+				.authorizationCodeServices(authorizationCodeServices).authenticationManager(authenticationManagerBean)
+				.reuseRefreshTokens(false).pathMapping("/oauth/confirm_access", "/token/confirm_access")
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
 	}
 

@@ -76,7 +76,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 保存用户信息
-	 *
 	 * @param userDto DTO 对象
 	 * @return success/fail
 	 */
@@ -99,7 +98,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 通过查用户的全部信息
-	 *
 	 * @param sysUser 用户
 	 * @return
 	 */
@@ -126,8 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 分页查询用户信息（含有角色信息）
-	 *
-	 * @param page    分页对象
+	 * @param page 分页对象
 	 * @param userDTO 参数列表
 	 * @return
 	 */
@@ -138,7 +135,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 通过ID查询用户信息
-	 *
 	 * @param id 用户ID
 	 * @return 用户信息
 	 */
@@ -149,7 +145,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 删除用户
-	 *
 	 * @param sysUser 用户
 	 * @return Boolean
 	 */
@@ -205,7 +200,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 查询上级部门的用户信息
-	 *
 	 * @param username 用户名
 	 * @return R
 	 */
@@ -224,7 +218,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 获取当前用户的子部门信息
-	 *
 	 * @return 子部门列表
 	 */
 	private List<Integer> getChildDepts() {
