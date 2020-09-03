@@ -59,7 +59,7 @@
 		<docker.namespace>library</docker.namespace>
 		<docker.username>admin</docker.username>
 		<docker.password>Harbor12345</docker.password>
-		<docker.plugin.version>0.32.0</docker.plugin.version>
+		<docker.plugin.version>0.33.0</docker.plugin.version>
 		<!--  默认忽略docker构建 -->
 		<docker.skip>true</docker.skip>
 	</properties>
