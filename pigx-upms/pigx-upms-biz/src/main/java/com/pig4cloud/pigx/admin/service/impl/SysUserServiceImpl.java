@@ -76,6 +76,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 保存用户信息
+	 *
 	 * @param userDto DTO 对象
 	 * @return success/fail
 	 */
@@ -98,6 +99,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 通过查用户的全部信息
+	 *
 	 * @param sysUser 用户
 	 * @return
 	 */
@@ -124,7 +126,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 分页查询用户信息（含有角色信息）
-	 * @param page 分页对象
+	 *
+	 * @param page    分页对象
 	 * @param userDTO 参数列表
 	 * @return
 	 */
@@ -135,6 +138,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 通过ID查询用户信息
+	 *
 	 * @param id 用户ID
 	 * @return 用户信息
 	 */
@@ -145,6 +149,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 删除用户
+	 *
 	 * @param sysUser 用户
 	 * @return Boolean
 	 */
@@ -160,15 +165,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@CacheEvict(value = CacheConstants.USER_DETAILS, key = "#userDto.username")
 	public R<Boolean> updateUserInfo(UserDTO userDto) {
 		UserVO userVO = baseMapper.getUserVoByUsername(userDto.getUsername());
+		if (!ENCODER.matches(userDto.getPassword(), userVO.getPassword())) {
+			log.info("原密码错误，修改个人信息失败:{}", userDto.getUsername());
+			return R.failed("原密码错误，修改个人信息失败");
+		}
+
 		SysUser sysUser = new SysUser();
-		if (StrUtil.isNotBlank(userDto.getPassword()) && StrUtil.isNotBlank(userDto.getNewpassword1())) {
-			if (ENCODER.matches(userDto.getPassword(), userVO.getPassword())) {
-				sysUser.setPassword(ENCODER.encode(userDto.getNewpassword1()));
-			}
-			else {
-				log.info("原密码错误，修改密码失败:{}", userDto.getUsername());
-				return R.failed("原密码错误，修改失败");
-			}
+		if (StrUtil.isNotBlank(userDto.getNewpassword1())) {
+			sysUser.setPassword(ENCODER.encode(userDto.getNewpassword1()));
 		}
 		sysUser.setPhone(userDto.getPhone());
 		sysUser.setUserId(userVO.getUserId());
@@ -201,6 +205,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 查询上级部门的用户信息
+	 *
 	 * @param username 用户名
 	 * @return R
 	 */
@@ -219,6 +224,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	/**
 	 * 获取当前用户的子部门信息
+	 *
 	 * @return 子部门列表
 	 */
 	private List<Integer> getChildDepts() {
