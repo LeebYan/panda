@@ -48,12 +48,12 @@ public interface CacheConstants {
 	/**
 	 * spring boot admin 事件key
 	 */
-	String EVENT_KEY = "event_key";
+	String EVENT_KEY = GLOBALLY + "event_key";
 
 	/**
 	 * 路由存放
 	 */
-	String ROUTE_KEY = "gateway_route_key";
+	String ROUTE_KEY = GLOBALLY + "gateway_route_key";
 
 	/**
 	 * redis reload 事件

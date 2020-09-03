@@ -51,6 +51,11 @@ public interface SecurityConstants {
 	String PIGX_PREFIX = "pigx_";
 
 	/**
+	 * token 相关前缀
+	 */
+	String TOKEN_PREFIX = "token:";
+
+	/**
 	 * oauth 相关前缀
 	 */
 	String OAUTH_PREFIX = "oauth:";
