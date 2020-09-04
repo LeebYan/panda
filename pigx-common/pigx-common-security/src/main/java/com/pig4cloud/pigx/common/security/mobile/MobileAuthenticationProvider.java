@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.common.security.mobile;
 
 import com.pig4cloud.pigx.common.security.component.PigxPreAuthenticationChecks;
 import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -27,7 +28,6 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 
@@ -38,7 +38,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 @Slf4j
 public class MobileAuthenticationProvider implements AuthenticationProvider {
 
-	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	private MessageSourceAccessor messages = PigxSecurityMessageSourceUtil.getAccessor();
 
 	private UserDetailsChecker detailsChecker = new PigxPreAuthenticationChecks();
 

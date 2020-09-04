@@ -17,12 +17,12 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 
@@ -33,7 +33,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 @Slf4j
 public class PigxPreAuthenticationChecks implements UserDetailsChecker {
 
-	private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	private MessageSourceAccessor messages = PigxSecurityMessageSourceUtil.getAccessor();
 
 	@Override
 	public void check(UserDetails user) {

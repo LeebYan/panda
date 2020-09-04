@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.common.security.component;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,9 @@ public class PigxSecurityInnerAspect {
 	public Object around(ProceedingJoinPoint point, Inner inner) {
 		String header = request.getHeader(SecurityConstants.FROM);
 		if (inner.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
-			log.warn("访问接口 {} 没有权限", point.getSignature().getName());
-			throw new AccessDeniedException("Access is denied");
+			log.warn("访问接口 {} 没有权限", inner.value());
+			throw new AccessDeniedException(PigxSecurityMessageSourceUtil.getAccessor().getMessage(
+					"AbstractAccessDecisionManager.accessDenied", new Object[] { inner.value() }, "access denied"));
 		}
 		return point.proceed();
 	}

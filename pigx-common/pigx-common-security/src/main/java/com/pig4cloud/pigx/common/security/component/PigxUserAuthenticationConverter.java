@@ -23,11 +23,11 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.security.exception.PigxAuth2Exception;
 import com.pig4cloud.pigx.common.security.service.PigxUser;
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.util.StringUtils;
@@ -110,8 +110,9 @@ public class PigxUserAuthenticationConverter implements UserAuthenticationConver
 		if (StrUtil.isNotBlank(headerValue) && !userValue.toString().equals(headerValue)) {
 			log.warn("请求头中的租户ID({})和用户的租户ID({})不一致", headerValue, userValue);
 			// TODO: 不要提示租户ID不对，可能被穷举
-			throw new PigxAuth2Exception(SpringSecurityMessageSource.getAccessor()
-					.getMessage("AbstractUserDetailsAuthenticationProvider.badTenantId", "Bad tenant ID"));
+			throw new PigxAuth2Exception(PigxSecurityMessageSourceUtil.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.badTenantId", new Object[] { headerValue },
+					"Bad tenant ID"));
 		}
 	}
 

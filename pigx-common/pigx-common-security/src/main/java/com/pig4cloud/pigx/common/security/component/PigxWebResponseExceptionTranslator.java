@@ -18,13 +18,13 @@
 package com.pig4cloud.pigx.common.security.component;
 
 import com.pig4cloud.pigx.common.security.exception.*;
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.oauth2.common.DefaultThrowableAnalyzer;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException;
@@ -67,7 +67,7 @@ public class PigxWebResponseExceptionTranslator implements WebResponseExceptionT
 		ase = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class,
 				causeChain);
 		if (ase != null) {
-			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
+			String msg = PigxSecurityMessageSourceUtil.getAccessor().getMessage(
 					"AbstractUserDetailsAuthenticationProvider.badCredentials", ase.getMessage(), Locale.CHINA);
 			return handleOAuth2Exception(new InvalidException(msg, ase));
 		}
