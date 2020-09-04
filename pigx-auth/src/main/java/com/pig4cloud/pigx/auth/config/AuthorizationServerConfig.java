@@ -20,9 +20,11 @@
 package com.pig4cloud.pigx.auth.config;
 
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.auth.service.PigxRedisTokenStore;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import com.pig4cloud.pigx.common.security.component.PigxCommenceAuthExceptionEntryPoint;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -62,6 +64,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	private final TokenEnhancer pigxTokenEnhancer;
 
+	private final ObjectMapper objectMapper;
+
 	@Override
 	@SneakyThrows
 	public void configure(ClientDetailsServiceConfigurer clients) {
@@ -70,7 +74,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-		oauthServer.allowFormAuthenticationForClients().checkTokenAccess("isAuthenticated()");
+		oauthServer.allowFormAuthenticationForClients()
+				.authenticationEntryPoint(new PigxCommenceAuthExceptionEntryPoint(objectMapper))
+				.checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override

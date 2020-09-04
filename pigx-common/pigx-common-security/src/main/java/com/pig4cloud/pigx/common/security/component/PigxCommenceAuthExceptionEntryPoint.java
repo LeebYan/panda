@@ -21,14 +21,15 @@ import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.security.util.PigxSecurityMessageSourceUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -36,10 +37,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.Locale;
 
 /**
- * 客户端异常处理 {@link org.springframework.security.core.AuthenticationException } 不同细化异常处理
+ * 异常处理 {@link org.springframework.security.core.AuthenticationException } 不同细化异常处理
  *
  * @author lengleng
  * @date 2020-06-14
@@ -47,7 +47,7 @@ import java.util.Locale;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint {
+public class PigxCommenceAuthExceptionEntryPoint implements AuthenticationEntryPoint {
 
 	private final ObjectMapper objectMapper;
 
@@ -64,16 +64,20 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 
 		if (authException instanceof CredentialsExpiredException
 				|| authException instanceof InsufficientAuthenticationException) {
-			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage(),
-					Locale.CHINA);
+			String msg = PigxSecurityMessageSourceUtil.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof UsernameNotFoundException) {
-			String msg = SpringSecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage(),
-					Locale.CHINA);
+			String msg = PigxSecurityMessageSourceUtil.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage());
+			result.setMsg(msg);
+		}
+
+		if (authException instanceof BadCredentialsException) {
+			String msg = PigxSecurityMessageSourceUtil.getAccessor().getMessage(
+					"AbstractUserDetailsAuthenticationProvider.badClientCredentials", authException.getMessage());
 			result.setMsg(msg);
 		}
 
