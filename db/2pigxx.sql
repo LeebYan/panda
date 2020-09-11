@@ -307,7 +307,7 @@ INSERT INTO `sys_menu` VALUES (2211, '参数新增', 'admin_syspublicparam_add',
 INSERT INTO `sys_menu` VALUES (2212, '参数删除', 'admin_syspublicparam_del', NULL, 2210, NULL, 1, '0', '1', '2019-04-29 22:17:55', '2020-03-24 08:57:12', '0', 1);
 INSERT INTO `sys_menu` VALUES (2213, '参数编辑', 'admin_syspublicparam_edit', NULL, 2210, NULL, 1, '0', '1', '2019-04-29 22:18:14', '2020-03-24 08:57:13', '0', 1);
 INSERT INTO `sys_menu` VALUES (2300, '代码生成', '', '/gen/index', 10006, 'icon-weibiaoti46', 1, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:14', '0', 1);
-INSERT INTO `sys_menu` VALUES (2400, '终端管理', '', '/admin/client/index', 2000, 'icon-shouji', 9, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:15', '0', 1);
+INSERT INTO `sys_menu` VALUES (2400, '终端管理', '', '/admin/client/index', 2000, 'icon-bangzhushouji', 9, '1', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:15', '0', 1);
 INSERT INTO `sys_menu` VALUES (2401, '客户端新增', 'sys_client_add', NULL, 2400, '1', NULL, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:57:16', '0', 1);
 INSERT INTO `sys_menu` VALUES (2402, '客户端修改', 'sys_client_edit', NULL, 2400, NULL, NULL, '0', '1', '2018-05-15 21:37:06', '2020-03-24 08:57:16', '0', 1);
 INSERT INTO `sys_menu` VALUES (2403, '客户端删除', 'sys_client_del', NULL, 2400, NULL, NULL, '0', '1', '2018-05-15 21:39:16', '2020-03-24 08:57:17', '0', 1);
