@@ -28,3 +28,11 @@ spring:
 
 useAddressServer: true
 
+# 关闭监控埋点采集
+management:
+  metrics:
+    export:
+      elastic:
+        enabled: false
+      influx:
+        enabled: false
