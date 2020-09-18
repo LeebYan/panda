@@ -72,6 +72,7 @@ public class DefaultRangeSequence implements RangeSequence {
 				for (;;) {
 					if (currentRange.isOver()) {
 						currentRange = seqRangeMgr.nextRange(name);
+						seqRangeMap.put(name,currentRange);
 					}
 
 					value = currentRange.getAndIncrement();
