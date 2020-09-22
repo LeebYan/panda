@@ -15,4 +15,4 @@ EXPOSE 5003
 
 ADD ./target/pigx-codegen.jar ./
 
-CMD sleep 120;java $JAVA_OPTS -jar pigx-codegen.jar
+CMD sleep 60;java $JAVA_OPTS -jar pigx-codegen.jar

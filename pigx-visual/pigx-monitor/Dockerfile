@@ -15,4 +15,4 @@ EXPOSE 5001
 
 ADD ./target/pigx-monitor.jar ./
 
-CMD sleep 120;java $JAVA_OPTS -jar pigx-monitor.jar
+CMD sleep 60;java $JAVA_OPTS -jar pigx-monitor.jar
