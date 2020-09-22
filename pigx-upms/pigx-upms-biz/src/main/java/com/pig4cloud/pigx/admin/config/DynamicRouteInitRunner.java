@@ -28,14 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.scheduling.annotation.Async;
 
@@ -58,10 +54,10 @@ public class DynamicRouteInitRunner {
 
 	@Async
 	@Order
-	@EventListener({ WebServerInitializedEvent.class, DynamicRouteInitEvent.class })
+	@EventListener({WebServerInitializedEvent.class, DynamicRouteInitEvent.class})
 	public void initRoute() {
-		Boolean result = redisTemplate.delete(CacheConstants.ROUTE_KEY);
-		log.info("初始化网关路由 {} ", result);
+		redisTemplate.delete(CacheConstants.ROUTE_KEY);
+		log.info("开始初始化网关路由");
 
 		routeConfService.list().forEach(route -> {
 			RouteDefinitionVo vo = new RouteDefinitionVo();
@@ -79,23 +75,10 @@ public class DynamicRouteInitRunner {
 			redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVo.class));
 			redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, route.getRouteId(), vo);
 		});
-		log.debug("初始化网关路由结束 ");
-	}
 
-	/**
-	 * redis 监听配置,监听 gateway_redis_route_reload_topic,重新加载Redis
-	 * @param redisConnectionFactory redis 配置
-	 * @return
-	 */
-	@Bean
-	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
-		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-		container.setConnectionFactory(redisConnectionFactory);
-		container.addMessageListener((message, bytes) -> {
-			log.warn("接收到重新Redis 重新加载路由事件");
-			initRoute();
-		}, new ChannelTopic(CacheConstants.ROUTE_REDIS_RELOAD_TOPIC));
-		return container;
+		// 通知网关重置路由
+		redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "路由信息,网关缓存更新");
+		log.debug("初始化网关路由结束 ");
 	}
 
 }
