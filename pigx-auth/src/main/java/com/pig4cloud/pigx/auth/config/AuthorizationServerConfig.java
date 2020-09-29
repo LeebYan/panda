@@ -21,13 +21,16 @@ package com.pig4cloud.pigx.auth.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pig4cloud.pigx.auth.service.PigxDefaultTokenServices;
 import com.pig4cloud.pigx.auth.service.PigxRedisTokenStore;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxCommenceAuthExceptionEntryPoint;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +43,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
@@ -48,7 +52,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
  * @date 2018/6/22 认证服务器配置
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
@@ -65,6 +69,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private final TokenEnhancer pigxTokenEnhancer;
 
 	private final ObjectMapper objectMapper;
+
+	@Value("${pigx.one.login.enable:true}")
+	private Boolean oneLogin;
 
 	@Override
 	@SneakyThrows
@@ -95,8 +102,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(redisTokenStore)
 				.tokenEnhancer(pigxTokenEnhancer).userDetailsService(pigxUserDetailsService)
 				.authorizationCodeServices(authorizationCodeServices).authenticationManager(authenticationManagerBean)
+				.tokenServices(pigxDefaultTokenServices())
 				.reuseRefreshTokens(false).pathMapping("/oauth/confirm_access", "/token/confirm_access")
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());
+	}
+
+	public AuthorizationServerTokenServices pigxDefaultTokenServices() {
+		PigxDefaultTokenServices pigxDefaultTokenServices = new PigxDefaultTokenServices();
+		pigxDefaultTokenServices.setTokenEnhancer(pigxTokenEnhancer);
+		pigxDefaultTokenServices.setTokenStore(redisTokenStore);
+		pigxDefaultTokenServices.setAuthenticationManager(authenticationManagerBean);
+		pigxDefaultTokenServices.setClientDetailsService(pigxClientDetailsServiceImpl);
+		pigxDefaultTokenServices.setOneLogin(oneLogin);
+		return pigxDefaultTokenServices;
 	}
 
 }
