@@ -61,6 +61,11 @@ public interface CacheConstants {
 	String ROUTE_JVM_RELOAD_TOPIC = "gateway_jvm_route_reload_topic";
 
 	/**
+	 * redis 重新加载 路由信息
+	 */
+	String ROUTE_REDIS_RELOAD_TOPIC = "upms_redis_route_reload_topic";
+
+	/**
 	 * 公众号 reload
 	 */
 	String MP_REDIS_RELOAD_TOPIC = "mp_redis_reload_topic";

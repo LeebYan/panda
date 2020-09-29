@@ -97,7 +97,7 @@ public class RedisCacheAutoConfiguration {
 			}
 
 			if (redisProperties.getKeyPrefix() != null) {
-				config = config.prefixKeysWith(redisProperties.getKeyPrefix());
+				config = config.prefixCacheNameWith(redisProperties.getKeyPrefix());
 			}
 
 			if (!redisProperties.isCacheNullValues()) {

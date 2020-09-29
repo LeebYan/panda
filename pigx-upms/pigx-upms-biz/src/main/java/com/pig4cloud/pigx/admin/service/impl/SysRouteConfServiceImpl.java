@@ -30,7 +30,6 @@ import com.pig4cloud.pigx.common.gateway.support.DynamicRouteInitEvent;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.context.ApplicationEventPublisher;
@@ -141,8 +140,8 @@ public class SysRouteConfServiceImpl extends ServiceImpl<SysRouteConfMapper, Sys
 			this.saveBatch(routeConfList);
 			log.debug("更新网关路由结束 ");
 
-			this.applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
-			redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "UPMS路由信息,网关缓存更新");
+			// 通知网关重置路由
+			redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "路由信息,网关缓存更新");
 		}
 		catch (Exception e) {
 			log.error("路由配置解析失败", e);
