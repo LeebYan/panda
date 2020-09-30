@@ -19,11 +19,7 @@
 
 package com.pig4cloud.pigx.auth.config;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pig4cloud.pigx.auth.service.PigxRedisTokenStore;
-import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.security.component.PigxCommenceAuthExceptionEntryPoint;
 import com.pig4cloud.pigx.common.security.component.PigxWebResponseExceptionTranslator;
 import lombok.AllArgsConstructor;
@@ -38,10 +34,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
  * @author lengleng
@@ -60,9 +55,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	private final AuthorizationCodeServices authorizationCodeServices;
 
-	private final PigxRedisTokenStore redisTokenStore;
+	private final TokenStore redisTokenStore;
 
-	private final TokenEnhancer pigxTokenEnhancer;
+	private final TokenEnhancer tokenEnhancer;
 
 	private final ObjectMapper objectMapper;
 
@@ -81,19 +76,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-		// 设置tokenStore 前缀相关
-		String prefix = String.format(":%s%s", SecurityConstants.PIGX_PREFIX, SecurityConstants.OAUTH_PREFIX);
-		redisTokenStore.setPrefix(prefix);
-		// 设置区分key 条件
-		redisTokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
-			@Override
-			public String extractKey(OAuth2Authentication authentication) {
-				return super.extractKey(authentication) + StrUtil.COLON + TenantContextHolder.getTenantId();
-			}
-		});
-
 		endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST).tokenStore(redisTokenStore)
-				.tokenEnhancer(pigxTokenEnhancer).userDetailsService(pigxUserDetailsService)
+				.tokenEnhancer(tokenEnhancer).userDetailsService(pigxUserDetailsService)
 				.authorizationCodeServices(authorizationCodeServices).authenticationManager(authenticationManagerBean)
 				.reuseRefreshTokens(false).pathMapping("/oauth/confirm_access", "/token/confirm_access")
 				.exceptionTranslator(new PigxWebResponseExceptionTranslator());

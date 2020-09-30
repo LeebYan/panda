@@ -1,12 +1,11 @@
 package com.pig4cloud.pigx.auth.service;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
@@ -16,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -26,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -43,6 +42,8 @@ public class PigxTokenDealServiceImpl {
 	private final CacheManager cacheManager;
 
 	private final TokenStore tokenStore;
+
+	private final KeyStrResolver keyStrResolver;
 
 	/**
 	 * 删除 请求令牌 和 刷新令牌
@@ -75,23 +76,20 @@ public class PigxTokenDealServiceImpl {
 	 * @param username 用户名
 	 * @return R
 	 */
-	public R<Page> queryTokenByUsername(Page page, String username) {
-		String key = String.format("%s:%s%s%s%s", TenantContextHolder.getTenantId(), SecurityConstants.PIGX_PREFIX,
-				SecurityConstants.OAUTH_PREFIX, SecurityConstants.TOKEN_PREFIX, username);
-		// 根据用户名查询token
-		redisTemplate.setValueSerializer(new StringRedisSerializer());
-		Object token = redisTemplate.opsForValue().get(key);
+	public R queryTokenByUsername(Page page, String username) {
+		String key = keyStrResolver.extract(
+				SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "uname_to_access:", StrUtil.COLON);
 
-		// 根据token 查询详细信息
-		String keyVal = String.format("%s:%s%s%s%s", TenantContextHolder.getTenantId(), SecurityConstants.PIGX_PREFIX,
-				SecurityConstants.OAUTH_PREFIX, "access:", token);
+		Object collect = redisTemplate.keys("*:" + username).stream().filter(k -> ((String) k).contains(key))
+				.flatMap(k -> {
+					redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+					return redisTemplate.opsForSet().members(k).stream();
+				}).collect(Collectors.toList());
 
-		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-		Object o = redisTemplate.opsForValue().get(keyVal);
-
-		if (o != null) {
-			page.setRecords(CollUtil.newArrayList(o));
-			page.setTotal(1L);
+		if (collect instanceof List) {
+			List objSet = (List<?>) collect;
+			page.setRecords(objSet);
+			page.setTotal(objSet.size());
 		}
 		return R.ok(page);
 	}
@@ -103,10 +101,9 @@ public class PigxTokenDealServiceImpl {
 	 */
 	public R<Page> queryToken(Page page) {
 		// 根据分页参数获取对应数据
-		String key = String.format("%s:%s%s%s*", TenantContextHolder.getTenantId(), SecurityConstants.PIGX_PREFIX,
-				SecurityConstants.OAUTH_PREFIX, "access:");
+		String key = keyStrResolver.extract(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:*",
+				StrUtil.COLON);
 		List<String> pages = findKeysForPage(key, page.getCurrent(), page.getSize());
-
 		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
 		page.setRecords(redisTemplate.opsForValue().multiGet(pages));
 		page.setTotal(redisTemplate.keys(key).size());

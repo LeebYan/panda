@@ -47,6 +47,7 @@ public class SysTokenController {
 	 */
 	@GetMapping("/page")
 	public R getTokenPage(@RequestParam Map<String, Object> params) {
+		// 获取请求的
 		return remoteTokenService.getTokenPage(params, SecurityConstants.FROM_IN);
 	}
 
