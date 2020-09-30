@@ -78,12 +78,12 @@ public class PigxTokenDealServiceImpl {
 	 */
 	public R queryTokenByUsername(Page page, String username) {
 		String key = keyStrResolver.extract(
-				SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "uname_to_access:", StrUtil.COLON);
+				SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "uname_to_access_z:", StrUtil.COLON);
 
 		Object collect = redisTemplate.keys("*:" + username).stream().filter(k -> ((String) k).contains(key))
 				.flatMap(k -> {
 					redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-					return redisTemplate.opsForSet().members(k).stream();
+					return redisTemplate.opsForZSet().range(k, 0, System.currentTimeMillis()).stream();
 				}).collect(Collectors.toList());
 
 		if (collect instanceof List) {

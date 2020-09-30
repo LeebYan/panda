@@ -10,7 +10,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * @author lengleng
@@ -28,16 +27,12 @@ public class PigxTokenStoreAutoConfiguration {
 
 	@Bean
 	public TokenStore tokenStore() {
-		RedisTokenStore tokenStore = new RedisTokenStore(connectionFactory);
-		tokenStore.setPrefix(
-				resolver.extract(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX, StrUtil.COLON));
+		PigxRedisTokenStore tokenStore = new PigxRedisTokenStore(connectionFactory, resolver);
+		tokenStore.setPrefix(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX);
 
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {
-				if (resolver == null) {
-					return super.extractKey(authentication);
-				}
 				// 增加租户隔离部分 租户ID:原生计算值
 				return resolver.extract(super.extractKey(authentication), StrUtil.COLON);
 			}
