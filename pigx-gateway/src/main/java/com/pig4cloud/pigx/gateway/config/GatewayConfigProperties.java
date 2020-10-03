@@ -27,6 +27,6 @@ public class GatewayConfigProperties {
 	/**
 	 * 网关不需要校验验证码的客户端 {@link com.pig4cloud.pigx.gateway.filter.ValidateCodeGatewayFilter}
 	 */
-	public List<String> ignoreClient;
+	public List<String> ignoreClients;
 
 }
