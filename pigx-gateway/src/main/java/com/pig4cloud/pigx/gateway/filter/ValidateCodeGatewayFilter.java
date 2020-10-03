@@ -30,7 +30,7 @@ import com.pig4cloud.pigx.common.core.exception.ValidateCodeException;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
-import com.pig4cloud.pigx.gateway.config.FilterIgnorePropertiesConfig;
+import com.pig4cloud.pigx.gateway.config.GatewayConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +59,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 	private final RedisTemplate redisTemplate;
 
-	private final FilterIgnorePropertiesConfig filterIgnorePropertiesConfig;
+	private final GatewayConfigProperties gatewayConfig;
 
 	@Override
 	public GatewayFilter apply(Object config) {
@@ -82,7 +82,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			try {
 				String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 				String clientId = WebUtils.extractClientId(header).orElse(null);
-				if (StrUtil.isNotBlank(clientId) && filterIgnorePropertiesConfig.getClients().contains(clientId)) {
+				if (StrUtil.isNotBlank(clientId) && gatewayConfig.getIgnoreClient().contains(clientId)) {
 					return chain.filter(exchange);
 				}
 

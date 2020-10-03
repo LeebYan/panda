@@ -15,10 +15,10 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.gateway.handler;
+package com.pig4cloud.pigx.common.swagger.support;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -27,18 +27,21 @@ import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-import springfox.documentation.swagger.web.SwaggerResourcesProvider;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
+
+import java.util.Optional;
 
 /**
  * @author lengleng
- * @date 2018-07-19 SwaggerResourceHandler
+ * @date 2018-07-19 SwaggerSecurityHandler
  */
 @Slf4j
 @Component
-@AllArgsConstructor
-public class SwaggerResourceHandler implements HandlerFunction<ServerResponse> {
+public class SwaggerSecurityHandler implements HandlerFunction<ServerResponse> {
 
-	private final SwaggerResourcesProvider swaggerResources;
+	@Autowired(required = false)
+	private SecurityConfiguration securityConfiguration;
 
 	/**
 	 * Handle the given request.
@@ -48,7 +51,8 @@ public class SwaggerResourceHandler implements HandlerFunction<ServerResponse> {
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromValue(swaggerResources.get()));
+				.body(BodyInserters.fromValue(Optional.ofNullable(securityConfiguration)
+						.orElse(SecurityConfigurationBuilder.builder().build())));
 	}
 
 }

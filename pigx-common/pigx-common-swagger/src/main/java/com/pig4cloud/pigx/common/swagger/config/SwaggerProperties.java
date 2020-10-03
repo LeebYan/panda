@@ -54,6 +54,11 @@ public class SwaggerProperties {
 	private List<String> excludePath = new ArrayList<>();
 
 	/**
+	 * 需要排除的服务
+	 */
+	private List<String> ignoreProviders = new ArrayList<>();
+
+	/**
 	 * 标题
 	 **/
 	private String title = "";

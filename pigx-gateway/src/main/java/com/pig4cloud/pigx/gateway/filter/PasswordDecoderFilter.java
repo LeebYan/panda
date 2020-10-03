@@ -25,8 +25,9 @@ import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.http.HttpUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.gateway.config.GatewayConfigProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
@@ -69,8 +70,8 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	private static final String KEY_ALGORITHM = "AES";
 
-	@Value("${security.encode.key:1234567812345678}")
-	private String encodeKey;
+	@Autowired
+	private GatewayConfigProperties gatewayConfig;
 
 	@Override
 	public GatewayFilter apply(Object config) {
@@ -115,8 +116,9 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 	private Function decryptAES() {
 		return s -> {
 			// 构建前端对应解密AES 因子
-			AES aes = new AES(Mode.CBC, Padding.NoPadding, new SecretKeySpec(encodeKey.getBytes(), KEY_ALGORITHM),
-					new IvParameterSpec(encodeKey.getBytes()));
+			AES aes = new AES(Mode.CBC, Padding.NoPadding,
+					new SecretKeySpec(gatewayConfig.getEncodeKey().getBytes(), KEY_ALGORITHM),
+					new IvParameterSpec(gatewayConfig.getEncodeKey().getBytes()));
 
 			// 获取请求密码并解密
 			Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);

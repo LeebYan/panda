@@ -16,28 +16,27 @@
  */
 package com.pig4cloud.pigx.common.swagger.config;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author lengleng swagger配置 禁用方法1：使用注解@Profile({"dev","test"})
@@ -45,7 +44,6 @@ import java.util.List;
  * havingValue = "true") 然后在测试配置或者开发配置中添加swagger.enable=true即可开启，生产环境不填则默认关闭Swagger.
  */
 @Configuration
-@EnableSwagger2
 @EnableAutoConfiguration
 @ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
 public class SwaggerAutoConfiguration {
@@ -69,9 +67,6 @@ public class SwaggerAutoConfiguration {
 		if (swaggerProperties.getBasePath().isEmpty()) {
 			swaggerProperties.getBasePath().add(BASE_PATH);
 		}
-		// noinspection unchecked
-		List<Predicate<String>> basePath = new ArrayList();
-		swaggerProperties.getBasePath().forEach(path -> basePath.add(PathSelectors.ant(path)));
 
 		// exclude-path处理
 		if (swaggerProperties.getExcludePath().isEmpty()) {
@@ -81,18 +76,22 @@ public class SwaggerAutoConfiguration {
 		swaggerProperties.getExcludePath().forEach(path -> excludePath.add(PathSelectors.ant(path)));
 
 		// 版本请求头处理
-		ParameterBuilder versionPar = new ParameterBuilder();
-		List<Parameter> pars = new ArrayList<>();
-		versionPar.name("VERSION").description("灰度路由版本信息").modelRef(new ModelRef("string")).parameterType("header")
-				.required(false).build();
+		List<RequestParameter> pars = new ArrayList<>();
+
+		RequestParameterBuilder versionPar = new RequestParameterBuilder().description("灰度路由版本信息")
+				.in(ParameterType.HEADER).name("VERSION").required(false)
+				.query(param -> param.model(model -> model.scalarModel(ScalarType.STRING)));
+
 		pars.add(versionPar.build());
 
-		// noinspection Guava
-		return new Docket(DocumentationType.SWAGGER_2).host(swaggerProperties.getHost())
-				.apiInfo(apiInfo(swaggerProperties)).globalOperationParameters(pars).select()
-				.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
-				.paths(Predicates.and(Predicates.not(Predicates.or(excludePath)), Predicates.or(basePath))).build()
-				.securitySchemes(Collections.singletonList(securitySchema()))
+		ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2).host(swaggerProperties.getHost())
+				.apiInfo(apiInfo(swaggerProperties)).globalRequestParameters(pars).select()
+				.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()));
+
+		swaggerProperties.getBasePath().forEach(p -> builder.paths(PathSelectors.ant(p)));
+		swaggerProperties.getExcludePath().forEach(p -> builder.paths(PathSelectors.ant(p).negate()));
+
+		return builder.build().securitySchemes(Collections.singletonList(securitySchema()))
 				.securityContexts(Collections.singletonList(securityContext())).pathMapping("/");
 	}
 
@@ -101,8 +100,7 @@ public class SwaggerAutoConfiguration {
 	 * @return
 	 */
 	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth())
-				.forPaths(PathSelectors.regex(swaggerProperties().getAuthorization().getAuthRegex())).build();
+		return SecurityContext.builder().securityReferences(defaultAuth()).build();
 	}
 
 	/**

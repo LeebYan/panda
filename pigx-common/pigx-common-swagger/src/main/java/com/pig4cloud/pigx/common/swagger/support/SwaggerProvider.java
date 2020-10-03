@@ -15,9 +15,10 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.gateway.config;
+package com.pig4cloud.pigx.common.swagger.support;
 
-import lombok.AllArgsConstructor;
+import com.pig4cloud.pigx.common.swagger.config.SwaggerProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.cloud.gateway.support.NameUtils;
@@ -34,16 +35,16 @@ import java.util.stream.Collectors;
 /**
  * @author Sywd 聚合接口文档注册，和zuul实现类似
  */
-@Component
 @Primary
-@AllArgsConstructor
+@Component
+@RequiredArgsConstructor
 public class SwaggerProvider implements SwaggerResourcesProvider {
 
 	private static final String API_URI = "/v2/api-docs";
 
 	private final RouteDefinitionRepository routeDefinitionRepository;
 
-	private final FilterIgnorePropertiesConfig filterIgnorePropertiesConfig;
+	private final SwaggerProperties swaggerProperties;
 
 	@Override
 	public List<SwaggerResource> get() {
@@ -52,7 +53,7 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
 		return routes.stream()
 				.flatMap(routeDefinition -> routeDefinition.getPredicates().stream()
 						.filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
-						.filter(predicateDefinition -> !filterIgnorePropertiesConfig.getSwaggerProviders()
+						.filter(predicateDefinition -> !swaggerProperties.getIgnoreProviders()
 								.contains(routeDefinition.getId()))
 						.map(predicateDefinition -> swaggerResource(routeDefinition.getId(),
 								predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**",

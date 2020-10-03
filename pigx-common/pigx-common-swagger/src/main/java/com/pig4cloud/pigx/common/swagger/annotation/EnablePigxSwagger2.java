@@ -17,20 +17,23 @@
 
 package com.pig4cloud.pigx.common.swagger.annotation;
 
+import com.pig4cloud.pigx.common.swagger.config.GatewaySwaggerAutoConfiguration;
 import com.pig4cloud.pigx.common.swagger.config.SwaggerAutoConfiguration;
 import org.springframework.context.annotation.Import;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.annotation.*;
 
 /**
  * @author lengleng
- * @date 2018/7/21 开启pigx swagger
+ * @date 2020/10/2 开启pigx swagger
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({ SwaggerAutoConfiguration.class })
+@EnableSwagger2
+@Import({ SwaggerAutoConfiguration.class, GatewaySwaggerAutoConfiguration.class })
 public @interface EnablePigxSwagger2 {
 
 }

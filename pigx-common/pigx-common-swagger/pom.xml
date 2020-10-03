@@ -34,17 +34,44 @@
 
 
 	<dependencies>
-		<!--swagger 依赖-->
+		<!--接口文档-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.fox.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger.fox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-oas</artifactId>
+			<version>${swagger.fox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-spring-ui</artifactId>
+			<version>${knife4j.version}</version>
 		</dependency>
 		<!--knife4j是为Java MVC框架集成Swagger生成Api文档的增强-->
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
 			<artifactId>knife4j-micro-spring-boot-starter</artifactId>
 			<version>${knife4j.version}</version>
+		</dependency>
+		<!--webflux 相关包-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!--网关 swagger 聚合依赖-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gateway-core</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
