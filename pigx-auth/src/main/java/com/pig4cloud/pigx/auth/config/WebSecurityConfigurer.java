@@ -21,13 +21,13 @@ package com.pig4cloud.pigx.auth.config;
 
 import com.pig4cloud.pigx.common.security.handler.FormAuthenticationFailureHandler;
 import com.pig4cloud.pigx.common.security.handler.MobileLoginSuccessHandler;
+import com.pig4cloud.pigx.common.security.handler.SsoLogoutSuccessHandler;
 import com.pig4cloud.pigx.common.security.mobile.MobileSecurityConfigurer;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -36,6 +36,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * @author lengleng
@@ -51,12 +52,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) {
 		http.formLogin().loginPage("/token/login").loginProcessingUrl("/token/form")
 				.failureHandler(authenticationFailureHandler()).and().logout()
-				.logoutSuccessHandler((request, response, authentication) -> {
-					String referer = request.getHeader(HttpHeaders.REFERER);
-					response.sendRedirect(referer);
-				}).deleteCookies("JSESSIONID").invalidateHttpSession(true).and().authorizeRequests()
-				.antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll().anyRequest().authenticated().and()
-				.csrf().disable().apply(mobileSecurityConfigurer());
+				.logoutSuccessHandler(logoutSuccessHandler()).deleteCookies("JSESSIONID").invalidateHttpSession(true)
+				.and().authorizeRequests().antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll()
+				.anyRequest().authenticated().and().csrf().disable().apply(mobileSecurityConfigurer());
 	}
 
 	/**
@@ -78,6 +76,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationFailureHandler authenticationFailureHandler() {
 		return new FormAuthenticationFailureHandler();
+	}
+
+	@Bean
+	public LogoutSuccessHandler logoutSuccessHandler() {
+		return new SsoLogoutSuccessHandler();
 	}
 
 	@Bean
