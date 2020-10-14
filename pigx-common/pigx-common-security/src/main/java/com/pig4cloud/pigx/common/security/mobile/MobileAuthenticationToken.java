@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pigx.common.security.mobile;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,7 +42,9 @@ public class MobileAuthenticationToken extends AbstractAuthenticationToken {
 		setAuthenticated(false);
 	}
 
-	public MobileAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
+	@JsonCreator
+	public MobileAuthenticationToken(@JsonProperty("principal") Object principal,
+			@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		super.setAuthenticated(true);

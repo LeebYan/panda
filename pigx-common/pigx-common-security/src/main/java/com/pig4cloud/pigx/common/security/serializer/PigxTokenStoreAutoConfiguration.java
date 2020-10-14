@@ -1,8 +1,9 @@
-package com.pig4cloud.pigx.common.security.component;
+package com.pig4cloud.pigx.common.security.serializer;
 
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
+import com.pig4cloud.pigx.common.security.component.PigxRedisTokenStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +29,8 @@ public class PigxTokenStoreAutoConfiguration {
 	@Bean
 	public TokenStore tokenStore() {
 		PigxRedisTokenStore tokenStore = new PigxRedisTokenStore(connectionFactory, resolver);
+		tokenStore.setSerializationStrategy(new JacksonRedisTokenStoreSerializationStrategy());
 		tokenStore.setPrefix(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX);
-
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {

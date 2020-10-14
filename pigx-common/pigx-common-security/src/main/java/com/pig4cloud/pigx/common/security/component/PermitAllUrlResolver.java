@@ -102,25 +102,28 @@ public class PermitAllUrlResolver implements InitializingBean {
 	/**
 	 * 过滤 Inner 设置
 	 *
-	 * <p>1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式</p>
-	 * <p> 2. 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT</p>
-	 *
+	 * <p>
+	 * 1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式
+	 * </p>
+	 * <p>
+	 * 2. 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT
+	 * </p>
 	 * @param url mapping路径
-	 * @param rq  请求犯法
+	 * @param rq 请求犯法
 	 */
 	private void filterPath(String url, RequestMapping rq) {
 		List<String> methodList = Arrays.stream(rq.method()).map(RequestMethod::name).collect(Collectors.toList());
 		String resultUrl = ReUtil.replaceAll(url, PATTERN, "*");
 		if (CollUtil.isEmpty(methodList)) {
 			ignoreUrls.add(resultUrl);
-		} else {
+		}
+		else {
 			ignoreUrls.add(String.format("%s|%s", resultUrl, CollUtil.join(methodList, StrUtil.COMMA)));
 		}
 	}
 
 	/**
 	 * 获取对外暴露的URL，注册到 spring security
-	 *
 	 * @param registry spring security context
 	 */
 	public void registry(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
@@ -136,7 +139,7 @@ public class PermitAllUrlResolver implements InitializingBean {
 			// 当配置对外的URL|GET,POST 这种形式，则获取方法列表 并注册到 spring security
 			if (strings.length == 2) {
 				for (String method : StrUtil.split(strings[1], StrUtil.COMMA)) {
-					registry.antMatchers(HttpMethod.valueOf(method), strings[0]);
+					registry.antMatchers(HttpMethod.valueOf(method), strings[0]).permitAll();
 				}
 				continue;
 			}
