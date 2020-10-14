@@ -18,6 +18,8 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
@@ -39,14 +41,24 @@ public class PigxBearerTokenExtractor extends BearerTokenExtractor {
 
 	private final PathMatcher pathMatcher = new AntPathMatcher();
 
-	private final PermitAllUrlProperties urlProperties;
+	private final PermitAllUrlResolver permitAllUrlResolver;
 
 	@Override
 	public Authentication extract(HttpServletRequest request) {
-		boolean match = urlProperties.getIgnoreUrls().stream()
-				.anyMatch(url -> pathMatcher.match(url, request.getRequestURI()));
 
-		return match ? null : super.extract(request);
+		// 2. 判断请求方法是否匹配
+		boolean result = permitAllUrlResolver.getIgnoreUrls().stream().anyMatch(url -> {
+			String[] strings = StrUtil.split(url, "|");
+			// 1. 判断路径是否匹配
+			boolean match = pathMatcher.match(strings[0], request.getRequestURI());
+			// 2. 判断方法是否匹配
+			if (strings.length == 2) {
+				String[] methods = StrUtil.split(strings[1], StrUtil.COMMA);
+				return ArrayUtil.contains(methods, request.getMethod()) && match;
+			}
+			return match;
+		});
+		return result ? null : super.extract(request);
 	}
 
 }

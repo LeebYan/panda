@@ -47,7 +47,7 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 	protected RemoteTokenServices remoteTokenServices;
 
 	@Autowired
-	private PermitAllUrlProperties permitAllUrlProperties;
+	private PermitAllUrlResolver permitAllUrlResolver;
 
 	@Autowired
 	private TokenExtractor tokenExtractor;
@@ -66,7 +66,8 @@ public class PigxResourceServerConfigurerAdapter extends ResourceServerConfigure
 		httpSecurity.headers().frameOptions().disable();
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
 				.authorizeRequests();
-		permitAllUrlProperties.getIgnoreUrls().forEach(url -> registry.antMatchers(url).permitAll());
+		// 配置对外暴露接口
+		permitAllUrlResolver.registry(registry);
 		registry.anyRequest().authenticated().and().csrf().disable();
 	}
 

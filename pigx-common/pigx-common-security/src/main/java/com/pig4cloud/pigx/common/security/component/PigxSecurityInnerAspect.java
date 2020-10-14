@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +46,14 @@ public class PigxSecurityInnerAspect {
 	private final HttpServletRequest request;
 
 	@SneakyThrows
-	@Around("@annotation(inner)")
+	@Around("@within(inner) || @annotation(inner)")
 	public Object around(ProceedingJoinPoint point, Inner inner) {
+		// 先判断 inner 是否为空, 为空则获取类上注解
+		if (inner == null) {
+			Class<?> aClass = point.getTarget().getClass();
+			inner = AnnotationUtils.findAnnotation(aClass, Inner.class);
+		}
+
 		String header = request.getHeader(SecurityConstants.FROM);
 		if (inner.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
 			log.warn("访问接口 {} 没有权限", inner.value());
