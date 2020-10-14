@@ -19,7 +19,9 @@
 
 package com.pig4cloud.pigx.admin.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 
@@ -41,5 +43,13 @@ public interface SysLogService extends IService<SysLog> {
 	 * @return true/false
 	 */
 	Boolean saveBatchLogs(List<PreLogVO> preLogVoList);
+
+	/**
+	 * 分页查询日志
+	 * @param page
+	 * @param sysLog
+	 * @return
+	 */
+	Page getLogByPage(Page page, SysLogDTO sysLog);
 
 }

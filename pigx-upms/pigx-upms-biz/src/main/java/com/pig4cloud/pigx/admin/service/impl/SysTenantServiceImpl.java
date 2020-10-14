@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.*;
-import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
+import com.pig4cloud.pigx.admin.api.util.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
 import com.pig4cloud.pigx.admin.service.*;

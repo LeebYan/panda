@@ -17,7 +17,7 @@
  *
  */
 
-package com.pig4cloud.pigx.admin.api.vo;
+package com.pig4cloud.pigx.admin.api.util;
 
 import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.dto.TreeNode;

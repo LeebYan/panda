@@ -26,7 +26,7 @@ import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.entity.SysRoleMenu;
 import com.pig4cloud.pigx.admin.api.vo.MenuVO;
-import com.pig4cloud.pigx.admin.api.vo.TreeUtil;
+import com.pig4cloud.pigx.admin.api.util.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.service.SysMenuService;

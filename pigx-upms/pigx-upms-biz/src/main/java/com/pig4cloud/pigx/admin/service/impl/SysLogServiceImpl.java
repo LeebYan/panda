@@ -19,7 +19,13 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 import com.pig4cloud.pigx.admin.mapper.SysLogMapper;
@@ -61,6 +67,22 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 			return log;
 		}).collect(Collectors.toList());
 		return this.saveBatch(sysLogs);
+	}
+
+	@Override
+	public Page getLogByPage(Page page, SysLogDTO sysLog) {
+
+		LambdaQueryWrapper<SysLog> wrapper = Wrappers.lambdaQuery();
+		if (StrUtil.isNotBlank(sysLog.getType())) {
+			wrapper.eq(SysLog::getType, sysLog.getType());
+		}
+
+		if (ArrayUtil.isNotEmpty(sysLog.getCreateTime())) {
+			wrapper.ge(SysLog::getCreateTime, sysLog.getCreateTime()[0]).le(SysLog::getCreateTime,
+					sysLog.getCreateTime()[1]);
+		}
+
+		return baseMapper.selectPage(page, wrapper);
 	}
 
 }
