@@ -136,7 +136,7 @@ public class PermitAllUrlResolver implements InitializingBean {
 			// 当配置对外的URL|GET,POST 这种形式，则获取方法列表 并注册到 spring security
 			if (strings.length == 2) {
 				for (String method : StrUtil.split(strings[1], StrUtil.COMMA)) {
-					registry.antMatchers(HttpMethod.valueOf(method), strings[0]);
+					registry.antMatchers(HttpMethod.valueOf(method), strings[0]).permitAll();
 				}
 				continue;
 			}
