@@ -20,6 +20,7 @@ package com.pig4cloud.pigx.common.gray.feign;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
+import com.pig4cloud.pigx.common.gray.support.NonWebVersionContextHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class GrayFeignRequestInterceptor implements RequestInterceptor {
 	@Override
 	public void apply(RequestTemplate template) {
 		String reqVersion = WebUtils.getRequest() != null ? WebUtils.getRequest().getHeader(CommonConstants.VERSION)
-				: null;
+				: NonWebVersionContextHolder.getVersion();
 
 		if (StrUtil.isNotBlank(reqVersion)) {
 			log.debug("feign gray add header version :{}", reqVersion);

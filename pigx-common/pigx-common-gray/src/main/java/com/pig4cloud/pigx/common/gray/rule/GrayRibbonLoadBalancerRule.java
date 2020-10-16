@@ -28,6 +28,7 @@ import com.netflix.loadbalancer.ILoadBalancer;
 import com.netflix.loadbalancer.Server;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
+import com.pig4cloud.pigx.common.gray.support.NonWebVersionContextHolder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -60,7 +61,8 @@ public class GrayRibbonLoadBalancerRule extends AbstractLoadBalancerRule {
 
 		// 获取请求version，无则随机返回可用实例
 		String reqVersion = WebUtils.getRequest() != null ? WebUtils.getRequest().getHeader(CommonConstants.VERSION)
-				: null;
+				: NonWebVersionContextHolder.getVersion();
+
 		if (StrUtil.isBlank(reqVersion)) {
 			return reachableServers.get(RandomUtil.randomInt(reachableServers.size()));
 		}
