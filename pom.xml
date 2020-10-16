@@ -51,6 +51,7 @@
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.11.4</ttl.version>
+		<ureport.version>2.2.9</ureport.version>
 		<aws.version>1.11.543</aws.version>
 		<xxl.job.version>2.2.0</xxl.job.version>
 		<activiti.version>5.22.0</activiti.version>
