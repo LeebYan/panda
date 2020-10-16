@@ -26,6 +26,11 @@ package com.pig4cloud.pigx.common.core.constant;
 public interface SecurityConstants {
 
 	/**
+	 * 启动时是否检查Inner注解安全性
+	 */
+	boolean INNER_CHECK = true;
+
+	/**
 	 * 刷新
 	 */
 	String REFRESH_TOKEN = "refresh_token";
