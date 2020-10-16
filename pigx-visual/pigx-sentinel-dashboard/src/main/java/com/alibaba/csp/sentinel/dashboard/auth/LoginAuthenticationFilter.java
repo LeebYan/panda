@@ -87,7 +87,7 @@ public class LoginAuthenticationFilter implements Filter {
 		String servletPath = httpRequest.getServletPath();
 
 		// Exclude the urls which needn't auth
-		if (authFilterExcludeUrls.stream().anyMatch(s -> PATH_MATCHER.match(s,servletPath))){
+		if (authFilterExcludeUrls.stream().anyMatch(s -> PATH_MATCHER.match(s, servletPath))) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -106,7 +106,6 @@ public class LoginAuthenticationFilter implements Filter {
 			if (!authFilterExcludeUrlSuffix.startsWith(URL_SUFFIX_DOT)) {
 				authFilterExcludeUrlSuffix = URL_SUFFIX_DOT + authFilterExcludeUrlSuffix;
 			}
-
 
 			if (servletPath.endsWith(authFilterExcludeUrlSuffix)) {
 				chain.doFilter(request, response);

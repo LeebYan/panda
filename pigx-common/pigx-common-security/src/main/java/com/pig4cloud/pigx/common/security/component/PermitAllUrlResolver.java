@@ -85,8 +85,8 @@ public class PermitAllUrlResolver implements InitializingBean {
 			// 2. 当类上不包含 @Inner 注解则获取该方法的注解
 			if (controller == null) {
 				Inner method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Inner.class);
-				Optional.ofNullable(method).ifPresent(
-						inner -> info.getPatternsCondition().getPatterns().forEach(url -> this.filterPath(url, info, map)));
+				Optional.ofNullable(method).ifPresent(inner -> info.getPatternsCondition().getPatterns()
+						.forEach(url -> this.filterPath(url, info, map)));
 				continue;
 			}
 
@@ -104,34 +104,40 @@ public class PermitAllUrlResolver implements InitializingBean {
 	/**
 	 * 过滤 Inner 设置
 	 *
-	 * <p>0. 暴露安全检查</p>
-	 * <p>1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式</p>
-	 * <p> 2. 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT</p>
-	 *
-	 * @param url  mapping路径
+	 * <p>
+	 * 0. 暴露安全检查
+	 * </p>
+	 * <p>
+	 * 1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式
+	 * </p>
+	 * <p>
+	 * 2. 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT
+	 * </p>
+	 * @param url mapping路径
 	 * @param info 请求犯法
-	 * @param map  路由映射信息
+	 * @param map 路由映射信息
 	 */
 	private void filterPath(String url, RequestMappingInfo info, Map<RequestMappingInfo, HandlerMethod> map) {
 		// 安全检查
-		if (SecurityConstants.INNER_CHECK){
+		if (SecurityConstants.INNER_CHECK) {
 			security(url, info, map);
 		}
 
-		List<String> methodList = info.getMethodsCondition().getMethods().stream().map(RequestMethod::name).collect(Collectors.toList());
+		List<String> methodList = info.getMethodsCondition().getMethods().stream().map(RequestMethod::name)
+				.collect(Collectors.toList());
 		String resultUrl = ReUtil.replaceAll(url, PATTERN, "*");
 		if (CollUtil.isEmpty(methodList)) {
 			ignoreUrls.add(resultUrl);
-		} else {
+		}
+		else {
 			ignoreUrls.add(String.format("%s|%s", resultUrl, CollUtil.join(methodList, StrUtil.COMMA)));
 		}
 	}
 
 	/**
 	 * 针对Pathvariable 请求安全检查。增加启动好使影响启动效率 请注意
-	 *
 	 * @param url 接口路径
-	 * @param rq  当前请求的元信息
+	 * @param rq 当前请求的元信息
 	 * @param map springmvc 接口列表
 	 */
 	private void security(String url, RequestMappingInfo rq, Map<RequestMappingInfo, HandlerMethod> map) {
@@ -158,11 +164,9 @@ public class PermitAllUrlResolver implements InitializingBean {
 				if (PATHMATCHER.match(url, pattern)) {
 					HandlerMethod rqMethod = map.get(rq);
 					HandlerMethod infoMethod = map.get(info);
-					log.error("@Inner 标记接口 ==> {}.{} 使用不当，会额外暴露接口 ==> {}.{} 请知悉"
-							, rqMethod.getBeanType().getName()
-							, rqMethod.getMethod().getName()
-							, infoMethod.getBeanType().getName()
-							, infoMethod.getMethod().getName());
+					log.error("@Inner 标记接口 ==> {}.{} 使用不当，会额外暴露接口 ==> {}.{} 请知悉", rqMethod.getBeanType().getName(),
+							rqMethod.getMethod().getName(), infoMethod.getBeanType().getName(),
+							infoMethod.getMethod().getName());
 				}
 			}
 		}
@@ -170,7 +174,6 @@ public class PermitAllUrlResolver implements InitializingBean {
 
 	/**
 	 * 获取对外暴露的URL，注册到 spring security
-	 *
 	 * @param registry spring security context
 	 */
 	public void registry(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
