@@ -21,15 +21,30 @@ nacos:
       urls: /,/error,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/**,/v1/console/health/**,/actuator/**,/v1/console/server/**
 
 spring:
+  application:
+    name: @artifactId@
   datasource:
     platform: mysql
   security:
     enabled: true
+  boot:  # 接入 spring boot admin
+    admin:
+      client:
+        url: http://pigx-monitor:5001
+        username: pigx
+        password: pigx
 
 useAddressServer: true
 
 # 关闭监控埋点采集
 management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
   metrics:
     export:
       elastic:
