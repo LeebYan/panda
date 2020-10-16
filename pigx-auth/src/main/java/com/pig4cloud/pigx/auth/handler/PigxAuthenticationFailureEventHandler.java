@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -61,7 +61,7 @@ public class PigxAuthenticationFailureEventHandler implements AuthenticationFail
 	public void handle(AuthenticationException authenticationException, Authentication authentication,
 			HttpServletRequest request, HttpServletResponse response) {
 		String username = authentication.getName();
-		SysLog sysLog = SysLogUtils.getSysLog(request, username);
+		SysLogDTO sysLog = SysLogUtils.getSysLog(request, username);
 		sysLog.setTitle(username + "用户登录");
 		sysLog.setType(CommonConstants.STATUS_LOCK);
 		sysLog.setParams(username);

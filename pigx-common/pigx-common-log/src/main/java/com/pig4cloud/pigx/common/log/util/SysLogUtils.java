@@ -22,7 +22,7 @@ package com.pig4cloud.pigx.common.log.util;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
@@ -42,10 +42,10 @@ import java.util.Objects;
 @UtilityClass
 public class SysLogUtils {
 
-	public SysLog getSysLog() {
+	public SysLogDTO getSysLog() {
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 				.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-		SysLog sysLog = new SysLog();
+		SysLogDTO sysLog = new SysLogDTO();
 		sysLog.setCreateBy(Objects.requireNonNull(getUsername()));
 		sysLog.setType(CommonConstants.STATUS_NORMAL);
 		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
@@ -57,8 +57,8 @@ public class SysLogUtils {
 		return sysLog;
 	}
 
-	public SysLog getSysLog(HttpServletRequest request, String username) {
-		SysLog sysLog = new SysLog();
+	public SysLogDTO getSysLog(HttpServletRequest request, String username) {
+		SysLogDTO sysLog = new SysLogDTO();
 		sysLog.setCreateBy(username);
 		sysLog.setType(CommonConstants.STATUS_NORMAL);
 		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));

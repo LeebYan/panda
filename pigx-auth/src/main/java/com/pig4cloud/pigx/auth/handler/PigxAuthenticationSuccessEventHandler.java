@@ -17,7 +17,7 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
@@ -56,7 +56,7 @@ public class PigxAuthenticationSuccessEventHandler implements AuthenticationSucc
 	@Override
 	public void handle(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
 		String username = authentication.getName();
-		SysLog sysLog = SysLogUtils.getSysLog(request, username);
+		SysLogDTO sysLog = SysLogUtils.getSysLog(request, username);
 		sysLog.setTitle(username + "用户登录");
 		sysLog.setParams(username);
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);

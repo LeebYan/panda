@@ -21,7 +21,6 @@ package com.pig4cloud.pigx.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
 import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 import com.pig4cloud.pigx.admin.service.SysLogService;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -52,7 +51,8 @@ public class SysLogController {
 
 	/**
 	 * 简单分页查询
-	 * @param page 分页对象
+	 *
+	 * @param page   分页对象
 	 * @param sysLog 系统日志
 	 * @return
 	 */
@@ -63,6 +63,7 @@ public class SysLogController {
 
 	/**
 	 * 删除日志
+	 *
 	 * @param id ID
 	 * @return success/false
 	 */
@@ -74,17 +75,19 @@ public class SysLogController {
 
 	/**
 	 * 插入日志
+	 *
 	 * @param sysLog 日志实体
 	 * @return success/false
 	 */
 	@Inner
 	@PostMapping("/save")
-	public R save(@Valid @RequestBody SysLog sysLog) {
-		return R.ok(sysLogService.save(sysLog));
+	public R save(@Valid @RequestBody SysLogDTO sysLog) {
+		 return R.ok(sysLogService.saveLog(sysLog));
 	}
 
 	/**
 	 * 批量插入前端异常日志
+	 *
 	 * @param preLogVoList 日志实体
 	 * @return success/false
 	 */

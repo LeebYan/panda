@@ -19,7 +19,7 @@
 
 package com.pig4cloud.pigx.admin.api.feign;
 
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -42,6 +42,6 @@ public interface RemoteLogService {
 	 * @return succes、false
 	 */
 	@PostMapping("/log/save")
-	R<Boolean> saveLog(@RequestBody SysLog sysLog, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Boolean> saveLog(@RequestBody SysLogDTO sysLog, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

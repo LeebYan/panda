@@ -19,7 +19,7 @@
 
 package com.pig4cloud.pigx.common.log.event;
 
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -30,6 +30,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SysLogEvent {
 
-	private final SysLog sysLog;
+	private final SysLogDTO sysLog;
 
 }

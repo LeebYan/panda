@@ -19,7 +19,7 @@
 
 package com.pig4cloud.pigx.common.log.event;
 
-import com.pig4cloud.pigx.admin.api.entity.SysLog;
+import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class SysLogListener {
 	@Order
 	@EventListener(SysLogEvent.class)
 	public void saveSysLog(SysLogEvent event) {
-		SysLog sysLog = event.getSysLog();
+		SysLogDTO sysLog = event.getSysLog();
 		remoteLogService.saveLog(sysLog, SecurityConstants.FROM_IN);
 	}
 

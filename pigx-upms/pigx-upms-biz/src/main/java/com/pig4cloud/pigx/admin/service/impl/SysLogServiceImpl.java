@@ -31,7 +31,11 @@ import com.pig4cloud.pigx.admin.api.vo.PreLogVO;
 import com.pig4cloud.pigx.admin.mapper.SysLogMapper;
 import com.pig4cloud.pigx.admin.service.SysLogService;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
+import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,6 +54,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 
 	/**
 	 * 批量插入前端错误日志
+	 *
 	 * @param preLogVoList 日志信息
 	 * @return true/false
 	 */
@@ -83,6 +88,24 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 		}
 
 		return baseMapper.selectPage(page, wrapper);
+	}
+
+	/**
+	 * 插入日志
+	 *
+	 * @param sysLog 日志对象
+	 * @return true/false
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Boolean saveLog(SysLogDTO sysLog) {
+		TenantBroker.applyAs(sysLog::getTenantId, tenantId -> {
+			TenantContextHolder.setTenantId(tenantId);
+			SysLog log = new SysLog();
+			BeanUtils.copyProperties(sysLog, log, "createTime");
+			return baseMapper.insert(log);
+		});
+		return Boolean.TRUE;
 	}
 
 }

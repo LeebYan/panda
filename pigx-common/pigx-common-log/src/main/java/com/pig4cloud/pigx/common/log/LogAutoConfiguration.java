@@ -20,6 +20,7 @@
 package com.pig4cloud.pigx.common.log;
 
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
+import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
 import com.pig4cloud.pigx.common.log.aspect.SysLogAspect;
 import com.pig4cloud.pigx.common.log.event.SysLogListener;
 import lombok.AllArgsConstructor;
@@ -49,8 +50,8 @@ public class LogAutoConfiguration {
 	}
 
 	@Bean
-	public SysLogAspect sysLogAspect(ApplicationEventPublisher publisher) {
-		return new SysLogAspect(publisher);
+	public SysLogAspect sysLogAspect(ApplicationEventPublisher publisher, KeyStrResolver resolver) {
+		return new SysLogAspect(publisher,resolver);
 	}
 
 }
