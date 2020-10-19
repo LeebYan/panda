@@ -20,7 +20,7 @@
 		<pigx.version>3.10.0</pigx.version>
 		<mybatis-plus.version>3.4.0</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
-		<druid.version>1.1.23</druid.version>
+		<druid.version>1.2.1</druid.version>
 		<mysql.connector.version>8.0.21</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.9.0</mp.weixin.version>
@@ -137,6 +137,11 @@
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
 				<version>${druid.version}</version>
 			</dependency>
 			<!--mysql 驱动-->
