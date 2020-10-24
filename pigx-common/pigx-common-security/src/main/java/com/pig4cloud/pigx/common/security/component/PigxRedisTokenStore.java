@@ -125,13 +125,9 @@ public class PigxRedisTokenStore implements TokenStore {
 	public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
 		String key = authenticationKeyGenerator.extractKey(authentication);
 		byte[] serializedKey = serializeKey(AUTH_TO_ACCESS + key);
-		byte[] bytes = null;
-		RedisConnection conn = getConnection();
-		try {
+		byte[] bytes;
+		try (RedisConnection conn = getConnection()) {
 			bytes = conn.get(serializedKey);
-		}
-		finally {
-			conn.close();
 		}
 		OAuth2AccessToken accessToken = deserializeAccessToken(bytes);
 		if (accessToken != null) {
@@ -156,15 +152,10 @@ public class PigxRedisTokenStore implements TokenStore {
 	@Override
 	public OAuth2Authentication readAuthentication(String token) {
 		byte[] bytes;
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			bytes = conn.get(serializeKey(AUTH + token));
 		}
-		finally {
-			conn.close();
-		}
-		OAuth2Authentication auth = deserializeAuthentication(bytes);
-		return auth;
+		return deserializeAuthentication(bytes);
 	}
 
 	@Override
@@ -173,14 +164,9 @@ public class PigxRedisTokenStore implements TokenStore {
 	}
 
 	public OAuth2Authentication readAuthenticationForRefreshToken(String token) {
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			byte[] bytes = conn.get(serializeKey(REFRESH_AUTH + token));
-			OAuth2Authentication auth = deserializeAuthentication(bytes);
-			return auth;
-		}
-		finally {
-			conn.close();
+			return deserializeAuthentication(bytes);
 		}
 	}
 
@@ -194,8 +180,7 @@ public class PigxRedisTokenStore implements TokenStore {
 		byte[] approvalKey = serializeKey(UNAME_TO_ACCESS + getApprovalKey(authentication));
 		byte[] clientId = serializeKey(CLIENT_ID_TO_ACCESS + authentication.getOAuth2Request().getClientId());
 
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			conn.openPipeline();
 			if (springDataRedis_2_0) {
 				try {
@@ -236,7 +221,6 @@ public class PigxRedisTokenStore implements TokenStore {
 			}
 			OAuth2RefreshToken refreshToken = token.getRefreshToken();
 			if (refreshToken != null && refreshToken.getValue() != null) {
-				byte[] refresh = serialize(token.getRefreshToken().getValue());
 				byte[] auth = serialize(token.getValue());
 				byte[] refreshToAccessKey = serializeKey(REFRESH_TO_ACCESS + token.getRefreshToken().getValue());
 				if (springDataRedis_2_0) {
@@ -262,9 +246,6 @@ public class PigxRedisTokenStore implements TokenStore {
 			}
 			conn.closePipeline();
 		}
-		finally {
-			conn.close();
-		}
 	}
 
 	private static String getApprovalKey(OAuth2Authentication authentication) {
@@ -285,23 +266,17 @@ public class PigxRedisTokenStore implements TokenStore {
 	@Override
 	public OAuth2AccessToken readAccessToken(String tokenValue) {
 		byte[] key = serializeKey(ACCESS + tokenValue);
-		byte[] bytes = null;
-		RedisConnection conn = getConnection();
-		try {
+		byte[] bytes;
+		try (RedisConnection conn = getConnection()) {
 			bytes = conn.get(key);
 		}
-		finally {
-			conn.close();
-		}
-		OAuth2AccessToken accessToken = deserializeAccessToken(bytes);
-		return accessToken;
+		return deserializeAccessToken(bytes);
 	}
 
 	public void removeAccessToken(String tokenValue) {
 		byte[] accessKey = serializeKey(ACCESS + tokenValue);
 		byte[] authKey = serializeKey(AUTH + tokenValue);
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			conn.openPipeline();
 			conn.get(accessKey);
 			conn.get(authKey);
@@ -326,9 +301,6 @@ public class PigxRedisTokenStore implements TokenStore {
 				conn.closePipeline();
 			}
 		}
-		finally {
-			conn.close();
-		}
 	}
 
 	@Override
@@ -336,8 +308,7 @@ public class PigxRedisTokenStore implements TokenStore {
 		byte[] refreshKey = serializeKey(REFRESH + refreshToken.getValue());
 		byte[] refreshAuthKey = serializeKey(REFRESH_AUTH + refreshToken.getValue());
 		byte[] serializedRefreshToken = serialize(refreshToken);
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			conn.openPipeline();
 			if (springDataRedis_2_0) {
 				try {
@@ -363,24 +334,16 @@ public class PigxRedisTokenStore implements TokenStore {
 			}
 			conn.closePipeline();
 		}
-		finally {
-			conn.close();
-		}
 	}
 
 	@Override
 	public OAuth2RefreshToken readRefreshToken(String tokenValue) {
 		byte[] key = serializeKey(REFRESH + tokenValue);
-		byte[] bytes = null;
-		RedisConnection conn = getConnection();
-		try {
+		byte[] bytes;
+		try (RedisConnection conn = getConnection()) {
 			bytes = conn.get(key);
 		}
-		finally {
-			conn.close();
-		}
-		OAuth2RefreshToken refreshToken = deserializeRefreshToken(bytes);
-		return refreshToken;
+		return deserializeRefreshToken(bytes);
 	}
 
 	@Override
@@ -392,16 +355,12 @@ public class PigxRedisTokenStore implements TokenStore {
 		byte[] refreshKey = serializeKey(REFRESH + tokenValue);
 		byte[] refreshAuthKey = serializeKey(REFRESH_AUTH + tokenValue);
 		byte[] refresh2AccessKey = serializeKey(REFRESH_TO_ACCESS + tokenValue);
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			conn.openPipeline();
 			conn.del(refreshKey);
 			conn.del(refreshAuthKey);
 			conn.del(refresh2AccessKey);
 			conn.closePipeline();
-		}
-		finally {
-			conn.close();
 		}
 	}
 
@@ -412,16 +371,12 @@ public class PigxRedisTokenStore implements TokenStore {
 
 	private void removeAccessTokenUsingRefreshToken(String refreshToken) {
 		byte[] key = serializeKey(REFRESH_TO_ACCESS + refreshToken);
-		List<Object> results = null;
-		RedisConnection conn = getConnection();
-		try {
+		List<Object> results;
+		try (RedisConnection conn = getConnection()) {
 			conn.openPipeline();
 			conn.get(key);
 			conn.del(key);
 			results = conn.closePipeline();
-		}
-		finally {
-			conn.close();
 		}
 		byte[] bytes = (byte[]) results.get(0);
 		String accessToken = deserializeString(bytes);
@@ -437,6 +392,7 @@ public class PigxRedisTokenStore implements TokenStore {
 
 		List<byte[]> byteList;
 		Long size = conn.zCard(key);
+		assert size != null;
 		byteList = new ArrayList<>(size.intValue());
 		Cursor<RedisZSetCommands.Tuple> cursor = conn.zScan(key, ScanOptions.NONE);
 
@@ -466,8 +422,7 @@ public class PigxRedisTokenStore implements TokenStore {
 	 */
 	public long doMaintenance() {
 		long removed = 0;
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			// client_id_to_acccess maintenance
 			Cursor<byte[]> clientToAccessKeys = conn.scan(ScanOptions.scanOptions()
 					.match(keyStrResolver.extract(prefix + CLIENT_ID_TO_ACCESS + "*", StrUtil.COLON)).build());
@@ -486,9 +441,6 @@ public class PigxRedisTokenStore implements TokenStore {
 				removed += conn.zRemRangeByScore(unameToAccessKey, 0, System.currentTimeMillis());
 			}
 		}
-		finally {
-			conn.close();
-		}
 		return removed;
 	}
 
@@ -496,12 +448,8 @@ public class PigxRedisTokenStore implements TokenStore {
 	public Collection<OAuth2AccessToken> findTokensByClientIdAndUserName(String clientId, String userName) {
 		byte[] approvalKey = serializeKey(UNAME_TO_ACCESS + getApprovalKey(clientId, userName));
 		List<byte[]> byteList;
-		RedisConnection conn = getConnection();
-		try {
+		try (RedisConnection conn = getConnection()) {
 			byteList = getZByteLists(approvalKey, conn);
-		}
-		finally {
-			conn.close();
 		}
 		if (byteList.size() == 0) {
 			return Collections.emptySet();
@@ -517,13 +465,9 @@ public class PigxRedisTokenStore implements TokenStore {
 	@Override
 	public Collection<OAuth2AccessToken> findTokensByClientId(String clientId) {
 		byte[] key = serializeKey(CLIENT_ID_TO_ACCESS + clientId);
-		List<byte[]> byteList = null;
-		RedisConnection conn = getConnection();
-		try {
+		List<byte[]> byteList;
+		try (RedisConnection conn = getConnection()) {
 			byteList = getZByteLists(key, conn);
-		}
-		finally {
-			conn.close();
 		}
 		if (byteList.size() == 0) {
 			return Collections.emptySet();

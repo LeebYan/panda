@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pigx.common.security.service;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
@@ -83,9 +85,15 @@ public class PigxUser extends User {
 	 * @throws IllegalArgumentException if a <code>null</code> value was passed either as
 	 * a parameter or as an element in the <code>GrantedAuthority</code> collection
 	 */
-	public PigxUser(Integer id, Integer deptId, String phone, String avatar, Integer tenantId, String username,
-			String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	@JsonCreator
+	public PigxUser(@JsonProperty("id") Integer id, @JsonProperty("deptId") Integer deptId,
+			@JsonProperty("phone") String phone, @JsonProperty("avatar") String avatar,
+			@JsonProperty("tenantId") Integer tenantId, @JsonProperty("username") String username,
+			@JsonProperty("password") String password, @JsonProperty("enabled") boolean enabled,
+			@JsonProperty("accountNonExpired") boolean accountNonExpired,
+			@JsonProperty("credentialsNonExpired") boolean credentialsNonExpired,
+			@JsonProperty("accountNonLocked") boolean accountNonLocked,
+			@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
 		this.deptId = deptId;

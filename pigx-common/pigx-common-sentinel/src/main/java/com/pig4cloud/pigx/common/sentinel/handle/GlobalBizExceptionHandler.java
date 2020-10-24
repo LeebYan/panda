@@ -24,12 +24,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.SpringSecurityMessageSource;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +39,7 @@ import java.util.List;
  * @date 2020-06-29
  */
 @Slf4j
+@RestController
 @RestControllerAdvice
 @ConditionalOnExpression("!'${security.oauth2.client.clientId}'.isEmpty()")
 public class GlobalBizExceptionHandler {
@@ -89,16 +87,12 @@ public class GlobalBizExceptionHandler {
 	}
 
 	/**
-	 * validation Exception (以form-data形式传参)
-	 * @param exception
+	 * 避免 404 重定向到 /error 导致NPE ,ignore-url 需要配置对应端点
 	 * @return R
 	 */
-	@ExceptionHandler({ BindException.class })
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public R bindExceptionHandler(BindException exception) {
-		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-		log.warn("参数绑定异常,ex = {}", fieldErrors.get(0).getDefaultMessage());
-		return R.failed(fieldErrors.get(0).getDefaultMessage());
+	@DeleteMapping("/error")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public R noHandlerFoundException() {
+		return R.failed();
 	}
-
 }
