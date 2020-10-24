@@ -46,7 +46,6 @@ public class SysLogAspect {
 
 	private final KeyStrResolver tenantKeyStrResolver;
 
-
 	@SneakyThrows
 	@Around("@annotation(sysLog)")
 	public Object around(ProceedingJoinPoint point, SysLog sysLog) {

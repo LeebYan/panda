@@ -14,22 +14,22 @@ import javax.servlet.ServletException;
 @Slf4j
 public class MonitorViewServlet extends ResourceServlet {
 
-    private MonitorStatService monitorStatService;
+	private MonitorStatService monitorStatService;
 
-    public MonitorViewServlet() {
-        super("druid");
-    }
+	public MonitorViewServlet() {
+		super("druid");
+	}
 
-    @Override
-    public void init() throws ServletException {
-        log.info("init MonitorViewServlet");
-        super.init();
-        monitorStatService = SpringContextHolder.getBean(MonitorStatService.class);
-    }
+	@Override
+	public void init() throws ServletException {
+		log.info("init MonitorViewServlet");
+		super.init();
+		monitorStatService = SpringContextHolder.getBean(MonitorStatService.class);
+	}
 
-    @Override
-    protected String process(String url) {
-        return monitorStatService.service(url);
-    }
+	@Override
+	protected String process(String url) {
+		return monitorStatService.service(url);
+	}
 
 }

@@ -1,7 +1,6 @@
 package com.pig4cloud.pigx.admin.api.dto;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -83,7 +82,6 @@ public class SysLogDTO {
 	 * 服务ID
 	 */
 	private String serviceId;
-
 
 	/**
 	 * 创建时间区间 [开始时间，结束时间]

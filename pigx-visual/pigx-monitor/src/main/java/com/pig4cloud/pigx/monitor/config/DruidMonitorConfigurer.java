@@ -27,7 +27,6 @@ public class DruidMonitorConfigurer {
 		return registrationBean;
 	}
 
-
 	@Data
 	@Component
 	@ConfigurationProperties(prefix = "monitor")
@@ -37,5 +36,7 @@ public class DruidMonitorConfigurer {
 		 * 需要监控的服务
 		 */
 		private List<String> applications;
+
 	}
+
 }

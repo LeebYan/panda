@@ -103,15 +103,9 @@ public class PermitAllUrlResolver implements InitializingBean {
 
 	/**
 	 * 过滤 Inner 设置
-	 *
 	 * <p>
-	 * 0. 暴露安全检查
-	 * </p>
-	 * <p>
-	 * 1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式
-	 * </p>
-	 * <p>
-	 * 2. 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT
+	 * 0. 暴露安全检查 1. 路径转换： 如果为restful(/xx/{xx}) --> /xx/* ant 表达式 2.
+	 * 构建表达式：允许暴露的接口|允许暴露的方法类型,允许暴露的方法类型 URL|GET,POST,DELETE,PUT
 	 * </p>
 	 * @param url mapping路径
 	 * @param info 请求犯法

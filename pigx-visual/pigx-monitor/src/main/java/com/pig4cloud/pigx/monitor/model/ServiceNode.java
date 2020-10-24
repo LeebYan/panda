@@ -9,12 +9,12 @@ import lombok.Data;
 @Data
 public class ServiceNode {
 
-    private String id;
+	private String id;
 
-    private Integer port;
+	private Integer port;
 
-    private String address;
+	private String address;
 
-    private String serviceName;
+	private String serviceName;
 
 }

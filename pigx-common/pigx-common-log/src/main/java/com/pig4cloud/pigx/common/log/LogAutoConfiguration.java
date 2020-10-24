@@ -51,7 +51,7 @@ public class LogAutoConfiguration {
 
 	@Bean
 	public SysLogAspect sysLogAspect(ApplicationEventPublisher publisher, KeyStrResolver resolver) {
-		return new SysLogAspect(publisher,resolver);
+		return new SysLogAspect(publisher, resolver);
 	}
 
 }

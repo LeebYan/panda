@@ -34,14 +34,21 @@ import java.util.stream.Collectors;
 public class MonitorStatService implements DruidStatServiceMBean {
 
 	public final static int RESULT_CODE_SUCCESS = 1;
+
 	public final static int RESULT_CODE_ERROR = -1;
 
 	private final static int DEFAULT_PAGE = 1;
+
 	private final static int DEFAULT_PER_PAGE_COUNT = Integer.MAX_VALUE;
+
 	private static final String ORDER_TYPE_DESC = "desc";
+
 	private static final String ORDER_TYPE_ASC = "asc";
+
 	private static final String DEFAULT_ORDER_TYPE = ORDER_TYPE_ASC;
+
 	private static final String DEFAULT_ORDERBY = "SQL";
+
 	/**
 	 * 以consul注册的服务的id为key,value为某个微服务节点
 	 */
@@ -55,7 +62,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 
 	/**
 	 * 获取所有服务信息
-	 *
 	 * @return
 	 */
 	public Map<String, ServiceNode> getAllServiceNodeMap() {
@@ -67,7 +73,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 				String host = instance.getHost();
 				String instanceId = instance.getInstanceId();
 				if (instanceId == null) {
-					instanceId = instance.getMetadata().get("nacos.instanceId").replaceAll("#", "-").replaceAll("@@", "-");
+					instanceId = instance.getMetadata().get("nacos.instanceId").replaceAll("#", "-").replaceAll("@@",
+							"-");
 				}
 				int port = instance.getPort();
 				String serviceId = instance.getServiceId();
@@ -83,13 +90,13 @@ public class MonitorStatService implements DruidStatServiceMBean {
 				}
 			}
 		}
-		return serviceNodes.parallelStream().collect(Collectors.toMap(i -> i.getServiceName() + "-" + i.getAddress() + "-" + i.getPort(),
-				Function.identity(), (v1, v2) -> v2));
+		return serviceNodes.parallelStream()
+				.collect(Collectors.toMap(i -> i.getServiceName() + "-" + i.getAddress() + "-" + i.getPort(),
+						Function.identity(), (v1, v2) -> v2));
 	}
 
 	/**
 	 * 获取指定服务名的所有节点
-	 *
 	 * @param parameters
 	 * @return
 	 */
@@ -104,7 +111,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 				String host = instance.getHost();
 				String instanceId = instance.getInstanceId();
 				if (instanceId == null) {
-					instanceId = instance.getMetadata().get("nacos.instanceId").replaceAll("#", "-").replaceAll("@@", "-");
+					instanceId = instance.getMetadata().get("nacos.instanceId").replaceAll("#", "-").replaceAll("@@",
+							"-");
 				}
 				int port = instance.getPort();
 				String serviceId = instance.getServiceId();
@@ -120,8 +128,9 @@ public class MonitorStatService implements DruidStatServiceMBean {
 				}
 			}
 		}
-		return serviceNodes.parallelStream().collect(Collectors.toMap(i -> i.getServiceName() + "-" + i.getAddress() + "-" + i.getPort(),
-				Function.identity(), (v1, v2) -> v2));
+		return serviceNodes.parallelStream()
+				.collect(Collectors.toMap(i -> i.getServiceName() + "-" + i.getAddress() + "-" + i.getPort(),
+						Function.identity(), (v1, v2) -> v2));
 	}
 
 	@Override
@@ -136,7 +145,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 			Integer id = StringUtils.subStringToInteger(url, "datasource-", ".");
 			return getDataSourceStatData();
 		}
-
 
 		if (url.startsWith("/datasource-")) {
 			String serviceName = StringUtils.subString(url, "serviceName=", "&sql-");
@@ -210,7 +218,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		return JSONUtils.toJSONString(dataMap);
 	}
 
-
 	public String getWallStatMap(Map<String, String> parameters) {
 		Map<String, ServiceNode> allNodeMap = getServiceAllNodeMap(parameters);
 		List<WallResult> countResult = new ArrayList<>();
@@ -227,7 +234,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		}
 		return JSON.toJSONString(lastCount);
 	}
-
 
 	private List<Map<String, Object>> getSpringStatDataList(Map<String, String> parameters) {
 		List<Map<String, Object>> array = SpringStatManager.getInstance().getMethodStatData();
@@ -246,7 +252,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 				List<WebResult.ContentBean> nodeContent = dataSourceResult.getContent();
 				if (nodeContent != null) {
 					for (WebResult.ContentBean contentBean : nodeContent) {
-						Map<String, Object> map = JSONObject.parseObject(JSONObject.toJSONString(contentBean), Map.class);
+						Map<String, Object> map = JSONObject.parseObject(JSONObject.toJSONString(contentBean),
+								Map.class);
 						arrayMap.add(map);
 					}
 				}
@@ -285,7 +292,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 
 	/**
 	 * 获取sql详情
-	 *
 	 * @param id
 	 * @param serviceId consul获取的服务id
 	 * @return
@@ -301,14 +307,14 @@ public class MonitorStatService implements DruidStatServiceMBean {
 	public String getPoolingConnectionInfoByDataSourceId(Integer id, String serviceId) {
 		getAllServiceNodeMap();
 		ServiceNode serviceNode = serviceIdMap.get(serviceId);
-		String url = "http://" + serviceNode.getAddress() + ":" + serviceNode.getPort() + "/druid/connectionInfo-" + id + ".json";
+		String url = "http://" + serviceNode.getAddress() + ":" + serviceNode.getPort() + "/druid/connectionInfo-" + id
+				+ ".json";
 		ConnectionResult connectionResult = JSONObject.parseObject(HttpUtil.get(url), ConnectionResult.class);
 		return JSON.toJSONString(connectionResult);
 	}
 
 	/**
 	 * SQL监控列表
-	 *
 	 * @param parameters
 	 * @return
 	 */
@@ -345,10 +351,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		return jsonObject.toJSONString();
 	}
 
-
 	/**
 	 * 数据源监控
-	 *
 	 * @param
 	 * @return
 	 */
@@ -379,10 +383,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		return JSON.toJSONString(lastResult);
 	}
 
-
 	/**
 	 * 拼接url
-	 *
 	 * @param parameters
 	 * @param serviceNode
 	 * @param prefix
@@ -408,7 +410,6 @@ public class MonitorStatService implements DruidStatServiceMBean {
 
 	/**
 	 * 处理请求参数
-	 *
 	 * @param url
 	 * @return
 	 */
@@ -438,7 +439,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		return parameters;
 	}
 
-	private List<Map<String, Object>> comparatorOrderBy(List<Map<String, Object>> array, Map<String, String> parameters) {
+	private List<Map<String, Object>> comparatorOrderBy(List<Map<String, Object>> array,
+			Map<String, String> parameters) {
 		// when open the stat page before executing some sql
 		if (array == null || array.isEmpty()) {
 			return null;
@@ -453,7 +455,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 			orderType = DEFAULT_ORDER_TYPE;
 			page = DEFAULT_PAGE;
 			perPageCount = DEFAULT_PER_PAGE_COUNT;
-		} else {
+		}
+		else {
 			orderBy = parameters.get("orderBy");
 			orderType = parameters.get("orderType");
 			String pageParam = parameters.get("page");
@@ -488,4 +491,5 @@ public class MonitorStatService implements DruidStatServiceMBean {
 
 		return array.subList(fromIndex, toIndex);
 	}
+
 }
