@@ -15,4 +15,4 @@ EXPOSE 9999
 
 ADD ./target/pigx-gateway.jar ./
 
-CMD sleep 120;java $JAVA_OPTS -jar pigx-gateway.jar
+CMD sleep 180;java $JAVA_OPTS -jar pigx-gateway.jar

@@ -132,6 +132,15 @@ services:
     image: pigx-oa-platform
     container_name: pigx-oa-platform
 
+  pigx-bi-platform:
+    build:
+      context: ./pigx-visual/pigx-bi-platform
+    restart: always
+    image: pigx-bi-platform
+    container_name: pigx-bi-platform
+    ports:
+      - 5006:5006
+
   pigx-tx-manager:
     build:
       context: ./pigx-visual/pigx-tx-manager

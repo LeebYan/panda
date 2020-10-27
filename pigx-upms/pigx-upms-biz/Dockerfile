@@ -15,4 +15,4 @@ EXPOSE 4000
 
 ADD ./target/pigx-upms-biz.jar ./
 
-CMD sleep 60;java $JAVA_OPTS -jar pigx-upms-biz.jar
+CMD sleep 120;java $JAVA_OPTS -jar pigx-upms-biz.jar

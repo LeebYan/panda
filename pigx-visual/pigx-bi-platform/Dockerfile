@@ -15,4 +15,4 @@ EXPOSE 5006
 
 ADD ./target/pigx-bi-platform.jar ./
 
-CMD sleep 60;java $JAVA_OPTS -jar pigx-bi-platform.jar
+CMD sleep 120;java $JAVA_OPTS -jar pigx-bi-platform.jar

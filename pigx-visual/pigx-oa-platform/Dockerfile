@@ -15,4 +15,4 @@ EXPOSE 5005
 
 ADD ./target/pigx-oa-platform.jar ./
 
-CMD sleep 120;java $JAVA_OPTS -jar pigx-oa-platform.jar
+CMD sleep 180;java $JAVA_OPTS -jar pigx-oa-platform.jar
