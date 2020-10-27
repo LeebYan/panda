@@ -25,7 +25,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysRole;
 import com.pig4cloud.pigx.admin.api.vo.RoleVO;
-import com.pig4cloud.pigx.admin.service.SysRoleMenuService;
 import com.pig4cloud.pigx.admin.service.SysRoleService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -50,8 +49,6 @@ import java.util.List;
 public class SysRoleController {
 
 	private final SysRoleService sysRoleService;
-
-	private final SysRoleMenuService sysRoleMenuService;
 
 	/**
 	 * 通过ID查询角色信息
@@ -114,11 +111,12 @@ public class SysRoleController {
 	/**
 	 * 分页查询角色信息
 	 * @param page 分页对象
+	 * @param role 查询条件
 	 * @return 分页对象
 	 */
 	@GetMapping("/page")
-	public R getRolePage(Page page) {
-		return R.ok(sysRoleService.page(page, Wrappers.emptyWrapper()));
+	public R getRolePage(Page page,SysRole role) {
+		return R.ok(sysRoleService.page(page, Wrappers.query(role)));
 	}
 
 	/**
