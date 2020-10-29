@@ -399,6 +399,7 @@ INSERT INTO `sys_menu` VALUES (10005, '表单删除', 'gen_form_del', NULL, 1000
 INSERT INTO `sys_menu` VALUES (10006, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
 INSERT INTO `sys_menu` VALUES (10007, '数据源管理', NULL, '/gen/datasource', 10006, 'icon-mysql', 0, '0', '0', '2019-08-12 09:42:11', '2020-03-24 08:58:49', '0', 1);
 INSERT INTO `sys_menu` VALUES (10008, '表单设计', NULL, '/gen/design', 10006, 'icon-biaodanbiaoqian', 2, '0', '0', '2019-08-16 10:08:56', '2020-03-24 08:58:53', '0', 1);
+INSERT INTO `sys_menu` VALUES (10009, '报表设计', NULL, 'http://127.0.0.1:5006/ureport/designer', -1, 'icon-gtsquanjushiwufuwuGTS', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
 COMMIT;
 
 -- ----------------------------
@@ -634,6 +635,7 @@ INSERT INTO `sys_role_menu` VALUES (1, 10005);
 INSERT INTO `sys_role_menu` VALUES (1, 10006);
 INSERT INTO `sys_role_menu` VALUES (1, 10007);
 INSERT INTO `sys_role_menu` VALUES (1, 10008);
+INSERT INTO `sys_role_menu` VALUES (1, 10009);
 COMMIT;
 
 -- ----------------------------
