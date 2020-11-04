@@ -22,8 +22,11 @@ package com.pig4cloud.pigx.auth.endpoint;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pigx.admin.api.entity.SysTenant;
+import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
 import com.pig4cloud.pigx.auth.service.PigxTokenDealServiceImpl;
 import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
+import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
@@ -39,6 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,9 +55,11 @@ import java.util.Map;
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
 
+	private final ClientDetailsService clientDetailsService;
+
 	private final PigxTokenDealServiceImpl dealService;
 
-	private final ClientDetailsService clientDetailsService;
+	private final RemoteTenantService tenantService;
 
 	/**
 	 * 认证页面
@@ -63,8 +69,10 @@ public class PigxTokenEndpoint {
 	 */
 	@GetMapping("/login")
 	public ModelAndView require(ModelAndView modelAndView, @RequestParam(required = false) String error) {
+		R<List<SysTenant>> tenantList = tenantService.list(SecurityConstants.FROM_IN);
 		modelAndView.setViewName("ftl/login");
 		modelAndView.addObject("error", error);
+		modelAndView.addObject("tenantList", tenantList.getData());
 		return modelAndView;
 	}
 

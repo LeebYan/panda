@@ -33,7 +33,7 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+		<spring-boot.version>2.3.5.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,10 +43,10 @@
 		<spring.checkstyle.version>0.0.23</spring.checkstyle.version>
 		<git.commit.version>2.2.5</git.commit.version>
 		<spring-boot-admin.version>2.3.0</spring-boot-admin.version>
-		<hutool.version>5.4.5</hutool.version>
+		<hutool.version>5.4.7</hutool.version>
 		<captcha.version>1.2.4</captcha.version>
 		<swagger.fox.version>3.0.0</swagger.fox.version>
-		<knife4j.version>2.0.4</knife4j.version>
+		<knife4j.version>2.0.7</knife4j.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>

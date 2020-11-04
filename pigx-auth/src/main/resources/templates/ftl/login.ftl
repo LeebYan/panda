@@ -18,7 +18,16 @@
 <div class="container form-margin-top">
     <form class="form-signin" action="/token/form" method="post">
         <h2 class="form-signin-heading" align="center">统一认证系统</h2>
-        <input type="text" name="username" class="form-control form-margin-top" placeholder="账号" required autofocus>
+
+        <#if tenantList??>
+            <select class="form-control form-margin-top" placeholder="所属租户" name="TENANT-ID">
+                <#list tenantList as tenant>
+                    <option value="${tenant.code}">${tenant.name}</option>
+                </#list>
+            </select>
+        </#if>
+
+        <input type="text" name="username" class="form-control" placeholder="账号" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">sign in</button>
         <#if error??>
@@ -28,7 +37,7 @@
 </div>
 <footer>
     <p>support by: pig4cloud</p>
-    <p>email: <a href="mailto:pig4cloud@qq.com">pig4cloud@qq.com</a>.</p>
+    <p>email: <a href="mailto:support@mail.pigx.vip">support@mail.pigx.vip</a></p>
 </footer>
 </body>
 </html>
