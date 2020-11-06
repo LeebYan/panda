@@ -20,6 +20,7 @@
 		<pigx.version>3.10.0</pigx.version>
 		<mybatis-plus.version>3.4.0</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
+		<mica.version>2.0.8-GA</mica.version>
 		<druid.version>1.2.1</druid.version>
 		<mysql.connector.version>8.0.21</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
@@ -200,6 +201,12 @@
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${security.oauth.version}</version>
+			</dependency>
+			<!--xss 过滤组件-->
+			<dependency>
+				<groupId>net.dreamlu</groupId>
+				<artifactId>mica-xss</artifactId>
+				<version>${mica.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -58,5 +58,10 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 		</dependency>
+		<!--xss 安全过滤-->
+		<dependency>
+			<groupId>net.dreamlu</groupId>
+			<artifactId>mica-xss</artifactId>
+		</dependency>
 	</dependencies>
 </project>

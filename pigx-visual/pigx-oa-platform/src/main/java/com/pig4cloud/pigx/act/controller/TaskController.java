@@ -24,6 +24,7 @@ import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
+import net.dreamlu.mica.xss.core.XssCleanIgnore;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,6 +56,7 @@ public class TaskController {
 	}
 
 	@PostMapping
+	@XssCleanIgnore
 	public R submitTask(@RequestBody LeaveBillDto leaveBillDto) {
 		return R.ok(actTaskService.submitTask(leaveBillDto));
 	}

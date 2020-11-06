@@ -63,11 +63,6 @@
 			<artifactId>captcha-spring-boot-starter</artifactId>
 			<version>${captcha.version}</version>
 		</dependency>
-		<!--hutool-->
-		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-core</artifactId>
-		</dependency>
 		<!--缓存-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

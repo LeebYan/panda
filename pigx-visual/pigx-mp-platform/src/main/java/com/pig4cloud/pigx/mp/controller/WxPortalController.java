@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import net.dreamlu.mica.xss.core.XssCleanIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class WxPortalController {
 	 * @param echostr 随机字符串
 	 * @return
 	 */
+	@XssCleanIgnore
 	@GetMapping(produces = "text/plain;charset=utf-8")
 	public String authGet(@PathVariable("appId") String appId,
 			@RequestParam(name = "signature", required = false) String signature,
@@ -76,6 +78,7 @@ public class WxPortalController {
 	 * @param nonce 随机数
 	 * @return
 	 */
+	@XssCleanIgnore
 	@PostMapping(produces = "application/xml; charset=UTF-8")
 	public String post(@PathVariable("appId") String appId, @RequestBody String requestBody,
 			@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,

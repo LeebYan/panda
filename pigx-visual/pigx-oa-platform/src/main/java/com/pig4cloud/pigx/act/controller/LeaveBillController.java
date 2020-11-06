@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.common.core.constant.enums.TaskStatusEnum;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
+import net.dreamlu.mica.xss.core.XssCleanIgnore;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -70,6 +71,7 @@ public class LeaveBillController {
 	 * @return R
 	 */
 	@PostMapping
+	@XssCleanIgnore
 	public R save(@RequestBody LeaveBill leaveBill) {
 		leaveBill.setUsername(SecurityUtils.getUser().getUsername());
 		leaveBill.setState(TaskStatusEnum.UNSUBMIT.getStatus());
@@ -82,6 +84,7 @@ public class LeaveBillController {
 	 * @return R
 	 */
 	@PutMapping
+	@XssCleanIgnore
 	public R updateById(@RequestBody LeaveBill leaveBill) {
 		return R.ok(leaveBillService.updateById(leaveBill));
 	}

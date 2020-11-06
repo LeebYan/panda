@@ -32,6 +32,7 @@ import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.xss.core.XssCleanIgnore;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,6 +123,7 @@ public class PayNotifyRecordController {
 	 */
 	@Inner(false)
 	@SneakyThrows
+	@XssCleanIgnore
 	@PostMapping("/ali/callbak")
 	public void aliCallbak(HttpServletRequest request, HttpServletResponse response) {
 		// 解析回调信息
@@ -137,6 +139,7 @@ public class PayNotifyRecordController {
 	@Inner(false)
 	@SneakyThrows
 	@ResponseBody
+	@XssCleanIgnore
 	@PostMapping("/wx/callbak")
 	public String wxCallbak(HttpServletRequest request) {
 		String xmlMsg = HttpKit.readData(request);
