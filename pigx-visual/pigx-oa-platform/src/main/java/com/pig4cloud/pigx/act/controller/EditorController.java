@@ -19,8 +19,8 @@ package com.pig4cloud.pigx.act.controller;
 
 import com.pig4cloud.pigx.act.service.EditorService;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
+import com.pig4cloud.pigx.common.xss.core.XssCleanIgnore;
 import lombok.AllArgsConstructor;
-import net.dreamlu.mica.xss.core.XssCleanIgnore;
 import org.springframework.web.bind.annotation.*;
 
 /**

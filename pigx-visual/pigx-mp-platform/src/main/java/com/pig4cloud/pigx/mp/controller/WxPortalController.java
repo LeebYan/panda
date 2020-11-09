@@ -4,16 +4,14 @@ import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
+import com.pig4cloud.pigx.common.xss.core.XssCleanIgnore;
 import com.pig4cloud.pigx.mp.config.WxMpContextHolder;
 import com.pig4cloud.pigx.mp.config.WxMpInitConfigRunner;
-import com.pig4cloud.pigx.mp.service.WxAccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import net.dreamlu.mica.xss.core.XssCleanIgnore;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,8 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/{appId}/portal")
 public class WxPortalController {
-
-	private final WxAccountService accountService;
 
 	/**
 	 * 微信接入校验处理
@@ -50,7 +46,7 @@ public class WxPortalController {
 
 		log.info("接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", signature, timestamp, nonce, echostr);
 
-		if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
+		if (StrUtil.isAllBlank(signature, timestamp, nonce, echostr)) {
 			throw new IllegalArgumentException("请求参数非法，请核实!");
 		}
 

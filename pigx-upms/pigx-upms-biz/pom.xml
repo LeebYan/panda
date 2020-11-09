@@ -72,6 +72,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
+		<!--XSS 安全过滤-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-xss</artifactId>
+		</dependency>
 		<!--支持动态路由配置 -->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
