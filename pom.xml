@@ -55,14 +55,14 @@
 		<aws.version>1.11.543</aws.version>
 		<xxl.job.version>2.2.0</xxl.job.version>
 		<activiti.version>5.22.0</activiti.version>
-		<docker.registry>registry.cn-zhangjiakou.aliyuncs.com</docker.registry>
-		<docker.host>http://192.168.0.33:2375</docker.host>
-		<docker.namespace>pig4cloud</docker.namespace>
-		<docker.username>154987607@qq.com</docker.username>
-		<docker.password>qq154987607</docker.password>
+		<docker.registry>172.17.0.111</docker.registry>
+		<docker.host>http://172.17.0.111:2375</docker.host>
+		<docker.namespace>library</docker.namespace>
+		<docker.username>admin</docker.username>
+		<docker.password>Harbor12345</docker.password>
 		<docker.plugin.version>0.33.0</docker.plugin.version>
 		<!--  默认忽略docker构建 -->
-		<docker.skip>true</docker.skip>
+		<docker.skip>false</docker.skip>
 	</properties>
 
 	<dependencies>
