@@ -20,13 +20,17 @@ package com.pig4cloud.pigx.common.job;
 import com.pig4cloud.pigx.common.job.properties.XxlJobProperties;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
+
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
- * @date 2019-09-18
+ * @date 2020-11-09
  * <p>
  * xxl 初始化
  */
@@ -35,10 +39,21 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.pig4cloud.pigx.common.job.properties")
 public class XxlJobAutoConfiguration {
 
+	/**
+	 * 服务名称 包含 XXL_JOB_ADMIN 则说明是 Admin
+	 */
+	private static final String XXL_JOB_ADMIN = "xxl-job-admin";
+
+	/**
+	 * 配置xxl-job 执行器，提供自动发现 xxl-job-admin 能力
+	 * @param xxlJobProperties xxl 配置
+	 * @param discoveryClient 注册发现客户端
+	 * @return
+	 */
 	@Bean
-	public XxlJobSpringExecutor xxlJobSpringExecutor(XxlJobProperties xxlJobProperties) {
+	public XxlJobSpringExecutor xxlJobSpringExecutor(XxlJobProperties xxlJobProperties,
+			DiscoveryClient discoveryClient) {
 		XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
-		xxlJobSpringExecutor.setAdminAddresses(xxlJobProperties.getAdmin().getAddresses());
 		xxlJobSpringExecutor.setAppname(xxlJobProperties.getExecutor().getAppname());
 		xxlJobSpringExecutor.setAddress(xxlJobProperties.getExecutor().getAddress());
 		xxlJobSpringExecutor.setIp(xxlJobProperties.getExecutor().getIp());
@@ -46,6 +61,19 @@ public class XxlJobAutoConfiguration {
 		xxlJobSpringExecutor.setAccessToken(xxlJobProperties.getExecutor().getAccessToken());
 		xxlJobSpringExecutor.setLogPath(xxlJobProperties.getExecutor().getLogPath());
 		xxlJobSpringExecutor.setLogRetentionDays(xxlJobProperties.getExecutor().getLogRetentionDays());
+
+		// 如果配置为空则获取注册中心的服务列表 "http://pigx-xxl:9080/xxl-job-admin"
+		if (StringUtils.isEmpty(xxlJobProperties.getAdmin().getAddresses())) {
+			String serverList = discoveryClient.getServices().stream().filter(s -> s.contains(XXL_JOB_ADMIN))
+					.flatMap(s -> discoveryClient.getInstances(s).stream()).map(instance -> String
+							.format("http://%s:%s/%s", instance.getHost(), instance.getPort(), XXL_JOB_ADMIN))
+					.collect(Collectors.joining(","));
+			xxlJobSpringExecutor.setAddress(serverList);
+		}
+		else {
+			xxlJobSpringExecutor.setAddress(xxlJobProperties.getAdmin().getAddresses());
+		}
+
 		return xxlJobSpringExecutor;
 	}
 
