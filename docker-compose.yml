@@ -19,15 +19,6 @@ services:
       - ./pigx-mysql:/var/lib/mysql
     command: --lower_case_table_names=1
 
-  pigx-xxl:
-    container_name: pigx-xxl
-    image: xuxueli/xxl-job-admin:2.2.0
-    restart: always
-    environment:
-      PARAMS: "--server.port=9080 --spring.datasource.url=jdbc:mysql://pigx-mysql:3306/pigxx_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=root --spring.datasource.password=root"
-    ports:
-      - 9080:9080
-
   pigx-redis:
     container_name: pigx-redis
     image: redis:5.0.7
@@ -140,6 +131,16 @@ services:
     container_name: pigx-bi-platform
     ports:
       - 5006:5006
+
+  pigxx-job:
+    build:
+      context: ./pigx-visual/pigx-xxl-job-admin
+    restart: always
+    container_name: pigx-job
+    hostname: pigx-job
+    image: pigx-job
+    ports:
+      - 9080:9080
 
   pigx-tx-manager:
     build:
