@@ -18,6 +18,7 @@ package com.pig4cloud.pigx.admin.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.amazonaws.services.s3.model.S3Object;
@@ -119,7 +120,8 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	private void fileLog(MultipartFile file, String fileName) {
 		SysFile sysFile = new SysFile();
 		// 原文件名
-		String original = file.getOriginalFilename();
+		String original = CharsetUtil.convert(file.getOriginalFilename(), CharsetUtil.CHARSET_ISO_8859_1,
+				CharsetUtil.CHARSET_UTF_8);
 		sysFile.setFileName(fileName);
 		sysFile.setOriginal(original);
 		sysFile.setFileSize(file.getSize());
