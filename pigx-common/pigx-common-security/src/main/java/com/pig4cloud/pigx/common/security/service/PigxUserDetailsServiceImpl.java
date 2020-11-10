@@ -15,7 +15,7 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pigx.auth.service;
+package com.pig4cloud.pigx.common.security.service;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
@@ -26,9 +26,7 @@ import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.security.service.PigxUser;
-import com.pig4cloud.pigx.common.security.service.PigxUserDetailsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -37,7 +35,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,8 +47,7 @@ import java.util.Set;
  * @author lengleng
  */
 @Slf4j
-@Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 
 	private final RemoteUserService remoteUserService;

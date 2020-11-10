@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -67,10 +66,8 @@ public class GlobalBizExceptionHandler {
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public R handleAccessDeniedException(AccessDeniedException e) {
-		String msg = SpringSecurityMessageSource.getAccessor().getMessage("AbstractAccessDecisionManager.accessDenied",
-				e.getMessage());
-		log.error("拒绝授权异常信息 ex={}", msg, e);
-		return R.failed(e.getLocalizedMessage());
+		log.error("拒绝授权异常信息 ex={}", e.getMessage());
+		return R.failed("权限不足，不允许访问");
 	}
 
 	/**
@@ -93,7 +90,7 @@ public class GlobalBizExceptionHandler {
 	@DeleteMapping("/error")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public R noHandlerFoundException() {
-		return R.failed();
+		return R.failed(HttpStatus.NOT_FOUND.getReasonPhrase());
 	}
 
 }

@@ -43,11 +43,6 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
-		<!--upms api、model 模块-->
-		<dependency>
-			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-upms-api</artifactId>
-		</dependency>
 		<!--log-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
