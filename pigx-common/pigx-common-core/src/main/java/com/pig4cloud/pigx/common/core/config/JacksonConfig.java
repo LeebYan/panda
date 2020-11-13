@@ -6,11 +6,16 @@ import com.pig4cloud.pigx.common.core.jackson.PigxJavaTimeModule;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -26,7 +31,8 @@ import java.util.TimeZone;
 @Configuration
 @ConditionalOnClass(ObjectMapper.class)
 @AutoConfigureBefore(JacksonAutoConfiguration.class)
-public class JacksonConfig {
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+public class JacksonConfig implements WebMvcConfigurer {
 
 	private static final String ASIA_SHANGHAI = "Asia/Shanghai";
 
@@ -39,6 +45,24 @@ public class JacksonConfig {
 			builder.simpleDateFormat(DatePattern.NORM_DATETIME_PATTERN);
 			builder.modules(new PigxJavaTimeModule());
 		};
+	}
+
+	/**
+	 * 增加GET请求参数中时间类型转换 {@link com.pig4cloud.pigx.common.core.jackson.PigxJavaTimeModule}
+	 * <ul>
+	 * <li>HH:mm:ss -> LocalTime</li>
+	 * <li>yyyy-MM-dd -> LocalDate</li>
+	 * <li>yyyy-MM-dd HH:mm:ss -> LocalDateTime</li>
+	 * </ul>
+	 * @param registry
+	 */
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
+		registrar.setTimeFormatter(DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN));
+		registrar.setDateFormatter(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN));
+		registrar.setDateTimeFormatter(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN));
+		registrar.registerFormatters(registry);
 	}
 
 }

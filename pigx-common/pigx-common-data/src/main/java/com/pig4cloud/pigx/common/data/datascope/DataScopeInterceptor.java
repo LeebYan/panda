@@ -21,7 +21,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -44,7 +44,7 @@ import java.util.Properties;
  * mybatis 数据权限拦截器
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Intercepts({
 		@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 public class DataScopeInterceptor extends AbstractSqlParserHandler implements Interceptor {

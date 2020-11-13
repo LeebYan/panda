@@ -6,5 +6,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     com.pig4cloud.pigx.common.data.tenant.TenantContextHolderFilter,\
     com.pig4cloud.pigx.common.data.tenant.PigxTenantConfiguration,\
     com.pig4cloud.pigx.common.data.mybatis.MybatisPlusConfiguration,\
-    com.pig4cloud.pigx.common.data.resolver.TenantKeyStrResolver,\
-    com.pig4cloud.pigx.common.data.resolver.WebMvcConfig
+    com.pig4cloud.pigx.common.data.resolver.TenantKeyStrResolver

@@ -40,6 +40,12 @@
 			<artifactId>hutool-all</artifactId>
 			<version>${hutool.version}</version>
 		</dependency>
+		<!--mvc 相关配置-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!--server-api-->
 		<dependency>
 			<groupId>javax.servlet</groupId>

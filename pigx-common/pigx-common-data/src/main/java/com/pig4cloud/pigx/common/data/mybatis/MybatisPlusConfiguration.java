@@ -17,24 +17,26 @@
 
 package com.pig4cloud.pigx.common.data.mybatis;
 
-import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeSqlInjector;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
+import com.pig4cloud.pigx.common.data.resolver.SqlFilterArgumentResolver;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +46,43 @@ import java.util.List;
 @Configuration
 @ConditionalOnBean(DataSource.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-public class MybatisPlusConfiguration {
+public class MybatisPlusConfiguration implements WebMvcConfigurer {
+
+	/**
+	 * 增加请求参数解析器，对请求中的参数注入SQL 检查
+	 * @param resolverList
+	 */
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolverList) {
+		resolverList.add(new SqlFilterArgumentResolver());
+	}
+
+	/**
+	 * 数据权限插件 优先 mybatis-plus 的拦截器执行
+	 * @return DataScopeInterceptor
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnBean(DataScopeHandle.class)
+	public DataScopeInterceptor dataScopeInterceptor() {
+		return new DataScopeInterceptor(dataScopeHandle());
+	}
+
+	/**
+	 * mybatis plus 拦截器配置
+	 * @return
+	 */
+	@Bean
+	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+		// 多租户支持
+		TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor();
+		tenantLineInnerInterceptor.setTenantLineHandler(pigxTenantHandler());
+		interceptor.addInnerInterceptor(tenantLineInnerInterceptor);
+		// 分页支持
+		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+		return interceptor;
+	}
 
 	/**
 	 * 创建租户维护处理器对象
@@ -57,25 +95,7 @@ public class MybatisPlusConfiguration {
 	}
 
 	/**
-	 * 分页插件
-	 * @param tenantHandler 租户处理器
-	 * @return PaginationInterceptor
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = "mybatisPlus.tenantEnable", havingValue = "true", matchIfMissing = true)
-	public PaginationInterceptor paginationInterceptor(PigxTenantHandler tenantHandler) {
-		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-		List<ISqlParser> sqlParserList = new ArrayList<>();
-		TenantSqlParser tenantSqlParser = new TenantSqlParser();
-		tenantSqlParser.setTenantHandler(tenantHandler);
-		sqlParserList.add(tenantSqlParser);
-		paginationInterceptor.setSqlParserList(sqlParserList);
-		return paginationInterceptor;
-	}
-
-	/**
-	 * pigx 默认数据权限处理
+	 * pigx 默认数据权限处理器
 	 * @return
 	 */
 	@Bean
@@ -85,16 +105,9 @@ public class MybatisPlusConfiguration {
 	}
 
 	/**
-	 * 数据权限插件
-	 * @return DataScopeInterceptor
+	 * 扩展 mybatis-plus baseMapper 支持数据权限
+	 * @return
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnBean(DataScopeHandle.class)
-	public DataScopeInterceptor dataScopeInterceptor() {
-		return new DataScopeInterceptor(dataScopeHandle());
-	}
-
 	@Bean
 	@ConditionalOnBean(DataScopeHandle.class)
 	public DataScopeSqlInjector dataScopeSqlInjector() {
