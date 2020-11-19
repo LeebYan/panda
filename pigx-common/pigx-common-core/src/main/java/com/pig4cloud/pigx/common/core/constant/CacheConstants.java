@@ -85,4 +85,9 @@ public interface CacheConstants {
 	 */
 	String TENANT_DETAILS = GLOBALLY + "tenant_details";
 
+	/**
+	 * 客户端配置缓存
+	 */
+	String CLIENT_FLAG = "client_config_flag";
+
 }

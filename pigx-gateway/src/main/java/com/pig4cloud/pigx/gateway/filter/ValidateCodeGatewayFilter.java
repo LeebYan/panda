@@ -18,6 +18,8 @@
 package com.pig4cloud.pigx.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.anji.captcha.model.vo.CaptchaVO;
 import com.anji.captcha.service.CaptchaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,12 +27,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
-import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
+import com.pig4cloud.pigx.common.core.constant.enums.CaptchaFlagTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.ValidateCodeException;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
-import com.pig4cloud.pigx.gateway.config.GatewayConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -53,22 +54,21 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @AllArgsConstructor
+@SuppressWarnings("all")
 public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 	private final ObjectMapper objectMapper;
 
 	private final RedisTemplate redisTemplate;
 
-	private final GatewayConfigProperties gatewayConfig;
-
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest();
 
-			// 不是登录请求，直接向下执行
+			// 不是账号密码登录、短信登录，直接向下执行
 			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.OAUTH_TOKEN_URL,
-					SecurityConstants.SMS_TOKEN_URL, SecurityConstants.SOCIAL_TOKEN_URL)) {
+					SecurityConstants.SMS_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
@@ -78,25 +78,12 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				return chain.filter(exchange);
 			}
 
-			// 终端设置不校验， 直接向下执行
+			// 判断客户端是否跳过检验
+			if (!isCheckCaptchaClient(request)) {
+				return chain.filter(exchange);
+			}
+
 			try {
-				String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-				String clientId = WebUtils.extractClientId(header).orElse(null);
-				if (StrUtil.isNotBlank(clientId) && gatewayConfig.getIgnoreClients().contains(clientId)) {
-					return chain.filter(exchange);
-				}
-
-				// 如果是社交登录，判断是否包含SMS
-				if (StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.SOCIAL_TOKEN_URL)) {
-					String mobile = request.getQueryParams().getFirst("mobile");
-					if (StrUtil.containsAny(mobile, LoginTypeEnum.SMS.getType())) {
-						throw new ValidateCodeException("验证码不合法");
-					}
-					else {
-						return chain.filter(exchange);
-					}
-				}
-
 				// 校验验证码
 				checkCode(request);
 			}
@@ -115,6 +102,34 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 
 			return chain.filter(exchange);
 		};
+	}
+
+	/**
+	 * 是否需要校验客户端，根据client 查询客户端配置
+	 * @param request 请求
+	 * @return true 需要校验， false 不需要校验
+	 */
+	private boolean isCheckCaptchaClient(ServerHttpRequest request) {
+		String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+		String clientId = WebUtils.extractClientId(header).orElse(null);
+		// 获取租户拼接区分租户的key
+		String tenantId = request.getHeaders().getFirst(CommonConstants.TENANT_ID);
+		String key = String.format("%s:%s:%s", StrUtil.isBlank(tenantId) ? CommonConstants.TENANT_ID_1 : tenantId,
+				CacheConstants.CLIENT_FLAG, clientId);
+
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		Object val = redisTemplate.opsForValue().get(key);
+
+		// 当配置不存在时，默认需要校验
+		if (val == null) {
+			return true;
+		}
+
+		JSONObject information = JSONUtil.parseObj(val.toString());
+		if (StrUtil.equals(CaptchaFlagTypeEnum.OFF.getType(), information.getStr(CommonConstants.CAPTCHA_FLAG))) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -139,7 +154,6 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			if (!captchaService.verification(vo).isSuccess()) {
 				throw new ValidateCodeException("验证码不能为空");
 			}
-
 			return;
 		}
 

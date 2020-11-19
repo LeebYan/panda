@@ -24,15 +24,23 @@ import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.pig4cloud.pigx.common.core.constant.CacheConstants;
+import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.core.constant.enums.EncFlagTypeEnum;
+import com.pig4cloud.pigx.common.core.util.WebUtils;
 import com.pig4cloud.pigx.gateway.config.GatewayConfigProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
 import org.springframework.cloud.gateway.support.BodyInserterContext;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.HttpMessageReader;
@@ -62,6 +70,8 @@ import java.util.function.Function;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
+@SuppressWarnings("all")
 public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	private final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
@@ -70,24 +80,31 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	private static final String KEY_ALGORITHM = "AES";
 
-	@Autowired
-	private GatewayConfigProperties gatewayConfig;
+	private final RedisTemplate redisTemplate;
+
+	private final GatewayConfigProperties gatewayConfig;
 
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest();
-			// 不是登录请求，直接向下执行
+			// 1. 不是登录请求，直接向下执行
 			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.OAUTH_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
-			// 刷新token，直接向下执行
+			// 2. 刷新token类型，直接向下执行
 			String grantType = request.getQueryParams().getFirst("grant_type");
 			if (StrUtil.equals(SecurityConstants.REFRESH_TOKEN, grantType)) {
 				return chain.filter(exchange);
 			}
 
+			// 3. 判断客户端是否需要解密，明文传输直接向下执行
+			if (!isEncClient(request)) {
+				return chain.filter(exchange);
+			}
+
+			// 4. 前端加密密文解密逻辑
 			Class inClass = String.class;
 			Class outClass = String.class;
 			ServerRequest serverRequest = ServerRequest.create(exchange, messageReaders);
@@ -107,6 +124,34 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 				return chain.filter(exchange.mutate().request(decorator).build());
 			}));
 		};
+	}
+
+	/**
+	 * 根据请求的clientId 查询客户端配置是否是加密传输
+	 * @param request 请求上下文
+	 * @return true 加密传输 、 false 原文传输
+	 */
+	private boolean isEncClient(ServerHttpRequest request) {
+		String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+		String clientId = WebUtils.extractClientId(header).orElse(null);
+		// 获取租户拼接区分租户的key
+		String tenantId = request.getHeaders().getFirst(CommonConstants.TENANT_ID);
+		String key = String.format("%s:%s:%s", StrUtil.isBlank(tenantId) ? CommonConstants.TENANT_ID_1 : tenantId,
+				CacheConstants.CLIENT_FLAG, clientId);
+
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		Object val = redisTemplate.opsForValue().get(key);
+
+		// 当配置不存在时，默认需要解密
+		if (val == null) {
+			return true;
+		}
+
+		JSONObject information = JSONUtil.parseObj(val.toString());
+		if (StrUtil.equals(EncFlagTypeEnum.NO.getType(), information.getStr(CommonConstants.ENC_FLAG))) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

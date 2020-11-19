@@ -21,6 +21,7 @@ package com.pig4cloud.pigx.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pigx.admin.api.dto.SysOauthClientDetailsDTO;
 import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
 import com.pig4cloud.pigx.admin.service.SysOauthClientDetailsService;
 import com.pig4cloud.pigx.common.core.util.R;
@@ -67,19 +68,19 @@ public class SysClientController {
 	 */
 	@GetMapping("/page")
 	public R getOauthClientDetailsPage(Page page, SysOauthClientDetails sysOauthClientDetails) {
-		return R.ok(clientDetailsService.page(page, Wrappers.query(sysOauthClientDetails)));
+		return R.ok(clientDetailsService.queryPage(page, sysOauthClientDetails));
 	}
 
 	/**
 	 * 添加
-	 * @param sysOauthClientDetails 实体
+	 * @param clientDetailsDTO 实体
 	 * @return success/false
 	 */
 	@SysLog("添加终端")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_client_add')")
-	public R add(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
-		return R.ok(clientDetailsService.save(sysOauthClientDetails));
+	public R add(@Valid @RequestBody SysOauthClientDetailsDTO clientDetailsDTO) {
+		return R.ok(clientDetailsService.saveClient(clientDetailsDTO));
 	}
 
 	/**
@@ -96,14 +97,14 @@ public class SysClientController {
 
 	/**
 	 * 编辑
-	 * @param sysOauthClientDetails 实体
+	 * @param clientDetailsDTO 实体
 	 * @return success/false
 	 */
 	@SysLog("编辑终端")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
-	public R update(@Valid @RequestBody SysOauthClientDetails sysOauthClientDetails) {
-		return R.ok(clientDetailsService.updateClientById(sysOauthClientDetails));
+	public R update(@Valid @RequestBody SysOauthClientDetailsDTO clientDetailsDTO) {
+		return R.ok(clientDetailsService.updateClientById(clientDetailsDTO));
 	}
 
 }

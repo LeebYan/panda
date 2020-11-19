@@ -125,4 +125,9 @@ public class SysOauthClientDetails extends Model<SysOauthClientDetails> {
 	@ApiModelProperty(value = "删除标记,1:已删除,0:正常")
 	private String delFlag;
 
+	/**
+	 * 租户编号
+	 */
+	private Integer tenantId;
+
 }

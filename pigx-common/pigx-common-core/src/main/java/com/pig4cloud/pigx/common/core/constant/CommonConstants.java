@@ -100,4 +100,14 @@ public interface CommonConstants {
 	 */
 	String IMAGE_CODE_TYPE = "blockPuzzle";
 
+	/**
+	 * 验证码开关
+	 */
+	String CAPTCHA_FLAG = "captcha_flag";
+
+	/**
+	 * 密码传输是否加密
+	 */
+	String ENC_FLAG = "enc_flag";
+
 }

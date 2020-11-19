@@ -33,8 +33,11 @@ public class PigxLocalResourceServerTokenServices implements ResourceServerToken
 	public OAuth2Authentication loadAuthentication(String accessToken)
 			throws AuthenticationException, InvalidTokenException {
 		OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
-		OAuth2Request oAuth2Request = oAuth2Authentication.getOAuth2Request();
+		if (oAuth2Authentication == null) {
+			return null;
+		}
 
+		OAuth2Request oAuth2Request = oAuth2Authentication.getOAuth2Request();
 		if (!(oAuth2Authentication.getPrincipal() instanceof PigxUser)) {
 			return oAuth2Authentication;
 		}

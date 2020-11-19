@@ -19,7 +19,9 @@
 
 package com.pig4cloud.pigx.admin.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pigx.admin.api.dto.SysOauthClientDetailsDTO;
 import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
 
 /**
@@ -41,9 +43,24 @@ public interface SysOauthClientDetailsService extends IService<SysOauthClientDet
 
 	/**
 	 * 根据客户端信息
-	 * @param clientDetails
+	 * @param clientDetailsDTO
 	 * @return
 	 */
-	Boolean updateClientById(SysOauthClientDetails clientDetails);
+	Boolean updateClientById(SysOauthClientDetailsDTO clientDetailsDTO);
+
+	/**
+	 * 添加客户端
+	 * @param clientDetailsDTO
+	 * @return
+	 */
+	Boolean saveClient(SysOauthClientDetailsDTO clientDetailsDTO);
+
+	/**
+	 * 分页查询客户端信息
+	 * @param page
+	 * @param query
+	 * @return
+	 */
+	Page queryPage(Page page, SysOauthClientDetails query);
 
 }
