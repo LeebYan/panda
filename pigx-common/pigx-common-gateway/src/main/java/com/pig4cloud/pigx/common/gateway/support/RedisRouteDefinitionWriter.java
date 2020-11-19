@@ -21,6 +21,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
 import com.pig4cloud.pigx.common.gateway.vo.RouteDefinitionVo;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -42,7 +43,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 
 	private final RedisTemplate redisTemplate;
