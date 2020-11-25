@@ -25,9 +25,11 @@ public class DynamicRouteHealthIndicator extends AbstractHealthIndicator {
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		if (redisTemplate.hasKey(CacheConstants.ROUTE_KEY)) {
 			builder.up();
-		} else {
+		}
+		else {
 			log.warn("动态路由监控检查失败，当前无路由配置");
 			builder.down();
 		}
 	}
+
 }

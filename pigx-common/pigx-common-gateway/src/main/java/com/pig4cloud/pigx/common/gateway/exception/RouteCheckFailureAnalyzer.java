@@ -14,7 +14,7 @@ public class RouteCheckFailureAnalyzer extends AbstractFailureAnalyzer<RouteChec
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, RouteCheckException cause) {
 
-		return new FailureAnalysis(cause.getMessage(),
-				"解决方案参考: http://t.cn/A6Gl3sDJ", cause);
+		return new FailureAnalysis(cause.getMessage(), "解决方案参考: http://t.cn/A6Gl3sDJ", cause);
 	}
+
 }
