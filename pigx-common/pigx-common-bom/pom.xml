@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>pigx-cloud-dependencies-parent</artifactId>
 		<groupId>com.pig4cloud</groupId>
-		<version>Hoxton.SR8</version>
+		<version>Hoxton.SR9</version>
 		<relativePath/>
 	</parent>
 

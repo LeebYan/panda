@@ -46,7 +46,7 @@
 		<hutool.version>5.5.1</hutool.version>
 		<captcha.version>1.2.4</captcha.version>
 		<swagger.fox.version>3.0.0</swagger.fox.version>
-		<knife4j.version>2.0.7</knife4j.version>
+		<knife4j.version>2.0.8</knife4j.version>
 		<velocity.version>1.7</velocity.version>
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>3.0.3</jasypt.version>
