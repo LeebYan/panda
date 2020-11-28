@@ -1,5 +1,7 @@
 server:
   port: 8848
+  tomcat:
+    basedir: logs
 
 db:
   num: 1
@@ -7,7 +9,6 @@ db:
   password: ${MYSQL-PWD:root}
   url:
     0: jdbc:mysql://${MYSQL_HOST:pigx-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:pigxx_config}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
-
 
 nacos:
   core:
@@ -34,18 +35,15 @@ spring:
 
 useAddressServer: true
 
-# 关闭监控埋点采集
 management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: always
   metrics:
     export:
-      elastic:
-        enabled: false
       influx:
         enabled: false
+      elastic:
+        enabled: false
+
+# 屏蔽scanner warning 日志
+logging:
+   level:
+     org.apache.tomcat.util.scan.StandardJarScanner: ERROR

@@ -15,7 +15,6 @@ EXPOSE 8848
 
 ADD ./target/pigx-register.jar ./
 
-
 CMD sleep 60;java $JAVA_OPTS -jar pigx-register.jar
 
 
