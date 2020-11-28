@@ -88,7 +88,7 @@ CREATE TABLE `sys_dict` (
   `tenant_id` int(11) NOT NULL DEFAULT '0' COMMENT '所属租户',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sys_dict_del_flag` (`del_flag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
 
 -- ----------------------------
 -- Records of sys_dict
@@ -112,6 +112,8 @@ INSERT INTO `sys_dict` VALUES (15, 'channel_id', '渠道编码ID', '2019-05-30 1
 INSERT INTO `sys_dict` VALUES (16, 'order_status', '订单状态', '2019-06-27 08:17:40', '2019-06-27 08:17:40', '支付订单状态', '1', '0', 1);
 INSERT INTO `sys_dict` VALUES (17, 'grant_types', '授权类型', '2019-08-13 07:34:10', '2019-08-13 07:34:10', NULL, '1', '0', 1);
 INSERT INTO `sys_dict` VALUES (18, 'style_type', '前端风格', '2020-02-07 03:49:28', '2020-02-07 03:50:40', '0-Avue 1-element', '1', '0', 1);
+INSERT INTO `sys_dict` VALUES (19, 'captcha_flag_types', '验证码开关', '2020-11-18 06:53:25', '2020-11-18 06:53:25', '是否校验验证码', '1', '0', 1);
+INSERT INTO `sys_dict` VALUES (20, 'enc_flag_types', '前端密码加密', '2020-11-18 06:54:44', '2020-11-18 06:54:44', '前端密码是否加密传输', '1', '0', 1);
 COMMIT;
 
 -- ----------------------------
@@ -135,7 +137,7 @@ CREATE TABLE `sys_dict_item` (
   KEY `sys_dict_value` (`value`) USING BTREE,
   KEY `sys_dict_label` (`label`) USING BTREE,
   KEY `sys_dict_del_flag` (`del_flag`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='字典项';
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT='字典项';
 
 -- ----------------------------
 -- Records of sys_dict_item
@@ -198,6 +200,10 @@ INSERT INTO `sys_dict_item` VALUES (54, 17, 'refresh_token', '刷新模式', 'gr
 INSERT INTO `sys_dict_item` VALUES (55, 17, 'implicit', '简化模式', 'grant_types', 'oauth2 简化模式', 4, '2019-08-13 07:39:32', '2019-08-13 07:39:32', NULL, '0', 1);
 INSERT INTO `sys_dict_item` VALUES (56, 18, '0', 'Avue', 'style_type', 'Avue风格', 0, '2020-02-07 03:52:52', '2020-02-07 03:52:52', '', '0', 1);
 INSERT INTO `sys_dict_item` VALUES (57, 18, '1', 'element', 'style_type', 'element-ui', 1, '2020-02-07 03:53:12', '2020-02-07 03:53:12', '', '0', 1);
+INSERT INTO `sys_dict_item` VALUES (58, 19, '0', '关', 'captcha_flag_types', '不校验验证码', 0, '2020-11-18 06:53:58', '2020-11-18 06:53:58', '不校验验证码 -0', '0', 1);
+INSERT INTO `sys_dict_item` VALUES (59, 19, '1', '开', 'captcha_flag_types', '校验验证码', 1, '2020-11-18 06:54:15', '2020-11-18 06:54:15', '不校验验证码-1', '0', 1);
+INSERT INTO `sys_dict_item` VALUES (60, 20, '0', '否', 'enc_flag_types', '不加密', 0, '2020-11-18 06:55:31', '2020-11-18 06:55:31', '不加密-0', '0', 1);
+INSERT INTO `sys_dict_item` VALUES (61, 20, '1', '是', 'enc_flag_types', '加密', 1, '2020-11-18 06:55:51', '2020-11-18 06:55:51', '加密-1', '0', 1);
 COMMIT;
 
 -- ----------------------------
@@ -267,7 +273,7 @@ CREATE TABLE `sys_menu` (
   `del_flag` char(1) DEFAULT '0',
   `tenant_id` int(11) unsigned DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10013 DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -295,8 +301,8 @@ INSERT INTO `sys_menu` VALUES (1500, '租户管理', '', '/admin/tenant/index', 
 INSERT INTO `sys_menu` VALUES (1501, '租户新增', 'admin_systenant_add', NULL, 1500, '1', 0, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:56:52', '0', 1);
 INSERT INTO `sys_menu` VALUES (1502, '租户修改', 'admin_systenant_edit', NULL, 1500, '1', 1, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:56:53', '0', 1);
 INSERT INTO `sys_menu` VALUES (1503, '租户删除', 'admin_systenant_del', NULL, 1500, '1', 2, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:56:54', '0', 1);
-INSERT INTO `sys_menu` VALUES (2000, '系统管理', NULL, '/admin', -1, 'icon-xitongguanli', 1, '0', '0', '2017-11-07 20:56:00', '2020-03-24 08:56:55', '0', 1);
-INSERT INTO `sys_menu` VALUES (2100, '日志管理', NULL, '/admin/log/index', 2000, 'icon-rizhiguanli', 5, '0', '0', '2017-11-20 14:06:22', '2020-03-24 08:56:56', '0', 1);
+INSERT INTO `sys_menu` VALUES (2000, '系统管理', NULL, '/admin', -1, 'icon-xitongpeizhi', 1, '0', '0', '2017-11-07 20:56:00', '2020-03-24 08:56:55', '0', 1);
+INSERT INTO `sys_menu` VALUES (2100, '日志管理', NULL, '/admin/log/index', 2000, 'icon-rizhi', 5, '0', '0', '2017-11-20 14:06:22', '2020-03-24 08:56:56', '0', 1);
 INSERT INTO `sys_menu` VALUES (2101, '日志删除', 'sys_log_del', NULL, 2100, NULL, NULL, '0', '1', '2017-11-20 20:37:37', '2020-03-24 08:56:58', '0', 1);
 INSERT INTO `sys_menu` VALUES (2200, '字典管理', NULL, '/admin/dict/index', 2000, 'icon-navicon-zdgl', 6, '0', '0', '2017-11-29 11:30:52', '2020-03-24 08:56:58', '0', 1);
 INSERT INTO `sys_menu` VALUES (2201, '字典删除', 'sys_dict_del', NULL, 2200, NULL, NULL, '0', '1', '2017-11-29 11:30:11', '2020-03-24 08:56:59', '0', 1);
@@ -306,7 +312,7 @@ INSERT INTO `sys_menu` VALUES (2210, '参数管理', NULL, '/admin/param/index',
 INSERT INTO `sys_menu` VALUES (2211, '参数新增', 'admin_syspublicparam_add', NULL, 2210, NULL, 1, '0', '1', '2019-04-29 22:17:36', '2020-03-24 08:57:11', '0', 1);
 INSERT INTO `sys_menu` VALUES (2212, '参数删除', 'admin_syspublicparam_del', NULL, 2210, NULL, 1, '0', '1', '2019-04-29 22:17:55', '2020-03-24 08:57:12', '0', 1);
 INSERT INTO `sys_menu` VALUES (2213, '参数编辑', 'admin_syspublicparam_edit', NULL, 2210, NULL, 1, '0', '1', '2019-04-29 22:18:14', '2020-03-24 08:57:13', '0', 1);
-INSERT INTO `sys_menu` VALUES (2300, '代码生成', '', '/gen/index', 10006, 'icon-weibiaoti46', 1, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:14', '0', 1);
+INSERT INTO `sys_menu` VALUES (2300, '代码生成', '', '/gen/index', 9000, 'icon-weibiaoti46', 1, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:14', '0', 1);
 INSERT INTO `sys_menu` VALUES (2400, '终端管理', '', '/admin/client/index', 2000, 'icon-bangzhushouji', 9, '1', '0', '2018-01-20 13:17:19', '2020-03-24 08:57:15', '0', 1);
 INSERT INTO `sys_menu` VALUES (2401, '客户端新增', 'sys_client_add', NULL, 2400, '1', NULL, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:57:16', '0', 1);
 INSERT INTO `sys_menu` VALUES (2402, '客户端修改', 'sys_client_edit', NULL, 2400, NULL, NULL, '0', '1', '2018-05-15 21:37:06', '2020-03-24 08:57:16', '0', 1);
@@ -328,8 +334,9 @@ INSERT INTO `sys_menu` VALUES (2860, '任务刷新', 'job_sys_job_refresh_job', 
 INSERT INTO `sys_menu` VALUES (2870, '执行任务', 'job_sys_job_run_job', NULL, 2800, '1', 0, '0', '1', '2019-08-08 15:35:18', '2020-03-24 08:57:31', '0', 1);
 INSERT INTO `sys_menu` VALUES (3000, '系统监控', NULL, '/daemon', -1, 'icon-msnui-supervise', 2, '0', '0', '2018-07-27 01:13:21', '2020-03-24 08:57:31', '0', 1);
 INSERT INTO `sys_menu` VALUES (3100, '服务监控', NULL, 'http://127.0.0.1:5001', 3000, 'icon-server', 0, '0', '0', '2018-06-26 10:50:32', '2020-03-24 08:57:32', '0', 1);
+INSERT INTO `sys_menu` VALUES (3101, '流量监控', NULL, 'http://127.0.0.1:5020', 3000, 'icon-liuliang', 0, '0', '0', '2018-06-26 10:50:32', '2020-03-24 08:57:32', '0', 1);
 INSERT INTO `sys_menu` VALUES (3110, '缓存监控', NULL, '/monitor/redis/index', 3000, 'icon-qingchuhuancun', 1, '1', '0', '2019-05-08 23:51:27', '2020-03-24 08:57:33', '0', 1);
-INSERT INTO `sys_menu` VALUES (3200, '接口文档', NULL, 'http://127.0.0.1:9999/swagger-ui.html', 3000, 'icon-wendang', 1, '0', '0', '2018-06-26 10:50:32', '2020-03-24 08:57:34', '0', 1);
+INSERT INTO `sys_menu` VALUES (3200, '接口文档', NULL, 'http://127.0.0.1:9999/swagger-ui/index.html', 3000, 'icon-wendang', 1, '0', '0', '2018-06-26 10:50:32', '2020-03-24 08:57:34', '0', 1);
 INSERT INTO `sys_menu` VALUES (3300, '事务监控', NULL, '/tx/index', 3000, 'icon-gtsquanjushiwufuwuGTS', 5, '0', '0', '2018-08-19 11:02:39', '2020-03-24 08:57:34', '0', 1);
 INSERT INTO `sys_menu` VALUES (3400, '在线事务', NULL, '/tx/model', 3000, 'icon-online', 6, '0', '0', '2018-08-19 11:32:04', '2020-03-24 08:57:35', '0', 1);
 INSERT INTO `sys_menu` VALUES (3500, '文档扩展', NULL, 'http://127.0.0.1:9999/doc.html', 3000, 'icon-wendang', 2, '0', '0', '2018-06-26 10:50:32', '2020-03-24 08:57:36', '0', 1);
@@ -390,16 +397,16 @@ INSERT INTO `sys_menu` VALUES (6700, '自动回复', NULL, '/mp/wxautoreply/inde
 INSERT INTO `sys_menu` VALUES (6701, '新增回复', 'mp_wxautoreply_add', NULL, 6700, NULL, 1, '0', '1', '2019-03-29 15:43:54', '2020-03-24 08:58:39', '0', 1);
 INSERT INTO `sys_menu` VALUES (6702, '编辑回复', 'mp_wxautoreply_edit', NULL, 6700, NULL, 1, '0', '1', '2019-03-29 15:43:54', '2020-03-24 08:58:39', '0', 1);
 INSERT INTO `sys_menu` VALUES (6703, '删除回复', 'mp_wxautoreply_del', NULL, 6700, NULL, 1, '0', '1', '2019-03-29 15:43:54', '2020-03-24 08:58:39', '0', 1);
-INSERT INTO `sys_menu` VALUES (10000, '文件管理', NULL, '/admin/file/index', 2000, 'icon-wenjianguanli', 6, '0', '0', '2019-06-25 12:44:46', '2020-03-24 08:58:41', '0', 1);
-INSERT INTO `sys_menu` VALUES (10001, '删除文件', 'sys_file_del', NULL, 10000, NULL, 1, '0', '1', '2019-06-25 13:41:41', '2020-03-24 08:58:42', '0', 1);
-INSERT INTO `sys_menu` VALUES (10002, '表单管理', '', '/gen/form', 10006, 'icon-record', 3, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:58:44', '0', 1);
-INSERT INTO `sys_menu` VALUES (10003, '表单新增', 'gen_form_add', NULL, 10002, '1', 0, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:45', '0', 1);
-INSERT INTO `sys_menu` VALUES (10004, '表单修改', 'gen_form_edit', NULL, 10002, '1', 1, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:46', '0', 1);
-INSERT INTO `sys_menu` VALUES (10005, '表单删除', 'gen_form_del', NULL, 10002, '1', 2, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:47', '0', 1);
-INSERT INTO `sys_menu` VALUES (10006, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
-INSERT INTO `sys_menu` VALUES (10007, '数据源管理', NULL, '/gen/datasource', 10006, 'icon-mysql', 0, '0', '0', '2019-08-12 09:42:11', '2020-03-24 08:58:49', '0', 1);
-INSERT INTO `sys_menu` VALUES (10008, '表单设计', NULL, '/gen/design', 10006, 'icon-biaodanbiaoqian', 2, '0', '0', '2019-08-16 10:08:56', '2020-03-24 08:58:53', '0', 1);
-INSERT INTO `sys_menu` VALUES (10009, '报表设计', NULL, 'http://127.0.0.1:5006/ureport/designer', -1, 'icon-gtsquanjushiwufuwuGTS', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
+INSERT INTO `sys_menu` VALUES (7000, '报表设计', NULL, 'http://127.0.0.1:5006/ureport/designer', -1, 'icon-icon-p_mrpbaobiao', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
+INSERT INTO `sys_menu` VALUES (8000, '文件管理', NULL, '/admin/file/index', 2000, 'icon-wenjianguanli', 6, '0', '0', '2019-06-25 12:44:46', '2020-03-24 08:58:41', '0', 1);
+INSERT INTO `sys_menu` VALUES (8001, '删除文件', 'sys_file_del', NULL, 8000, NULL, 1, '0', '1', '2019-06-25 13:41:41', '2020-03-24 08:58:42', '0', 1);
+INSERT INTO `sys_menu` VALUES (9000, '开发平台', NULL, '/gen', -1, 'icon-shejiyukaifa-', 9, '0', '0', '2019-08-12 09:35:16', '2020-03-24 08:58:48', '0', 1);
+INSERT INTO `sys_menu` VALUES (9001, '表单管理', '', '/gen/form', 9000, 'icon-record', 3, '0', '0', '2018-01-20 13:17:19', '2020-03-24 08:58:44', '0', 1);
+INSERT INTO `sys_menu` VALUES (9002, '表单新增', 'gen_form_add', NULL, 9001, '1', 0, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:45', '0', 1);
+INSERT INTO `sys_menu` VALUES (9003, '表单修改', 'gen_form_edit', NULL, 9001, '1', 1, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:46', '0', 1);
+INSERT INTO `sys_menu` VALUES (9004, '表单删除', 'gen_form_del', NULL, 9001, '1', 2, '0', '1', '2018-05-15 21:35:18', '2020-03-24 08:58:47', '0', 1);
+INSERT INTO `sys_menu` VALUES (9005, '数据源管理', NULL, '/gen/datasource', 9000, 'icon-mysql', 0, '0', '0', '2019-08-12 09:42:11', '2020-03-24 08:58:49', '0', 1);
+INSERT INTO `sys_menu` VALUES (9006, '表单设计', NULL, '/gen/design', 9000, 'icon-biaodanbiaoqian', 2, '0', '0', '2019-08-16 10:08:56', '2020-03-24 08:58:53', '0', 1);
 COMMIT;
 
 -- ----------------------------
@@ -422,18 +429,18 @@ CREATE TABLE `sys_oauth_client_details` (
   `del_flag` char(1) DEFAULT '0',
   `tenant_id` int(11) NOT NULL DEFAULT '0' COMMENT '所属租户',
    PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='终端信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='终端信息表';
 
 -- ----------------------------
 -- Records of sys_oauth_client_details
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_oauth_client_details` VALUES (1, 'app', NULL, 'app', 'server', 'password,refresh_token,authorization_code,client_credentials,implicit', NULL, NULL, 43200, 2592001, NULL, 'true', '0', 1);
-INSERT INTO `sys_oauth_client_details` VALUES (2, 'daemon', NULL, 'daemon', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', '0', 1);
-INSERT INTO `sys_oauth_client_details` VALUES (3, 'gen', NULL, 'gen', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', '0', 1);
-INSERT INTO `sys_oauth_client_details` VALUES (4, 'mp', NULL, 'mp', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', '0', 1);
-INSERT INTO `sys_oauth_client_details` VALUES (5, 'pig', NULL, 'pig', 'server', 'password,refresh_token,authorization_code,client_credentials', 'http://localhost:4040/sso1/login,http://localhost:4041/sso1/login,http://localhost:8080/renren-admin/sys/oauth2-sso,http://localhost:8090/sys/oauth2-sso', NULL, NULL, NULL, NULL, 'false', '0', 1);
-INSERT INTO `sys_oauth_client_details` VALUES (6, 'test', NULL, 'test', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (1, 'app', NULL, 'app', 'server', 'password,refresh_token,authorization_code,client_credentials,implicit', NULL, NULL, 43200, 2592001, '{\"enc_flag\":\"1\",\"captcha_flag\":\"1\"}', 'true', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (2, 'daemon', NULL, 'daemon', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, '{\"enc_flag\":\"1\",\"captcha_flag\":\"1\"}', 'true', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (3, 'gen', NULL, 'gen', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, '{\"enc_flag\":\"1\",\"captcha_flag\":\"1\"}', 'true', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (4, 'mp', NULL, 'mp', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, '{\"enc_flag\":\"1\",\"captcha_flag\":\"1\"}', 'true', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (5, 'pig', NULL, 'pig', 'server', 'password,refresh_token,authorization_code,client_credentials', 'http://localhost:4040/sso1/login,http://localhost:4041/sso1/login,http://localhost:8080/renren-admin/sys/oauth2-sso,http://localhost:8090/sys/oauth2-sso', NULL, NULL, NULL, '{\"enc_flag\":\"1\",\"captcha_flag\":\"1\"}', 'false', '0', 1);
+INSERT INTO `sys_oauth_client_details` VALUES (6, 'test', NULL, 'test', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, '{\ "enc_flag\":\"1\",\"captcha_flag\":\"0\"}', 'true', '0', 1);
 COMMIT;
 
 -- ----------------------------
@@ -565,6 +572,7 @@ INSERT INTO `sys_role_menu` VALUES (1, 2860);
 INSERT INTO `sys_role_menu` VALUES (1, 2870);
 INSERT INTO `sys_role_menu` VALUES (1, 3000);
 INSERT INTO `sys_role_menu` VALUES (1, 3100);
+INSERT INTO `sys_role_menu` VALUES (1, 3101);
 INSERT INTO `sys_role_menu` VALUES (1, 3110);
 INSERT INTO `sys_role_menu` VALUES (1, 3200);
 INSERT INTO `sys_role_menu` VALUES (1, 3300);
@@ -609,6 +617,7 @@ INSERT INTO `sys_role_menu` VALUES (1, 6200);
 INSERT INTO `sys_role_menu` VALUES (1, 6201);
 INSERT INTO `sys_role_menu` VALUES (1, 6202);
 INSERT INTO `sys_role_menu` VALUES (1, 6203);
+INSERT INTO `sys_role_menu` VALUES (1, 6204);
 INSERT INTO `sys_role_menu` VALUES (1, 6300);
 INSERT INTO `sys_role_menu` VALUES (1, 6301);
 INSERT INTO `sys_role_menu` VALUES (1, 6302);
@@ -626,16 +635,16 @@ INSERT INTO `sys_role_menu` VALUES (1, 6700);
 INSERT INTO `sys_role_menu` VALUES (1, 6701);
 INSERT INTO `sys_role_menu` VALUES (1, 6702);
 INSERT INTO `sys_role_menu` VALUES (1, 6703);
-INSERT INTO `sys_role_menu` VALUES (1, 10000);
-INSERT INTO `sys_role_menu` VALUES (1, 10001);
-INSERT INTO `sys_role_menu` VALUES (1, 10002);
-INSERT INTO `sys_role_menu` VALUES (1, 10003);
-INSERT INTO `sys_role_menu` VALUES (1, 10004);
-INSERT INTO `sys_role_menu` VALUES (1, 10005);
-INSERT INTO `sys_role_menu` VALUES (1, 10006);
-INSERT INTO `sys_role_menu` VALUES (1, 10007);
-INSERT INTO `sys_role_menu` VALUES (1, 10008);
-INSERT INTO `sys_role_menu` VALUES (1, 10009);
+INSERT INTO `sys_role_menu` VALUES (1, 7000);
+INSERT INTO `sys_role_menu` VALUES (1, 8000);
+INSERT INTO `sys_role_menu` VALUES (1, 8001);
+INSERT INTO `sys_role_menu` VALUES (1, 9000);
+INSERT INTO `sys_role_menu` VALUES (1, 9001);
+INSERT INTO `sys_role_menu` VALUES (1, 9002);
+INSERT INTO `sys_role_menu` VALUES (1, 9003);
+INSERT INTO `sys_role_menu` VALUES (1, 9004);
+INSERT INTO `sys_role_menu` VALUES (1, 9005);
+INSERT INTO `sys_role_menu` VALUES (1, 9006);
 COMMIT;
 
 -- ----------------------------
