@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeHandle;
-import com.pig4cloud.pigx.common.data.datascope.DataScopeInterceptor;
+import com.pig4cloud.pigx.common.data.datascope.DataScopeInnerInterceptor;
 import com.pig4cloud.pigx.common.data.datascope.DataScopeSqlInjector;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
 import com.pig4cloud.pigx.common.data.resolver.SqlFilterArgumentResolver;
@@ -58,19 +58,18 @@ public class MybatisPlusConfiguration implements WebMvcConfigurer {
 	}
 
 	/**
-	 * 数据权限插件 优先 mybatis-plus 的拦截器执行
-	 * @return DataScopeInterceptor
+	 * pigx 默认数据权限处理器
+	 * @return PigxDefaultDatascopeHandle
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnBean(DataScopeHandle.class)
-	public DataScopeInterceptor dataScopeInterceptor() {
-		return new DataScopeInterceptor(dataScopeHandle());
+	public DataScopeHandle dataScopeHandle() {
+		return new PigxDefaultDatascopeHandle();
 	}
 
 	/**
 	 * mybatis plus 拦截器配置
-	 * @return
+	 * @return PigxDefaultDatascopeHandle
 	 */
 	@Bean
 	public MybatisPlusInterceptor mybatisPlusInterceptor() {
@@ -79,6 +78,10 @@ public class MybatisPlusConfiguration implements WebMvcConfigurer {
 		TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor();
 		tenantLineInnerInterceptor.setTenantLineHandler(pigxTenantHandler());
 		interceptor.addInnerInterceptor(tenantLineInnerInterceptor);
+		// 数据权限
+		DataScopeInnerInterceptor dataScopeInnerInterceptor = new DataScopeInnerInterceptor();
+		dataScopeInnerInterceptor.setDataScopeHandle(dataScopeHandle());
+		interceptor.addInnerInterceptor(dataScopeInnerInterceptor);
 		// 分页支持
 		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
 		return interceptor;
@@ -92,16 +95,6 @@ public class MybatisPlusConfiguration implements WebMvcConfigurer {
 	@ConditionalOnMissingBean
 	public PigxTenantHandler pigxTenantHandler() {
 		return new PigxTenantHandler();
-	}
-
-	/**
-	 * pigx 默认数据权限处理器
-	 * @return
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	public DataScopeHandle dataScopeHandle() {
-		return new PigxDefaultDatascopeHandle();
 	}
 
 	/**
