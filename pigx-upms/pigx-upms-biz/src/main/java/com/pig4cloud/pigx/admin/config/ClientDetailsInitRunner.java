@@ -1,7 +1,6 @@
 package com.pig4cloud.pigx.admin.config;
 
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
 import com.pig4cloud.pigx.admin.service.SysOauthClientDetailsService;
 import com.pig4cloud.pigx.admin.service.SysTenantService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
@@ -15,9 +14,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author lengleng
@@ -42,22 +38,21 @@ public class ClientDetailsInitRunner {
 	@EventListener({ WebServerInitializedEvent.class, ClientDetailsInitEvent.class })
 	public void initClientDetails() {
 		log.debug("初始化客户端信息开始 ");
-		List<SysOauthClientDetails> clientDetailsList = new ArrayList<>();
 
-		// 查询全部租户的客户端定义信息
-		tenantService.list().forEach(tenant -> clientDetailsList
-				.addAll(TenantBroker.applyAs(tenant.getId(), tenantId -> clientDetailsService.list())));
-
-		for (SysOauthClientDetails client : clientDetailsList) {
-			if (StrUtil.isBlank(client.getAdditionalInformation())) {
-				continue;
-			}
-			// 拼接key 1:client_config_flag:clinetId
-			String key = String.format("%s:%s:%s", client.getTenantId(), CacheConstants.CLIENT_FLAG,
-					client.getClientId());
-			// hashkey clientId
-			redisTemplate.opsForValue().set(key, client.getAdditionalInformation());
-		}
+		// 1. 查询全部租户循环遍历
+		tenantService.list().forEach(tenant -> {
+			TenantBroker.runAs(tenant.getId(), tenantId -> {
+				// 2. 查询当前租户的所有客户端信息 (排除客户端扩展信息为空)
+				clientDetailsService.list().stream().filter(client -> {
+					return StrUtil.isNotBlank(client.getAdditionalInformation());
+				}).forEach(client -> {
+					// 3. 拼接key 1:client_config_flag:clinetId
+					String key = String.format("%s:%s:%s", tenantId, CacheConstants.CLIENT_FLAG, client.getClientId());
+					// 4. hashkey clientId 保存客户端信息
+					redisTemplate.opsForValue().set(key, client.getAdditionalInformation());
+				});
+			});
+		});
 
 		log.debug("初始化客户端信息结束 ");
 	}
