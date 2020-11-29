@@ -33,4 +33,9 @@ public interface DataSourceConstants {
 	 */
 	String DS_USER_PWD = "password";
 
+	/**
+	 * 默认驱动名称
+	 */
+	String DS_DRIVER = "com.mysql.cj.jdbc.Driver";
+
 }
