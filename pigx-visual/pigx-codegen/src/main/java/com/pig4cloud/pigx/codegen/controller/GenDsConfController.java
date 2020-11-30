@@ -22,6 +22,7 @@ import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
 import com.pig4cloud.pigx.codegen.service.GenDatasourceConfService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
+import com.pig4cloud.pigx.common.xss.core.XssCleanIgnore;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +76,7 @@ public class GenDsConfController {
 	 */
 	@SysLog("新增数据源表")
 	@PostMapping
+	@XssCleanIgnore
 	public R save(@RequestBody GenDatasourceConf datasourceConf) {
 		return R.ok(datasourceConfService.saveDsByEnc(datasourceConf));
 	}
@@ -86,6 +88,7 @@ public class GenDsConfController {
 	 */
 	@SysLog("修改数据源表")
 	@PutMapping
+	@XssCleanIgnore
 	public R updateById(@RequestBody GenDatasourceConf conf) {
 		return R.ok(datasourceConfService.updateDsByEnc(conf));
 	}
