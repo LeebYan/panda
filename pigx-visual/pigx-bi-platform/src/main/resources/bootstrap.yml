@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: @artifactId@
+  datasource:
+    url: jdbc:mysql://pigx-mysql:3306/pigxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
