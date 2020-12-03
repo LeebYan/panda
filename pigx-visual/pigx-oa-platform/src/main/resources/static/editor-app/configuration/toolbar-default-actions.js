@@ -382,6 +382,11 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
           tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
         }
 
+        var token = ''
+        if (sessionStorage.getItem('pigx-access_token')){
+          token = JSON.parse(sessionStorage.getItem('pigx-access_token')).content
+        }
+
         // Update
           $http({    method: 'PUT',
             data: params,
@@ -389,7 +394,8 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
             headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                      'TENANT-ID': tenantId
+                      'TENANT-ID': tenantId,
+                      'Authorization': 'Bearer '+token,
             },
             transformRequest: function (obj) {
                 var str = [];

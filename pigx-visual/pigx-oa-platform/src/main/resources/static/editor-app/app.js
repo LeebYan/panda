@@ -99,12 +99,18 @@ activitiModeler
                   tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
                 }
 
+                var token = ''
+                if (sessionStorage.getItem('pigx-access_token')){
+                  token = JSON.parse(sessionStorage.getItem('pigx-access_token')).content
+                }
+
                 var modelUrl = KISBPM.URL.getModel(modelId);
 
                 $http({method: 'GET',
                     url: modelUrl,
                    headers: {
-                    'TENANT-ID': tenantId
+                     'Authorization': 'Bearer '+token,
+                     'TENANT-ID': tenantId
                    }
                 }).
                     success(function (data, status, headers, config) {

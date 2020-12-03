@@ -67,9 +67,15 @@ angular.module('activitiModeler')
               tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
             }
 
+            var token = ''
+            if (sessionStorage.getItem('pigx-access_token')){
+              token = JSON.parse(sessionStorage.getItem('pigx-access_token')).content
+            }
+
             $http({method: 'GET',
                 url: KISBPM.URL.getStencilSet(),
                 headers: {
+                  'Authorization': 'Bearer '+token,
                   'TENANT-ID': tenantId
                 }
             }).success(function (data, status, headers, config) {

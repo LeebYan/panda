@@ -18,7 +18,6 @@
 package com.pig4cloud.pigx.act.controller;
 
 import com.pig4cloud.pigx.act.service.EditorService;
-import com.pig4cloud.pigx.common.security.annotation.Inner;
 import com.pig4cloud.pigx.common.xss.core.XssCleanIgnore;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
  * @author lengleng
  * @date 2018/4/13
  */
-@Inner(value = false)
 @RestController
 @AllArgsConstructor
 @RequestMapping("/service")

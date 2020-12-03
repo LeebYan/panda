@@ -446,7 +446,7 @@ var Enumerable = {
         iterator(value, index++);
       });
     } catch (e) {
-      if (e != $break) 
+      if (e != $break)
     	  throw e;
     }
     return this;
@@ -1061,10 +1061,22 @@ Ajax.Request.prototype = Object.extend(new Ajax.Base(), {
   },
 
   setRequestHeaders: function() {
+    var tenantId  = 1
+    if (localStorage.getItem('pigx-tenantId')) {
+      tenantId = JSON.parse(localStorage.getItem('pigx-tenantId')).content
+    }
+
+    var token = ''
+    if (sessionStorage.getItem('pigx-access_token')){
+      token = JSON.parse(sessionStorage.getItem('pigx-access_token')).content
+    }
+
     var headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'X-Prototype-Version': Prototype.Version,
-      'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+      'Accept': 'text/javascript, text/html, application/xml, text/xml, */*',
+      'TENANT-ID': tenantId,
+      'Authorization': 'Bearer '+token,
     };
 
     if (this.method == 'post') {
