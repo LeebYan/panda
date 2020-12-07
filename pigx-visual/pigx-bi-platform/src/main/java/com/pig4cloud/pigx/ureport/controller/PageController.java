@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class PageController {
+
 	/**
 	 * 表单设计URL
 	 */
@@ -18,11 +19,11 @@ public class PageController {
 
 	/**
 	 * 跳转至表单设计
-	 *
 	 * @return
 	 */
 	@GetMapping
 	public String designer() {
 		return REDIRECT_UREPORT_DESIGNER;
 	}
+
 }

@@ -22,8 +22,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * WebSecurityConfigurer
@@ -37,24 +43,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http.formLogin()
-				.loginPage("/login.html")
-				.loginProcessingUrl("/login")
-				.failureHandler((request, response, exception) -> {
-					response.sendRedirect("/login.html?error=" + URLEncoder.encode(exception.getLocalizedMessage(), "utf-8"));
-				})
-				.and()
-				.authorizeRequests()
-				.antMatchers("/login.html", "/login").permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.csrf().disable();
+		http.formLogin().loginPage("/login.html").loginProcessingUrl("/login").failureHandler(new LoginFailureHandler())
+				.and().authorizeRequests().antMatchers("/login.html", "/login").permitAll().anyRequest().authenticated()
+				.and().csrf().disable();
 	}
 
 	/**
 	 * 不拦截静态资源
-	 *
 	 * @param web
 	 */
 	@Override
@@ -62,5 +57,24 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/favicon.ico", "/css/**", "/error");
 	}
 
+	/**
+	 * 登录失败处理器，携带错误信息重定向到首页
+	 */
+	static class LoginFailureHandler implements AuthenticationFailureHandler {
+
+		/**
+		 * Called when an authentication attempt fails.
+		 * @param request the request during which the authentication attempt occurred.
+		 * @param response the response.
+		 * @param exception the exception which was thrown to reject the authentication
+		 */
+		@Override
+		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+				AuthenticationException exception) throws IOException {
+			response.sendRedirect("/login.html?error="
+					+ URLEncoder.encode(exception.getLocalizedMessage(), StandardCharsets.UTF_8.name()));
+		}
+
+	}
 
 }
