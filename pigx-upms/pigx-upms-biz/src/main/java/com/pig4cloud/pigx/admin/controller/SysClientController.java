@@ -26,6 +26,7 @@ import com.pig4cloud.pigx.admin.api.entity.SysOauthClientDetails;
 import com.pig4cloud.pigx.admin.service.SysOauthClientDetailsService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
+import com.pig4cloud.pigx.common.security.annotation.Inner;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -105,6 +106,13 @@ public class SysClientController {
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
 	public R update(@Valid @RequestBody SysOauthClientDetailsDTO clientDetailsDTO) {
 		return R.ok(clientDetailsService.updateClientById(clientDetailsDTO));
+	}
+
+	@Inner(false)
+	@GetMapping("/getClientDetailsById/{clientId}")
+	public R getClientDetailsById(@PathVariable String clientId) {
+		return R.ok(clientDetailsService.getOne(
+				Wrappers.<SysOauthClientDetails>lambdaQuery().eq(SysOauthClientDetails::getClientId, clientId), false));
 	}
 
 }

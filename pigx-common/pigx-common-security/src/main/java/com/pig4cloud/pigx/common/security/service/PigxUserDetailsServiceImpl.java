@@ -65,7 +65,7 @@ public class PigxUserDetailsServiceImpl implements PigxUserDetailsService {
 	public UserDetails loadUserByUsername(String username) {
 		Cache cache = cacheManager.getCache(CacheConstants.USER_DETAILS);
 		if (cache != null && cache.get(username) != null) {
-			return (PigxUser) cache.get(username).get();
+			return cache.get(username, PigxUser.class);
 		}
 
 		R<UserInfo> result = remoteUserService.info(username, SecurityConstants.FROM_IN);
