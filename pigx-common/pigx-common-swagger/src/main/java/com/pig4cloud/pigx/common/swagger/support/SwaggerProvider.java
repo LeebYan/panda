@@ -19,6 +19,7 @@ package com.pig4cloud.pigx.common.swagger.support;
 
 import com.pig4cloud.pigx.common.swagger.config.SwaggerProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.cloud.gateway.support.NameUtils;
@@ -46,19 +47,26 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
 
 	private final SwaggerProperties swaggerProperties;
 
+	private final DiscoveryClient discoveryClient;
+
 	@Override
 	public List<SwaggerResource> get() {
 		List<RouteDefinition> routes = new ArrayList<>();
-		routeDefinitionRepository.getRouteDefinitions().subscribe(routes::add);
+		routeDefinitionRepository.getRouteDefinitions()
+				// swagger 显示服务名称根据 路由的order 字段进行升序排列
+				.sort(Comparator.comparingInt(RouteDefinition::getOrder)).subscribe(routes::add);
+
 		return routes.stream()
 				.flatMap(routeDefinition -> routeDefinition.getPredicates().stream()
 						.filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
 						.filter(predicateDefinition -> !swaggerProperties.getIgnoreProviders()
 								.contains(routeDefinition.getId()))
 						.map(predicateDefinition -> swaggerResource(routeDefinition.getId(),
-								predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**",
-										API_URI))))
-				.sorted(Comparator.comparing(SwaggerResource::getName)).collect(Collectors.toList());
+								predicateDefinition.getArgs()
+										.get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**", API_URI))))
+				// 只显示注册中心 内已经正确启动的服务
+				.filter(swaggerResource -> discoveryClient.getServices().stream().anyMatch(s -> s.equals(swaggerResource.getName())))
+				.collect(Collectors.toList());
 	}
 
 	private static SwaggerResource swaggerResource(String name, String location) {
