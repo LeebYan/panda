@@ -15,7 +15,6 @@ public class UReportPropertyPlaceholderConfigurerPlus extends UReportPropertyPla
 	public UReportPropertyPlaceholderConfigurerPlus() {
 		Properties properties = new Properties();
 		properties.setProperty("ureport.fileStoreDir", "");
-		properties.setProperty("ureport.fileStoreDir", "");
 		properties.setProperty("ureport.debug", "false");
 		properties.setProperty("ureport.disableHttpSessionReportCache", "false");
 		this.setProperties(properties);
