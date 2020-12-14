@@ -14,6 +14,11 @@
 
 	<description>代码生成模块</description>
 
+	<properties>
+		<sqlserver.version>4.0</sqlserver.version>
+		<oracle.version>12.1.0.1-atlassian-hosted</oracle.version>
+	</properties>
+
 	<dependencies>
 		<!--注册中心客户端-->
 		<dependency>
@@ -43,6 +48,23 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!-- postgresql 驱动 -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<!-- oracle 驱动 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>${oracle.version}</version>
+		</dependency>
+		<!-- sqlserver 驱动 -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>${sqlserver.version}</version>
 		</dependency>
 		<!-- druid 连接池 -->
 		<dependency>

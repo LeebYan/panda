@@ -19,7 +19,6 @@ package com.pig4cloud.pigx.codegen.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
 
@@ -29,7 +28,7 @@ import com.pig4cloud.pigx.codegen.entity.GenConfig;
  * @author lengleng
  * @date 2020-05-18
  */
-public interface GenTableColumnService extends IService<ColumnEntity> {
+public interface GenTableColumnService {
 
 	/**
 	 * 查询表的字段信息

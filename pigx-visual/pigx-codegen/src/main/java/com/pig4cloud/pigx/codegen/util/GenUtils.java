@@ -21,13 +21,15 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
-import com.pig4cloud.pigx.codegen.entity.GenConfig;
-import com.pig4cloud.pigx.codegen.entity.GenFormConf;
-import com.pig4cloud.pigx.codegen.entity.TableEntity;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.pig4cloud.pigx.codegen.entity.*;
+import com.pig4cloud.pigx.codegen.mapper.GenDatasourceConfMapper;
+import com.pig4cloud.pigx.codegen.mapper.GeneratorMapper;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.StyleTypeEnum;
 import com.pig4cloud.pigx.common.core.exception.CheckedException;
+import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
+import com.pig4cloud.pigx.common.datasource.util.DsJdbcUrlEnum;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.springframework.context.ApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,6 +136,8 @@ public class GenUtils {
 			tableEntity.setComments(table.get("tableComment"));
 		}
 
+		tableEntity.setDbType(table.get("dbType"));
+
 		String tablePrefix;
 		if (StrUtil.isNotBlank(genConfig.getTablePrefix())) {
 			tablePrefix = genConfig.getTablePrefix();
@@ -153,7 +158,6 @@ public class GenUtils {
 			ColumnEntity columnEntity = new ColumnEntity();
 			columnEntity.setColumnName(column.get("columnName"));
 			columnEntity.setDataType(column.get("dataType"));
-			columnEntity.setComments(column.get("comments"));
 			columnEntity.setExtra(column.get("extra"));
 			columnEntity.setNullable("NO".equals(column.get("isNullable")));
 			columnEntity.setColumnType(column.get("columnType"));
@@ -168,6 +172,14 @@ public class GenUtils {
 			String attrName = columnToJava(columnEntity.getColumnName());
 			columnEntity.setCaseAttrName(attrName);
 			columnEntity.setLowerAttrName(StringUtils.uncapitalize(attrName));
+
+			// 判断注释是否为空
+			if (StrUtil.isNotBlank(column.get("comments"))) {
+				columnEntity.setComments(column.get("comments"));
+			}
+			else {
+				columnEntity.setComments(columnEntity.getLowerAttrName());
+			}
 
 			// 列的数据类型，转换成Java类型
 			String attrType = config.getString(columnEntity.getDataType(), "unknowType");
@@ -387,6 +399,40 @@ public class GenUtils {
 		}
 
 		return null;
+	}
+
+	/**
+	 * 根据目标数据源名称动态匹配Mapper
+	 * @param dsName
+	 * @return
+	 */
+	public GeneratorMapper getMapper(String dsName) {
+		// 获取目标数据源数据库类型
+		GenDatasourceConfMapper datasourceConfMapper = SpringContextHolder.getBean(GenDatasourceConfMapper.class);
+		GenDatasourceConf datasourceConf = datasourceConfMapper
+				.selectOne(Wrappers.<GenDatasourceConf>lambdaQuery().eq(GenDatasourceConf::getName, dsName));
+
+		String dbConfType;
+		// 默认MYSQL 数据源
+		if (datasourceConf == null) {
+			dbConfType = DsJdbcUrlEnum.MYSQL.getDbName();
+		}
+		else {
+			dbConfType = datasourceConf.getDsType();
+		}
+
+		// 获取全部数据实现
+		ApplicationContext context = SpringContextHolder.getApplicationContext();
+		Map<String, GeneratorMapper> beansOfType = context.getBeansOfType(GeneratorMapper.class);
+
+		// 根据数据类型选择mapper
+		for (String key : beansOfType.keySet()) {
+			if (StrUtil.containsIgnoreCase(key, dbConfType)) {
+				return beansOfType.get(key);
+			}
+		}
+
+		throw new IllegalArgumentException("dsName 不合法: " + dsName);
 	}
 
 }

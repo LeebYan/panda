@@ -25,6 +25,8 @@ import com.pig4cloud.pigx.codegen.entity.GenDatasourceConf;
 import com.pig4cloud.pigx.codegen.mapper.GenDatasourceConfMapper;
 import com.pig4cloud.pigx.codegen.service.GenDatasourceConfService;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
+import com.pig4cloud.pigx.common.datasource.util.DsConfTypeEnum;
+import com.pig4cloud.pigx.common.datasource.util.DsJdbcUrlEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
@@ -134,8 +136,24 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 */
 	@Override
 	public Boolean checkDataSource(GenDatasourceConf conf) {
-		try (Connection connection = DriverManager.getConnection(conf.getUrl(), conf.getUsername(),
-				conf.getPassword())) {
+		String url;
+		// JDBC 配置形式
+		if (DsConfTypeEnum.JDBC.getType().equals(conf.getConfType())) {
+			url = conf.getUrl();
+		}
+		else if (DsJdbcUrlEnum.MSSQL.getDbName().equals(conf.getDsType())) {
+			// 主机形式 sql server 特殊处理
+			DsJdbcUrlEnum urlEnum = DsJdbcUrlEnum.get(conf.getDsType());
+			url = String.format(urlEnum.getUrl(), conf.getHost(), conf.getInstance(), conf.getPort(), conf.getDsName());
+		}
+		else {
+			DsJdbcUrlEnum urlEnum = DsJdbcUrlEnum.get(conf.getDsType());
+			url = String.format(urlEnum.getUrl(), conf.getHost(), conf.getPort(), conf.getDsName());
+		}
+
+		conf.setUrl(url);
+
+		try (Connection connection = DriverManager.getConnection(url, conf.getUsername(), conf.getPassword())) {
 		}
 		catch (SQLException e) {
 			log.error("数据源配置 {} , 获取链接失败", conf.getName(), e);

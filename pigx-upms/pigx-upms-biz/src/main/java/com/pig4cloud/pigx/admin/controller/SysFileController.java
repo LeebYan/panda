@@ -49,8 +49,7 @@ public class SysFileController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page    分页对象
+	 * @param page 分页对象
 	 * @param sysFile 文件管理
 	 * @return
 	 */
@@ -62,7 +61,6 @@ public class SysFileController {
 
 	/**
 	 * 通过id删除文件管理
-	 *
 	 * @param id id
 	 * @return R
 	 */
@@ -76,7 +74,6 @@ public class SysFileController {
 
 	/**
 	 * 上传文件 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
-	 *
 	 * @param file 资源
 	 * @return R(/ admin / bucketName / filename)
 	 */
@@ -87,8 +84,7 @@ public class SysFileController {
 
 	/**
 	 * 获取文件
-	 *
-	 * @param bucket   桶名称
+	 * @param bucket 桶名称
 	 * @param fileName 文件空间/名称
 	 * @param response
 	 * @return

@@ -50,9 +50,39 @@ public class GenDatasourceConf extends Model<GenDatasourceConf> {
 	private String name;
 
 	/**
-	 * jdbcurl
+	 * 数据库类型
+	 */
+	private String dsType;
+
+	/**
+	 * 配置类型 （0 主机形式 | 1 url形式）
+	 */
+	private Integer confType;
+
+	/**
+	 * 主机地址
+	 */
+	private String host;
+
+	/**
+	 * 端口
+	 */
+	private Integer port;
+
+	/**
+	 * jdbc-url
 	 */
 	private String url;
+
+	/**
+	 * 实例
+	 */
+	private String instance;
+
+	/**
+	 * 数据库名称
+	 */
+	private String dsName;
 
 	/**
 	 * 用户名
@@ -79,10 +109,5 @@ public class GenDatasourceConf extends Model<GenDatasourceConf> {
 	 */
 	@TableLogic
 	private String delFlag;
-
-	/**
-	 * 租户ID
-	 */
-	private Integer tenantId;
 
 }

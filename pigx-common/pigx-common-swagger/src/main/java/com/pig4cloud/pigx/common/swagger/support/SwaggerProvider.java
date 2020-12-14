@@ -62,10 +62,11 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
 						.filter(predicateDefinition -> !swaggerProperties.getIgnoreProviders()
 								.contains(routeDefinition.getId()))
 						.map(predicateDefinition -> swaggerResource(routeDefinition.getId(),
-								predicateDefinition.getArgs()
-										.get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**", API_URI))))
+								predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0").replace("/**",
+										API_URI))))
 				// 只显示注册中心 内已经正确启动的服务
-				.filter(swaggerResource -> discoveryClient.getServices().stream().anyMatch(s -> s.equals(swaggerResource.getName())))
+				.filter(swaggerResource -> discoveryClient.getServices().stream()
+						.anyMatch(s -> s.equals(swaggerResource.getName())))
 				.collect(Collectors.toList());
 	}
 

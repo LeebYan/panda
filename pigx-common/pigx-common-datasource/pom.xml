@@ -32,5 +32,10 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!--拦截器依赖-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 	</dependencies>
 </project>

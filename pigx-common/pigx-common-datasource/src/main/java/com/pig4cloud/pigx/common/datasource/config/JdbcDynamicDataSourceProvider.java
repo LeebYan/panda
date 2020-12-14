@@ -20,6 +20,8 @@ package com.pig4cloud.pigx.common.datasource.config;
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.pig4cloud.pigx.common.datasource.support.DataSourceConstants;
+import com.pig4cloud.pigx.common.datasource.util.DsConfTypeEnum;
+import com.pig4cloud.pigx.common.datasource.util.DsJdbcUrlEnum;
 import org.jasypt.encryption.StringEncryptor;
 
 import java.sql.ResultSet;
@@ -61,9 +63,30 @@ public class JdbcDynamicDataSourceProvider extends AbstractJdbcDataSourceProvide
 			String name = rs.getString(DataSourceConstants.DS_NAME);
 			String username = rs.getString(DataSourceConstants.DS_USER_NAME);
 			String password = rs.getString(DataSourceConstants.DS_USER_PWD);
-			String url = rs.getString(DataSourceConstants.DS_JDBC_URL);
+			Integer confType = rs.getInt(DataSourceConstants.DS_CONFIG_TYPE);
+			String dsType = rs.getString(DataSourceConstants.DS_TYPE);
+
+			String url;
+			// JDBC 配置形式
+			DsJdbcUrlEnum urlEnum = DsJdbcUrlEnum.get(dsType);
+			if (DsConfTypeEnum.JDBC.getType().equals(confType)) {
+				url = rs.getString(DataSourceConstants.DS_JDBC_URL);
+			}
+			else if (DsJdbcUrlEnum.MSSQL.getDbName().equals(dsType)) {
+				String host = rs.getString(DataSourceConstants.DS_HOST);
+				String port = rs.getString(DataSourceConstants.DS_PORT);
+				String dsName = rs.getString(DataSourceConstants.DS_NAME);
+				String instance = rs.getString(DataSourceConstants.DS_INSTANCE);
+				url = String.format(urlEnum.getUrl(), host, instance, port, dsName);
+			}
+			else {
+				String host = rs.getString(DataSourceConstants.DS_HOST);
+				String port = rs.getString(DataSourceConstants.DS_PORT);
+				String dsName = rs.getString(DataSourceConstants.DS_NAME);
+				url = String.format(urlEnum.getUrl(), host, port, dsName);
+			}
+
 			DataSourceProperty property = new DataSourceProperty();
-			property.setDriverClassName(DataSourceConstants.DS_DRIVER);
 			property.setUsername(username);
 			property.setPassword(stringEncryptor.decrypt(password));
 			property.setUrl(url);
@@ -75,7 +98,6 @@ public class JdbcDynamicDataSourceProvider extends AbstractJdbcDataSourceProvide
 		property.setUsername(properties.getUsername());
 		property.setPassword(properties.getPassword());
 		property.setUrl(properties.getUrl());
-		property.setDriverClassName(DataSourceConstants.DS_DRIVER);
 		map.put(DataSourceConstants.DS_MASTER, property);
 		return map;
 	}

@@ -24,6 +24,11 @@ public interface DataSourceConstants {
 	String DS_JDBC_URL = "url";
 
 	/**
+	 * 配置类型
+	 */
+	String DS_CONFIG_TYPE = "conf_type";
+
+	/**
 	 * 用户名
 	 */
 	String DS_USER_NAME = "username";
@@ -34,8 +39,23 @@ public interface DataSourceConstants {
 	String DS_USER_PWD = "password";
 
 	/**
-	 * 默认驱动名称
+	 * 数据库类型
 	 */
-	String DS_DRIVER = "com.mysql.cj.jdbc.Driver";
+	String DS_TYPE = "ds_type";
+
+	/**
+	 * 主机类型
+	 */
+	String DS_HOST = "host";
+
+	/**
+	 * 端口
+	 */
+	String DS_PORT = "port";
+
+	/**
+	 * 实例名称
+	 */
+	String DS_INSTANCE = "instance";
 
 }

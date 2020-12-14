@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.data.mybatis;
 
-import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
@@ -83,7 +82,7 @@ public class MybatisPlusConfiguration implements WebMvcConfigurer {
 		dataScopeInnerInterceptor.setDataScopeHandle(dataScopeHandle());
 		interceptor.addInnerInterceptor(dataScopeInnerInterceptor);
 		// 分页支持
-		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+		interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
 		return interceptor;
 	}
 
