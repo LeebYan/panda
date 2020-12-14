@@ -71,7 +71,7 @@ public class PigxDefaultDatascopeHandle implements DataScopeHandle {
 			return true;
 		}
 		// 自定义
-		if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
+		if (DataScopeTypeEnum.CUSTOM.getType() == dsType && StrUtil.isNotBlank(role.getDsScope())) {
 			String dsScope = role.getDsScope();
 			deptList.addAll(
 					Arrays.stream(dsScope.split(StrUtil.COMMA)).map(Integer::parseInt).collect(Collectors.toList()));
