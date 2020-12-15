@@ -37,7 +37,12 @@ public enum DsJdbcUrlEnum {
 	/**
 	 * oracle
 	 */
-	ORACLE("oracle", "jdbc:oracle:thin:@%s:%s:%s", "oracle 链接");
+	ORACLE("oracle", "jdbc:oracle:thin:@%s:%s:%s", "oracle 链接"),
+
+	/**
+	 * db2
+	 */
+	DB2("db2", "jdbc:db2://%s:%s/%s", "DB2 TYPE4 连接");
 
 	private final String dbName;
 

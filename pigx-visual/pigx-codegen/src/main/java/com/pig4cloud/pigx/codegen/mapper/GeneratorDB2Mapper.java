@@ -20,12 +20,12 @@ package com.pig4cloud.pigx.codegen.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 支持 MySql 代码生成器
+ * 支持 db2 代码生成器
  *
  * @author lengleng
  * @date 2020-12-11
  */
 @Mapper
-public interface GeneratorMySqlMapper extends GeneratorMapper {
+public interface GeneratorDB2Mapper extends GeneratorMapper {
 
 }

@@ -16,6 +16,7 @@
 
 	<properties>
 		<sqlserver.version>4.0</sqlserver.version>
+		<db2.version>11.5.0.0</db2.version>
 		<oracle.version>12.1.0.1-atlassian-hosted</oracle.version>
 	</properties>
 
@@ -65,6 +66,12 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>${sqlserver.version}</version>
+		</dependency>
+		<!-- db2 驱动-->
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>jcc</artifactId>
+			<version>${db2.version}</version>
 		</dependency>
 		<!-- druid 连接池 -->
 		<dependency>
