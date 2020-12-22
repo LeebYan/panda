@@ -60,7 +60,7 @@ public class JdbcDynamicDataSourceProvider extends AbstractJdbcDataSourceProvide
 
 		Map<String, DataSourceProperty> map = new HashMap<>(8);
 		while (rs.next()) {
-			String name = rs.getString(DataSourceConstants.DS_NAME);
+			String name = rs.getString(DataSourceConstants.NAME);
 			String username = rs.getString(DataSourceConstants.DS_USER_NAME);
 			String password = rs.getString(DataSourceConstants.DS_USER_PWD);
 			Integer confType = rs.getInt(DataSourceConstants.DS_CONFIG_TYPE);

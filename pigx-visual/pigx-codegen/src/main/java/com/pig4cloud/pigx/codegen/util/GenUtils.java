@@ -175,14 +175,16 @@ public class GenUtils {
 
 			// 判断注释是否为空
 			if (StrUtil.isNotBlank(column.get("comments"))) {
-				columnEntity.setComments(column.get("comments"));
+				// 注意去除换行符号
+				columnEntity.setComments(StrUtil.removeAllLineBreaks(column.get("comments")));
 			}
 			else {
 				columnEntity.setComments(columnEntity.getLowerAttrName());
 			}
 
 			// 列的数据类型，转换成Java类型
-			String attrType = config.getString(columnEntity.getDataType(), "unknowType");
+			String dataType = StrUtil.subBefore(columnEntity.getDataType(), "(", false);
+			String attrType = config.getString(dataType, "unknowType");
 			columnEntity.setAttrType(attrType);
 			if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
 				hasBigDecimal = true;

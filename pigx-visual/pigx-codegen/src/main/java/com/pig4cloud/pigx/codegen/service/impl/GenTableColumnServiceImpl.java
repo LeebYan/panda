@@ -1,5 +1,6 @@
 package com.pig4cloud.pigx.codegen.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.ColumnEntity;
@@ -31,7 +32,9 @@ public class GenTableColumnServiceImpl implements GenTableColumnService {
 		// 处理 数据库类型和 Java 类型关系
 		Configuration config = GenUtils.getConfig();
 		columnPage.getRecords().forEach(column -> {
-			String attrType = config.getString(column.getDataType(), "unknowType");
+			// 只保留 （）之前部分，例如 timestamp(6) -> timestamp
+			String dataType = StrUtil.subBefore(column.getDataType(), "(", false);
+			String attrType = config.getString(dataType, "unknowType");
 			column.setLowerAttrName(StringUtils.uncapitalize(GenUtils.columnToJava(column.getColumnName())));
 			column.setJavaType(attrType);
 		});

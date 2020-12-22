@@ -24,7 +24,7 @@
 			TEMP.COLUMN_NAME AS "columnName",
 			TEMP.data_type AS "columnType",
 			TEMP.data_type AS "dataType",
-			TEMP.comments AS comments,
+			TEMP.comments AS "comments",
 		CASE
 				TEMP.constraint_type
 				WHEN 'P' THEN
