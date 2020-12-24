@@ -29,9 +29,6 @@ public class PigxTokenStoreAutoConfiguration {
 	@Bean
 	public TokenStore tokenStore() {
 		PigxRedisTokenStore tokenStore = new PigxRedisTokenStore(connectionFactory, resolver);
-		if (SecurityConstants.JSON_FORMAT) {
-			tokenStore.setSerializationStrategy(new JacksonRedisTokenStoreSerializationStrategy());
-		}
 		tokenStore.setPrefix(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX);
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override

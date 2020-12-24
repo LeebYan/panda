@@ -220,9 +220,4 @@ public interface SecurityConstants {
 	 */
 	String AES = "aes";
 
-	/**
-	 * 是否开启 redis json 格式化
-	 */
-	boolean JSON_FORMAT = false;
-
 }
