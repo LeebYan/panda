@@ -37,6 +37,11 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-core</artifactId>
 		</dependency>
+		<!-- LB 扩展 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>

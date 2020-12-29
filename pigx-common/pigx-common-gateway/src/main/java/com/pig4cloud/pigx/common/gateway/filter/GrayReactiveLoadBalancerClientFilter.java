@@ -20,10 +20,11 @@ package com.pig4cloud.pigx.common.gateway.filter;
 import com.pig4cloud.pigx.common.gateway.rule.GrayLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.DefaultResponse;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerUriTools;
-import org.springframework.cloud.client.loadbalancer.reactive.DefaultResponse;
-import org.springframework.cloud.client.loadbalancer.reactive.Response;
-import org.springframework.cloud.gateway.config.LoadBalancerProperties;
+import org.springframework.cloud.client.loadbalancer.Response;
+import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter;
 import org.springframework.cloud.gateway.support.DelegatingServiceInstance;
@@ -43,14 +44,19 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 
 	private static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10150;
 
+	private GatewayLoadBalancerProperties loadBalancerProperties;
+
 	private LoadBalancerProperties properties;
 
 	private GrayLoadBalancer grayLoadBalancer;
 
-	public GrayReactiveLoadBalancerClientFilter(LoadBalancerProperties properties, GrayLoadBalancer grayLoadBalancer) {
-		super(null, properties);
+
+	public GrayReactiveLoadBalancerClientFilter(GatewayLoadBalancerProperties loadBalancerProperties
+			, LoadBalancerProperties properties, GrayLoadBalancer grayLoadBalancer) {
+		super(null, loadBalancerProperties, properties);
 		this.properties = properties;
 		this.grayLoadBalancer = grayLoadBalancer;
+		this.loadBalancerProperties = loadBalancerProperties;
 	}
 
 	@Override
@@ -75,7 +81,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 		return choose(exchange).doOnNext(response -> {
 
 			if (!response.hasServer()) {
-				throw NotFoundException.create(properties.isUse404(), "Unable to find instance for " + url.getHost());
+				throw NotFoundException.create(loadBalancerProperties.isUse404()
+						, "Unable to find instance for " + url.getHost());
 			}
 
 			URI uri = exchange.getRequest().getURI();

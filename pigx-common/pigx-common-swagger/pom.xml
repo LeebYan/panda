@@ -70,13 +70,13 @@
 		<!--网关 swagger 聚合依赖-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gateway-core</artifactId>
+			<artifactId>spring-cloud-gateway-server</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!--提供服务发现能力-->
 		<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-        </dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
 </project>

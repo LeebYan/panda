@@ -18,6 +18,8 @@
 package com.pig4cloud.pigx.common.data.cache;
 
 import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.data.redis.cache.CacheStatistics;
+import org.springframework.data.redis.cache.CacheStatisticsCollector;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -184,6 +186,16 @@ class DefaultRedisCacheWriter implements RedisCacheWriter {
 		});
 	}
 
+	@Override
+	public void clearStatistics(String s) {
+
+	}
+
+	@Override
+	public RedisCacheWriter withStatisticsCollector(CacheStatisticsCollector cacheStatisticsCollector) {
+		return null;
+	}
+
 	/**
 	 * Explicitly set a write lock on a cache.
 	 * @param name the name of the cache to lock.
@@ -274,4 +286,8 @@ class DefaultRedisCacheWriter implements RedisCacheWriter {
 		return (name + "~lock").getBytes(StandardCharsets.UTF_8);
 	}
 
+	@Override
+	public CacheStatistics getCacheStatistics(String s) {
+		return null;
+	}
 }

@@ -23,5 +23,10 @@
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-okhttp</artifactId>
 		</dependency>
+		<!-- LB 扩展 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
 	</dependencies>
 </project>

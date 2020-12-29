@@ -25,8 +25,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
+import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.config.GatewayReactiveLoadBalancerClientAutoConfiguration;
-import org.springframework.cloud.gateway.config.LoadBalancerProperties;
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +47,9 @@ public class GrayLoadBalancerClientConfiguration {
 
 	@Bean
 	public ReactiveLoadBalancerClientFilter gatewayLoadBalancerClientFilter(GrayLoadBalancer grayLoadBalancer,
-			LoadBalancerProperties properties) {
-		return new GrayReactiveLoadBalancerClientFilter(properties, grayLoadBalancer);
+																			LoadBalancerProperties properties,
+																			GatewayLoadBalancerProperties loadBalancerProperties) {
+		return new GrayReactiveLoadBalancerClientFilter(loadBalancerProperties, properties, grayLoadBalancer);
 	}
 
 	@Bean

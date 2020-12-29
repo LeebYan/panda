@@ -38,10 +38,10 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-core</artifactId>
 		</dependency>
-		<!--安全模块 -->
+		<!--安全模块-->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
+			<groupId>org.springframework.security.oauth.boot</groupId>
+			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
 		</dependency>
 		<!--feign-->
 		<dependency>
