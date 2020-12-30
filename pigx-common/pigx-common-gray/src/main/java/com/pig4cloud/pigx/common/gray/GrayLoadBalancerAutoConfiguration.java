@@ -18,14 +18,12 @@
 package com.pig4cloud.pigx.common.gray;
 
 import com.pig4cloud.pigx.common.gray.feign.GrayFeignRequestInterceptor;
-import com.pig4cloud.pigx.common.gray.rule.GrayRibbonLoadBalancerRule;
+import com.pig4cloud.pigx.common.gray.rule.GrayLoadBalancerClientConfigurationRegistrar;
 import feign.RequestInterceptor;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author lengleng
@@ -33,14 +31,8 @@ import org.springframework.context.annotation.Scope;
  */
 @Configuration
 @ConditionalOnProperty(value = "gray.rule.enabled", havingValue = "true")
-public class GrayRibbonLoadBalancerConfiguration {
-
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public GrayRibbonLoadBalancerRule ribbonLoadBalancerRule() {
-		return new GrayRibbonLoadBalancerRule();
-	}
+@Import(GrayLoadBalancerClientConfigurationRegistrar.class)
+public class GrayLoadBalancerAutoConfiguration {
 
 	@Bean
 	public RequestInterceptor grayFeignRequestInterceptor() {

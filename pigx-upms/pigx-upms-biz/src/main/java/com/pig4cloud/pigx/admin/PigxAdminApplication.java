@@ -32,8 +32,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * 用户统一管理系统
  */
 @EnablePigxSwagger2
-@SpringCloudApplication
 @EnablePigxFeignClients
+@SpringCloudApplication
 @EnablePigxResourceServer
 public class PigxAdminApplication {
 

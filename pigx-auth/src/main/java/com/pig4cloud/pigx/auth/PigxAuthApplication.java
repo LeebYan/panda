@@ -27,8 +27,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @author lengleng
  * @date 2020-02-08 认证授权中心
  */
-@SpringCloudApplication
 @EnablePigxFeignClients
+@SpringCloudApplication
 public class PigxAuthApplication {
 
 	public static void main(String[] args) {

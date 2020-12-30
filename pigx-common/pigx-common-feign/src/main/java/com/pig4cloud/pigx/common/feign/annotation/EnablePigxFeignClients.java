@@ -33,7 +33,6 @@ import java.lang.annotation.*;
 @Documented
 @EnableFeignClients
 @Import(PigxFeignClientsRegistrar.class)
-// 排除 Ribbon (当然也可以排查 maven 依赖)
 @EnableAutoConfiguration(excludeName =
 		"org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration")
 public @interface EnablePigxFeignClients {

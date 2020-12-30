@@ -30,8 +30,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * 支付模块
  */
 @EnablePigxSwagger2
-@SpringCloudApplication
 @EnablePigxFeignClients
+@SpringCloudApplication
 @EnablePigxResourceServer
 public class PigxPayPlatformApplication {
 
