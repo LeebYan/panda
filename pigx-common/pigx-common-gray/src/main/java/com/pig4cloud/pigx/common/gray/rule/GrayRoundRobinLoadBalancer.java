@@ -25,31 +25,31 @@ import java.util.Map;
 @Slf4j
 public class GrayRoundRobinLoadBalancer extends RoundRobinLoadBalancer {
 
-    private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
+	private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
 
-    private String serviceId;
+	private String serviceId;
 
-    /**
-     * @param serviceInstanceListSupplierProvider a provider of
-     *                                            {@link ServiceInstanceListSupplier} that will be used to get available instances
-     * @param serviceId                           id of the service for which to choose an instance
-     */
-    public GrayRoundRobinLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider, String serviceId) {
-        super(serviceInstanceListSupplierProvider, serviceId);
-        this.serviceInstanceListSupplierProvider = serviceInstanceListSupplierProvider;
-        this.serviceId = serviceId;
-    }
+	/**
+	 * @param serviceInstanceListSupplierProvider a provider of
+	 * {@link ServiceInstanceListSupplier} that will be used to get available instances
+	 * @param serviceId id of the service for which to choose an instance
+	 */
+	public GrayRoundRobinLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider,
+			String serviceId) {
+		super(serviceInstanceListSupplierProvider, serviceId);
+		this.serviceInstanceListSupplierProvider = serviceInstanceListSupplierProvider;
+		this.serviceId = serviceId;
+	}
 
+	@Override
+	public Mono<Response<ServiceInstance>> choose(Request request) {
+		ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
+				.getIfAvailable(NoopServiceInstanceListSupplier::new);
+		return supplier.get(request).next().map(serviceInstances -> getInstanceResponse(serviceInstances, request));
 
-    @Override
-    public Mono<Response<ServiceInstance>> choose(Request request) {
-        ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
-                .getIfAvailable(NoopServiceInstanceListSupplier::new);
-        return supplier.get(request).next().map(serviceInstances -> getInstanceResponse(serviceInstances, request));
+	}
 
-    }
-
-    Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances, Request request) {
+	Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances, Request request) {
 
 		// 注册中心无可用实例 抛出异常
 		if (CollUtil.isEmpty(instances)) {
@@ -77,8 +77,8 @@ public class GrayRoundRobinLoadBalancer extends RoundRobinLoadBalancer {
 			}
 		}
 
-        // 降级策略，使用轮询策略
-        return super.choose(request).block();
-    }
+		// 降级策略，使用轮询策略
+		return super.choose(request).block();
+	}
 
 }

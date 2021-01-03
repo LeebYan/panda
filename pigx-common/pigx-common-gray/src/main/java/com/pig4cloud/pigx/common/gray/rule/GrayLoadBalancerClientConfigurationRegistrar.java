@@ -16,9 +16,8 @@ import java.lang.reflect.Field;
  */
 public class GrayLoadBalancerClientConfigurationRegistrar implements ImportBeanDefinitionRegistrar {
 
-
 	private static void registerClientConfiguration(BeanDefinitionRegistry registry, Object name,
-													Object configuration) {
+			Object configuration) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder
 				.genericBeanDefinition(LoadBalancerClientSpecification.class);
 		builder.addConstructorArgValue(name);
@@ -36,4 +35,5 @@ public class GrayLoadBalancerClientConfigurationRegistrar implements ImportBeanD
 			registerClientConfiguration(registry, fieldValue, GrayLoadBalancerClientConfiguration.class);
 		}
 	}
+
 }

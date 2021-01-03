@@ -81,7 +81,6 @@ public class TaskInvokUtil {
 			ITaskInvok iTaskInvok = TaskInvokFactory.getInvoker(sysJob.getJobType());
 			// 确保租户上下文有值，使得当前线程中的多租户特性生效。
 			TenantBroker.runAs(sysJob.getTenantId(), tenantId -> iTaskInvok.invokMethod(sysJob));
-			;
 
 			// 记录成功状态
 			sysJobLog.setJobMessage(PigxQuartzEnum.JOB_LOG_STATUS_SUCCESS.getDescription());

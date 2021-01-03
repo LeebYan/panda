@@ -290,4 +290,5 @@ class DefaultRedisCacheWriter implements RedisCacheWriter {
 	public CacheStatistics getCacheStatistics(String s) {
 		return null;
 	}
+
 }

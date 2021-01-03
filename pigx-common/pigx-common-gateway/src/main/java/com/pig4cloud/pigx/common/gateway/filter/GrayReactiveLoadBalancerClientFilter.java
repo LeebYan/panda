@@ -50,9 +50,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 
 	private GrayLoadBalancer grayLoadBalancer;
 
-
-	public GrayReactiveLoadBalancerClientFilter(GatewayLoadBalancerProperties loadBalancerProperties
-			, LoadBalancerProperties properties, GrayLoadBalancer grayLoadBalancer) {
+	public GrayReactiveLoadBalancerClientFilter(GatewayLoadBalancerProperties loadBalancerProperties,
+			LoadBalancerProperties properties, GrayLoadBalancer grayLoadBalancer) {
 		super(null, loadBalancerProperties, properties);
 		this.properties = properties;
 		this.grayLoadBalancer = grayLoadBalancer;
@@ -81,8 +80,8 @@ public class GrayReactiveLoadBalancerClientFilter extends ReactiveLoadBalancerCl
 		return choose(exchange).doOnNext(response -> {
 
 			if (!response.hasServer()) {
-				throw NotFoundException.create(loadBalancerProperties.isUse404()
-						, "Unable to find instance for " + url.getHost());
+				throw NotFoundException.create(loadBalancerProperties.isUse404(),
+						"Unable to find instance for " + url.getHost());
 			}
 
 			URI uri = exchange.getRequest().getURI();
