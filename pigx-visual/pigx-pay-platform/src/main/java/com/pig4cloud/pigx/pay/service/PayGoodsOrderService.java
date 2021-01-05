@@ -33,8 +33,9 @@ public interface PayGoodsOrderService extends IService<PayGoodsOrder> {
 	/**
 	 * 购买商品
 	 * @param goodsOrder goods
+	 * @param isMerge  是否是服务商
 	 * @return
 	 */
-	Map<String, Object> buy(PayGoodsOrder goodsOrder);
+	Map<String, Object> buy(PayGoodsOrder goodsOrder, boolean isMerge);
 
 }

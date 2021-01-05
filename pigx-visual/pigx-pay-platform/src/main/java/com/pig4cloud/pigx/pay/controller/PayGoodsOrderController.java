@@ -17,8 +17,10 @@
 
 package com.pig4cloud.pigx.pay.controller;
 
+import cn.hutool.http.ContentType;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -41,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * 商品
@@ -56,18 +59,30 @@ public class PayGoodsOrderController {
 
 	private final PayGoodsOrderService payGoodsOrderService;
 
+	private final ObjectMapper objectMapper;
+
+
 	/**
 	 * 商品订单
-	 * @param goods 商品
+	 *
+	 * @param goods    商品
 	 * @param response
-	 * @return R
 	 */
 	@SneakyThrows
 	@Inner(false)
-	@GetMapping("/buy")
+	@GetMapping(value = {"/buy", "/merge/buy"})
 	@SysLog("购买商品")
 	public void buy(PayGoodsOrder goods, HttpServletRequest request, HttpServletResponse response) {
 		String ua = request.getHeader(HttpHeaders.USER_AGENT);
+
+		//服务商 模式
+		if ("/goods/merge/buy".equals(request.getRequestURI())) {
+			Map<String, Object> result = payGoodsOrderService.buy(goods, true);
+			response.setContentType(ContentType.JSON.getValue());
+			response.getWriter().print(objectMapper.writeValueAsString(result));
+			return;
+		}
+
 		if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			String appId = WxPayApiConfigKit.getWxPayApiConfig().getAppId();
 			String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
@@ -78,16 +93,17 @@ public class PayGoodsOrderController {
 		}
 
 		if (ua.contains(PayConstants.ALIPAY)) {
-			payGoodsOrderService.buy(goods);
+			payGoodsOrderService.buy(goods, false);
 		}
 
 	}
 
 	/**
 	 * oauth
-	 * @param goods 商品信息
-	 * @param state appid
-	 * @param code 回调code
+	 *
+	 * @param goods        商品信息
+	 * @param state        appid
+	 * @param code         回调code
 	 * @param modelAndView
 	 * @return
 	 * @throws WxErrorException
@@ -101,13 +117,14 @@ public class PayGoodsOrderController {
 		goods.setUserId(wxMpOAuth2AccessToken.getOpenId());
 		goods.setAmount(goods.getAmount());
 		modelAndView.setViewName("pay");
-		modelAndView.addAllObjects(payGoodsOrderService.buy(goods));
+		modelAndView.addAllObjects(payGoodsOrderService.buy(goods, false));
 		return modelAndView;
 	}
 
 	/**
 	 * 分页查询
-	 * @param page 分页对象
+	 *
+	 * @param page          分页对象
 	 * @param payGoodsOrder 商品订单表
 	 * @return
 	 */
@@ -119,6 +136,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id查询商品订单表
+	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */
@@ -130,6 +148,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 新增商品订单表
+	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -143,6 +162,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 修改商品订单表
+	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -156,6 +176,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id删除商品订单表
+	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */

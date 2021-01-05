@@ -33,4 +33,14 @@ public interface PayConstants {
 	 */
 	String TRADE_STATUS = "trade_status";
 
+	/**
+	 * 聚合支付返回 Code
+	 */
+	String MERGE_CODE = "code";
+
+	/**
+	 * 聚合支付订单号
+	 */
+	String MERGE_OUT_TRADE_NO = "outTradeNo";
+
 }

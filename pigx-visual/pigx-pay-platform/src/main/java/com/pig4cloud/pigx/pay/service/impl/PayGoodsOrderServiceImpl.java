@@ -50,13 +50,17 @@ public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, P
 
 	/**
 	 * 下单购买
+	 *
 	 * @param goodsOrder
+	 * @param isMerge
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Map<String, Object> buy(PayGoodsOrder goodsOrder) {
-		String ua = request.getHeader(HttpHeaders.USER_AGENT);
+	public Map<String, Object> buy(PayGoodsOrder goodsOrder, boolean isMerge) {
+		// 是否聚合支付
+		String ua = isMerge ? "MERGE_PAY" : request.getHeader(HttpHeaders.USER_AGENT);
+
 		Enum channel = PayChannelNameEnum.getChannel(ua);
 		PayOrderHandler orderHandler = orderHandlerMap.get(channel.name());
 		goodsOrder.setGoodsName("测试产品");

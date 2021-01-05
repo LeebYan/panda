@@ -25,7 +25,12 @@ public enum PayChannelNameEnum {
 	/**
 	 * 微信公众号支付
 	 */
-	WEIXIN_MP("WEIXIN_MP", "微信公众号支付");
+	WEIXIN_MP("WEIXIN_MP", "微信公众号支付"),
+
+	/**
+	 * 聚合支付
+	 */
+	MERGE_PAY("MERGE_PAY", "yungouos 一码付");
 
 	/**
 	 * 名称
@@ -40,18 +45,17 @@ public enum PayChannelNameEnum {
 
 	/**
 	 * 通过ua 判断所属渠道
+	 *
 	 * @param ua 浏览器类型
 	 * @return
 	 */
 	public static Enum getChannel(String ua) {
 		if (ua.contains(PayConstants.ALIPAY)) {
 			return PayChannelNameEnum.ALIPAY_WAP;
-		}
-		else if (ua.contains(PayConstants.MICRO_MESSENGER)) {
+		} else if (ua.contains(PayConstants.MICRO_MESSENGER)) {
 			return PayChannelNameEnum.WEIXIN_MP;
-		}
-		else {
-			return PayChannelNameEnum.WEIXIN_WAP;
+		} else {
+			return PayChannelNameEnum.MERGE_PAY;
 		}
 	}
 

@@ -59,6 +59,8 @@ public class PayNotifyRecordController {
 
 	private final PayNotifyCallbakHandler weChatCallback;
 
+	private final PayNotifyCallbakHandler mergePayCallback;
+
 	/**
 	 * 分页查询
 	 * @param page 分页对象
@@ -146,6 +148,21 @@ public class PayNotifyRecordController {
 		log.info("微信订单回调信息:{}", xmlMsg);
 		Map<String, String> params = WxPayKit.xmlToMap(xmlMsg);
 		return weChatCallback.handle(params);
+	}
+
+	/**
+	 * 聚合渠道异步回调
+	 * @param request 渠道请求
+	 * @return
+	 */
+	@Inner(false)
+	@SneakyThrows
+	@XssCleanIgnore
+	@PostMapping("/merge/callbak")
+	public void mergeCallbak(HttpServletRequest request, HttpServletResponse response) {
+		// 解析回调信息
+		Map<String, String> params = AliPayApi.toMap(request);
+		response.getWriter().print(mergePayCallback.handle(params));
 	}
 
 }

@@ -25,4 +25,8 @@ public class PayCommonProperties {
 	 */
 	private WxPayConfig wxPayConfig;
 
+	/**
+	 * 聚合支付参数
+	 */
+	private MergePayConfig mergePayConfig;
 }
