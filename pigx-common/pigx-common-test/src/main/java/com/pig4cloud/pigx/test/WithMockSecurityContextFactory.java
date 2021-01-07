@@ -1,7 +1,8 @@
 package com.pig4cloud.pigx.test;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
@@ -21,6 +22,8 @@ import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -82,12 +85,22 @@ public class WithMockSecurityContextFactory implements WithSecurityContextFactor
 		String avatar = userInfo.getStr(SecurityConstants.DETAILS_AVATAR);
 		String username = userInfo.getStr(SecurityConstants.DETAILS_USERNAME);
 		Integer tenantId = userInfo.getInt(SecurityConstants.DETAILS_TENANT_ID);
-		JSONArray jsonArray = userInfo.getJSONArray(AccessTokenConverter.AUTHORITIES);
 
-		Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-				.createAuthorityList(jsonArray.toArray(new String[0]));
+		return new PigxUser(id, deptId, phone, avatar, tenantId, username, "N/A", true, true, true, true,
+				getAuthorities(userInfo));
+	}
 
-		return new PigxUser(id, deptId, phone, avatar, tenantId, username, "N/A", true, true, true, true, authorities);
+	/**
+	 * 转换用户权限角色信息 注入到 上线文对象
+	 * @param userInfo
+	 * @return
+	 */
+	private Collection<? extends GrantedAuthority> getAuthorities(JSONObject userInfo) {
+		List<String> authorityList = userInfo.getJSONArray(AccessTokenConverter.AUTHORITIES).stream().map(obj -> {
+			JSONObject jsonObject = (JSONObject) obj;
+			return jsonObject.getStr("authority");
+		}).collect(Collectors.toList());
+		return AuthorityUtils.commaSeparatedStringToAuthorityList(CollUtil.join(authorityList, StrUtil.COMMA));
 	}
 
 }
