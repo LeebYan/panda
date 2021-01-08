@@ -41,6 +41,9 @@ public class DataScopeInnerInterceptor implements InnerInterceptor {
 		List<Integer> deptIds = dataScope.getDeptIds();
 		// 优先获取赋值数据
 		if (CollUtil.isEmpty(deptIds) && dataScopeHandle.calcScope(deptIds)) {
+			originalSql = String.format("SELECT %s FROM (%s) temp_data_scope", dataScope.getFunc().getType(),
+					originalSql);
+			mpBs.sql(originalSql);
 			return;
 		}
 
