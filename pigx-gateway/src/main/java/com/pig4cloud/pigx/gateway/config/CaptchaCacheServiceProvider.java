@@ -1,11 +1,10 @@
 package com.pig4cloud.pigx.gateway.config;
 
+import java.util.concurrent.TimeUnit;
+
 import com.anji.captcha.service.CaptchaCacheService;
-import com.google.auto.service.AutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lengleng
@@ -13,7 +12,6 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 验证码 缓存提供支持集群,需要通过SPI
  */
-@AutoService(CaptchaCacheService.class)
 public class CaptchaCacheServiceProvider implements CaptchaCacheService {
 
 	private static final String REDIS = "redis";
