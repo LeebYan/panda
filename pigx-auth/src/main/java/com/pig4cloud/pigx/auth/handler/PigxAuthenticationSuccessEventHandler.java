@@ -17,21 +17,23 @@
 
 package com.pig4cloud.pigx.auth.handler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
+import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
 import com.pig4cloud.pigx.common.core.util.WebUtils;
 import com.pig4cloud.pigx.common.log.util.SysLogUtils;
 import com.pig4cloud.pigx.common.security.handler.AuthenticationSuccessHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
@@ -43,6 +45,8 @@ import javax.servlet.http.HttpServletResponse;
 public class PigxAuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
 
 	private final RemoteLogService logService;
+
+	private final KeyStrResolver tenantKeyStrResolver;
 
 	/**
 	 * 处理登录成功方法
@@ -61,6 +65,7 @@ public class PigxAuthenticationSuccessEventHandler implements AuthenticationSucc
 		sysLog.setParams(username);
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 		sysLog.setServiceId(WebUtils.extractClientId(header).orElse("N/A"));
+		sysLog.setTenantId(Integer.parseInt(tenantKeyStrResolver.key()));
 
 		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
 		log.info("用户：{} 登录成功", username);
