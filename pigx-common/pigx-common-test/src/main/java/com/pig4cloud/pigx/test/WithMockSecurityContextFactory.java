@@ -51,21 +51,16 @@ public class WithMockSecurityContextFactory implements WithSecurityContextFactor
 
 	/**
 	 * 请求认证中心获取token
-	 *
 	 * @param oAuth2User 账号、密码
 	 * @return String token
 	 */
 	private String getToken(final WithMockOAuth2User oAuth2User) {
 		OAuth2ProtectedResourceDetails clientProperties = SpringContextHolder
-																  .getBean(OAuth2ProtectedResourceDetails.class);
+				.getBean(OAuth2ProtectedResourceDetails.class);
 
 		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.set(
-				HttpHeaders.AUTHORIZATION,
-				HttpUtil.buildBasicAuth(
-						clientProperties.getClientId(), clientProperties.getClientSecret(), StandardCharsets.UTF_8
-				)
-		);
+		requestHeaders.set(HttpHeaders.AUTHORIZATION, HttpUtil.buildBasicAuth(clientProperties.getClientId(),
+				clientProperties.getClientSecret(), StandardCharsets.UTF_8));
 
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.add("username", oAuth2User.username());
@@ -76,18 +71,13 @@ public class WithMockSecurityContextFactory implements WithSecurityContextFactor
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
 
 		RestTemplate restTemplate = SpringContextHolder.getBean(RestTemplate.class);
-		String result = restTemplate.exchange(
-				clientProperties.getAccessTokenUri(),
-				HttpMethod.POST,
-				requestEntity,
-				String.class
-		).getBody();
+		String result = restTemplate
+				.exchange(clientProperties.getAccessTokenUri(), HttpMethod.POST, requestEntity, String.class).getBody();
 		return JSONUtil.parseObj(result).getStr("access_token");
 	}
 
 	/**
 	 * 使用token 获取用户详情
-	 *
 	 * @param token token
 	 * @return user详细
 	 */
