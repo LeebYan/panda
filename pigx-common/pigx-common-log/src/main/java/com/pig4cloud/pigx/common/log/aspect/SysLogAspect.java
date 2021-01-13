@@ -23,6 +23,7 @@ import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.log.event.SysLogEvent;
+import com.pig4cloud.pigx.common.log.util.LogTypeEnum;
 import com.pig4cloud.pigx.common.log.util.SysLogUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
@@ -57,11 +59,21 @@ public class SysLogAspect {
 		logDTO.setTitle(sysLog.value());
 		// 发送异步日志事件
 		Long startTime = System.currentTimeMillis();
-		Object obj = point.proceed();
-		Long endTime = System.currentTimeMillis();
-		logDTO.setTime(endTime - startTime);
-		logDTO.setTenantId(Integer.parseInt(tenantKeyStrResolver.key()));
-		publisher.publishEvent(new SysLogEvent(logDTO));
+		Object obj;
+		try {
+			obj = point.proceed();
+		}
+		catch (Exception e) {
+			logDTO.setType(LogTypeEnum.ERROR.getType());
+			logDTO.setException(e.getMessage());
+			throw e;
+		}
+		finally {
+			Long endTime = System.currentTimeMillis();
+			logDTO.setTime(endTime - startTime);
+			logDTO.setTenantId(Integer.parseInt(tenantKeyStrResolver.key()));
+			publisher.publishEvent(new SysLogEvent(logDTO));
+		}
 		return obj;
 	}
 
