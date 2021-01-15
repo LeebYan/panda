@@ -17,6 +17,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
+			<artifactId>pigx-common-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
 		</dependency>
 		<dependency>

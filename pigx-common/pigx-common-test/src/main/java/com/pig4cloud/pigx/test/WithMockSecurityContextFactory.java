@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.test.annotation.WithMockOAuth2User;
 
 import org.springframework.http.HttpEntity;
@@ -32,6 +33,9 @@ public class WithMockSecurityContextFactory implements WithSecurityContextFactor
 
 	@Override
 	public SecurityContext createSecurityContext(WithMockOAuth2User oAuth2User) {
+		// 0. 初始化环境
+		TenantContextHolder.setTenantId(oAuth2User.tenant());
+
 		// 1. 请求认证中心获取token
 		String token = getToken(oAuth2User);
 
