@@ -16,9 +16,13 @@
  */
 package com.pig4cloud.pigx.admin.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.amazonaws.services.s3.model.S3Object;
@@ -33,13 +37,10 @@ import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 文件管理
@@ -119,13 +120,10 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	 */
 	private void fileLog(MultipartFile file, String fileName) {
 		SysFile sysFile = new SysFile();
-		// 原文件名
-		String original = CharsetUtil.convert(file.getOriginalFilename(), CharsetUtil.CHARSET_ISO_8859_1,
-				CharsetUtil.CHARSET_UTF_8);
 		sysFile.setFileName(fileName);
-		sysFile.setOriginal(original);
+		sysFile.setOriginal(file.getOriginalFilename());
 		sysFile.setFileSize(file.getSize());
-		sysFile.setType(FileUtil.extName(original));
+		sysFile.setType(FileUtil.extName(file.getOriginalFilename()));
 		sysFile.setBucketName(ossProperties.getBucketName());
 		sysFile.setCreateUser(SecurityUtils.getUser().getUsername());
 		this.save(sysFile);
