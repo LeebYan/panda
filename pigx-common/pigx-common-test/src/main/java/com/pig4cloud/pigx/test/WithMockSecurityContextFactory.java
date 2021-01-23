@@ -80,10 +80,9 @@ public class WithMockSecurityContextFactory implements WithSecurityContextFactor
 		RestTemplate restTemplate = SpringContextHolder.getBean(RestTemplate.class);
 
 		// 优先获取配置文件URI 配置
-		String url = StrUtil.isBlank(clientProperties.getAccessTokenUri()) ? TOKEN_URL : clientProperties
-				.getAccessTokenUri();
-		String result = restTemplate
-				.exchange(url, HttpMethod.POST, requestEntity, String.class).getBody();
+		String url = StrUtil.isBlank(clientProperties.getAccessTokenUri()) ? TOKEN_URL
+				: clientProperties.getAccessTokenUri();
+		String result = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class).getBody();
 		return JSONUtil.parseObj(result).getStr("access_token");
 	}
 
