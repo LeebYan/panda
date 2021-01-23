@@ -66,7 +66,7 @@ public class GrayRoundRobinLoadBalancer extends RoundRobinLoadBalancer {
 		}
 
 		DefaultRequestContext requestContext = (DefaultRequestContext) request.getContext();
-		if (!(requestContext.getClientRequest() instanceof RequestData)){
+		if (!(requestContext.getClientRequest() instanceof RequestData)) {
 			return super.choose(request).block();
 		}
 
