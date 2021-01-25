@@ -18,12 +18,13 @@
 package com.pig4cloud.pigx.common.gray;
 
 import com.pig4cloud.pigx.common.gray.feign.GrayFeignRequestInterceptor;
-import com.pig4cloud.pigx.common.gray.rule.GrayLoadBalancerClientConfigurationRegistrar;
+import com.pig4cloud.pigx.common.gray.rule.GrayLoadBalancerClientConfiguration;
 import feign.RequestInterceptor;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 /**
  * @author lengleng
@@ -31,7 +32,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ConditionalOnProperty(value = "gray.rule.enabled", havingValue = "true")
-@Import(GrayLoadBalancerClientConfigurationRegistrar.class)
+@LoadBalancerClients(defaultConfiguration = GrayLoadBalancerClientConfiguration.class)
 public class GrayLoadBalancerAutoConfiguration {
 
 	@Bean
