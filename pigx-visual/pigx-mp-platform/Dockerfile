@@ -7,7 +7,7 @@ ENV JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
 
 RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN mkdir -p /pigx-pay-platform
+RUN mkdir -p /pigx-mp-platform
 
 WORKDIR /pigx-mp-platform
 
