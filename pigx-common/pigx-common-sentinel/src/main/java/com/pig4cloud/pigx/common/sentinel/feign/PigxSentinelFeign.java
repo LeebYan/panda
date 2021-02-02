@@ -1,5 +1,9 @@
 package com.pig4cloud.pigx.common.sentinel.feign;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.util.Map;
+
 import com.alibaba.cloud.sentinel.feign.SentinelContractHolder;
 import feign.Contract;
 import feign.Feign;
@@ -7,16 +11,12 @@ import feign.InvocationHandlerFactory;
 import feign.Target;
 import org.springframework.beans.BeansException;
 import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * 重写 {@link com.alibaba.cloud.sentinel.feign.SentinelFeign} 支持自动降级注入
@@ -58,17 +58,14 @@ public final class PigxSentinelFeign {
 			super.invocationHandlerFactory(new InvocationHandlerFactory() {
 				@Override
 				public InvocationHandler create(Target target, Map<Method, MethodHandler> dispatch) {
-					// using reflect get fallback and fallbackFactory properties from
-					// FeignClientFactoryBean because FeignClientFactoryBean is a package
-					// level class, we can not use it in our package
-					Object feignClientFactoryBean = PigxSentinelFeign.Builder.this.applicationContext
-							.getBean("&" + target.type().getName());
+					// 查找 FeignClient 上的 降级策略
+					FeignClient feignClient = AnnotationUtils.findAnnotation(target.type(), FeignClient.class);
+					Class fallback = feignClient.fallback();
+					Class fallbackFactory = feignClient.fallbackFactory();
 
-					Class fallback = (Class) getFieldValue(feignClientFactoryBean, "fallback");
-					Class fallbackFactory = (Class) getFieldValue(feignClientFactoryBean, "fallbackFactory");
-					String beanName = (String) getFieldValue(feignClientFactoryBean, "contextId");
+					String beanName = feignClient.contextId();
 					if (!StringUtils.hasText(beanName)) {
-						beanName = (String) getFieldValue(feignClientFactoryBean, "name");
+						beanName = feignClient.name();
 					}
 
 					Object fallbackInstance;
@@ -105,18 +102,6 @@ public final class PigxSentinelFeign {
 
 			super.contract(new SentinelContractHolder(contract));
 			return super.build();
-		}
-
-		private Object getFieldValue(Object instance, String fieldName) {
-			Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
-			field.setAccessible(true);
-			try {
-				return field.get(instance);
-			}
-			catch (IllegalAccessException e) {
-				// ignore
-			}
-			return null;
 		}
 
 		@Override

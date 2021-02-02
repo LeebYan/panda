@@ -4,9 +4,9 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>pigx-cloud-dependencies-parent</artifactId>
-		<groupId>com.pig4cloud</groupId>
-		<version>Hoxton.SR9</version>
+		<groupId>group.springframework</groupId>
+		<artifactId>spring-cloud-dependencies-parent</artifactId>
+		<version>2020.0.0</version>
 		<relativePath/>
 	</parent>
 
@@ -18,7 +18,7 @@
 
 	<properties>
 		<pigx.version>4.0.0-SNAPSHOT</pigx.version>
-		<mybatis-plus.version>3.4.1</mybatis-plus.version>
+		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
 		<druid.version>1.2.4</druid.version>
 		<mysql.connector.version>8.0.22</mysql.connector.version>
@@ -32,7 +32,7 @@
 		<aliyun.version>3.0.52.ALL</aliyun.version>
 		<javaformat.plugin.version>0.0.23</javaformat.plugin.version>
 		<docker.plugin.version>0.33.0</docker.plugin.version>
-		<cloud.plugin.version>1.1.1</cloud.plugin.version>
+		<cloud.plugin.version>1.0.0</cloud.plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -215,40 +215,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<!--避免和parent bom坐标不一致 -->
-			<plugin>
-				<groupId>com.pig4cloud.plugin</groupId>
-				<artifactId>spring-cloud-maven-plugin</artifactId>
-				<version>${cloud.plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- nothing to do, but we need this to run docker:build form project root -->
-			<plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>${docker.plugin.version}</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<!--代码格式插件，默认使用spring 规则-->
-			<plugin>
-				<groupId>io.spring.javaformat</groupId>
-				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>${javaformat.plugin.version}</version>
-			</plugin>
-		</plugins>
-	</build>
 
 	<pluginRepositories>
 		<pluginRepository>
