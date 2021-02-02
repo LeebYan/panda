@@ -17,6 +17,9 @@
 
 package com.pig4cloud.pigx.admin.handler;
 
+import java.util.List;
+
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -81,6 +84,30 @@ public class WeChatLoginHandler extends AbstractLoginHandler {
 			return null;
 		}
 		return sysUserService.findUserInfo(user);
+	}
+
+	/**
+	 * 绑定逻辑
+	 * @param user 用户实体
+	 * @param identify 渠道返回唯一标识
+	 * @return
+	 */
+	@Override
+	public Boolean bind(SysUser user, String identify) {
+		List<SysUser> userList = sysUserService
+				.list(Wrappers.<SysUser>query().lambda().eq(SysUser::getWxOpenid, identify));
+
+		// 先把原有绑定关系去除,设置绑定为NULL
+		if (CollUtil.isNotEmpty(userList)) {
+			SysUser condition = new SysUser();
+			condition.setWxOpenid(identify);
+			sysUserService.update(condition, Wrappers.<SysUser>lambdaUpdate().set(SysUser::getWxOpenid, null));
+			log.info("微信账号 {} 更换账号绑定", identify);
+		}
+
+		user.setWxOpenid(identify);
+		sysUserService.updateById(user);
+		return null;
 	}
 
 }

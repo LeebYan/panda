@@ -17,6 +17,11 @@
 
 package com.pig4cloud.pigx.admin.handler;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -32,9 +37,6 @@ import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -103,6 +105,30 @@ public class OscChinaLoginHandler extends AbstractLoginHandler {
 			return null;
 		}
 		return sysUserService.findUserInfo(user);
+	}
+
+	/**
+	 * 绑定逻辑
+	 * @param user 用户实体
+	 * @param identify 渠道返回唯一标识
+	 * @return
+	 */
+	@Override
+	public Boolean bind(SysUser user, String identify) {
+		List<SysUser> userList = sysUserService
+				.list(Wrappers.<SysUser>query().lambda().eq(SysUser::getOscId, identify));
+
+		// 先把原有绑定关系去除,设置绑定为NULL
+		if (CollUtil.isNotEmpty(userList)) {
+			SysUser condition = new SysUser();
+			condition.setOscId(identify);
+			sysUserService.update(condition, Wrappers.<SysUser>lambdaUpdate().set(SysUser::getOscId, null));
+			log.info("开源中国账号 {} 更换账号绑定", identify);
+		}
+
+		user.setOscId(identify);
+		sysUserService.updateById(user);
+		return null;
 	}
 
 }

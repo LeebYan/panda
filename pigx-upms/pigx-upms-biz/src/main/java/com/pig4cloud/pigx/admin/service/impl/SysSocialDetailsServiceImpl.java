@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pigx.admin.service.impl;
 
+import java.util.Map;
+
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.admin.api.dto.UserInfo;
@@ -27,14 +29,11 @@ import com.pig4cloud.pigx.admin.mapper.SysSocialDetailsMapper;
 import com.pig4cloud.pigx.admin.mapper.SysUserMapper;
 import com.pig4cloud.pigx.admin.service.SysSocialDetailsService;
 import com.pig4cloud.pigx.common.core.constant.CacheConstants;
-import com.pig4cloud.pigx.common.core.constant.enums.LoginTypeEnum;
 import com.pig4cloud.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -60,26 +59,12 @@ public class SysSocialDetailsServiceImpl extends ServiceImpl<SysSocialDetailsMap
 	 */
 	@Override
 	public Boolean bindSocial(String type, String code) {
-		String identify = loginHandlerMap.get(type).identify(code);
+		LoginHandler loginHandler = loginHandlerMap.get(type);
+		// 绑定逻辑
+		String identify = loginHandler.identify(code);
 		SysUser sysUser = sysUserMapper.selectById(SecurityUtils.getUser().getId());
+		loginHandler.bind(sysUser, identify);
 
-		if (LoginTypeEnum.GITEE.getType().equals(type)) {
-			sysUser.setGiteeLogin(identify);
-		}
-		else if (LoginTypeEnum.OSC.getType().equals(type)) {
-			sysUser.setOscId(identify);
-		}
-		else if (LoginTypeEnum.WECHAT.getType().equals(type)) {
-			sysUser.setWxOpenid(identify);
-		}
-		else if (LoginTypeEnum.QQ.getType().equals(type)) {
-			sysUser.setQqOpenid(identify);
-		}
-		else if (LoginTypeEnum.MINI_APP.getType().equals(type)) {
-			sysUser.setMiniOpenid(identify);
-		}
-
-		sysUserMapper.updateById(sysUser);
 		// 更新緩存
 		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(sysUser.getUsername());
 		return Boolean.TRUE;

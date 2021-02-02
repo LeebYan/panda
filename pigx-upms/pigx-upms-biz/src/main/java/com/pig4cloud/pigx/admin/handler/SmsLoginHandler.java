@@ -62,4 +62,17 @@ public class SmsLoginHandler extends AbstractLoginHandler {
 		return sysUserService.findUserInfo(user);
 	}
 
+	/**
+	 * 绑定逻辑
+	 * @param user 用户实体
+	 * @param identify 渠道返回唯一标识
+	 * @return
+	 */
+	@Override
+	public Boolean bind(SysUser user, String identify) {
+		user.setGiteeLogin(identify);
+		sysUserService.updateById(user);
+		return null;
+	}
+
 }

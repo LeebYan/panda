@@ -18,6 +18,7 @@
 package com.pig4cloud.pigx.admin.handler;
 
 import com.pig4cloud.pigx.admin.api.dto.UserInfo;
+import com.pig4cloud.pigx.admin.api.entity.SysUser;
 
 /**
  * @author lengleng
@@ -54,5 +55,13 @@ public interface LoginHandler {
 	 * @return
 	 */
 	UserInfo handle(String loginStr);
+
+	/**
+	 * 绑定逻辑
+	 * @param user 用户实体
+	 * @param identify 渠道返回唯一标识
+	 * @return
+	 */
+	Boolean bind(SysUser user, String identify);
 
 }
