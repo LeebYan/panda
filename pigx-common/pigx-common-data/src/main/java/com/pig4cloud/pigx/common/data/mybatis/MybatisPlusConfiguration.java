@@ -17,6 +17,10 @@
 
 package com.pig4cloud.pigx.common.data.mybatis;
 
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
@@ -26,17 +30,16 @@ import com.pig4cloud.pigx.common.data.datascope.DataScopeSqlInjector;
 import com.pig4cloud.pigx.common.data.datascope.PigxDefaultDatascopeHandle;
 import com.pig4cloud.pigx.common.data.resolver.SqlFilterArgumentResolver;
 import com.pig4cloud.pigx.common.data.tenant.PigxTenantHandler;
+import com.pig4cloud.pigx.common.security.service.PigxUser;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * @author lengleng
@@ -62,6 +65,7 @@ public class MybatisPlusConfiguration implements WebMvcConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnClass(PigxUser.class)
 	public DataScopeHandle dataScopeHandle() {
 		return new PigxDefaultDatascopeHandle();
 	}

@@ -48,6 +48,7 @@
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-security</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<!--feign client-->
 		<dependency>
