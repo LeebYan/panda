@@ -16,6 +16,11 @@
  */
 package com.pig4cloud.pigx.pay.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.handler.PayOrderHandler;
@@ -27,10 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 商品
@@ -50,7 +51,6 @@ public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, P
 
 	/**
 	 * 下单购买
-	 *
 	 * @param goodsOrder
 	 * @param isMerge
 	 * @return

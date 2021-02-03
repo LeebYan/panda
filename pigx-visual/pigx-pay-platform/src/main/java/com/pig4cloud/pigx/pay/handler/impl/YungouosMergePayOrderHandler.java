@@ -24,8 +24,7 @@ import org.springframework.stereotype.Service;
  * @author lengleng
  * @date 2021/1/4
  * <p>
- * https://open.pay.yungouos.com/#/api/api/pay/merge/nativePay
- * 服务商聚合支付模式
+ * https://open.pay.yungouos.com/#/api/api/pay/merge/nativePay 服务商聚合支付模式
  */
 @Slf4j
 @Service("MERGE_PAY")
@@ -87,21 +86,15 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 		PayChannel channel = ChannelPayApiConfigKit.get();
 
 		String money = NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString();
-		return MergePay.nativePay(tradeOrder.getOrderId(), money, "100106279016"
-				, tradeOrder.getBody()
-				, "1"
-				, tradeOrder.getBody()
-				, commonProperties.getMergePayConfig().getNotifyUrl()
-				, commonProperties.getMergePayConfig().getReturnUrl()
-				, ""
-				, ""
-				, ""
-				, "759492493EBC43B498955E261E1A494F");
+
+		return MergePay.nativePay(tradeOrder.getOrderId(), money, channel.getChannelMchId(), tradeOrder.getBody(), "1",
+				TenantContextHolder.getTenantId().toString(),
+				ChannelPayApiConfigKit.get().getNotifyUrl() + "/pay/notify/merge/callbak",
+				ChannelPayApiConfigKit.get().getReturnUrl(), "", "", "", channel.getParam());
 	}
 
 	/**
 	 * 更新订单信息
-	 *
 	 * @param goodsOrder 商品订单
 	 * @param tradeOrder 交易订单
 	 */
@@ -110,4 +103,5 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 		tradeOrderMapper.updateById(tradeOrder);
 		goodsOrderMapper.updateById(goodsOrder);
 	}
+
 }

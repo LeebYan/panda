@@ -17,10 +17,10 @@
 
 package com.pig4cloud.pigx.pay.service;
 
+import java.util.Map;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
-
-import java.util.Map;
 
 /**
  * 商品
@@ -33,7 +33,7 @@ public interface PayGoodsOrderService extends IService<PayGoodsOrder> {
 	/**
 	 * 购买商品
 	 * @param goodsOrder goods
-	 * @param isMerge  是否是服务商
+	 * @param isMerge 是否是服务商
 	 * @return
 	 */
 	Map<String, Object> buy(PayGoodsOrder goodsOrder, boolean isMerge);

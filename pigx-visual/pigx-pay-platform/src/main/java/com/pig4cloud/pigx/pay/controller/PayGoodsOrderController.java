@@ -51,12 +51,15 @@ import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * 商品
@@ -76,7 +79,6 @@ public class PayGoodsOrderController {
 	private final PayChannelService channelService;
 
 	private final ObjectMapper objectMapper;
-
 
 	/**
 	 * 商品订单
@@ -165,8 +167,7 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 分页查询
-	 *
-	 * @param page          分页对象
+	 * @param page 分页对象
 	 * @param payGoodsOrder 商品订单表
 	 * @return
 	 */
@@ -178,7 +179,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id查询商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */
@@ -190,7 +190,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 新增商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -204,7 +203,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 修改商品订单表
-	 *
 	 * @param payGoodsOrder 商品订单表
 	 * @return R
 	 */
@@ -218,7 +216,6 @@ public class PayGoodsOrderController {
 
 	/**
 	 * 通过id删除商品订单表
-	 *
 	 * @param goodsOrderId id
 	 * @return R
 	 */

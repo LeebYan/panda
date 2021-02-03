@@ -1,5 +1,7 @@
 package com.pig4cloud.pigx.pay.handler.impl;
 
+import java.util.Map;
+
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
@@ -18,8 +20,6 @@ import com.pig4cloud.pigx.pay.utils.PayConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -42,7 +42,6 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 
 	/**
 	 * 初始化执行
-	 *
 	 * @param params
 	 */
 	@Override
@@ -53,7 +52,6 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 
 	/**
 	 * 去重处理
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
@@ -70,7 +68,6 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 
 	/**
 	 * 验签逻辑
-	 *
 	 * @param params 回调报文
 	 * @return
 	 */
@@ -81,7 +78,6 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 
 	/**
 	 * 解析报文
-	 *
 	 * @param params
 	 * @return
 	 */
@@ -97,7 +93,8 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 		if (OrderStatusEnum.SUCCESS.getStatus().equals(mergeCode)) {
 			goodsOrder.setStatus(OrderStatusEnum.SUCCESS.getStatus());
 			tradeOrder.setStatus(OrderStatusEnum.SUCCESS.getStatus());
-		} else {
+		}
+		else {
 			goodsOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 		}
@@ -111,10 +108,8 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 		return "SUCCESS";
 	}
 
-
 	/**
 	 * 保存回调记录
-	 *
 	 * @param params 回调报文
 	 * @param result 处理结果
 	 */
@@ -125,4 +120,5 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 		MapUtil.renameKey(params, PayConstants.MERGE_OUT_TRADE_NO, PayConstants.OUT_TRADE_NO);
 		saveRecord(params, result, record, notifyId, recordService);
 	}
+
 }
