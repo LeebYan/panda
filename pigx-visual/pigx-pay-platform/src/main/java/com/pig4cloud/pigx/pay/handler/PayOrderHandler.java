@@ -1,5 +1,6 @@
 package com.pig4cloud.pigx.pay.handler;
 
+import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 
@@ -10,6 +11,13 @@ import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
  * 支付业务
  */
 public interface PayOrderHandler {
+
+	/**
+	 * 准备支付参数
+	 */
+	default PayChannel preparePayParams() {
+		return null;
+	}
 
 	/**
 	 * 创建商品订单

@@ -18,10 +18,12 @@
 package com.pig4cloud.pigx.pay.handler.impl;
 
 import com.pig4cloud.pigx.common.sequence.sequence.Sequence;
+import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
 import com.pig4cloud.pigx.pay.handler.PayOrderHandler;
 import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
+import com.pig4cloud.pigx.pay.utils.ChannelPayApiConfigKit;
 import com.pig4cloud.pigx.pay.utils.OrderStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,10 +57,15 @@ public abstract class AbstractPayOrderHandler implements PayOrderHandler {
 	 */
 	@Override
 	public Object handle(PayGoodsOrder payGoodsOrder) {
+		PayChannel payChannel = preparePayParams();
+		ChannelPayApiConfigKit.put(payChannel);
+
 		createGoodsOrder(payGoodsOrder);
 		PayTradeOrder tradeOrder = createTradeOrder(payGoodsOrder);
 		Object result = pay(payGoodsOrder, tradeOrder);
 		updateOrder(payGoodsOrder, tradeOrder);
+		// 情况ttl
+		ChannelPayApiConfigKit.remove();
 		return result;
 	}
 

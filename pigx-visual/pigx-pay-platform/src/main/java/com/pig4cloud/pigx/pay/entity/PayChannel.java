@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pigx.pay.entity;
 
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,8 +26,6 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDateTime;
 
 /**
  * 渠道
@@ -66,6 +66,16 @@ public class PayChannel extends Model<PayChannel> {
 	 * 渠道商户ID
 	 */
 	private String channelMchId;
+
+	/**
+	 * 前端回调地址
+	 */
+	private String returnUrl;
+
+	/**
+	 * 后端回调地址
+	 */
+	private String notifyUrl;
 
 	/**
 	 * 渠道状态

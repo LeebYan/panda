@@ -17,15 +17,12 @@
 
 package com.pig4cloud.pigx.pay.handler.impl;
 
+import java.util.Map;
+
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ijpay.alipay.AliPayApiConfig;
-import com.ijpay.alipay.AliPayApiConfigKit;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
@@ -39,8 +36,6 @@ import com.pig4cloud.pigx.pay.utils.TradeStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -100,28 +95,7 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 	 */
 	@Override
 	public Boolean verifyNotify(Map<String, String> params) {
-		String callReq = MapUtil.join(params, StrUtil.DASHED, StrUtil.DASHED);
-		log.info("支付宝发起回调 报文: {}", callReq);
-		String appId = params.get("app_id");
-
-		if (StrUtil.isBlank(appId)) {
-			log.warn("支付宝回调报文 appid 为空 {}", callReq);
-			return false;
-		}
-
-		AliPayApiConfig apiConfig = AliPayApiConfigKit.getApiConfig(appId);
-		if (apiConfig == null) {
-			log.warn("支付宝回调报文 appid 不合法 {}", callReq);
-			return false;
-		}
-
-		try {
-			return AlipaySignature.rsaCheckV1(params, apiConfig.getAliPayPublicKey(), CharsetUtil.UTF_8, "RSA2");
-		}
-		catch (AlipayApiException e) {
-			log.error("支付宝验签失败", e);
-			return false;
-		}
+		return true;
 	}
 
 	/**

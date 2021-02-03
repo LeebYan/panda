@@ -17,7 +17,14 @@
 
 package com.pig4cloud.pigx.pay.handler.impl;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ijpay.core.enums.SignType;
 import com.ijpay.core.enums.TradeType;
 import com.ijpay.core.kit.WxPayKit;
@@ -26,11 +33,13 @@ import com.ijpay.wxpay.WxPayApiConfig;
 import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.ijpay.wxpay.model.UnifiedOrderModel;
 import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
-import com.pig4cloud.pigx.pay.config.PayCommonProperties;
+import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
+import com.pig4cloud.pigx.pay.mapper.PayChannelMapper;
 import com.pig4cloud.pigx.pay.mapper.PayGoodsOrderMapper;
 import com.pig4cloud.pigx.pay.mapper.PayTradeOrderMapper;
+import com.pig4cloud.pigx.pay.utils.ChannelPayApiConfigKit;
 import com.pig4cloud.pigx.pay.utils.OrderStatusEnum;
 import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
 import lombok.RequiredArgsConstructor;
@@ -51,13 +60,34 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 
-	private final PayCommonProperties payCommonProperties;
-
 	private final PayTradeOrderMapper tradeOrderMapper;
 
 	private final PayGoodsOrderMapper goodsOrderMapper;
 
+	private final PayChannelMapper channelMapper;
+
 	private final HttpServletRequest request;
+
+	/**
+	 * 准备支付参数
+	 * @return PayChannel
+	 */
+	@Override
+	public PayChannel preparePayParams() {
+		PayChannel channel = channelMapper.selectOne(
+				Wrappers.<PayChannel>lambdaQuery().eq(PayChannel::getChannelId, PayChannelNameEnum.WEIXIN_MP.name()));
+
+		if (channel == null) {
+			throw new IllegalArgumentException("微信公众号支付渠道配置为空");
+		}
+
+		JSONObject params = JSONUtil.parseObj(channel.getParam());
+		WxPayApiConfig wx = WxPayApiConfig.builder().appId(channel.getAppId()).mchId(channel.getChannelMchId())
+				.partnerKey(params.getStr("partnerKey")).build();
+
+		WxPayApiConfigKit.putApiConfig(wx);
+		return channel;
+	}
 
 	/**
 	 * 创建交易订单
@@ -94,12 +124,12 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 				.mch_id(wxPayApiConfig.getMchId()).nonce_str(WxPayKit.generateStr()).body(goodsOrder.getGoodsName())
 				.attach(TenantContextHolder.getTenantId().toString()).out_trade_no(tradeOrder.getOrderId())
 				.total_fee(goodsOrder.getAmount()).spbill_create_ip(ip)
-				.notify_url(payCommonProperties.getWxPayConfig().getNotifyUrl())
+				.notify_url(ChannelPayApiConfigKit.get().getNotifyUrl() + "/pay/notify/wx/callbak")
 				.trade_type(TradeType.JSAPI.getTradeType()).openid(goodsOrder.getUserId()).build()
 				.createSign(wxPayApiConfig.getPartnerKey(), SignType.HMACSHA256);
 
 		String xmlResult = WxPayApi.pushOrder(false, params);
-		log.info(xmlResult);
+		log.info("微信统一下单返回 {}", xmlResult);
 		Map<String, String> resultMap = WxPayKit.xmlToMap(xmlResult);
 		String prepayId = resultMap.get("prepay_id");
 		return WxPayKit.prepayIdCreateSign(prepayId, wxPayApiConfig.getAppId(), wxPayApiConfig.getPartnerKey(),

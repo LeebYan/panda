@@ -17,24 +17,37 @@
 
 package com.pig4cloud.pigx.pay.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.ContentType;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ijpay.wxpay.WxPayApiConfigKit;
 import com.pig4cloud.pigx.common.core.util.R;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
-import com.pig4cloud.pigx.pay.config.PayConfigParmaInitRunner;
+import com.pig4cloud.pigx.pay.entity.PayChannel;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
+import com.pig4cloud.pigx.pay.service.PayChannelService;
 import com.pig4cloud.pigx.pay.service.PayGoodsOrderService;
+import com.pig4cloud.pigx.pay.utils.PayChannelNameEnum;
 import com.pig4cloud.pigx.pay.utils.PayConstants;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -51,6 +64,7 @@ import java.util.Map;
  * @author lengleng
  * @date 2019-05-28 23:58:27
  */
+@Slf4j
 @Controller
 @AllArgsConstructor
 @RequestMapping("/goods")
@@ -59,37 +73,44 @@ public class PayGoodsOrderController {
 
 	private final PayGoodsOrderService payGoodsOrderService;
 
+	private final PayChannelService channelService;
+
 	private final ObjectMapper objectMapper;
 
 
 	/**
 	 * 商品订单
-	 *
-	 * @param goods    商品
+	 * @param goods 商品
 	 * @param response
+	 *
+	 * AliPayApiConfigKit.setAppId WxPayApiConfigKit.setAppId shezhi
+	 *
 	 */
 	@SneakyThrows
 	@Inner(false)
-	@GetMapping(value = {"/buy", "/merge/buy"})
+	@GetMapping("/buy")
 	@SysLog("购买商品")
 	public void buy(PayGoodsOrder goods, HttpServletRequest request, HttpServletResponse response) {
 		String ua = request.getHeader(HttpHeaders.USER_AGENT);
-
-		//服务商 模式
-		if ("/goods/merge/buy".equals(request.getRequestURI())) {
-			Map<String, Object> result = payGoodsOrderService.buy(goods, true);
-			response.setContentType(ContentType.JSON.getValue());
-			response.getWriter().print(objectMapper.writeValueAsString(result));
-			return;
-		}
+		log.info("当前扫码方式 UA:{}", ua);
 
 		if (ua.contains(PayConstants.MICRO_MESSENGER)) {
-			String appId = WxPayApiConfigKit.getWxPayApiConfig().getAppId();
-			String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
-					+ "&redirect_uri=http%3a%2f%2fadmin.pig4cloud.com%2fpay%2fgoods%2fwx%3famount%3d"
-					+ "%s&response_type=code&scope=snsapi_base&state=";
+			PayChannel channel = channelService.getOne(
+					Wrappers.<PayChannel>lambdaQuery().eq(PayChannel::getChannelId, PayChannelNameEnum.WEIXIN_MP),
+					false);
 
-			response.sendRedirect(String.format(wxUrl, appId, goods.getAmount(), appId));
+			if (channel == null) {
+				throw new IllegalArgumentException("公众号支付配置不存在");
+			}
+
+			String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
+					+ "&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s";
+
+			String redirectUri = String.format("%s/pay/goods/wx?amount=%s&TENANT-ID=%s", channel.getNotifyUrl(),
+					goods.getAmount(), TenantContextHolder.getTenantId());
+
+			response.sendRedirect(
+					String.format(wxUrl, channel.getAppId(), URLUtil.encode(redirectUri), channel.getAppId()));
 		}
 
 		if (ua.contains(PayConstants.ALIPAY)) {
@@ -98,12 +119,20 @@ public class PayGoodsOrderController {
 
 	}
 
+	@SneakyThrows
+	@Inner(false)
+	@GetMapping("/merge/buy")
+	@SysLog("聚合支付购买商品")
+	public void mergeBuy(PayGoodsOrder goods, HttpServletResponse response) {
+		Map<String, Object> result = payGoodsOrderService.buy(goods, true);
+		response.setContentType(ContentType.JSON.getValue());
+		response.getWriter().print(objectMapper.writeValueAsString(result));
+	}
+
 	/**
 	 * oauth
-	 *
-	 * @param goods        商品信息
-	 * @param state        appid
-	 * @param code         回调code
+	 * @param goods 商品信息
+	 * @param code 回调code
 	 * @param modelAndView
 	 * @return
 	 * @throws WxErrorException
@@ -111,10 +140,23 @@ public class PayGoodsOrderController {
 	@Inner(false)
 	@SneakyThrows
 	@GetMapping("/wx")
-	public ModelAndView wx(PayGoodsOrder goods, String state, String code, ModelAndView modelAndView) {
-		WxMpService wxMpService = PayConfigParmaInitRunner.mpServiceMap.get(state);
-		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.getOAuth2Service().getAccessToken(code);
-		goods.setUserId(wxMpOAuth2AccessToken.getOpenId());
+	public ModelAndView wx(PayGoodsOrder goods, String code, ModelAndView modelAndView) {
+		PayChannel channel = channelService.getOne(
+				Wrappers.<PayChannel>lambdaQuery().eq(PayChannel::getChannelId, PayChannelNameEnum.WEIXIN_MP), false);
+
+		if (channel == null) {
+			throw new IllegalArgumentException("公众号支付配置不存在");
+		}
+
+		JSONObject params = JSONUtil.parseObj(channel.getParam());
+		WxMpService wxMpService = new WxMpServiceImpl();
+		WxMpDefaultConfigImpl storage = new WxMpDefaultConfigImpl();
+		storage.setAppId(channel.getAppId());
+		storage.setSecret(params.getStr("secret"));
+		wxMpService.setWxMpConfigStorage(storage);
+
+		WxMpOAuth2AccessToken mpOAuth2AccessToken = wxMpService.getOAuth2Service().getAccessToken(code);
+		goods.setUserId(mpOAuth2AccessToken.getOpenId());
 		goods.setAmount(goods.getAmount());
 		modelAndView.setViewName("pay");
 		modelAndView.addAllObjects(payGoodsOrderService.buy(goods, false));

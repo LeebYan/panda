@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.pig4cloud.pigx.common.data.tenant.TenantContextHolder;
 import com.pig4cloud.pigx.pay.entity.PayGoodsOrder;
 import com.pig4cloud.pigx.pay.entity.PayNotifyRecord;
 import com.pig4cloud.pigx.pay.entity.PayTradeOrder;
@@ -46,7 +47,8 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 	 */
 	@Override
 	public void before(Map<String, String> params) {
-
+		Integer tenant = MapUtil.getInt(params, "attach");
+		TenantContextHolder.setTenantId(tenant);
 	}
 
 	/**
