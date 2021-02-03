@@ -21,7 +21,8 @@ import com.pig4cloud.pigx.common.feign.annotation.EnablePigxFeignClients;
 import com.pig4cloud.pigx.common.security.annotation.EnablePigxResourceServer;
 import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author lengleng
@@ -30,7 +31,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnablePigxSwagger2
 @EnablePigxFeignClients
 @EnablePigxResourceServer
-@SpringCloudApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 public class PigxActivitiApplication {
 
 	public static void main(String[] args) {

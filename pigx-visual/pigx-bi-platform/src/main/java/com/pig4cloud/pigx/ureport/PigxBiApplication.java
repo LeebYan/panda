@@ -19,7 +19,8 @@ package com.pig4cloud.pigx.ureport;
 
 import com.pig4cloud.pigx.common.feign.annotation.EnablePigxFeignClients;
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author lengleng
@@ -30,7 +31,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * http://127.0.0.1:5006/ureport/designer
  */
 @EnablePigxFeignClients
-@SpringCloudApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 public class PigxBiApplication {
 
 	public static void main(String[] args) {

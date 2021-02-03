@@ -18,13 +18,15 @@
 package com.pig4cloud.pigx.manager;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author LCN
  * @author lengleng tx-manager ，进行了代码逻辑和代码规范重构
  */
-@SpringCloudApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 public class PigxTxManagerApplication {
 
 	public static void main(String[] args) {

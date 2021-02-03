@@ -22,7 +22,8 @@ package com.pig4cloud.pigx.gateway;
 import com.pig4cloud.pigx.common.gateway.annotation.EnablePigxDynamicRoute;
 import com.pig4cloud.pigx.common.swagger.annotation.EnablePigxSwagger2;
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author lengleng
@@ -30,7 +31,8 @@ import org.springframework.cloud.client.SpringCloudApplication;
  */
 @EnablePigxSwagger2
 @EnablePigxDynamicRoute
-@SpringCloudApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 public class PigxGatewayApplication {
 
 	public static void main(String[] args) {
