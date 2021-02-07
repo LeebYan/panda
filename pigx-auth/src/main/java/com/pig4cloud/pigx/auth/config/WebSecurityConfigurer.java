@@ -22,6 +22,7 @@ package com.pig4cloud.pigx.auth.config;
 import com.pig4cloud.pigx.common.security.handler.FormAuthenticationFailureHandler;
 import com.pig4cloud.pigx.common.security.handler.MobileLoginSuccessHandler;
 import com.pig4cloud.pigx.common.security.handler.SsoLogoutSuccessHandler;
+import com.pig4cloud.pigx.common.security.handler.TenantSavedRequestAwareAuthenticationSuccessHandler;
 import com.pig4cloud.pigx.common.security.mobile.MobileSecurityConfigurer;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +52,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
 		http.formLogin().loginPage("/token/login").loginProcessingUrl("/token/form")
+				.successHandler(tenantSavedRequestAwareAuthenticationSuccessHandler())
 				.failureHandler(authenticationFailureHandler()).and().logout()
 				.logoutSuccessHandler(logoutSuccessHandler()).deleteCookies("JSESSIONID").invalidateHttpSession(true)
 				.and().authorizeRequests().antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll()
@@ -86,6 +88,15 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
 		return new MobileLoginSuccessHandler();
+	}
+
+	/**
+	 * 具备租户传递能力
+	 * @return AuthenticationSuccessHandler
+	 */
+	@Bean
+	public AuthenticationSuccessHandler tenantSavedRequestAwareAuthenticationSuccessHandler() {
+		return new TenantSavedRequestAwareAuthenticationSuccessHandler();
 	}
 
 	@Bean

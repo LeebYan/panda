@@ -1,13 +1,14 @@
 package com.pig4cloud.pigx.common.security.handler;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import cn.hutool.core.util.StrUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author lengleng
@@ -25,12 +26,13 @@ public class SsoLogoutSuccessHandler implements LogoutSuccessHandler {
 
 		// 获取请求参数中是否包含 回调地址
 		String redirectUrl = request.getParameter(REDIRECT_URL);
+		String referer = request.getHeader(HttpHeaders.REFERER);
+
 		if (StrUtil.isNotBlank(redirectUrl)) {
 			response.sendRedirect(redirectUrl);
 		}
-		else {
+		else if (StrUtil.isNotBlank(referer)) {
 			// 默认跳转referer 地址
-			String referer = request.getHeader(HttpHeaders.REFERER);
 			response.sendRedirect(referer);
 		}
 	}
