@@ -16,6 +16,9 @@
 
 package com.pig4cloud.pigx.common.xss.core;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.xss.config.PigxXssProperties;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +26,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * xss 处理拦截器
@@ -67,6 +67,11 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response,
 			Object handler) {
+		XssHolder.remove();
+	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		XssHolder.remove();
 	}
 
