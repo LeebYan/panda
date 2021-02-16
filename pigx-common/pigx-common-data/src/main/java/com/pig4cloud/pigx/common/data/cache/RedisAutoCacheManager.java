@@ -68,7 +68,7 @@ public class RedisAutoCacheManager extends RedisCacheManager {
 			Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
 			cacheConfig = cacheConfig.entryTtl(duration);
 		}
-		return super.createRedisCache(name, cacheConfig);
+		return super.createRedisCache(cacheArray[0], cacheConfig);
 	}
 
 	/**
