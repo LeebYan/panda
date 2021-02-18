@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>group.springframework</groupId>
 		<artifactId>spring-cloud-dependencies-parent</artifactId>
-		<version>2020.0.0</version>
+		<version>2020.0.1</version>
 		<relativePath/>
 	</parent>
 
@@ -20,7 +20,7 @@
 		<pigx.version>4.0.0-SNAPSHOT</pigx.version>
 		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
-		<druid.version>1.2.4</druid.version>
+		<druid.version>1.2.5</druid.version>
 		<mysql.connector.version>8.0.23</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
 		<mp.weixin.version>3.9.0</mp.weixin.version>
@@ -28,8 +28,10 @@
 		<groovy.version>3.0.3</groovy.version>
 		<jsoup.version>1.13.1</jsoup.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
-		<fastjson.version>1.2.73</fastjson.version>
+		<fastjson.version>1.2.75</fastjson.version>
+		<xxl.job.version>2.2.0</xxl.job.version>
 		<aliyun.version>3.0.52.ALL</aliyun.version>
+		<aws.version>1.11.543</aws.version>
 		<javaformat.plugin.version>0.0.23</javaformat.plugin.version>
 		<docker.plugin.version>0.33.0</docker.plugin.version>
 		<cloud.plugin.version>1.0.0</cloud.plugin.version>
