@@ -17,24 +17,21 @@
 
 package com.pig4cloud.pigx.common.security.mobile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lengleng
@@ -51,10 +48,6 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 	@Getter
 	@Setter
 	private boolean postOnly = true;
-
-	@Getter
-	@Setter
-	private AuthenticationEventPublisher eventPublisher;
 
 	@Getter
 	@Setter
@@ -94,9 +87,6 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 		catch (Exception failed) {
 			SecurityContextHolder.clearContext();
 			logger.debug("Authentication request failed: " + failed);
-
-			eventPublisher.publishAuthenticationFailure(new BadCredentialsException(failed.getMessage(), failed),
-					new PreAuthenticatedAuthenticationToken("access-token", "N/A"));
 
 			try {
 				authenticationEntryPoint.commence(request, response,
