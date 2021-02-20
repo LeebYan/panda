@@ -151,6 +151,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			CaptchaService captchaService = SpringContextHolder.getBean(CaptchaService.class);
 			CaptchaVO vo = new CaptchaVO();
 			vo.setCaptchaVerification(code);
+			vo.setCaptchaType(CommonConstants.IMAGE_CODE_TYPE);
 			if (!captchaService.verification(vo).isSuccess()) {
 				throw new ValidateCodeException("验证码不能为空");
 			}
