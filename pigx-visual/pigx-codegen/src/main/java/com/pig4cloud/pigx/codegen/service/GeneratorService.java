@@ -17,12 +17,11 @@
 
 package com.pig4cloud.pigx.codegen.service;
 
+import java.util.Map;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.codegen.entity.GenConfig;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author lengleng
@@ -44,7 +43,7 @@ public interface GeneratorService {
 	 * @param name 数据源ID
 	 * @return
 	 */
-	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String name);
+	IPage<Map<String, Object>> getPage(Page page, String tableName, String name);
 
 	/**
 	 * 预览代码

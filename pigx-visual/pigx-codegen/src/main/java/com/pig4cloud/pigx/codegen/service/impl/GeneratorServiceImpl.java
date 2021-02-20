@@ -17,6 +17,11 @@
 
 package com.pig4cloud.pigx.codegen.service.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
@@ -33,11 +38,6 @@ import com.pig4cloud.pigx.codegen.service.GeneratorService;
 import com.pig4cloud.pigx.codegen.util.GenUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author lengleng
@@ -58,7 +58,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 	 * @return
 	 */
 	@Override
-	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String dsName) {
+	public IPage<Map<String, Object>> getPage(Page page, String tableName, String dsName) {
 		GeneratorMapper mapper = GenUtils.getMapper(dsName);
 		// 手动切换数据源
 		DynamicDataSourceContextHolder.push(dsName);
