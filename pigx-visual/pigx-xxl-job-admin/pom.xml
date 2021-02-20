@@ -12,6 +12,7 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
+
 		<!--注册中心客户端-->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

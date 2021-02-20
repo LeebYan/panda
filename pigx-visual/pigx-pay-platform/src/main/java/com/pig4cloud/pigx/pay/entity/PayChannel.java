@@ -51,7 +51,7 @@ public class PayChannel extends Model<PayChannel> {
 	/**
 	 * 应用ID
 	 */
-	@Sensitive(prefixNoMaskLen = 4,suffixNoMaskLen = 4)
+	@Sensitive(prefixNoMaskLen = 4, suffixNoMaskLen = 4)
 	private String appId;
 
 	/**
@@ -67,7 +67,7 @@ public class PayChannel extends Model<PayChannel> {
 	/**
 	 * 渠道商户ID | 12****123
 	 */
-	@Sensitive(prefixNoMaskLen = 2,suffixNoMaskLen = 3)
+	@Sensitive(prefixNoMaskLen = 2, suffixNoMaskLen = 3)
 	private String channelMchId;
 
 	/**

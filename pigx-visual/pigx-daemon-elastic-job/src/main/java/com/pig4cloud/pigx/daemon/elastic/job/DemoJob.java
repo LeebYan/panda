@@ -18,9 +18,8 @@
 package com.pig4cloud.pigx.daemon.elastic.job;
 
 import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
-import com.xxl.job.core.log.XxlJobLogger;
-import com.xxl.job.core.util.ShardingUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -36,8 +35,7 @@ public class DemoJob {
 
 	@XxlJob("demoJobHandler")
 	public ReturnT<String> demoJobHandler(String s) {
-		ShardingUtil.ShardingVO shardingVO = ShardingUtil.getShardingVo();
-		XxlJobLogger.log("This is a demo job." + shardingVO);
+		XxlJobHelper.log("This is a demo job." + XxlJobHelper.getShardIndex());
 		return SUCCESS;
 	}
 
