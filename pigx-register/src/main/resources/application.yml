@@ -36,6 +36,10 @@ spring:
 useAddressServer: true
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
   metrics:
     export:
       influx:
@@ -45,5 +49,5 @@ management:
 
 # 屏蔽scanner warning 日志
 logging:
-   level:
-     org.apache.tomcat.util.scan.StandardJarScanner: ERROR
+  level:
+    org.apache.tomcat.util.scan.StandardJarScanner: ERROR
