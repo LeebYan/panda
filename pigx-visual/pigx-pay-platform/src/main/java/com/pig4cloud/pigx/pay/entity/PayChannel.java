@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.pig4cloud.pigx.common.core.sensitive.Sensitive;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,6 +51,7 @@ public class PayChannel extends Model<PayChannel> {
 	/**
 	 * 应用ID
 	 */
+	@Sensitive(prefixNoMaskLen = 4,suffixNoMaskLen = 4)
 	private String appId;
 
 	/**
@@ -63,8 +65,9 @@ public class PayChannel extends Model<PayChannel> {
 	private String channelName;
 
 	/**
-	 * 渠道商户ID
+	 * 渠道商户ID | 12****123
 	 */
+	@Sensitive(prefixNoMaskLen = 2,suffixNoMaskLen = 3)
 	private String channelMchId;
 
 	/**

@@ -16,13 +16,15 @@
  */
 package com.pig4cloud.pigx.mp.entity;
 
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.pig4cloud.pigx.common.core.sensitive.Sensitive;
+import com.pig4cloud.pigx.common.core.sensitive.SensitiveTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDateTime;
 
 /**
  * 公众号账户
@@ -60,6 +62,7 @@ public class WxAccount extends Model<WxAccount> {
 	/**
 	 * 公众号密钥
 	 */
+	@Sensitive(type = SensitiveTypeEnum.KEY)
 	private String appsecret;
 
 	/**

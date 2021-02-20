@@ -62,7 +62,7 @@ public enum SensitiveTypeEnum {
 	 */
 	PASSWORD,
 	/**
-	 * 密钥, 永远是 ******, 与长度无关
+	 * 密钥, 【密钥】密钥除了最后三位其他都是***, 与长度无关
 	 */
 	KEY
 
