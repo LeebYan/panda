@@ -17,6 +17,10 @@
 
 package com.pig4cloud.pigx.act.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import cn.hutool.core.collection.CollUtil;
 import com.pig4cloud.pigx.admin.api.entity.SysUser;
 import com.pig4cloud.pigx.admin.api.feign.RemoteUserService;
@@ -28,10 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -65,9 +65,11 @@ public class LeaveProcessTaskListener implements TaskListener {
 		}
 
 		remindUserList.forEach(user -> {
-			String target = String.format("%s-%s", SecurityUtils.getUser().getUsername(),
-					TenantContextHolder.getTenantId());
-			simpMessagingTemplate.convertAndSendToUser(target, "/remind", delegateTask.getName());
+
+			// 订阅通道 /task/租户ID/用户名称/remind
+			String target = String.format("/task/%s/%s/remind", TenantContextHolder.getTenantId(),
+					SecurityUtils.getUser().getUsername());
+			simpMessagingTemplate.convertAndSend(target, delegateTask.getName());
 		});
 	}
 
