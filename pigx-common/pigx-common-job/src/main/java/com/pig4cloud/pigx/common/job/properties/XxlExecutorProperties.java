@@ -1,27 +1,12 @@
-/*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: lengleng (wangiegie@gmail.com)
- */
-
 package com.pig4cloud.pigx.common.job.properties;
 
 import lombok.Data;
 
 /**
- * @author lengleng
- * @date 2019-09-18
+ * xxl-job执行器配置
+ *
+ * @author lishangbu
+ * @date 2020/9/14
  */
 @Data
 public class XxlExecutorProperties {
@@ -29,7 +14,7 @@ public class XxlExecutorProperties {
 	/**
 	 * 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
 	 */
-	private String appname = "xxl-job-executor";
+	private String appname;
 
 	/**
 	 * 服务注册地址,优先使用该配置作为注册地址 为空时使用内嵌服务 ”IP:PORT“ 作为注册地址 从而更灵活的支持容器类型执行器动态IP和动态映射端口问题
