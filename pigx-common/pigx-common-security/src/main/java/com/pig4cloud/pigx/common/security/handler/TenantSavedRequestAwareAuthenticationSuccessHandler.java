@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
 import com.pig4cloud.pigx.common.core.util.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,7 @@ public class TenantSavedRequestAwareAuthenticationSuccessHandler extends SimpleU
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
 
-		String targetUrlParameter = this.getTargetUrlParameter();
-		if (isAlwaysUseDefaultTargetUrl() || StrUtil.isBlank(request.getParameter(targetUrlParameter))) {
+		if (isAlwaysUseDefaultTargetUrl()) {
 			this.requestCache.removeRequest(request, response);
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
@@ -53,8 +51,8 @@ public class TenantSavedRequestAwareAuthenticationSuccessHandler extends SimpleU
 			this.clearAuthenticationAttributes(request);
 			// 增加租户信息
 			assert savedRequest != null;
-			String targetUrl = String.format(savedRequest.getRedirectUrl() + "&TENANT-ID=%s",
-					SpringContextHolder.getBean(KeyStrResolver.class).key());
+			String targetUrl = savedRequest.getRedirectUrl() + "&TENANT-ID=" +
+					SpringContextHolder.getBean(KeyStrResolver.class).key();
 
 			this.getRedirectStrategy().sendRedirect(request, response, targetUrl);
 		}
