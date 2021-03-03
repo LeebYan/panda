@@ -195,8 +195,9 @@ public class OssTemplate implements InitializingBean {
 	 * @see <a href="http://docs.aws.amazon.com/goto/WebAPI/s3-2006-03-01/GetObject">AWS
 	 * API Documentation</a>
 	 */
-	public S3Object getObjectInfo(String bucketName, String objectName) throws Exception{
-		@Cleanup S3Object object = amazonS3.getObject(bucketName, objectName);
+	public S3Object getObjectInfo(String bucketName, String objectName) throws Exception {
+		@Cleanup
+		S3Object object = amazonS3.getObject(bucketName, objectName);
 		return object;
 	}
 

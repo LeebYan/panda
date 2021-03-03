@@ -51,8 +51,8 @@ public class TenantSavedRequestAwareAuthenticationSuccessHandler extends SimpleU
 			this.clearAuthenticationAttributes(request);
 			// 增加租户信息
 			assert savedRequest != null;
-			String targetUrl = savedRequest.getRedirectUrl() + "&TENANT-ID=" +
-					SpringContextHolder.getBean(KeyStrResolver.class).key();
+			String targetUrl = savedRequest.getRedirectUrl() + "&TENANT-ID="
+					+ SpringContextHolder.getBean(KeyStrResolver.class).key();
 
 			this.getRedirectStrategy().sendRedirect(request, response, targetUrl);
 		}
