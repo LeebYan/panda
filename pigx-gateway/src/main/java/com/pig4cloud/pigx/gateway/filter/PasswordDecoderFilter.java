@@ -17,7 +17,13 @@
 
 package com.pig4cloud.pigx.gateway.filter;
 
-import cn.hutool.core.codec.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.Mode;
@@ -54,13 +60,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @author lengleng
@@ -161,18 +160,16 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 	private Function decryptAES() {
 		return s -> {
 			// 构建前端对应解密AES 因子
-			AES aes = new AES(Mode.CBC, Padding.NoPadding,
+			AES aes = new AES(Mode.CFB, Padding.NoPadding,
 					new SecretKeySpec(gatewayConfig.getEncodeKey().getBytes(), KEY_ALGORITHM),
 					new IvParameterSpec(gatewayConfig.getEncodeKey().getBytes()));
 
 			// 获取请求密码并解密
 			Map<String, String> inParamsMap = HttpUtil.decodeParamMap((String) s, CharsetUtil.CHARSET_UTF_8);
 			if (inParamsMap.containsKey(PASSWORD)) {
-				byte[] result = aes.decrypt(Base64.decode(inParamsMap.get(PASSWORD).getBytes(StandardCharsets.UTF_8)));
-				String password = new String(result, StandardCharsets.UTF_8);
-
+				String password = aes.decryptStr(inParamsMap.get(PASSWORD));
 				// 返回修改后报文字符
-				inParamsMap.put(PASSWORD, password.trim());
+				inParamsMap.put(PASSWORD, password);
 			}
 			else {
 				log.error("非法请求数据:{}", s);
