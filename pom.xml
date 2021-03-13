@@ -206,7 +206,7 @@
 						</authConfig>
 						<images>
 							<image>
-								<name>plw-harbor:8031/yxh/customize-gateway:3.10.0</name>
+								<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
 								<build>
 									<dockerFile>${project.basedir}/Dockerfile</dockerFile>
 								</build>
