@@ -29,23 +29,18 @@ import lombok.Getter;
 public enum ProcessStatusEnum {
 
 	/**
-	 * 图片资源
+	 * 激活
 	 */
-	ACTIVE("active", "图片资源"),
+	ACTIVE("active"),
 
 	/**
-	 * xml资源
+	 * 暂停
 	 */
-	SUSPEND("suspend", "xml资源");
+	SUSPEND("suspend");
 
 	/**
-	 * 类型
+	 * 状态
 	 */
 	private final String status;
-
-	/**
-	 * 描述
-	 */
-	private final String description;
 
 }
