@@ -43,9 +43,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http.formLogin().loginPage("/login.html").loginProcessingUrl("/login").failureHandler(new LoginFailureHandler())
-				.and().authorizeRequests().antMatchers("/login.html", "/login", "/actuator/**").permitAll().anyRequest()
-				.authenticated().and().csrf().disable();
+		http.headers().frameOptions().disable().and().formLogin().loginPage("/login.html").loginProcessingUrl("/login")
+				.failureHandler(new LoginFailureHandler()).and().authorizeRequests()
+				.antMatchers("/login.html", "/login", "/actuator/**").permitAll().anyRequest().authenticated().and()
+				.csrf().disable();
 	}
 
 	/**
