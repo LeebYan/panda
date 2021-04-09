@@ -49,6 +49,10 @@ public class LogHandler extends AbstractHandler {
 		WxAccountFans fans = fansMapper
 				.selectOne(Wrappers.<WxAccountFans>lambdaQuery().eq(WxAccountFans::getOpenid, wxMessage.getFromUser()));
 
+		if (fans == null) {
+			return null;
+		}
+
 		WxMsg wxMsg = new WxMsg();
 		wxMsg.setWxUserId(fans.getId());
 		wxMsg.setNickName(fans.getNickname());

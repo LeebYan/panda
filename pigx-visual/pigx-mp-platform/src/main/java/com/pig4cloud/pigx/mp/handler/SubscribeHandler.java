@@ -59,6 +59,9 @@ public class SubscribeHandler extends AbstractHandler {
 			if (wxAccountFans != null) {
 				wxAccountFansMapper.deleteById(wxAccountFans);
 			}
+			else {
+				wxAccountFans = new WxAccountFans();
+			}
 
 			wxAccountFans.setOpenid(wxMpUser.getOpenId());
 			wxAccountFans.setSubscribeStatus(String.valueOf(BooleanUtil.toInt(wxMpUser.getSubscribe())));
