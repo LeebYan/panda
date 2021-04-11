@@ -60,9 +60,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!--feign 调用依赖-->
 		<dependency>
 			<groupId>com.pig4cloud</groupId>
-			<artifactId>pigx-common-data</artifactId>
+			<artifactId>pigx-common-feign</artifactId>
 		</dependency>
 		<!--MYSQL 数据驱动-->
 		<dependency>
