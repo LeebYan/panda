@@ -1,5 +1,6 @@
 package com.pig4cloud.pigx.common.swagger.config;
 
+import com.pig4cloud.pigx.common.swagger.support.SwaggerProperties;
 import com.pig4cloud.pigx.common.swagger.support.SwaggerResourceHandler;
 import com.pig4cloud.pigx.common.swagger.support.SwaggerSecurityHandler;
 import com.pig4cloud.pigx.common.swagger.support.SwaggerUiHandler;
@@ -8,9 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.*;
 
 /**
  * @author lengleng
@@ -29,6 +28,8 @@ public class GatewaySwaggerAutoConfiguration {
 
 	private final SwaggerUiHandler swaggerUiHandler;
 
+	private final SwaggerProperties swaggerProperties;
+
 	@Bean
 	public WebFluxSwaggerConfiguration fluxSwaggerConfiguration() {
 		return new WebFluxSwaggerConfiguration();
@@ -36,13 +37,24 @@ public class GatewaySwaggerAutoConfiguration {
 
 	@Bean
 	public RouterFunction swaggerRouterFunction() {
-		return RouterFunctions
-				.route(RequestPredicates.GET("/swagger-resources").and(RequestPredicates.accept(MediaType.ALL)),
-						swaggerResourceHandler)
-				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
-						.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
-				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
-						.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
+		// 开启swagger 正常执行路由
+		if (swaggerProperties.getEnabled()) {
+			return RouterFunctions
+					.route(RequestPredicates.GET("/swagger-resources").and(RequestPredicates.accept(MediaType.ALL)),
+							swaggerResourceHandler)
+					.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
+							.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
+					.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
+							.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
+		}
+		else {
+			// 关闭时，返回404
+			return RouterFunctions
+					.route(RequestPredicates.GET("/swagger-ui/**").and(RequestPredicates.accept(MediaType.ALL)),
+							serverRequest -> ServerResponse.notFound().build())
+					.andRoute(RequestPredicates.GET("/doc.html").and(RequestPredicates.accept(MediaType.ALL)),
+							serverRequest -> ServerResponse.notFound().build());
+		}
 	}
 
 }
