@@ -15,7 +15,7 @@
 		AND relname NOT LIKE'sql_%'
 		AND relchecks = 0
 		<if test="tableName != null and tableName.trim() != ''">
-			and pc.relname like concat('%', #{tableName}, '%')
+			and pc.relname = #{tableName}
 		</if>
 		ORDER BY relname
 	</select>
