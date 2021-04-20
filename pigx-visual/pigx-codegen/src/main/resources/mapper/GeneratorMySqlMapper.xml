@@ -17,7 +17,7 @@
 			SELECT DATABASE
 			())
 			<if test="tableName != null and tableName.trim() != ''">
-				and table_name like concat('%', #{tableName}, '%')
+				and table_name = #{tableName}
 			</if>
 			order by create_time desc
 	</select>

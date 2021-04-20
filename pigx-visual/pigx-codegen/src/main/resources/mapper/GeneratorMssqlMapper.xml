@@ -16,7 +16,7 @@
 			 ) T
 		<where>
 			<if test="tableName != null and tableName.trim() != ''">
-				and T.tableName like concat('%', #{tableName}, '%')
+				and T.tableName = #{tableName}
 			</if>
 		</where>
 		ORDER BY T.tableName
