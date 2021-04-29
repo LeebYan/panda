@@ -19,13 +19,11 @@
 
 package com.pig4cloud.pigx.auth.endpoint;
 
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pigx.admin.api.entity.SysTenant;
 import com.pig4cloud.pigx.admin.api.feign.RemoteTenantService;
 import com.pig4cloud.pigx.auth.service.PigxTokenDealServiceImpl;
-import com.pig4cloud.pigx.common.core.constant.PaginationConstants;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.security.annotation.Inner;
@@ -127,22 +125,19 @@ public class PigxTokenEndpoint {
 
 	/**
 	 * 查询token
-	 * @param params 分页参数
+	 * @param page 分页参数
+	 * @param username 用户名
 	 * @return
 	 */
 	@Inner
-	@PostMapping("/page")
-	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
-		Page result = new Page(MapUtil.getInt(params, PaginationConstants.CURRENT),
-				MapUtil.getInt(params, PaginationConstants.SIZE));
-
+	@GetMapping("/page")
+	public R<Page> tokenList(Page page, String username) {
 		// 根据username 查询 token 列表
-		Object username = params.get("username");
-		if (username != null) {
-			return dealService.queryTokenByUsername(result, (String) username);
+		if (StrUtil.isNotBlank(username)) {
+			return dealService.queryTokenByUsername(page, username);
 		}
 
-		return dealService.queryToken(result);
+		return dealService.queryToken(page);
 	}
 
 }

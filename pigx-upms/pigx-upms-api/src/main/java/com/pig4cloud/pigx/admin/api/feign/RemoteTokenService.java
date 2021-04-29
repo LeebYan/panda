@@ -22,6 +22,7 @@ import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pigx.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -40,8 +41,9 @@ public interface RemoteTokenService {
 	 * @param from 内部调用标志
 	 * @return page
 	 */
-	@PostMapping("/token/page")
-	R<Page> getTokenPage(@RequestBody Map<String, Object> params, @RequestHeader(SecurityConstants.FROM) String from);
+	@GetMapping("/token/page")
+	R<Page> getTokenPage(@SpringQueryMap Map<String, Object> params,
+			@RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 * 删除token
