@@ -32,6 +32,8 @@ spring:
         url: http://pigx-monitor:5001
         username: pigx
         password: pigx
+        instance:
+          prefer-ip: true
 
 useAddressServer: true
 
