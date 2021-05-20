@@ -1,15 +1,22 @@
 package com.pig4cloud.pigx.common.swagger.config;
 
-import com.pig4cloud.pigx.common.swagger.support.SwaggerProperties;
-import com.pig4cloud.pigx.common.swagger.support.SwaggerResourceHandler;
-import com.pig4cloud.pigx.common.swagger.support.SwaggerSecurityHandler;
-import com.pig4cloud.pigx.common.swagger.support.SwaggerUiHandler;
+import com.pig4cloud.pigx.common.swagger.support.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.*;
+import org.springframework.web.reactive.function.server.RequestPredicates;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 
 /**
  * @author lengleng
@@ -19,16 +26,19 @@ import org.springframework.web.reactive.function.server.*;
  */
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-@ComponentScan("com.pig4cloud.pigx.common.swagger.support")
 public class GatewaySwaggerAutoConfiguration {
 
-	private final SwaggerResourceHandler swaggerResourceHandler;
+	@Bean
+	@Primary
+	public SwaggerProvider swaggerProvider(RouteDefinitionRepository repository, SwaggerProperties swaggerProperties,
+			DiscoveryClient discoveryClient) {
+		return new SwaggerProvider(repository, swaggerProperties, discoveryClient);
+	}
 
-	private final SwaggerSecurityHandler swaggerSecurityHandler;
-
-	private final SwaggerUiHandler swaggerUiHandler;
-
-	private final SwaggerProperties swaggerProperties;
+	@Bean
+	public SwaggerResourceHandler swaggerResourceHandler(SwaggerProvider swaggerProvider) {
+		return new SwaggerResourceHandler(swaggerProvider);
+	}
 
 	@Bean
 	public WebFluxSwaggerConfiguration fluxSwaggerConfiguration() {
@@ -36,7 +46,23 @@ public class GatewaySwaggerAutoConfiguration {
 	}
 
 	@Bean
-	public RouterFunction swaggerRouterFunction() {
+	public SwaggerSecurityHandler swaggerSecurityHandler(
+			ObjectProvider<SecurityConfiguration> securityConfigurationObjectProvider) {
+		SecurityConfiguration securityConfiguration = securityConfigurationObjectProvider
+				.getIfAvailable(() -> SecurityConfigurationBuilder.builder().build());
+		return new SwaggerSecurityHandler(securityConfiguration);
+	}
+
+	@Bean
+	public SwaggerUiHandler swaggerUiHandler(ObjectProvider<UiConfiguration> uiConfigurationObjectProvider) {
+		UiConfiguration uiConfiguration = uiConfigurationObjectProvider
+				.getIfAvailable(() -> UiConfigurationBuilder.builder().build());
+		return new SwaggerUiHandler(uiConfiguration);
+	}
+
+	@Bean
+	public RouterFunction swaggerRouterFunction(SwaggerProperties swaggerProperties, SwaggerUiHandler swaggerUiHandler,
+			SwaggerSecurityHandler swaggerSecurityHandler, SwaggerResourceHandler swaggerResourceHandler) {
 		// 开启swagger 正常执行路由
 		if (swaggerProperties.getEnabled()) {
 			return RouterFunctions

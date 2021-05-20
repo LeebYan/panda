@@ -18,13 +18,11 @@
 package com.pig4cloud.pigx.common.swagger.support;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.cloud.gateway.support.NameUtils;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
@@ -36,10 +34,7 @@ import java.util.stream.Collectors;
 /**
  * @author Sywd 聚合接口文档注册，和zuul实现类似
  */
-@Primary
-@Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
 public class SwaggerProvider implements SwaggerResourcesProvider {
 
 	private static final String API_URI = "/v2/api-docs";

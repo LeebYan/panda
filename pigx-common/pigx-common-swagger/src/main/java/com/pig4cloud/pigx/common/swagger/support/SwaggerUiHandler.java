@@ -17,11 +17,10 @@
 
 package com.pig4cloud.pigx.common.swagger.support;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -37,11 +36,10 @@ import java.util.Optional;
  * @date 2018-07-19 SwaggerUiHandler
  */
 @Slf4j
-@Component
+@RequiredArgsConstructor
 public class SwaggerUiHandler implements HandlerFunction<ServerResponse> {
 
-	@Autowired(required = false)
-	private UiConfiguration uiConfiguration;
+	private final UiConfiguration uiConfiguration;
 
 	/**
 	 * Handle the given request.

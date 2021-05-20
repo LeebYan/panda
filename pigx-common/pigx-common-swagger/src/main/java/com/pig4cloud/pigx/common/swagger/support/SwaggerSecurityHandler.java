@@ -17,11 +17,9 @@
 
 package com.pig4cloud.pigx.common.swagger.support;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -36,12 +34,10 @@ import java.util.Optional;
  * @author lengleng
  * @date 2018-07-19 SwaggerSecurityHandler
  */
-@Slf4j
-@Component
+@RequiredArgsConstructor
 public class SwaggerSecurityHandler implements HandlerFunction<ServerResponse> {
 
-	@Autowired(required = false)
-	private SecurityConfiguration securityConfiguration;
+	private final SecurityConfiguration securityConfiguration;
 
 	/**
 	 * Handle the given request.
