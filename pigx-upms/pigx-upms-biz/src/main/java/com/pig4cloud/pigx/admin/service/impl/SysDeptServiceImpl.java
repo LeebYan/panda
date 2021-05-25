@@ -20,12 +20,14 @@
 package com.pig4cloud.pigx.admin.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.admin.api.dto.DeptTree;
 import com.pig4cloud.pigx.admin.api.entity.SysDept;
 import com.pig4cloud.pigx.admin.api.entity.SysDeptRelation;
-import com.pig4cloud.pigx.admin.api.util.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysDeptMapper;
 import com.pig4cloud.pigx.admin.service.SysDeptRelationService;
 import com.pig4cloud.pigx.admin.service.SysDeptService;
@@ -115,7 +117,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 * @return 树
 	 */
 	@Override
-	public List<DeptTree> selectTree() {
+	public List<Tree<Integer>> selectTree() {
 		// 查询全部部门
 		List<SysDept> deptAllList = deptMapper.selectList(Wrappers.emptyWrapper());
 		// 查询数据权限内部门
@@ -123,19 +125,20 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 				.map(SysDept::getDeptId).collect(Collectors.toList());
 
 		// 权限内部门
-		List<DeptTree> collect = deptAllList.stream().filter(dept -> dept.getDeptId().intValue() != dept.getParentId())
+		List<TreeNode<Integer>> collect = deptAllList.stream()
+				.filter(dept -> dept.getDeptId().intValue() != dept.getParentId())
 				.sorted(Comparator.comparingInt(SysDept::getSort)).map(dept -> {
-					DeptTree node = new DeptTree();
-					node.setId(dept.getDeptId());
-					node.setParentId(dept.getParentId());
-					node.setName(dept.getName());
-
+					TreeNode<Integer> treeNode = new TreeNode();
+					treeNode.setId(dept.getDeptId());
+					treeNode.setParentId(dept.getParentId());
+					treeNode.setName(dept.getName());
 					// 有权限不返回标识
 					if (deptOwnIdList.contains(dept.getDeptId())) {
-						node.setIsLock(Boolean.FALSE);
+						treeNode.setExtra(MapUtil.of("isLock", Boolean.FALSE));
 					}
-					return node;
+					return treeNode;
 				}).collect(Collectors.toList());
+
 		return TreeUtil.build(collect, 0);
 	}
 

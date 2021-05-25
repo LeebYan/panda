@@ -20,13 +20,13 @@
 package com.pig4cloud.pigx.admin.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
 import com.pig4cloud.pigx.admin.api.entity.SysRoleMenu;
-import com.pig4cloud.pigx.admin.api.vo.MenuVO;
-import com.pig4cloud.pigx.admin.api.util.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
@@ -35,14 +35,17 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.core.constant.enums.MenuTypeEnum;
 import com.pig4cloud.pigx.common.core.util.R;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -62,7 +65,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
 	@Override
 	@Cacheable(value = CacheConstants.MENU_DETAILS, key = "#roleId", unless = "#result.isEmpty()")
-	public List<MenuVO> findMenuByRoleId(Integer roleId) {
+	public List<SysMenu> findMenuByRoleId(Integer roleId) {
 		return baseMapper.listMenusByRoleId(roleId);
 	}
 
@@ -94,18 +97,23 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	 * @return
 	 */
 	@Override
-	public List<MenuTree> treeMenu(boolean lazy, Integer parentId) {
+	public List<Tree<Integer>> treeMenu(boolean lazy, Integer parentId) {
 		if (!lazy) {
-			return TreeUtil.buildTree(
-					baseMapper.selectList(Wrappers.<SysMenu>lambdaQuery().orderByAsc(SysMenu::getSort)),
-					CommonConstants.MENU_TREE_ROOT_ID);
+			List<TreeNode<Integer>> collect = baseMapper
+					.selectList(Wrappers.<SysMenu>lambdaQuery().orderByAsc(SysMenu::getSort)).stream()
+					.map(getNodeFunction()).collect(Collectors.toList());
+
+			return TreeUtil.build(collect, CommonConstants.MENU_TREE_ROOT_ID);
 		}
 
 		Integer parent = parentId == null ? CommonConstants.MENU_TREE_ROOT_ID : parentId;
-		return TreeUtil.buildTree(
-				baseMapper.selectList(
-						Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getParentId, parent).orderByAsc(SysMenu::getSort)),
-				parent);
+
+		List<TreeNode<Integer>> collect = baseMapper
+				.selectList(
+						Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getParentId, parent).orderByAsc(SysMenu::getSort))
+				.stream().map(getNodeFunction()).collect(Collectors.toList());
+
+		return TreeUtil.build(collect, parent);
 	}
 
 	/**
@@ -116,11 +124,33 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	 * @return
 	 */
 	@Override
-	public List<MenuTree> filterMenu(Set<MenuVO> all, String type, Integer parentId) {
-		List<MenuTree> menuTreeList = all.stream().filter(menuTypePredicate(type)).map(MenuTree::new)
-				.sorted(Comparator.comparingInt(MenuTree::getSort)).collect(Collectors.toList());
+	public List<Tree<Integer>> filterMenu(Set<SysMenu> all, String type, Integer parentId) {
+		List<TreeNode<Integer>> collect = all.stream().filter(menuTypePredicate(type)).map(getNodeFunction())
+				.collect(Collectors.toList());
 		Integer parent = parentId == null ? CommonConstants.MENU_TREE_ROOT_ID : parentId;
-		return TreeUtil.build(menuTreeList, parent);
+		return TreeUtil.build(collect, parent);
+	}
+
+	@NotNull
+	private Function<SysMenu, TreeNode<Integer>> getNodeFunction() {
+		return menu -> {
+			TreeNode<Integer> node = new TreeNode<>();
+			node.setId(menu.getMenuId());
+			node.setName(menu.getName());
+			node.setParentId(menu.getParentId());
+			node.setWeight(menu.getSort());
+			// 扩展属性
+			Map<String, Object> extra = new HashMap<>();
+			extra.put("icon", menu.getIcon());
+			extra.put("path", menu.getPath());
+			extra.put("type", menu.getType());
+			extra.put("permission", menu.getPermission());
+			extra.put("label", menu.getName());
+			extra.put("sort", menu.getSort());
+			extra.put("keepAlive", menu.getKeepAlive());
+			node.setExtra(extra);
+			return node;
+		};
 	}
 
 	/**
@@ -128,7 +158,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	 * @param type 类型
 	 * @return Predicate
 	 */
-	private Predicate<MenuVO> menuTypePredicate(String type) {
+	private Predicate<SysMenu> menuTypePredicate(String type) {
 		return vo -> {
 			if (MenuTypeEnum.TOP_MENU.getDescription().equals(type)) {
 				return MenuTypeEnum.TOP_MENU.getType().equals(vo.getType());

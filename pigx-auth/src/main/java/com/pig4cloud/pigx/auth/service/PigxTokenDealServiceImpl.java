@@ -144,7 +144,7 @@ public class PigxTokenDealServiceImpl {
 		try {
 			cursor.close();
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			log.error("关闭cursor 失败");
 		}
 		return result;

@@ -16,12 +16,9 @@
  */
 package com.pig4cloud.pigx.admin.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pigx.admin.api.dto.MenuTree;
 import com.pig4cloud.pigx.admin.api.entity.*;
-import com.pig4cloud.pigx.admin.api.util.TreeUtil;
 import com.pig4cloud.pigx.admin.mapper.SysRoleMenuMapper;
 import com.pig4cloud.pigx.admin.mapper.SysTenantMapper;
 import com.pig4cloud.pigx.admin.service.*;
@@ -30,7 +27,6 @@ import com.pig4cloud.pigx.common.core.constant.CommonConstants;
 import com.pig4cloud.pigx.common.data.resolver.ParamResolver;
 import com.pig4cloud.pigx.common.data.tenant.TenantBroker;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -159,8 +155,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 			userRole.setRoleId(role.getRoleId());
 			userRoleService.save(userRole);
 			// 插入新的菜单
-			saveTenantMenu(TreeUtil.buildTree(menuList, CommonConstants.MENU_TREE_ROOT_ID),
-					CommonConstants.MENU_TREE_ROOT_ID);
+			saveTenantMenu(menuList, CommonConstants.MENU_TREE_ROOT_ID, CommonConstants.MENU_TREE_ROOT_ID);
 			List<SysMenu> newMenuList = menuService.list();
 
 			// 查询全部菜单,构造角色菜单关系
@@ -189,21 +184,19 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 	/**
 	 * 保存新的租户菜单，维护成新的菜单
-	 * @param nodeList 节点树
-	 * @param parent 上级
+	 * @param menuList 菜单列表
+	 * @param originParentId 原始上级
+	 * @param targetParentId 目标上级
 	 */
-	private void saveTenantMenu(List<MenuTree> nodeList, Integer parent) {
-		for (MenuTree node : nodeList) {
-			SysMenu menu = new SysMenu();
-			BeanUtils.copyProperties(node, menu, "parentId");
-			menu.setParentId(parent);
+	private void saveTenantMenu(List<SysMenu> menuList, Integer originParentId, Integer targetParentId) {
+		menuList.stream().filter(menu -> menu.getParentId().equals(originParentId)).forEach(menu -> {
+			// 保存菜单原始menuId， 方便查询子节点使用
+			Integer originMenuId = menu.getMenuId();
+			menu.setParentId(targetParentId);
 			menuService.save(menu);
-			if (CollUtil.isNotEmpty(node.getChildren())) {
-				List<MenuTree> childrenList = node.getChildren().stream().map(treeNode -> (MenuTree) treeNode)
-						.collect(Collectors.toList());
-				saveTenantMenu(childrenList, menu.getMenuId());
-			}
-		}
+			// 查找此节点的子节点，然后子节点的重新插入父节点更改为新的menuId
+			saveTenantMenu(menuList, originMenuId, menu.getMenuId());
+		});
 	}
 
 }

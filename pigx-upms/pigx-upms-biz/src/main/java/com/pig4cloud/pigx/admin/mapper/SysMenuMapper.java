@@ -20,7 +20,6 @@
 package com.pig4cloud.pigx.admin.mapper;
 
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
-import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.common.data.datascope.PigxBaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -42,7 +41,7 @@ public interface SysMenuMapper extends PigxBaseMapper<SysMenu> {
 	 * @param roleId 角色ID
 	 * @return
 	 */
-	List<MenuVO> listMenusByRoleId(Integer roleId);
+	List<SysMenu> listMenusByRoleId(Integer roleId);
 
 	/**
 	 * 通过角色ID查询权限

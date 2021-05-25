@@ -20,7 +20,6 @@
 package com.pig4cloud.pigx.admin.controller;
 
 import com.pig4cloud.pigx.admin.api.entity.SysMenu;
-import com.pig4cloud.pigx.admin.api.vo.MenuVO;
 import com.pig4cloud.pigx.admin.service.SysMenuService;
 import com.pig4cloud.pigx.common.core.util.R;
 import com.pig4cloud.pigx.common.log.annotation.SysLog;
@@ -57,7 +56,7 @@ public class SysMenuController {
 	public R getUserMenu(String type, Integer parentId) {
 
 		// 获取符合条件的菜单
-		Set<MenuVO> all = new HashSet<>();
+		Set<SysMenu> all = new HashSet<>();
 		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
 		return R.ok(sysMenuService.filterMenu(all, type, parentId));
 	}
@@ -81,7 +80,7 @@ public class SysMenuController {
 	@GetMapping("/tree/{roleId}")
 	public R getRoleTree(@PathVariable Integer roleId) {
 		return R.ok(
-				sysMenuService.findMenuByRoleId(roleId).stream().map(MenuVO::getMenuId).collect(Collectors.toList()));
+				sysMenuService.findMenuByRoleId(roleId).stream().map(SysMenu::getMenuId).collect(Collectors.toList()));
 	}
 
 	/**
