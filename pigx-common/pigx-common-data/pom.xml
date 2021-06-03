@@ -39,10 +39,16 @@
 			<groupId>com.pig4cloud</groupId>
 			<artifactId>pigx-common-core</artifactId>
 		</dependency>
-		<!--mybatis plus extension,包含了mybatis plus core-->
+		<!--mybatis plus-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
+		</dependency>
+		<!-- druid 连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<!--安全依赖获取上下文信息-->
 		<dependency>
