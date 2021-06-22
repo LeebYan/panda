@@ -21,27 +21,29 @@ import com.pig4cloud.pigx.admin.api.dto.SysLogDTO;
 import com.pig4cloud.pigx.admin.api.feign.RemoteLogService;
 import com.pig4cloud.pigx.common.core.constant.SecurityConstants;
 import com.pig4cloud.pigx.common.core.util.KeyStrResolver;
-import com.pig4cloud.pigx.common.core.util.WebUtils;
 import com.pig4cloud.pigx.common.log.util.SysLogUtils;
-import com.pig4cloud.pigx.common.security.handler.AuthenticationSuccessHandler;
+import com.pig4cloud.pigx.common.security.handler.AuthenticationLogoutHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 退出事件处理
+ *
  * @author lengleng
- * @date 2018/10/8
+ * @date 2021/06/22
  */
 @Slf4j
 @Component
 @AllArgsConstructor
-public class PigxAuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
+public class PigxAuthenticationLogoutEventHandler implements AuthenticationLogoutHandler {
 
 	private final RemoteLogService logService;
 
@@ -60,14 +62,19 @@ public class PigxAuthenticationSuccessEventHandler implements AuthenticationSucc
 	public void handle(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
 		String username = authentication.getName();
 		SysLogDTO sysLog = SysLogUtils.getSysLog(request, username);
-		sysLog.setTitle(username + "用户登录");
+		sysLog.setTitle(username + "用户退出");
 		sysLog.setParams(username);
-		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-		sysLog.setServiceId(WebUtils.extractClientId(header).orElse("N/A"));
+
+		// 获取clientId 信息
+		OAuth2Authentication auth2Authentication = (OAuth2Authentication) authentication;
+		sysLog.setServiceId(auth2Authentication.getOAuth2Request().getClientId());
 		sysLog.setTenantId(Integer.parseInt(tenantKeyStrResolver.key()));
+		// 保存退出的token
+		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+		sysLog.setParams(token);
 
 		logService.saveLog(sysLog, SecurityConstants.FROM_IN);
-		log.info("用户：{} 登录成功", username);
+		log.info("用户：{} 退出成功, token:{}  已注销", username, token);
 	}
 
 }
