@@ -22,7 +22,6 @@ package com.pig4cloud.pigx.common.core.util;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.pig4cloud.pigx.common.core.exception.CheckedException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -235,18 +234,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 */
 	public Optional<String> extractClientId(String header) {
 		return Optional.ofNullable(extractClientId(header, null));
-	}
-
-	/**
-	 * 从request 获取CLIENT_ID
-	 * @return
-	 */
-	public String getClientId(String header) {
-		String clientId = extractClientId(header, null);
-		if (clientId == null) {
-			throw new CheckedException("Invalid basic authentication token");
-		}
-		return clientId;
 	}
 
 }

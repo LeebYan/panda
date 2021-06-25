@@ -16,16 +16,14 @@
 
 package com.pig4cloud.pigx.common.xss.core;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.xss.config.PigxXssProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * xss 处理拦截器
@@ -33,31 +31,24 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @author L.cm
  */
 @RequiredArgsConstructor
-public class XssCleanInterceptor extends HandlerInterceptorAdapter {
+public class XssCleanInterceptor implements AsyncHandlerInterceptor {
 
 	private final PigxXssProperties xssProperties;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		// 1. 没有开启
-		if (!xssProperties.isEnabled()) {
-			return true;
-		}
-
-		// 2. 非控制器请求直接跳出
+		// 1. 非控制器请求直接跳出
 		if (!(handler instanceof HandlerMethod)) {
 			return true;
 		}
-
-		// 3. 只过滤 POST PUT
-		if (!StrUtil.equalsAnyIgnoreCase(request.getMethod(), HttpMethod.POST.name(), HttpMethod.PUT.name())) {
+		// 2. 没有开启
+		if (!xssProperties.isEnabled()) {
 			return true;
 		}
-
-		// 4. 处理 XssIgnore 注解
+		// 3. 处理 XssIgnore 注解
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
-		XssCleanIgnore xssCleanIgnore = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), XssCleanIgnore.class);
+		XssCleanIgnore xssCleanIgnore = AnnotationUtils.getAnnotation(handlerMethod.getMethod(), XssCleanIgnore.class);
 		if (xssCleanIgnore == null) {
 			XssHolder.setEnable();
 		}
@@ -65,13 +56,13 @@ public class XssCleanInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	@Override
-	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response,
-			Object handler) {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
 		XssHolder.remove();
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		XssHolder.remove();
 	}

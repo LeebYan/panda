@@ -16,11 +16,10 @@
 
 package com.pig4cloud.pigx.common.xss.config;
 
-import cn.hutool.core.collection.CollUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,11 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ConfigurationProperties("security.xss")
-public class PigxXssProperties implements InitializingBean {
+@RefreshScope
+@ConfigurationProperties(PigxXssProperties.PREFIX)
+public class PigxXssProperties {
+
+	public static final String PREFIX = "mica.xss";
 
 	/**
 	 * 开启xss
@@ -41,20 +43,46 @@ public class PigxXssProperties implements InitializingBean {
 	private boolean enabled = true;
 
 	/**
-	 * 拦截的路由，默认拦截 /**
+	 * 全局：对文件进行首尾 trim
+	 */
+	private boolean trimText = true;
+
+	/**
+	 * 模式：clear 清理（默认），escape 转义
+	 */
+	private Mode mode = Mode.clear;
+
+	/**
+	 * [clear 专用] prettyPrint，默认关闭： 保留换行
+	 */
+	private boolean prettyPrint = false;
+
+	/**
+	 * [clear 专用] 使用转义，默认关闭
+	 */
+	private boolean enableEscape = false;
+
+	/**
+	 * 拦截的路由，默认为空
 	 */
 	private List<String> pathPatterns = new ArrayList<>();
 
 	/**
-	 * 放行的规则，默认为空
+	 * 放行的路由，默认为空
 	 */
-	private List<String> excludePatterns = new ArrayList<>();
+	private List<String> pathExcludePatterns = new ArrayList<>();
 
-	@Override
-	public void afterPropertiesSet() {
-		if (CollUtil.isEmpty(pathPatterns)) {
-			pathPatterns.add("/**");
-		}
+	public enum Mode {
+
+		/**
+		 * 清理
+		 */
+		clear,
+		/**
+		 * 转义
+		 */
+		escape;
+
 	}
 
 }

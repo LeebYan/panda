@@ -17,10 +17,9 @@
 package com.pig4cloud.pigx.common.xss;
 
 import com.pig4cloud.pigx.common.xss.config.PigxXssProperties;
-import com.pig4cloud.pigx.common.xss.core.FormXssClean;
-import com.pig4cloud.pigx.common.xss.core.JacksonXssClean;
-import com.pig4cloud.pigx.common.xss.core.XssCleanInterceptor;
+import com.pig4cloud.pigx.common.xss.core.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,6 +29,8 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 /**
  * jackson xss 配置
  *
@@ -38,26 +39,38 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(PigxXssProperties.class)
-@ConditionalOnProperty(value = "security.xss.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = PigxXssProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class PigxXssAutoConfiguration implements WebMvcConfigurer {
 
 	private final PigxXssProperties xssProperties;
 
 	@Bean
-	public FormXssClean formXssClean() {
-		return new FormXssClean();
+	@ConditionalOnMissingBean
+	public XssCleaner xssCleaner(PigxXssProperties properties) {
+		return new DefaultXssCleaner(properties);
 	}
 
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer() {
-		return builder -> builder.deserializerByType(String.class, new JacksonXssClean());
+	public FormXssClean formXssClean(PigxXssProperties properties, XssCleaner xssCleaner) {
+		return new FormXssClean(properties, xssCleaner);
+	}
+
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(PigxXssProperties properties,
+			XssCleaner xssCleaner) {
+		JacksonXssClean xssClean = new JacksonXssClean(properties, xssCleaner);
+		return builder -> builder.deserializerByType(String.class, xssClean);
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		List<String> patterns = xssProperties.getPathPatterns();
+		if (patterns.isEmpty()) {
+			patterns.add("/**");
+		}
 		XssCleanInterceptor interceptor = new XssCleanInterceptor(xssProperties);
-		registry.addInterceptor(interceptor).addPathPatterns(xssProperties.getPathPatterns())
-				.excludePathPatterns(xssProperties.getExcludePatterns()).order(Ordered.LOWEST_PRECEDENCE);
+		registry.addInterceptor(interceptor).addPathPatterns(patterns)
+				.excludePathPatterns(xssProperties.getPathExcludePatterns()).order(Ordered.LOWEST_PRECEDENCE);
 	}
 
 }

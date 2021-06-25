@@ -19,7 +19,9 @@ package com.pig4cloud.pigx.common.xss.core;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.pig4cloud.pigx.common.xss.config.PigxXssProperties;
 import com.pig4cloud.pigx.common.xss.utils.XssUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -30,22 +32,27 @@ import java.io.IOException;
  * @author L.cm
  */
 @Slf4j
+@RequiredArgsConstructor
 public class JacksonXssClean extends JsonDeserializer<String> {
 
+	private final PigxXssProperties properties;
+
+	private final XssCleaner xssCleaner;
+
 	@Override
-	public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
 		// XSS filter
 		String text = p.getValueAsString();
 		if (text == null) {
 			return null;
 		}
-		else if (XssHolder.isEnabled()) {
-			String value = XssUtil.clean(text);
-			log.trace("Json property value:{} cleaned up by mica-xss, current value is:{}.", text, value);
+		if (XssHolder.isEnabled()) {
+			String value = xssCleaner.clean(XssUtil.trim(text, properties.isTrimText()));
+			log.debug("Json property value:{} cleaned up by mica-xss, current value is:{}.", text, value);
 			return value;
 		}
 		else {
-			return text;
+			return XssUtil.trim(text, properties.isTrimText());
 		}
 	}
 

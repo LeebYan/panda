@@ -17,24 +17,17 @@
 package com.pig4cloud.pigx.common.xss.core;
 
 /**
- * 利用 ThreadLocal 缓存线程间的数据
+ * xss 清理器
  *
  * @author L.cm
  */
-class XssHolder {
+public interface XssCleaner {
 
-	private static final ThreadLocal<Boolean> TL = new ThreadLocal<>();
-
-	public static boolean isEnabled() {
-		return Boolean.TRUE.equals(TL.get());
-	}
-
-	public static void setEnable() {
-		TL.set(Boolean.TRUE);
-	}
-
-	public static void remove() {
-		TL.remove();
-	}
+	/**
+	 * 清理 html
+	 * @param html html
+	 * @return 清理后的数据
+	 */
+	String clean(String html);
 
 }
