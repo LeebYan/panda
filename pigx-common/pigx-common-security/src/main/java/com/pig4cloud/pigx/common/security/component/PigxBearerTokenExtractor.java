@@ -18,7 +18,7 @@
 
 package com.pig4cloud.pigx.common.security.component;
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -28,6 +28,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 改造 {@link BearerTokenExtractor} 对公开权限的请求不进行校验
@@ -48,13 +49,13 @@ public class PigxBearerTokenExtractor extends BearerTokenExtractor {
 
 		// 2. 判断请求方法是否匹配
 		boolean result = permitAllUrlResolver.getIgnoreUrls().stream().anyMatch(url -> {
-			String[] strings = StrUtil.split(url, "|");
+			List<String> strings = StrUtil.split(url, "|");
 			// 1. 判断路径是否匹配
-			boolean match = pathMatcher.match(strings[0], request.getRequestURI());
+			boolean match = pathMatcher.match(strings.get(0), request.getRequestURI());
 			// 2. 判断方法是否匹配
-			if (strings.length == 2) {
-				String[] methods = StrUtil.split(strings[1], StrUtil.COMMA);
-				return ArrayUtil.contains(methods, request.getMethod()) && match;
+			if (strings.size() == 2) {
+				List<String> methods = StrUtil.split(strings.get(1), StrUtil.COMMA);
+				return CollUtil.contains(methods, request.getMethod()) && match;
 			}
 			return match;
 		});

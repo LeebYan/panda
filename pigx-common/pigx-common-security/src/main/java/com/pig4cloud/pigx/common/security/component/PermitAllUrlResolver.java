@@ -172,18 +172,18 @@ public class PermitAllUrlResolver implements InitializingBean {
 	 */
 	public void registry(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry) {
 		for (String url : getIgnoreUrls()) {
-			String[] strings = StrUtil.split(url, "|");
+			List<String> strings = StrUtil.split(url, "|");
 
 			// 仅配置对外暴露的URL ，则注册到 spring security的为全部方法
-			if (strings.length == 1) {
-				registry.antMatchers(strings[0]).permitAll();
+			if (strings.size() == 1) {
+				registry.antMatchers(strings.get(0)).permitAll();
 				continue;
 			}
 
 			// 当配置对外的URL|GET,POST 这种形式，则获取方法列表 并注册到 spring security
-			if (strings.length == 2) {
-				for (String method : StrUtil.split(strings[1], StrUtil.COMMA)) {
-					registry.antMatchers(HttpMethod.valueOf(method), strings[0]).permitAll();
+			if (strings.size() == 2) {
+				for (String method : StrUtil.split(strings.get(1), StrUtil.COMMA)) {
+					registry.antMatchers(HttpMethod.valueOf(method), strings.get(0)).permitAll();
 				}
 				continue;
 			}
