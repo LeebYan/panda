@@ -18,7 +18,7 @@ package com.alibaba.nacos.controller;
 
 import com.alibaba.nacos.auth.annotation.Secured;
 import com.alibaba.nacos.auth.common.ActionTypes;
-import com.alibaba.nacos.common.model.RestResult;
+import com.alibaba.nacos.common.model.RestResultUtils;
 import com.alibaba.nacos.security.nacos.NacosAuthConfig;
 import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +84,7 @@ public class RoleController {
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "roles", action = ActionTypes.WRITE)
 	public Object addRole(@RequestParam String role, @RequestParam String username) {
 		roleService.addRole(role, username);
-		return new RestResult<>(200, "add role ok!");
+		return RestResultUtils.success("add role ok!");
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class RoleController {
 		else {
 			roleService.deleteRole(role, username);
 		}
-		return new RestResult<>(200, "delete role of user " + username + " ok!");
+		return RestResultUtils.success("delete role of user " + username + " ok!");
 	}
 
 }
