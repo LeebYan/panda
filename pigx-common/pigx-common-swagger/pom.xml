@@ -50,9 +50,9 @@
 			<artifactId>springfox-oas</artifactId>
 			<version>${swagger.fox.version}</version>
 		</dependency>
-		<!--knife4j spring ui 修复 context-type 版本 -->
+		<!--knife4j spring ui -->
 		<dependency>
-			<groupId>com.pig4cloud.plugin</groupId>
+			<groupId>com.github.xiaoymin</groupId>
 			<artifactId>knife4j-spring-ui</artifactId>
 			<version>${knife4j.version}</version>
 		</dependency>
