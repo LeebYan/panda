@@ -51,7 +51,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 
 	private final StringEncryptor stringEncryptor;
 
-	private final DataSourceCreator dataSourceCreator;
+	private final DataSourceCreator druidDataSourceCreator;
 
 	/**
 	 * 保存数据源并且加密
@@ -123,7 +123,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 		dataSourceProperty.setUrl(conf.getUrl());
 		dataSourceProperty.setUsername(conf.getUsername());
 		dataSourceProperty.setPassword(conf.getPassword());
-		DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+		DataSource dataSource = druidDataSourceCreator.createDataSource(dataSourceProperty);
 
 		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
 		dynamicRoutingDataSource.addDataSource(dataSourceProperty.getPoolName(), dataSource);
