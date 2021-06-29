@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pigx.common.feign.annotation;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.PigxFeignClientsRegistrar;
 import org.springframework.context.annotation.Import;
@@ -33,7 +32,6 @@ import java.lang.annotation.*;
 @Documented
 @EnableFeignClients
 @Import(PigxFeignClientsRegistrar.class)
-@EnableAutoConfiguration(excludeName = "org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration")
 public @interface EnablePigxFeignClients {
 
 	/**
