@@ -24,7 +24,7 @@
 
 	<groupId>com.pig4cloud</groupId>
 	<artifactId>pigx</artifactId>
-	<version>4.0.0</version>
+	<version>4.1.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -43,7 +43,7 @@
 		<spring.checkstyle.version>0.0.28</spring.checkstyle.version>
 		<git.commit.version>2.2.5</git.commit.version>
 		<spring-boot-admin.version>2.4.2</spring-boot-admin.version>
-		<hutool.version>5.7.2</hutool.version>
+		<hutool.version>5.7.3</hutool.version>
 		<captcha.version>1.2.7</captcha.version>
 		<swagger.fox.version>3.0.0</swagger.fox.version>
 		<knife4j.version>2.0.9</knife4j.version>

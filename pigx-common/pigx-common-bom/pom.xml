@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>group.springframework</groupId>
 		<artifactId>spring-cloud-dependencies-parent</artifactId>
-		<version>2020.0.1</version>
+		<version>2020.0.3</version>
 		<relativePath/>
 	</parent>
 
@@ -17,8 +17,8 @@
 	<description>pigx 公共版本控制</description>
 
 	<properties>
-		<pigx.version>4.0.0</pigx.version>
-		<mybatis-plus.version>3.4.2</mybatis-plus.version>
+		<pigx.version>4.1.0</pigx.version>
+		<mybatis-plus.version>3.4.3</mybatis-plus.version>
 		<dynamic-ds.version>3.4.0</dynamic-ds.version>
 		<druid.version>1.2.5</druid.version>
 		<mysql.connector.version>8.0.23</mysql.connector.version>

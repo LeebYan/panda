@@ -18,8 +18,9 @@ public class SelectCountByScope extends AbstractMethod {
 	public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
 		SqlMethod sqlMethod = SqlMethod.SELECT_LIST;
 
-		String sql = String.format(sqlMethod.getSql(), sqlFirst(), sqlSelectColumns(tableInfo, true),
-				tableInfo.getTableName(), sqlWhereEntityWrapper(true, tableInfo), sqlComment());
+		String sql = String.format(sqlMethod.getSql(), this.sqlFirst(), this.sqlSelectColumns(tableInfo, true),
+				tableInfo.getTableName(), this.sqlWhereEntityWrapper(true, tableInfo), this.sqlOrderBy(tableInfo),
+				this.sqlComment());
 		SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
 
 		return this.addSelectMappedStatementForOther(mapperClass, "selectCountByScope", sqlSource, Integer.class);

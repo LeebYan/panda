@@ -97,7 +97,7 @@ public class LeaveBill extends Model<LeaveBill> {
 	 * 主键值
 	 */
 	@Override
-	protected Serializable pkVal() {
+	public Serializable pkVal() {
 		return this.leaveId;
 	}
 
