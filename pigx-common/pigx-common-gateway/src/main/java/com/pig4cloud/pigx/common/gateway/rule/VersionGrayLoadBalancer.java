@@ -22,7 +22,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pigx.common.core.constant.CommonConstants;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -30,7 +30,7 @@ import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -39,15 +39,16 @@ import java.util.Map;
  * 基于客户端版本号灰度路由
  */
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VersionGrayLoadBalancer implements GrayLoadBalancer {
 
-	private DiscoveryClient discoveryClient;
+	private final DiscoveryClient discoveryClient;
 
 	/**
 	 * 根据serviceId 筛选可用服务
+	 *
 	 * @param serviceId 服务ID
-	 * @param request 当前请求
+	 * @param request   当前请求
 	 * @return
 	 */
 	@Override
@@ -67,15 +68,17 @@ public class VersionGrayLoadBalancer implements GrayLoadBalancer {
 		}
 
 		// 遍历可以实例元数据，若匹配则返回此实例
-		for (ServiceInstance instance : instances) {
-			Map<String, String> metadata = instance.getMetadata();
-			String targetVersion = MapUtil.getStr(metadata, CommonConstants.VERSION);
-			if (reqVersion.equalsIgnoreCase(targetVersion)) {
-				log.debug("gray requst match success :{} {}", reqVersion, instance);
-				return instance;
-			}
+		List<ServiceInstance> availableList = instances.stream()
+				.filter(instance -> reqVersion
+						.equalsIgnoreCase(MapUtil.getStr(instance.getMetadata(), CommonConstants.VERSION)))
+				.collect(Collectors.toList());
+
+		if (CollUtil.isEmpty(availableList)) {
+			return instances.get(RandomUtil.randomInt(instances.size()));
 		}
-		return instances.get(RandomUtil.randomInt(instances.size()));
+
+		return availableList.get(RandomUtil.randomInt(availableList.size()));
+
 	}
 
 }
