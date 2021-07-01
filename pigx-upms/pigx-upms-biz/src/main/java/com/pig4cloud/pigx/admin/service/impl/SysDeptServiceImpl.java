@@ -133,9 +133,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 					treeNode.setParentId(dept.getParentId());
 					treeNode.setName(dept.getName());
 					// 有权限不返回标识
-					if (deptOwnIdList.contains(dept.getDeptId())) {
-						treeNode.setExtra(MapUtil.of("isLock", Boolean.FALSE));
-					}
+					treeNode.setExtra(MapUtil.of("isLock", !deptOwnIdList.contains(dept.getDeptId())));
 					return treeNode;
 				}).collect(Collectors.toList());
 
